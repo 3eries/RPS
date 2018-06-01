@@ -1,35 +1,41 @@
 //
-//  GameLayer.cpp
+//  GameView.cpp
 //  RSP-mobile
 //
 //  Created by seongmin hwang on 2018. 5. 17..
 //
 
-#include "GameLayer.hpp"
+#include "GameView.hpp"
 
+#include "User.hpp"
 #include "UIHelper.hpp"
-#include "GameValue.hpp"
 
-#include "ui/RSPBlock.hpp"
-#include "ui/RSPButton.hpp"
+#include "GameDefine.h"
+
+#include "object/RSPBlock.hpp"
+#include "object/RSPButton.hpp"
+#include "object/Man.hpp"
+#include "object/TimeBar.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-GameLayer::GameLayer() :
-onGameOverListener(nullptr),
+static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
+
+GameView::GameView() :
+gameMgr(GameManager::getInstance()),
 blockLayer(nullptr),
 blockIndex(0),
 hitCount(0) {
 }
 
-GameLayer::~GameLayer() {
+GameView::~GameView() {
     
     blocks.clear();
 }
 
-bool GameLayer::init() {
+bool GameView::init() {
     
     if( !Node::init() ) {
         return false;
@@ -41,12 +47,16 @@ bool GameLayer::init() {
     
     initBlocks();
     initButtons();
+    initMan();
+    initTimeBar();
     initLabels();
+    
+    gameMgr->addListener(this);
     
     return true;
 }
 
-void GameLayer::onEnter() {
+void GameView::onEnter() {
     
     Node::onEnter();
     
@@ -58,12 +68,14 @@ void GameLayer::onEnter() {
     blockLayer->runAction(move);
 }
 
-void GameLayer::onEnterTransitionDidFinish() {
+void GameView::onEnterTransitionDidFinish() {
     
     Node::onEnterTransitionDidFinish();
 }
 
-void GameLayer::onExit() {
+void GameView::onExit() {
+    
+    gameMgr->removeListener(this);
     
     Node::onExit();
 }
@@ -71,38 +83,28 @@ void GameLayer::onExit() {
 /**
  * RSP 버튼 클릭
  */
-void GameLayer::onClickButton(RSPType type) {
+void GameView::onClickButton(RSPType type) {
     
     CCASSERT(blockIndex < blocks.size(), "GameScene::onClickButton error: out of block index.");
     
     auto block = blocks.at(blockIndex);
-    bool isHit = false;
+    auto result = getResult(type, block->getType());
     
-    switch( block->getType() ) {
-        case RSPType::ROCK:      isHit = (type == RSPType::PAPER);      break;
-        case RSPType::SCISSORS:  isHit = (type == RSPType::ROCK);       break;
-        case RSPType::PAPER:     isHit = (type == RSPType::SCISSORS);   break;
-        default:
-            CCASSERT(false, "GameLayer::onClickButton error: invalid block type.");
-            break;
-    }
-    
-    // 정답
-    if( isHit ) {
-        hitBlock(block);
-    }
-    // 오답
-    else {
-        misBlock(block);
+    switch( result ) {
+        case RSPResult::WIN:    this->hitBlock(block, type);      break;
+        case RSPResult::LOSE:   this->misBlock(block);            break;
+        case RSPResult::DRAW:   this->drawBlock(block);           break;
+        default: break;
     }
 }
 
 /**
  *  블럭 히트다 히트~!
  */
-void GameLayer::hitBlock(RSPBlock *hitBlock) {
+void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     
     // 히트된 블럭 연출
+    man->hit(btnType);
     runHitBlockEffect(hitBlock);
     
     // 전달된 블럭 색상 변경하여 재활용
@@ -111,6 +113,9 @@ void GameLayer::hitBlock(RSPBlock *hitBlock) {
     // hit 카운트 증가
     ++hitCount;
     hitCountLabel->setString(TO_STRING(hitCount));
+    
+    // 시간 증가
+    timeBar->increase(INCREASE_TIME_PER_HIT);
     
     // 블럭 인덱스 증가
     ++blockIndex;
@@ -148,17 +153,37 @@ void GameLayer::hitBlock(RSPBlock *hitBlock) {
 /**
  *  블럭 틀렸다잉
  */
-void GameLayer::misBlock(RSPBlock *block) {
+void GameView::misBlock(RSPBlock *block) {
  
-    onGameOverListener();
+    gameMgr->onGameOver();
+}
+
+/**
+ * 비겼당
+ */
+void GameView::drawBlock(RSPBlock *block) {
+
+    man->showdown();
+//    man->draw();
+    
+    auto setButtonTouchEnabled = [=](bool enabled) {
+        for( auto btn : rspButtons ) {
+            btn->setTouchEnabled(enabled);
+        }
+    };
+    
+    // 버튼 터치 지연
+    setButtonTouchEnabled(false);
+    
+    scheduleOnce([=](float dt) {
+        setButtonTouchEnabled(true);
+    }, DRAW_DELAY, SCHEDULER_DRAW_DELAY);
 }
 
 /**
  * 히트된 블럭 연출
  */
-void GameLayer::runHitBlockEffect(RSPBlock *hitBlock) {
-    
-    SBAudioEngine::play2d(SOUND_PUNCH);
+void GameView::runHitBlockEffect(RSPBlock *hitBlock) {
     
     auto block = hitBlock->clone();
     hitBlock->getParent()->addChild(block, SBZOrder::BOTTOM);
@@ -167,36 +192,31 @@ void GameLayer::runHitBlockEffect(RSPBlock *hitBlock) {
     const float MOVE_DURATION = 0.15f;
     
     {
-        const float MOVE_POS_Y = BLOCK_DISPLAY_HEIGHT*0.5f;
+        float POS_LEFT  = 0;
+        float POS_RIGHT = SB_WIN_SIZE.width;
+        float posX = 0;
         
-        Vec2 MOVE_LEFT_POS  = Vec2(0,                   MOVE_POS_Y);
-        Vec2 MOVE_RIGHT_POS = Vec2(SB_WIN_SIZE.width,   MOVE_POS_Y);
-        Vec2 movePos;
-        
-        switch( block->getType() ) {
-            case RSPType::ROCK:         movePos = MOVE_LEFT_POS;    break;
-            case RSPType::SCISSORS:     movePos = MOVE_RIGHT_POS;   break;
-            case RSPType::PAPER: {
-                int ran = arc4random() % 2;
-                movePos = (ran == 0) ? MOVE_LEFT_POS : MOVE_RIGHT_POS;
-            } break;
-                
+        switch( man->getManPosition() ) {
+            case Man::Position::LEFT:         posX =  POS_RIGHT;    break;
+            case Man::Position::RIGHT:        posX =  POS_LEFT;     break;
             default:
-                CCASSERT(false, "GameLayer::hitBlock error: invalid block type.");
+                CCASSERT(false, "GameView::runHitBlockEffect error: invalid man position.");
                 break;
         }
         
-        auto moveTo = MoveTo::create(MOVE_DURATION, movePos);
+        auto moveTo = MoveTo::create(MOVE_DURATION, Vec2(posX, block->getPositionY()));
         auto callback = CallFunc::create([=]() {
             
         });
-        block->runAction(Sequence::create(moveTo, callback, nullptr));
+        auto remove = RemoveSelf::create();
+        block->runAction(Sequence::create(moveTo, callback, remove, nullptr));
     }
     
     // rotate
-    block->runAction(RepeatForever::create(RotateBy::create(0.1f, 90)));
+//    block->runAction(RepeatForever::create(RotateBy::create(0.1f, 90)));
     
     // fade out
+    /*
     {
         auto delay = DelayTime::create(0.1f);
         auto fadeOut = FadeOut::create(MOVE_DURATION*1.05f);
@@ -207,26 +227,27 @@ void GameLayer::runHitBlockEffect(RSPBlock *hitBlock) {
         auto remove = RemoveSelf::create();
         block->runAction(Sequence::create(delay, fadeOut, callback, remove, nullptr));
     }
+    */
 }
 
 /**
  * 블럭 좌표 정렬
  */
-void GameLayer::alignBlock(int i, RSPBlock *block) {
+void GameView::alignBlock(int i, RSPBlock *block) {
     
     block->setPosition(getBlockPosition(i));
 //    block->setPosition(Vec2(SB_WIN_SIZE.width*0.5f,
 //                            BLOCK_ORIGIN_POS_Y + (i*BLOCK_HEIGHT)));
 }
 
-Vec2 GameLayer::getBlockPosition(int i) {
+Vec2 GameView::getBlockPosition(int i) {
     return Vec2BC(blockLayer->getContentSize(), 0, (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f));
 }
 
 /**
  * RSP 블럭 초기화
  */
-void GameLayer::initBlocks() {
+void GameView::initBlocks() {
     
     blockLayer = Node::create();
     blockLayer->setAnchorPoint(ANCHOR_MB);
@@ -253,9 +274,9 @@ void GameLayer::initBlocks() {
 /**
  * RSP 버튼 초기화
  */
-void GameLayer::initButtons() {
+void GameView::initButtons() {
     
-    const float POS_Y = 15;
+    const float POS_Y = 5;
     
     RSPType types[] = {
         RSPType::ROCK,
@@ -276,6 +297,8 @@ void GameLayer::initButtons() {
         uiInfos[i].apply(btn);
         addChild(btn);
         
+        rspButtons.push_back(btn);
+        
         btn->setOnClickListener([=](Node*) {
             this->onClickButton(type);
         });
@@ -283,16 +306,40 @@ void GameLayer::initButtons() {
 }
 
 /**
+ * Man 초기화
+ */
+void GameView::initMan() {
+    
+    man = Man::create();
+    addChild(man);
+}
+
+/**
+ * TimeBar 초기화
+ */
+void GameView::initTimeBar() {
+    
+    timeBar = TimeBar::create();
+    timeBar->setAnchorPoint(ANCHOR_MT);
+    timeBar->setPosition(Vec2TC(0, -15));
+    addChild(timeBar);
+    
+    // 배너 광고 아래에 위치
+    if( !User::isOwnRemoveAdsItem() ) {
+        timeBar->setPosition(Vec2TC(0, -BANNER_HEIGHT-10));
+    }
+}
+
+/**
  * 라벨 초기화
  */
-void GameLayer::initLabels() {
+void GameView::initLabels() {
     
-    hitCountLabel = Label::createWithTTF("", FONT_RETRO, 40);
+    hitCountLabel = Label::createWithTTF("", FONT_RETRO, 80);
     hitCountLabel->setAnchorPoint(ANCHOR_M);
-    hitCountLabel->setPosition(Vec2MC(0, 420));
+    hitCountLabel->setPosition(Vec2MC(0, 305));
     hitCountLabel->setColor(Color3B::WHITE);
-    hitCountLabel->enableOutline(Color4B::BLACK, 3);
-    hitCountLabel->setScale(2);
+    hitCountLabel->enableOutline(Color4B::BLACK, 8);
     addChild(hitCountLabel);
 }
 

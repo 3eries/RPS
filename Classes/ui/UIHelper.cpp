@@ -16,14 +16,28 @@ const Size ButtonSize::SMALL              = Size(200, 80);
 const Size ButtonSize::MEDIUM             = Size(250, 80);
 const Size ButtonSize::LARGE              = Size(300, 80);
 
-string UIHelper::getImageFile(RSPType type) {
+string UIHelper::getBlockImageFile(RSPType type) {
     
     switch( type ) {
-        case RSPType::ROCK:        return DIR_IMG_GAME + "rock.png";
-        case RSPType::SCISSORS:    return DIR_IMG_GAME + "scissors.png";
-        case RSPType::PAPER:       return DIR_IMG_GAME + "paper.png";
+        case RSPType::ROCK:        return DIR_IMG_GAME + "RSP_block_rock.png";
+        case RSPType::SCISSORS:    return DIR_IMG_GAME + "RSP_block_scissors.png";
+        case RSPType::PAPER:       return DIR_IMG_GAME + "RSP_block_paper.png";
         default:
-            CCASSERT(false, "UIHelper::getImageFile error: invalid rsp type.");
+            CCASSERT(false, "UIHelper::getBlockImageFile error: invalid rsp type.");
+            break;
+    }
+    
+    return "";
+}
+
+string UIHelper::getButtonImageFile(RSPType type) {
+    
+    switch( type ) {
+        case RSPType::ROCK:        return DIR_IMG_GAME + "RSP_btn_rock.png";
+        case RSPType::SCISSORS:    return DIR_IMG_GAME + "RSP_btn_scissors.png";
+        case RSPType::PAPER:       return DIR_IMG_GAME + "RSP_btn_paper.png";
+        default:
+            CCASSERT(false, "UIHelper::getButtonImageFile error: invalid rsp type.");
             break;
     }
     

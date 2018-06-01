@@ -18,6 +18,7 @@ class MainScene : public cocos2d::Scene, public SBNodeListener {
 private:
     typedef enum {
         BTN_START = 100,
+        BTN_REMOVE_ADS,
     } Tag;
     
 public:

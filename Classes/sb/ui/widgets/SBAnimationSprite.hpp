@@ -1,6 +1,5 @@
 //
 //  SBAnimationSprite.hpp
-//  Snow Bros-mobile
 //
 //  Created by seongmin hwang on 2018. 3. 7..
 //
@@ -28,6 +27,7 @@ protected:
     SBAnimationSprite();
     
     virtual bool init(cocos2d::Animation *anim, int loops);
+    virtual bool init(cocos2d::Animation *anim);
     
 public:
     virtual void setSpriteFrame(size_t i);

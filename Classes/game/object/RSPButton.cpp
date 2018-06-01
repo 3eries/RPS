@@ -50,7 +50,7 @@ bool RSPButton::init() {
 
 void RSPButton::initImage() {
     
-    img = Sprite::create(UIHelper::getImageFile(type));
+    img = Sprite::create(UIHelper::getButtonImageFile(type));
     img->setAnchorPoint(ANCHOR_M);
     img->setPosition(Vec2MC(img->getContentSize(), 0, 0));
 //    img->setColor(UIHelper::getColor(type));

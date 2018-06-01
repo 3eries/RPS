@@ -17,7 +17,7 @@ using namespace std;
 static const float  CHECK_REPLACE_MAIN_SCENE_INTERVAL   = 1.0f;
 static const string CHECK_REPLACE_MAIN_SCENE_SCHEDULER  = "CHECK_REPLACE_MAIN_SCENE_SCHEDULER";
 
-static const float  LAUNCH_IMAGE_DURATION               = 2.5f;
+static const float  LAUNCH_IMAGE_DURATION               = 3.0f;
 static const string LAUNCH_IMAGE_SCHEDULER              = "LAUNCH_IMAGE_SCHEDULER";
 
 static const float  LOGIN_TIME_OUT                      = 3.0f;
@@ -89,24 +89,43 @@ void SplashScene::initLaunchImage() {
     addChild(LayerColor::create(Color4B::BLACK));
     
     // first launch image
-    /*
-    auto bg = Sprite::create(DIR_IMG + "launch_toaplan.png");
-    bg->setAnchorPoint(ANCHOR_M);
-    bg->setPosition(Vec2MC(0,0));
-    addChild(bg);
-    */
+    auto img = Sprite::create(DIR_IMG_SPLASH + "logo_3.jpg");
+    img->setAnchorPoint(ANCHOR_M);
+    img->setPosition(Vec2MC(0,0));
+    addChild(img);
     
+    /*
     auto titleLabel = Label::createWithTTF("3eries", FONT_RETRO, 50);
     titleLabel->setAnchorPoint(ANCHOR_M);
     titleLabel->setPosition(Vec2MC(0,0));
     addChild(titleLabel);
+    */
     
     // title action
+    // blink
+    /*
     auto delay = DelayTime::create(1);
     auto blink = Blink::create(0.9f, 4);
     auto seq = Sequence::create(delay, blink, nullptr);
     
     titleLabel->runAction(seq);
+    */
+    
+    // fade in
+    /*
+    titleLabel->setOpacity(0);
+    
+    auto fadeIn = FadeIn::create(1.0f);
+    auto blink = Blink::create(1.0f, 3);
+    titleLabel->runAction(Sequence::create(fadeIn, blink, nullptr));
+    */
+    
+    /*
+    img->setOpacity(0);
+    
+    auto fadeIn = FadeIn::create(1.0f);
+    img->runAction(fadeIn);
+     */
     
     // scheduler
     scheduleOnce([=](float dt) {

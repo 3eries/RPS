@@ -256,6 +256,29 @@ bool SBNodeUtils::isTouchInside(Node *n, Touch *touch, bool isApplyAffineTransfo
     return isPointInside(n, touch->getLocation(), isApplyAffineTransform);
 }
 
+void SBNodeUtils::setButtonImage(Button *btn,
+                                 const string &normalImage,
+                                 const string &selectedImage,
+                                 const string &disableImage) {
+    
+    if( btn ) {
+        btn->loadTextures(normalImage, selectedImage, disableImage);
+    }
+}
+
+Animation* SBNodeUtils::createAnimation(vector<string> animFiles,
+                                        float delayPerUnit) {
+    
+    auto anim = Animation::create();
+    anim->setDelayPerUnit(delayPerUnit);
+    
+    for( int i = 0; i < animFiles.size(); ++i ) {
+        anim->addSpriteFrameWithFile(animFiles[i]);
+    }
+    
+    return anim;
+}
+
 /**
  *  다각형에 좌표 포함 여부
  */
@@ -334,14 +357,4 @@ SBNodeUtils::Polygon SBNodeUtils::getPolygon(Node *n) {
     }
     
     return polygon;
-}
-
-void SBNodeUtils::setButtonImage(Button *btn,
-                                 const string &normalImage,
-                                 const string &selectedImage,
-                                 const string &disableImage) {
-    
-    if( btn ) {
-        btn->loadTextures(normalImage, selectedImage, disableImage);
-    }
 }

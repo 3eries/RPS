@@ -1,12 +1,12 @@
 //
-//  GameLayer.hpp
+//  GameView.hpp
 //  RSP-mobile
 //
 //  Created by seongmin hwang on 2018. 5. 17..
 //
 
-#ifndef GameLayer_hpp
-#define GameLayer_hpp
+#ifndef GameView_hpp
+#define GameView_hpp
 
 #include <stdio.h>
 
@@ -15,16 +15,20 @@
 #include "superbomb.h"
 
 #include "RSP.h"
+#include "GameManager.hpp"
 
 class RSPBlock;
+class RSPButton;
+class Man;
+class TimeBar;
 
-class GameLayer : public cocos2d::Node {
+class GameView : public cocos2d::Node, public GameListener {
 public:
-    CREATE_FUNC(GameLayer);
-    ~GameLayer();
+    CREATE_FUNC(GameView);
+    ~GameView();
     
 private:
-    GameLayer();
+    GameView();
     
     bool init() override;
     void onEnter() override;
@@ -33,13 +37,19 @@ private:
     
     void initBlocks();
     void initButtons();
+    void initMan();
+    void initTimeBar();
     void initLabels();
+    
+// GameListener
+private:
     
 private:
     void onClickButton(RSPType type);
     
-    void hitBlock(RSPBlock *block);
+    void hitBlock(RSPBlock *block, RSPType btnType);
     void misBlock(RSPBlock *block);
+    void drawBlock(RSPBlock *block);
     
     void runHitBlockEffect(RSPBlock *hitBlock);
     
@@ -47,14 +57,19 @@ private:
     cocos2d::Vec2 getBlockPosition(int i);
     
 private:
-    CC_SYNTHESIZE(SBCallback, onGameOverListener, OnGameOverListener);
+    GameManager *gameMgr;
     
     cocos2d::Node *blockLayer;
     std::vector<RSPBlock*> blocks;
     int blockIndex;
     
+    std::vector<RSPButton*> rspButtons;
+    
+    Man *man;
+    TimeBar *timeBar;
+    
     cocos2d::Label *hitCountLabel;
     int hitCount;
 };
 
-#endif /* GameLayer_hpp */
+#endif /* GameView_hpp */

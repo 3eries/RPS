@@ -15,9 +15,11 @@
 #include "superbomb.h"
 #include "RSP.h"
 
-class GameLayer;
+#include "GameManager.hpp"
 
-class GameScene : public cocos2d::Scene, public SBNodeListener {
+class GameView;
+
+class GameScene : public cocos2d::Scene, public SBNodeListener, public GameListener {
 public:
     CREATE_FUNC(GameScene);
     ~GameScene();
@@ -40,10 +42,15 @@ private:
     void onExit() override;
     
     void initBg();
-    void initGameLayer();
+    void initGameView();
     void initMenu();
     
     void onClick(cocos2d::Node *sender) override;
+    
+// GameListener
+private:
+    void onGameStart() override;
+    void onGameOver() override;
     
 private:
     void replaceMainScene();
@@ -54,7 +61,9 @@ private:
     void showGameOver();
     
 private:
-    GameLayer *gameLayer;
+    GameManager *gameMgr;
+    
+    GameView *gameView;
     cocos2d::Node *menuLayer;
 };
 

@@ -14,6 +14,7 @@
 // 이미지 경로
 static const std::string DIR_IMG                    = "images/";
 static const std::string DIR_IMG_COMMON             = DIR_ADD(DIR_IMG, "common");
+static const std::string DIR_IMG_SPLASH             = DIR_ADD(DIR_IMG, "splash");
 static const std::string DIR_IMG_GAME               = DIR_ADD(DIR_IMG, "game");
 static const std::string DIR_IMG_MAIN               = DIR_ADD(DIR_IMG, "main");
 
@@ -41,5 +42,36 @@ enum class RSPType {
     SCISSORS,
     PAPER,
 };
+
+enum class RSPResult {
+    WIN,
+    LOSE,
+    DRAW,
+};
+
+static RSPResult getResult(RSPType myHand, RSPType oppHand) {
+    
+    CCASSERT(myHand != RSPType::NONE, "getResult error: invalid my hand.");
+    CCASSERT(oppHand != RSPType::NONE, "getResult error: invalid opp hand.");
+    
+    if( myHand == oppHand ) {
+        return RSPResult::DRAW;
+    }
+    
+    bool isWin = false;
+    
+    switch( oppHand ) {
+        case RSPType::ROCK:      isWin = (myHand == RSPType::PAPER);      break;
+        case RSPType::SCISSORS:  isWin = (myHand == RSPType::ROCK);       break;
+        case RSPType::PAPER:     isWin = (myHand == RSPType::SCISSORS);   break;
+        default: break;
+    }
+    
+    if( isWin ) {
+        return RSPResult::WIN;
+    } else {
+        return RSPResult::LOSE;
+    }
+}
 
 #endif /* RSP_h */

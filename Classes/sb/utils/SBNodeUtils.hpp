@@ -63,6 +63,13 @@ public:
     static bool isTouchInside(cocos2d::Node *n, cocos2d::Touch *touch,
                               bool isApplyAffineTransform = false);
     
+    static void setButtonImage(cocos2d::ui::Button *btn,
+                               const std::string &normalImage,
+                               const std::string &selectedImage = "",
+                               const std::string &disableImage = "");
+    static cocos2d::Animation* createAnimation(std::vector<std::string> animFiles,
+                                               float delayPerUnit);
+    
 public:
     typedef std::vector<cocos2d::Point> Polygon;
     
@@ -70,11 +77,6 @@ public:
     static bool containsPoint(Polygon polygon, cocos2d::Rect rect);
     static bool containsPoint(Polygon p1, Polygon p2);
     static SBNodeUtils::Polygon getPolygon(cocos2d::Node *n);
-    
-    static void setButtonImage(cocos2d::ui::Button *btn,
-                               const std::string &normalImage,
-                               const std::string &selectedImage = "",
-                               const std::string &disableImage = "");
 };
 
 #endif /* SBNodeUtils_hpp */

@@ -1,6 +1,5 @@
 //
 //  SBAnimationSprite.cpp
-//  Snow Bros-mobile
 //
 //  Created by seongmin hwang on 2018. 3. 7..
 //
@@ -8,6 +7,7 @@
 #include "SBAnimationSprite.hpp"
 
 #include "../../utils/SBCollection.hpp"
+#include "../../utils/SBNodeUtils.hpp"
 
 USING_NS_CC;
 using namespace std;
@@ -28,14 +28,7 @@ SBAnimationSprite* SBAnimationSprite::create(Animation *anim, int loops) {
 SBAnimationSprite* SBAnimationSprite::create(vector<string> animFiles,
                                              float delayPerUnit, int loops) {
     
-    auto anim = Animation::create();
-    anim->setDelayPerUnit(delayPerUnit);
-    
-    for( int i = 0; i < animFiles.size(); ++i ) {
-        anim->addSpriteFrameWithFile(animFiles[i]);
-    }
-    
-    return create(anim, loops);
+    return create(SBNodeUtils::createAnimation(animFiles, delayPerUnit), loops);
 }
 
 SBAnimationSprite::SBAnimationSprite() :
@@ -74,6 +67,10 @@ bool SBAnimationSprite::init(Animation *anim, int loops) {
     }
     
     return true;
+}
+
+bool SBAnimationSprite::init(Animation *anim) {
+    return init(anim, LOOP_FOREVER);
 }
 
 void SBAnimationSprite::setSpriteFrame(size_t i) {

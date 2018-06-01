@@ -7,11 +7,13 @@
 
 #include "GameScene.hpp"
 
+#include "User.hpp"
 #include "SceneManager.h"
 #include "UIHelper.hpp"
-#include "GameValue.hpp"
 
-#include "GameLayer.hpp"
+#include "GameDefine.h"
+
+#include "GameView.hpp"
 #include "ui/GameOverPopup.hpp"
 #include "ui/PausePopup.hpp"
 
@@ -19,7 +21,8 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-GameScene::GameScene(){
+GameScene::GameScene() :
+gameMgr(GameManager::getInstance()) {
 }
 
 GameScene::~GameScene() {
@@ -32,8 +35,11 @@ bool GameScene::init() {
     }
     
     initBg();
-    initGameLayer();
+    initGameView();
     initMenu();
+    
+    gameMgr->addListener(this);
+    gameMgr->onEnterGame(this, gameView);
     
     return true;
 }
@@ -48,11 +54,30 @@ void GameScene::onEnterTransitionDidFinish() {
     Scene::onEnterTransitionDidFinish();
     
     SBAudioEngine::playBGM(SOUND_BGM_GAME);
+    
+    gameMgr->onGameStart();
 }
 
 void GameScene::onExit() {
     
+    gameMgr->removeListener(this);
+    
     Scene::onExit();
+}
+
+/**
+ * 게임 시작
+ */
+void GameScene::onGameStart() {
+    
+}
+
+/**
+ * 게임 오버
+ */
+void GameScene::onGameOver() {
+    
+    showGameOver();
 }
 
 /**
@@ -116,6 +141,8 @@ void GameScene::showGameOver() {
     auto popup = GameOverPopup::create();
     popup->setTag(Tag::POPUP_GAME_OVER);
     popup->setOnClickMenuListener([=](GameOverPopup::MenuType type) {
+        
+        gameMgr->onExitGame();
         
         switch( type ) {
             // restart
@@ -184,22 +211,28 @@ void GameScene::initBg() {
     // bg
     addChild(LayerColor::create(Color4B::BLACK), -1);
     
-    auto bg = Sprite::create(DIR_IMG_MAIN + "main_bg.png");
+    auto bg = Sprite::create(DIR_IMG_GAME + "RSP_bg.png");
     bg->setAnchorPoint(ANCHOR_M);
     bg->setPosition(Vec2MC(0,0));
     addChild(bg, -1);
+    
+    // 배너 광고
+    if( !User::isOwnRemoveAdsItem() ) {
+        // 임시 이미지
+        auto ad = Sprite::create(DIR_IMG_GAME + "RSP_ad_top.png");
+        ad->setAnchorPoint(ANCHOR_MT);
+        ad->setPosition(Vec2TC(0, 0));
+        addChild(ad, SBZOrder::BOTTOM);
+    }
 }
 
 /**
  * 게임 레이어 초기화
  */
-void GameScene::initGameLayer() {
+void GameScene::initGameView() {
     
-    gameLayer = GameLayer::create();
-    gameLayer->setOnGameOverListener([=]() {
-        this->showGameOver();
-    });
-    addChild(gameLayer);
+    gameView = GameView::create();
+    addChild(gameView);
 }
 
 /**
@@ -211,7 +244,7 @@ void GameScene::initMenu() {
     addChild(menuLayer);
     
     // 일시정지
-    auto pauseBtn = SBButton::create(DIR_IMG_GAME + "game_btn_pause.png", Size(80,80));
+    auto pauseBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_pause.png");
     pauseBtn->setTag(Tag::BTN_PAUSE);
     pauseBtn->setAnchorPoint(ANCHOR_TR);
     pauseBtn->setPosition(Vec2TR(-10, -10));
@@ -219,6 +252,10 @@ void GameScene::initMenu() {
     
     pauseBtn->setOnClickListener(CC_CALLBACK_1(GameScene::onClick, this));
     
+    // 배너 광고 아래에 위치
+    if( !User::isOwnRemoveAdsItem() ) {
+        pauseBtn->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
+    }
 }
 
 
