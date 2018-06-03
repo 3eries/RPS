@@ -14,13 +14,9 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
-class MainScene : public cocos2d::Scene, public SBNodeListener {
-private:
-    typedef enum {
-        BTN_START = 100,
-        BTN_REMOVE_ADS,
-    } Tag;
-    
+#include "../base/ViewManager.hpp"
+
+class MainScene : public cocos2d::Scene, public ViewListener, public SBNodeListener {
 public:
     CREATE_FUNC(MainScene);
     ~MainScene();
@@ -33,13 +29,12 @@ private:
     void onEnterTransitionDidFinish() override;
     void onExit() override;
     
-    void initBg();
-    void initMenu();
+    void onViewChanged(ViewType viewType) override;
     
-    void onClick(cocos2d::Node *sender) override;
+    void initBg();
     
 private:
-    void replaceGameScene();
+    cocos2d::Sprite *banner;
 };
 
 #endif /* MainScene_hpp */

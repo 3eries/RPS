@@ -17,6 +17,9 @@
 #include "object/Man.hpp"
 #include "object/TimeBar.hpp"
 
+#include "ui/GameOverPopup.hpp"
+#include "ui/PausePopup.hpp"
+
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
@@ -50,8 +53,11 @@ bool GameView::init() {
     initMan();
     initTimeBar();
     initLabels();
+    initMenu();
     
+    ViewManager::getInstance()->addListener(this);
     gameMgr->addListener(this);
+    gameMgr->onEnterGame(this);
     
     return true;
 }
@@ -60,12 +66,14 @@ void GameView::onEnter() {
     
     Node::onEnter();
     
-    // 연출
+    // drop 연출
+    /*
     const float POS_Y = blockLayer->getPositionY();
     blockLayer->setPositionY(POS_Y + blockLayer->getContentSize().height);
     
     auto move = MoveTo::create(0.3f, Vec2(blockLayer->getPositionX(), POS_Y));
     blockLayer->runAction(move);
+    */
 }
 
 void GameView::onEnterTransitionDidFinish() {
@@ -75,9 +83,82 @@ void GameView::onEnterTransitionDidFinish() {
 
 void GameView::onExit() {
     
+    ViewManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
     
     Node::onExit();
+}
+
+/**
+ * 뷰 타입 변경
+ */
+void GameView::onViewChanged(ViewType viewType) {
+    
+    auto setGameNodeVisible = [=](bool visible) {
+        for( auto n : gameNodes ) {
+            n->setVisible(visible);
+        }
+    };
+    
+    switch( viewType ) {
+        case ViewType::MAIN: {
+            setGameNodeVisible(false);
+        } break;
+            
+        case ViewType::GAME: {
+            setGameNodeVisible(true);
+            
+            gameMgr->onGameStart();
+            
+        } break;
+            
+        default:
+            break;
+    }
+}
+
+/**
+ * 게임 시작
+ */
+void GameView::onGameStart() {
+    
+    SBAudioEngine::playBGM(SOUND_BGM_GAME);
+    
+    // 배너 광고 아래에 위치
+    if( !User::isOwnRemoveAdsItem() ) {
+        timeBar->setPosition(Vec2TC(0, -BANNER_HEIGHT-10));
+        
+        auto menuLayer = getChildByTag(Tag::LAYER_MENU);
+        menuLayer->getChildByTag(Tag::BTN_PAUSE)->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
+    }
+}
+
+/**
+ * 게임 재시작
+ */
+void GameView::onGameRestart() {
+    
+    // 블럭 초기화
+    blockLayer->removeFromParent();
+    blocks.clear();
+    blockIndex = 0;
+    
+    initBlocks();
+    
+    // 카운트 초기화
+    hitCount = 0;
+    hitCountLabel->setString("");
+    
+    // bgm
+    SBAudioEngine::playBGM(SOUND_BGM_GAME);
+}
+
+/**
+ * 게임 오버
+ */
+void GameView::onGameOver() {
+    
+    showGameOver();
 }
 
 /**
@@ -85,7 +166,7 @@ void GameView::onExit() {
  */
 void GameView::onClickButton(RSPType type) {
     
-    CCASSERT(blockIndex < blocks.size(), "GameScene::onClickButton error: out of block index.");
+    CCASSERT(blockIndex < blocks.size(), "GameView::onClickButton error: out of block index.");
     
     auto block = blocks.at(blockIndex);
     auto result = getResult(type, block->getType());
@@ -241,7 +322,131 @@ void GameView::alignBlock(int i, RSPBlock *block) {
 }
 
 Vec2 GameView::getBlockPosition(int i) {
-    return Vec2BC(blockLayer->getContentSize(), 0, (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f));
+    float y = (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f);
+    y += (BLOCK_PADDING_Y*i); // padding
+    
+    return Vec2BC(blockLayer->getContentSize(), 0, y);
+}
+
+/**
+ * 일시정지 팝업 노출
+ */
+void GameView::showPausePopup() {
+    
+    if( getChildByTag(Tag::POPUP_PAUSE) ) {
+        // 팝업이 이미 존재함
+        return;
+    }
+    
+    gameMgr->onGamePause();
+    
+    auto popup = PausePopup::create();
+    popup->setTag(Tag::POPUP_PAUSE);
+    popup->setOnClickMenuListener([=](PausePopup::MenuType type) {
+        
+        switch( type ) {
+            // resume
+            case PausePopup::MenuType::RESUME: {
+                gameMgr->onGameResume();
+                popup->removeFromParent();
+            } break;
+                
+            // main
+            case PausePopup::MenuType::MAIN: {
+                this->replaceMain();
+                popup->removeFromParent();
+                
+            } break;
+                
+            default:
+                break;
+        }
+    });
+    addChild(popup, SBZOrder::TOP);
+}
+
+/**
+ * 일시정지 팝업 제거
+ */
+void GameView::removePausePopup() {
+    
+    removeChildByTag(Tag::POPUP_PAUSE);
+}
+
+/**
+ * 게임 오버 출력
+ */
+void GameView::showGameOver() {
+    
+    auto popup = GameOverPopup::create();
+    popup->setTag(Tag::POPUP_GAME_OVER);
+    popup->setOnClickMenuListener([=](GameOverPopup::MenuType type) {
+        
+        switch( type ) {
+            // restart
+            case GameOverPopup::MenuType::RESTART: {
+                popup->removeFromParent();
+                gameMgr->onGameRestart();
+                
+            } break;
+                
+            // home
+            case GameOverPopup::MenuType::HOME: {
+                popup->removeFromParent();
+                this->replaceMain();
+                
+            } break;
+                
+            default:
+                break;
+        }
+    });
+    addChild(popup, SBZOrder::TOP);
+    
+    // 게임 오버 배경음 재생
+    /*
+     auto audioId = SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
+     
+     CCLOG("duration: %f, %f, %f",
+     SBAudioEngine::getDuration(SOUND_BGM),
+     SBAudioEngine::getDuration(SOUND_GAME_OVER),
+     SBAudioEngine::getDuration(audioId));
+     
+     // 배경음 원상복구
+     SBAudioEngine::setOnFinishedListener(audioId, [=](int, const string &) {
+     SBAudioEngine::playBGM(SOUND_BGM);
+     });
+     */
+    
+    /*
+     scheduleOnce([=](float dt) {
+     
+     SBAudioEngine::playBGM(SOUND_BGM);
+     
+     }, SBAudioEngine::getDuration(SOUND_GAME_OVER), "GameOverSound");
+     */
+}
+
+/**
+ * 메인 뷰로 전환
+ */
+void GameView::replaceMain() {
+    
+    gameMgr->onExitGame();
+    
+    ViewManager::getInstance()->replaceMainView();
+}
+
+/**
+ * 버튼 클릭
+ */
+void GameView::onClick(Node *sender) {
+    
+    switch( sender->getTag() ) {
+        case Tag::BTN_PAUSE: {
+            showPausePopup();
+        } break;
+    }
 }
 
 /**
@@ -279,8 +484,8 @@ void GameView::initButtons() {
     const float POS_Y = 5;
     
     RSPType types[] = {
-        RSPType::ROCK,
         RSPType::SCISSORS,
+        RSPType::ROCK,
         RSPType::PAPER,
     };
     
@@ -298,6 +503,7 @@ void GameView::initButtons() {
         addChild(btn);
         
         rspButtons.push_back(btn);
+        gameNodes.push_back(btn);
         
         btn->setOnClickListener([=](Node*) {
             this->onClickButton(type);
@@ -322,7 +528,9 @@ void GameView::initTimeBar() {
     timeBar = TimeBar::create();
     timeBar->setAnchorPoint(ANCHOR_MT);
     timeBar->setPosition(Vec2TC(0, -15));
-    addChild(timeBar);
+    addChild(timeBar, SBZOrder::BOTTOM);
+    
+    gameNodes.push_back(timeBar);
     
     // 배너 광고 아래에 위치
     if( !User::isOwnRemoveAdsItem() ) {
@@ -335,11 +543,47 @@ void GameView::initTimeBar() {
  */
 void GameView::initLabels() {
     
-    hitCountLabel = Label::createWithTTF("", FONT_RETRO, 80);
+    /*
+    leveLabel = Label::createWithTTF("LEVEL 1", FONT_RETRO, 80);
+    leveLabel->setAnchorPoint(ANCHOR_M);
+    leveLabel->setPosition(Vec2MC(0, 500));
+    leveLabel->setColor(Color3B(244, 206, 66));
+    leveLabel->enableOutline(Color4B(244, 178, 65, 255), 8);
+    addChild(leveLabel);
+    */
+    
+    hitCountLabel = Label::createWithTTF("", FONT_RETRO, 75);
     hitCountLabel->setAnchorPoint(ANCHOR_M);
-    hitCountLabel->setPosition(Vec2MC(0, 305));
+    hitCountLabel->setPosition(Vec2MC(0, 260));
     hitCountLabel->setColor(Color3B::WHITE);
-    hitCountLabel->enableOutline(Color4B::BLACK, 8);
+    hitCountLabel->enableOutline(Color4B::BLACK, 7);
     addChild(hitCountLabel);
+    
+    gameNodes.push_back(hitCountLabel);
 }
 
+/**
+ * 메뉴 초기화
+ */
+void GameView::initMenu() {
+    
+    auto menuLayer = SBNodeUtils::createWinSizeNode();
+    menuLayer->setTag(Tag::LAYER_MENU);
+    addChild(menuLayer, SBZOrder::BOTTOM);
+    
+    gameNodes.push_back(menuLayer);
+    
+    // 일시정지
+    auto pauseBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_pause.png");
+    pauseBtn->setTag(Tag::BTN_PAUSE);
+    pauseBtn->setAnchorPoint(ANCHOR_TR);
+    pauseBtn->setPosition(Vec2TR(-10, -10));
+    menuLayer->addChild(pauseBtn);
+    
+    pauseBtn->setOnClickListener(CC_CALLBACK_1(GameView::onClick, this));
+    
+    // 배너 광고 아래에 위치
+    if( !User::isOwnRemoveAdsItem() ) {
+        pauseBtn->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
+    }
+}

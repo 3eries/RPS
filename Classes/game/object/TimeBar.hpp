@@ -29,12 +29,16 @@ private:
     
     void update(float dt) override;
 
+    void reset();
     void updateGage();
     
 // GameListener
 private:
     void onGameStart() override;
+    void onGameRestart() override;
     void onGameOver() override;
+    void onGamePause() override;
+    void onGameResume() override;
     
 public:
     void increase(float dt);

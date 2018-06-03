@@ -28,7 +28,6 @@ void GameManager::destroyInstance() {
 }
 
 GameManager::GameManager() :
-scene(nullptr),
 view(nullptr) {
 }
 
@@ -46,12 +45,10 @@ void GameManager::init() {
 /**
  * 게임 진입
  */
-void GameManager::onEnterGame(GameScene *scene, GameView *view) {
+void GameManager::onEnterGame(GameView *view) {
     
-    CCASSERT(scene != nullptr, "GameManager::onEnterGame error: invalid scene.");
     CCASSERT(view != nullptr, "GameManager::onEnterGame error: invalid view.");
     
-    this->scene = scene;
     this->view = view;
     
     updateLocked = false;
@@ -67,14 +64,9 @@ void GameManager::onExitGame() {
     
     onGamePause();
     
-    scene = nullptr;
     view = nullptr;
     
     listeners.clear();
-}
-
-Node* GameManager::getScene() {
-    return instance->scene;
 }
 
 Node* GameManager::getView() {
@@ -93,6 +85,20 @@ void GameManager::onGameStart() {
     
     for( auto listener : listeners ) {
         listener->onGameStart();
+    }
+}
+
+/**
+ * 게임 재시작
+ */
+void GameManager::onGameRestart() {
+    
+    gamePaused = false;
+    gameOver = false;
+    updateLocked = false;
+    
+    for( auto listener : listeners ) {
+        listener->onGameRestart();
     }
 }
 

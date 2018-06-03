@@ -42,6 +42,7 @@
 		1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49920A8A9E2007E63AD /* UIHelper.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1F620C11E85006DE988 /* MainView.cpp */; };
+		1D9ED1FF20C1303C006DE988 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1FD20C13033006DE988 /* ViewManager.cpp */; };
 		1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBB20B4675A006BC169 /* RSPButton.cpp */; };
 		1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBC20B4675A006BC169 /* RSPBlock.cpp */; };
 		1DA98BC120B4676A006BC169 /* Man.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBF20B4676A006BC169 /* Man.cpp */; };
@@ -221,6 +222,8 @@
 		1D6058910D05DD3D006BFB54 /* RSP-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RSP-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9ED1F620C11E85006DE988 /* MainView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
 		1D9ED1F720C11E85006DE988 /* MainView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainView.hpp; sourceTree = "<group>"; };
+		1D9ED1FD20C13033006DE988 /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewManager.cpp; sourceTree = "<group>"; };
+		1D9ED1FE20C13034006DE988 /* ViewManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ViewManager.hpp; sourceTree = "<group>"; };
 		1DA98BB920B4675A006BC169 /* RSPButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPButton.hpp; sourceTree = "<group>"; };
 		1DA98BBA20B4675A006BC169 /* RSPBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPBlock.hpp; sourceTree = "<group>"; };
 		1DA98BBB20B4675A006BC169 /* RSPButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButton.cpp; sourceTree = "<group>"; };
@@ -394,6 +397,8 @@
 				1DA98BD020B47E66006BC169 /* User.cpp */,
 				1DA98BD120B47E66006BC169 /* User.hpp */,
 				1D45C44720A8A787007E63AD /* UserDefaultKey.h */,
+				1D9ED1FD20C13033006DE988 /* ViewManager.cpp */,
+				1D9ED1FE20C13034006DE988 /* ViewManager.hpp */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -892,6 +897,7 @@
 				1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */,
 				1D45C48920A8A7B8007E63AD /* SBSystemUtils.cpp in Sources */,
 				1DA98BC420B46776006BC169 /* TimeBar.cpp in Sources */,
+				1D9ED1FF20C1303C006DE988 /* ViewManager.cpp in Sources */,
 				1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */,
 				1D45C47F20A8A7B8007E63AD /* SBToggleButton.cpp in Sources */,
 				1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */,

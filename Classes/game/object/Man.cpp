@@ -42,7 +42,68 @@ bool Man::init() {
 //    int ran = arc4random() % 2;
 //    setPosition((ran == 0) ? MAN_POS_LEFT : MAN_POS_RIGHT);
     
+    ViewManager::getInstance()->addListener(this);
+    
     return true;
+}
+
+void Man::onExit() {
+    
+    ViewManager::getInstance()->removeListener(this);
+    
+    Node::onExit();
+}
+
+/**
+ * 뷰 타입 변경
+ */
+void Man::onViewChanged(ViewType viewType) {
+    
+    switch( viewType ) {
+        case ViewType::MAIN: {
+            feverGage.bg->setVisible(false);
+        } break;
+            
+        case ViewType::GAME: {
+            feverGage.bg->setVisible(true);
+        } break;
+            
+        default:
+            break;
+    }
+}
+
+void Man::onGameStart() {
+    
+    scheduleUpdate();
+}
+
+
+void Man::onGameRestart() {
+    
+    lastHitType = RSPType::NONE;
+    setManPosition(Position::LEFT);
+    
+    scheduleUpdate();
+}
+
+void Man::onGameOver() {
+    
+    unscheduleUpdate();
+}
+
+void Man::onGamePause() {
+    
+    pause();
+}
+
+void Man::onGameResume() {
+    
+    resume();
+}
+
+void Man::update(float dt) {
+    
 }
 
 void Man::setManPosition(Position pos) {
@@ -112,6 +173,7 @@ void Man::initImage() {
     img = SBAnimationSprite::create(anim, 1);
     img->setAnchorPoint(ANCHOR_M);
     img->setPosition(Vec2MC(img->getContentSize(), 0, 0));
+    img->setScaleY(0.7f);
     addChild(img);
     
     setContentSize(img->getContentSize());
@@ -132,11 +194,11 @@ void Man::initFeverGage() {
     feverGage.gage = ProgressTimer::create(bar);
     feverGage.gage->setType(ProgressTimer::Type::BAR);
     feverGage.gage->setMidpoint(ANCHOR_ML);
-//    feverGage.gage->setBarChangeRate(Vec2(1, 0));
+    feverGage.gage->setBarChangeRate(Vec2(1, 0));
     feverGage.gage->setAnchorPoint(ANCHOR_M);
     feverGage.gage->setPosition(Vec2MC(feverGage.bg->getContentSize(), 0, 0));
-    feverGage.gage->setScaleY(1.44f);
+//    feverGage.gage->setScaleY(1.44f);
     feverGage.bg->addChild(feverGage.gage);
     
-    feverGage.gage->setPercentage(50);
+    feverGage.gage->setPercentage(100);
 }

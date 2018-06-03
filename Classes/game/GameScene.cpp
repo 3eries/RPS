@@ -39,7 +39,7 @@ bool GameScene::init() {
     initMenu();
     
     gameMgr->addListener(this);
-    gameMgr->onEnterGame(this, gameView);
+//    gameMgr->onEnterGame(this, gameView);
     
     return true;
 }
@@ -110,13 +110,13 @@ void GameScene::showPausePopup() {
             } break;
 
             // home
-            case PausePopup::MenuType::HOME: {
-//                gameMgr->onGameOver();
-                this->replaceMainScene();
-                
-                popup->removeFromParent();
-                
-            } break;
+//            case PausePopup::MenuType::HOME: {
+////                gameMgr->onGameOver();
+//                this->replaceMainScene();
+//                
+//                popup->removeFromParent();
+//                
+//            } break;
 
             default:
                 break;

@@ -54,14 +54,38 @@ void TimeBar::onExit() {
     Sprite::onExit();
 }
 
+void TimeBar::reset() {
+    
+    duration = FIRST_PLAY_DURATION;
+    elapsed = 0;
+}
+
 void TimeBar::onGameStart() {
  
+    scheduleUpdate();
+}
+
+void TimeBar::onGameRestart() {
+    
+    reset();
+    updateGage();
+    
     scheduleUpdate();
 }
 
 void TimeBar::onGameOver() {
     
     unscheduleUpdate();
+}
+
+void TimeBar::onGamePause() {
+    
+    pause();
+}
+
+void TimeBar::onGameResume() {
+    
+    resume();
 }
 
 /**

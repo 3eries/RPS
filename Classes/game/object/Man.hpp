@@ -14,7 +14,10 @@
 #include "superbomb.h"
 #include "RSP.h"
 
-class Man : public cocos2d::Node {
+#include "../../base/ViewManager.hpp"
+#include "../GameManager.hpp"
+
+class Man : public cocos2d::Node, public ViewListener, public GameListener {
 public:
     enum class Position {
         LEFT,
@@ -29,10 +32,24 @@ private:
     Man();
     
     bool init() override;
+    void onExit() override;
+    
+    void update(float dt) override;
+    
+    void onViewChanged(ViewType viewType) override;
+    
     void initImage();
     void initFeverGage();
     
     void setManPosition(Position pos);
+    
+// GameListener
+private:
+    void onGameStart() override;
+    void onGameRestart() override;
+    void onGameOver() override;
+    void onGamePause() override;
+    void onGameResume() override;
     
 public:
     void showdown(/*RSPType type*/);
@@ -44,11 +61,11 @@ private:
     
 private:
     SBAnimationSprite *img;
-//    cocos2d::Sprite *gage;
     
     struct FeverGage {
         cocos2d::Node *bg;
         cocos2d::ProgressTimer *gage;
+        // cocos2d::Sprite *gage;
     };
     
     FeverGage feverGage;

@@ -79,7 +79,7 @@ void PausePopup::initCenterMenu() {
     
     MenuType types[] = {
         MenuType::RESUME,
-        MenuType::HOME,
+        MenuType::MAIN,
     };
     
     string titles[] = {

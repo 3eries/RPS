@@ -22,6 +22,7 @@ class GameView;
 class GameListener {
 public:
     virtual void onGameStart() {}       // 게임 시작
+    virtual void onGameRestart() {}     // 게임 재시작
     virtual void onGamePause() {}       // 게임 일시정지
     virtual void onGameResume() {}      // 게임 재게
     virtual void onPreGameOver() {}     // 게임 오버 전, Continue 상태 처리
@@ -43,7 +44,7 @@ private:
 public:
     void init();
     
-    void onEnterGame(GameScene *scene, GameView *view);
+    void onEnterGame(GameView *view);
     void onExitGame();
     
 // getter
@@ -52,7 +53,6 @@ public:
     static cocos2d::Node* getView();
     
 private:
-    GameScene *scene; // 게임 Scene
     GameView *view;   // 게임 View
     
     SB_SYNTHESIZE_BOOL(updateLocked, UpdateLocked);     // update 스케줄러 잠금 여부
@@ -64,6 +64,7 @@ private:
 // GameListener
 public:
     void onGameStart();
+    void onGameRestart();
     void onGamePause();
     void onGameResume();
     void onPreGameOver();

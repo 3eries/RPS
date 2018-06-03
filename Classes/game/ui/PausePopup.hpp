@@ -18,7 +18,7 @@ public:
     enum class MenuType {
         NONE,
         RESUME,
-        HOME,
+        MAIN,
     };
     
 public:
