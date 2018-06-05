@@ -30,6 +30,9 @@ protected:
     virtual bool init(cocos2d::Animation *anim);
     
 public:
+    virtual void setAnimation(cocos2d::Animation *anim, int loops = LOOP_FOREVER);
+    virtual void setDelayPerUnit(float delayPerUnit);
+    
     virtual void setSpriteFrame(size_t i);
     
     virtual void runAnimation(SBCallbackNode onCompletedListener = nullptr);

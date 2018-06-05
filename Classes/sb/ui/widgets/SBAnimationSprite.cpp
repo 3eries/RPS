@@ -55,6 +55,23 @@ bool SBAnimationSprite::init(Animation *anim, int loops) {
         return false;
     }
     
+    setAnimation(anim, loops);
+    
+    return true;
+}
+
+bool SBAnimationSprite::init(Animation *anim) {
+    return init(anim, LOOP_FOREVER);
+}
+
+void SBAnimationSprite::setAnimation(Animation *anim, int loops) {
+    
+    if( this->anim ) {
+        stopAnimation();
+    }
+    
+    CC_SAFE_RELEASE_NULL(this->anim);
+    
     this->anim = anim->clone();
     this->anim->retain();
     
@@ -65,12 +82,13 @@ bool SBAnimationSprite::init(Animation *anim, int loops) {
     } else {
         this->anim->setLoops((unsigned int)loops);
     }
-    
-    return true;
 }
 
-bool SBAnimationSprite::init(Animation *anim) {
-    return init(anim, LOOP_FOREVER);
+void SBAnimationSprite::setDelayPerUnit(float delayPerUnit) {
+    
+    if( anim ) {
+        anim->setDelayPerUnit(delayPerUnit);
+    }
 }
 
 void SBAnimationSprite::setSpriteFrame(size_t i) {
