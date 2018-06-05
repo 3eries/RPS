@@ -8,6 +8,7 @@
 #include "TimeBar.hpp"
 
 #include "RSP.h"
+#include "GameConfiguration.hpp"
 
 #include "../GameDefine.h"
 
@@ -16,8 +17,7 @@ using namespace cocos2d::ui;
 using namespace std;
 
 TimeBar::TimeBar() :
-duration(FIRST_PLAY_DURATION),
-elapsed(0) {
+gameMgr(GameManager::getInstance()) {
 }
 
 TimeBar::~TimeBar() {
@@ -37,10 +37,7 @@ bool TimeBar::init() {
     gage->setBarChangeRate(Vec2(1, 0));
     gage->setAnchorPoint(ANCHOR_M);
     gage->setPosition(Vec2MC(getContentSize(), 0, 0));
-//    gage->setScaleY(1.44f);
     addChild(gage);
-    
-    updateGage();
     
     GameManager::getInstance()->addListener(this);
     
@@ -56,21 +53,18 @@ void TimeBar::onExit() {
 
 void TimeBar::reset() {
     
-    duration = FIRST_PLAY_DURATION;
-    elapsed = 0;
+    timePoint = gameMgr->getConfig()->getTimeInfo().firstPoint;
 }
 
 void TimeBar::onGameStart() {
  
-    scheduleUpdate();
-}
-
-void TimeBar::onGameRestart() {
-    
     reset();
     updateGage();
     
     scheduleUpdate();
+}
+
+void TimeBar::onGameRestart() {
 }
 
 void TimeBar::onGameOver() {
@@ -89,27 +83,43 @@ void TimeBar::onGameResume() {
 }
 
 /**
- * 진행 시간 증가
+ * 타임 포인트 설정
  */
-void TimeBar::increase(float dt) {
+void TimeBar::setTimePoint(int point) {
     
-    CCASSERT(dt > 0, "TimeBar::addDuration error: invalid delta time.");
+    point = MAX(0, point);
+    point = MIN(gameMgr->getConfig()->getTimeInfo().maxPoint, point);
     
-    duration += dt;
+    this->timePoint = point;
+    
+//    CCLOG("timePoint: %d", point);
+}
+
+/**
+ * 타임 포인트 증가
+ */
+void TimeBar::increaseTimePoint(int point) {
+    
+    CCASSERT(point > 0, "TimeBar::increaseTimePoint error: invalid point.");
+    
+    setTimePoint(timePoint + point);
     
     updateGage();
 }
 
 void TimeBar::update(float dt) {
     
-    elapsed += dt;
+    // update time point
+    int decreasePoint = gameMgr->getLevelInfo().decreasePointPerSeconds * dt;
+    int newTimePoint = timePoint - decreasePoint;
     
-    // 시간 초과 체크
-    if( elapsed >= duration ) {
+    setTimePoint(newTimePoint);
+    updateGage();
+    
+    // 타임 포인트 체크
+    if( timePoint == 0 ) {
         GameManager::getInstance()->onGameOver();
     }
-    
-    updateGage();
 }
 
 /**
@@ -117,9 +127,14 @@ void TimeBar::update(float dt) {
  */
 void TimeBar::updateGage() {
     
-    float per = (elapsed / duration) * 100;
-    per = MIN(100, per);
-    per = 100 - per;
+//    float per = (elapsed / duration) * 100;
+//    per = MIN(100, per);
+//    per = 100 - per;
+//
+//    gage->setPercentage(per);
     
+    const int maxPoint = gameMgr->getConfig()->getTimeInfo().maxPoint;
+    
+    float per = ((float)timePoint / maxPoint) * 100;
     gage->setPercentage(per);
 }

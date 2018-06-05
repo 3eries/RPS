@@ -15,12 +15,12 @@
 #include "superbomb.h"
 
 #include "RSP.h"
+#include "GameConfiguration.hpp"
 #include "GameManager.hpp"
-
-#include "../base/ViewManager.hpp"
+#include "ViewManager.hpp"
 
 class RSPBlock;
-class RSPButton;
+class RSPButtonLayer;
 class Man;
 class TimeBar;
 
@@ -48,8 +48,9 @@ private:
     void onEnterTransitionDidFinish() override;
     void onExit() override;
     
+    void initBg();
     void initBlocks();
-    void initButtons();
+    void initRSPButton();
     void initMan();
     void initTimeBar();
     void initLabels();
@@ -62,9 +63,13 @@ private:
     void onGameStart() override;
     void onGameRestart() override;
     void onGameOver() override;
+    void onGameModeChanged(GameMode mode) override;
     
 private:
-    void onClickButton(RSPType type);
+    void updateScore();
+    
+    void onClickNormalButton(RSPType type);
+    void onClickFeverButton(int i);
     
     void hitBlock(RSPBlock *block, RSPType btnType);
     void misBlock(RSPBlock *block);
@@ -76,6 +81,8 @@ private:
     cocos2d::Vec2 getBlockPosition(int i);
     
 private:
+    void showLevelLabel();
+    
     void showPausePopup();
     void removePausePopup();
     
@@ -89,13 +96,15 @@ private:
     GameManager *gameMgr;
     std::vector<cocos2d::Node*> gameNodes;  // 게임 뷰타입의 노드 리스트
     
+    cocos2d::Node *feverModeBg;
+    
     // 블럭
     cocos2d::Node *blockLayer;
     std::vector<RSPBlock*> blocks;
     int blockIndex;
     
-    // 가위바위보 버튼
-    std::vector<RSPButton*> rspButtons;
+    // 가위바위보 버튼 레이어
+    RSPButtonLayer *buttonLayer;
     
     // 캐릭터
     Man *man;
@@ -103,9 +112,11 @@ private:
     // 시간 제한바
     TimeBar *timeBar;
     
-    // 레벨 표시
-    cocos2d::Label *leveLabel;
-    cocos2d::Label *hitCountLabel;
+    // 레벨
+    cocos2d::Label *levelLabel;
+    
+    // 스코어
+    cocos2d::Label *scoreLabel;
     int hitCount;
 };
 

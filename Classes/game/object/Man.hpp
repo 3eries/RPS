@@ -24,6 +24,11 @@ public:
         RIGHT,
     };
     
+    enum class AnimationType {
+        IDLE,
+        ATTACK,
+    };
+    
 public:
     CREATE_FUNC(Man);
     ~Man();
@@ -41,7 +46,15 @@ private:
     void initImage();
     void initFeverGage();
     
+    void setManAnimation(AnimationType animType, bool runAnimation = true);
     void setManPosition(Position pos);
+    
+    void setFeverPoint(float point, bool isUpdateGage = true);
+    void addFeverPoint(float point, bool isUpdateGage = true);
+    void resetFeverPoint(bool isRunAction = true);
+    void updateFeverGage();
+    
+    void runFeverMode();
     
 // GameListener
 private:
@@ -50,22 +63,35 @@ private:
     void onGameOver() override;
     void onGamePause() override;
     void onGameResume() override;
+    void onGameModeChanged(GameMode mode) override;
     
 public:
-    void showdown(/*RSPType type*/);
-    void hit(RSPType type);
+    void showdown(RSPResult result, RSPType myHand, RSPType oppHand);
+    void rockNroll(Position pos);
+    
+    void resultWin(RSPType myHand, RSPType oppHand);
+    void resultLose(RSPType myHand, RSPType oppHand);
+    void resultDraw(RSPType myHand, RSPType oppHand);
     
 private:
-    CC_SYNTHESIZE(RSPType, lastHitType, LastHitType);
+    GameManager *gameMgr;
+    
+    CC_SYNTHESIZE(RSPType, lastWinHand, LastWinHand);
+    double lastShowdownTime; // 단위 : sec
+    
     CC_SYNTHESIZE_READONLY(Position, manPosition, ManPosition);
     
-private:
     SBAnimationSprite *img;
     
     struct FeverGage {
+        float point;
         cocos2d::Node *bg;
-        cocos2d::ProgressTimer *gage;
-        // cocos2d::Sprite *gage;
+//        cocos2d::ProgressTimer *gage;
+        cocos2d::Sprite *gage;
+        
+        FeverGage() {
+            point = 0;
+        }
     };
     
     FeverGage feverGage;

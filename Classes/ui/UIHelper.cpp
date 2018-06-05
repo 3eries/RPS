@@ -19,9 +19,10 @@ const Size ButtonSize::LARGE              = Size(300, 80);
 string UIHelper::getBlockImageFile(RSPType type) {
     
     switch( type ) {
-        case RSPType::ROCK:        return DIR_IMG_GAME + "RSP_block_rock.png";
-        case RSPType::SCISSORS:    return DIR_IMG_GAME + "RSP_block_scissors.png";
-        case RSPType::PAPER:       return DIR_IMG_GAME + "RSP_block_paper.png";
+        case RSPType::ROCK:          return DIR_IMG_GAME + "RSP_block_rock.png";
+        case RSPType::SCISSORS:      return DIR_IMG_GAME + "RSP_block_scissors.png";
+        case RSPType::PAPER:         return DIR_IMG_GAME + "RSP_block_paper.png";
+        case RSPType::ROCK_N_ROLL:   return DIR_IMG_GAME + "RSP_block_fever.png";
         default:
             CCASSERT(false, "UIHelper::getBlockImageFile error: invalid rsp type.");
             break;
@@ -33,9 +34,10 @@ string UIHelper::getBlockImageFile(RSPType type) {
 string UIHelper::getButtonImageFile(RSPType type) {
     
     switch( type ) {
-        case RSPType::ROCK:        return DIR_IMG_GAME + "RSP_btn_rock.png";
-        case RSPType::SCISSORS:    return DIR_IMG_GAME + "RSP_btn_scissors.png";
-        case RSPType::PAPER:       return DIR_IMG_GAME + "RSP_btn_paper.png";
+        case RSPType::ROCK:          return DIR_IMG_GAME + "RSP_btn_rock.png";
+        case RSPType::SCISSORS:      return DIR_IMG_GAME + "RSP_btn_scissors.png";
+        case RSPType::PAPER:         return DIR_IMG_GAME + "RSP_btn_paper.png";
+        case RSPType::ROCK_N_ROLL:   return DIR_IMG_GAME + "RSP_btn_fever.png";
         default:
             CCASSERT(false, "UIHelper::getButtonImageFile error: invalid rsp type.");
             break;

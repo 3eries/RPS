@@ -20,6 +20,7 @@ void ResourceHelper::preload() {
     // sound
     SBAudioEngine::preload(SOUND_BGM_MAIN);
     SBAudioEngine::preload(SOUND_BGM_GAME);
+    SBAudioEngine::preload(SOUND_BGM_FEVER);
     SBAudioEngine::preload(SOUND_PUNCH);
     SBAudioEngine::preload(SOUND_GAME_OVER);
 }

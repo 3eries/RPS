@@ -28,6 +28,7 @@ void GameManager::destroyInstance() {
 }
 
 GameManager::GameManager() :
+config(GameConfiguration::getInstance()),
 view(nullptr) {
 }
 
@@ -42,6 +43,16 @@ GameManager::~GameManager() {
 void GameManager::init() {
 }
 
+void GameManager::reset() {
+    
+    updateLocked = false;
+    gamePaused = false;
+    gameOver = false;
+    gameMode = GameMode::NORMAL;
+    levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
+    score = 0;
+}
+
 /**
  * 게임 진입
  */
@@ -51,10 +62,7 @@ void GameManager::onEnterGame(GameView *view) {
     
     this->view = view;
     
-    updateLocked = false;
-    gamePaused = false;
-    gameOver = false;
-    score = 0;
+    reset();
 }
 
 /**
@@ -69,6 +77,30 @@ void GameManager::onExitGame() {
     listeners.clear();
 }
 
+/**
+ * 스코어 설정
+ */
+void GameManager::setScore(int score) {
+    
+    this->score = score;
+    
+    // 스코어에 해당하는 레벨 설정
+    auto infos = GameConfiguration::getInstance()->getLevelInfos();
+    
+    for( auto info : infos ) {
+        if( this->score >= info.beginRange ) {
+            this->levelInfo = info;
+        }
+    }
+    
+    CCLOG("GameManager::setScore: %d level: %d", this->score, this->levelInfo.level);
+}
+
+void GameManager::addScore(int score) {
+    
+    setScore(this->score + score);
+}
+
 Node* GameManager::getView() {
     return instance->view;
 }
@@ -80,8 +112,10 @@ Node* GameManager::getView() {
  */
 void GameManager::onGameStart() {
     
-    gamePaused = false;
     updateLocked = false;
+    gamePaused = false;
+    
+    onNormalMode();
     
     for( auto listener : listeners ) {
         listener->onGameStart();
@@ -93,13 +127,13 @@ void GameManager::onGameStart() {
  */
 void GameManager::onGameRestart() {
     
-    gamePaused = false;
-    gameOver = false;
-    updateLocked = false;
+    reset();
     
     for( auto listener : listeners ) {
         listener->onGameRestart();
     }
+    
+    onGameStart();
 }
 
 /**
@@ -180,6 +214,35 @@ void GameManager::onGameEnd() {
     for( auto listener : listeners ) {
         listener->onGameEnd();
     }
+}
+
+/**
+ * 게임 모드 전환
+ */
+void GameManager::onGameModeChanged(GameMode mode) {
+    
+    CCLOG("GameManager::onGameModeChanged: %d", (int)mode);
+    this->gameMode = mode;
+    
+    for( auto listener : listeners ) {
+        listener->onGameModeChanged(mode);
+    }
+}
+
+/**
+ * 노말 모드로 전환
+ */
+void GameManager::onNormalMode() {
+    
+    onGameModeChanged(GameMode::NORMAL);
+}
+
+/**
+ * 노말 모드로 전환
+ */
+void GameManager::onFeverMode() {
+    
+    onGameModeChanged(GameMode::FEVER);
 }
 
 void GameManager::addListener(GameListener *listener) {

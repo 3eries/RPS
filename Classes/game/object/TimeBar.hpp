@@ -41,11 +41,12 @@ private:
     void onGameResume() override;
     
 public:
-    void increase(float dt);
+    void setTimePoint(int point);
+    void increaseTimePoint(int point);
     
 private:
-    float duration;
-    float elapsed;
+    GameManager *gameMgr;
+    int timePoint;
     
     cocos2d::ProgressTimer *gage;
 };

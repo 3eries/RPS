@@ -12,15 +12,25 @@
 USING_NS_CC;
 using namespace std;
 
-static const vector<string> FILES({
-    DIR_IMG_GAME + "RSP_avatar_idle.png",
+static const vector<string> ANIM_IDLE_FILES({
+    DIR_IMG_GAME + "RSP_avatar_idle1.png",
+    DIR_IMG_GAME + "RSP_avatar_idle2.png",
+});
+
+static const float ANIM_IDLE_DELAY_PER_UNIT = 0.5f;
+
+static const vector<string> ANIM_ATTACK_FILES({
+    DIR_IMG_GAME + "RSP_avatar_idle1.png",
     DIR_IMG_GAME + "RSP_avatar_attack.png",
 });
 
-static const float DELAY_PER_UNIT = 0.05f;
+static const float ANIM_ATTACK_PER_UNIT = 0.05f;
+
+static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";
+static const string SCHEDULER_FEVER = "SCHEDULER_FEVER";
 
 Man::Man() :
-lastHitType(RSPType::NONE) {
+gameMgr(GameManager::getInstance()) {
 }
 
 Man::~Man() {
@@ -36,11 +46,7 @@ bool Man::init() {
     initFeverGage();
     
     setAnchorPoint(ANCHOR_MB);
-    setPosition(MAN_POS_LEFT);
     setManPosition(Position::LEFT);
-    
-//    int ran = arc4random() % 2;
-//    setPosition((ran == 0) ? MAN_POS_LEFT : MAN_POS_RIGHT);
     
     ViewManager::getInstance()->addListener(this);
     
@@ -75,20 +81,23 @@ void Man::onViewChanged(ViewType viewType) {
 
 void Man::onGameStart() {
     
-    scheduleUpdate();
-}
-
-
-void Man::onGameRestart() {
+    lastWinHand = RSPType::NONE;
+    lastShowdownTime = 0;
     
-    lastHitType = RSPType::NONE;
+    setFeverPoint(0);
+    
+    setManAnimation(AnimationType::IDLE);
     setManPosition(Position::LEFT);
     
     scheduleUpdate();
 }
 
+void Man::onGameRestart() {
+}
+
 void Man::onGameOver() {
     
+    unscheduleAllCallbacks();
     unscheduleUpdate();
 }
 
@@ -102,10 +111,63 @@ void Man::onGameResume() {
     resume();
 }
 
+/**
+ * 게임 모드 전환
+ */
+void Man::onGameModeChanged(GameMode mode) {
+    
+    switch( mode ) {
+        case GameMode::NORMAL: {
+            resetFeverPoint();
+        } break;
+            
+        case GameMode::FEVER: {
+            unschedule(SCHEDULER_FEVER_GAGE_RESET);
+        } break;
+    }
+}
+
 void Man::update(float dt) {
     
 }
 
+/**
+ * 애니메이션 설정
+ */
+void Man::setManAnimation(AnimationType animType, bool runAnimation) {
+    
+    img->stopAnimation();
+    
+    switch( animType ) {
+        case AnimationType::IDLE: {
+            auto anim = SBNodeUtils::createAnimation(ANIM_IDLE_FILES, ANIM_IDLE_DELAY_PER_UNIT);
+            // anim->setRestoreOriginalFrame(true);
+            
+            img->setAnimation(anim);
+            
+        } break;
+            
+        case AnimationType::ATTACK: {
+            auto anim = SBNodeUtils::createAnimation(ANIM_ATTACK_FILES, ANIM_ATTACK_PER_UNIT);
+            anim->setRestoreOriginalFrame(true);
+            
+            img->setAnimation(anim, 1);
+            
+        } break;
+            
+        default:
+            CCASSERT(false, "Man::setManAnimation error: invalid animation.");
+            break;
+    }
+    
+    if( runAnimation ) {
+        img->runAnimation();
+    }
+}
+
+/**
+ * 좌표 설정
+ */
 void Man::setManPosition(Position pos) {
     
     manPosition = pos;
@@ -133,23 +195,126 @@ void Man::setManPosition(Position pos) {
     }
 }
 
-void Man::showdown(/*RSPType type*/) {
+/**
+ * 피버 포인트 설정
+ */
+void Man::setFeverPoint(float point, bool isUpdateGage) {
+ 
+    const int maxPoint = gameMgr->getConfig()->getFeverInfo().maxPoint;
     
-    // 무승부
-    auto blink = Blink::create(DRAW_DELAY, 2);
-    img->runAction(blink);
+    point = MAX(0, point);
+    point = MIN(maxPoint, point);
+    feverGage.point = point;
+    
+    if( isUpdateGage ) {
+        updateFeverGage();
+    }
+    
+    // 피버 모드 발동 체크
+    if( point == maxPoint ) {
+        runFeverMode();
+    }
 }
 
-void Man::hit(RSPType type) {
+void Man::addFeverPoint(float point, bool isUpdateGage) {
+ 
+    setFeverPoint(feverGage.point + point, isUpdateGage);
+}
+
+/**
+ * 피버 포인트 초기화
+ */
+void Man::resetFeverPoint(bool isRunAction) {
     
-    lastHitType = type;
+    setFeverPoint(0, !isRunAction);
+    
+    // 게이지 초기화 연출
+    if( isRunAction ) {
+        auto scale = ScaleTo::create(0.07f, 0, 1);
+        feverGage.gage->runAction(scale);
+    }
+}
+
+/**
+ * 피버 게이지 업데이트
+ */
+void Man::updateFeverGage() {
+    
+    feverGage.gage->stopAllActions();
+    
+    const int maxPoint = gameMgr->getConfig()->getFeverInfo().maxPoint;
+    
+//    float per = ((float)feverGage.point / maxPoint) * 100;
+//    feverGage.gage->setPercentage(per);
+    feverGage.gage->setScaleX((float)feverGage.point / maxPoint);
+}
+
+/**
+ * 피버 모드 발동
+ */
+void Man::runFeverMode() {
+    
+    gameMgr->onFeverMode();
+    
+    scheduleOnce([=](float dt) {
+        // 노멀 모드로 복구
+        this->resetFeverPoint();
+        gameMgr->onNormalMode();
+        
+    }, gameMgr->getConfig()->getFeverInfo().duration, SCHEDULER_FEVER);
+}
+
+/**
+ * 승패 처리
+ */
+void Man::showdown(RSPResult result, RSPType myHand, RSPType oppHand) {
+    
+    CCLOG("Man::showdown: %d", (int)result);
+    
+    switch( result ) {
+        case RSPResult::WIN:    this->resultWin(myHand, oppHand);      break;
+        case RSPResult::LOSE:   this->resultLose(myHand, oppHand);     break;
+        case RSPResult::DRAW:   this->resultDraw(myHand, oppHand);     break;
+        default: break;
+    }
+}
+
+/**
+ * 락앤롤!!!
+ */
+void Man::rockNroll(Position pos) {
     
     SBAudioEngine::play2d(SOUND_PUNCH);
     
-    img->stopAnimation();
-    img->runAnimation();
+    // switch attack animation
+    setManAnimation(AnimationType::ATTACK, false);
     
-    switch( type ) {
+    img->runAnimation([=](Node*) {
+        // restore animation
+        setManAnimation(AnimationType::IDLE);
+    });
+    
+    setManPosition(pos);
+}
+
+/**
+ * 승리!
+ */
+void Man::resultWin(RSPType myHand, RSPType oppHand) {
+    
+    lastWinHand = myHand;
+    
+    SBAudioEngine::play2d(SOUND_PUNCH);
+    
+    // switch attack animation
+    setManAnimation(AnimationType::ATTACK, false);
+    
+    img->runAnimation([=](Node*) {
+        // restore animation
+        setManAnimation(AnimationType::IDLE);
+    });
+    
+    switch( myHand ) {
         case RSPType::ROCK:     setManPosition(Position::LEFT);     break;
         case RSPType::PAPER:    setManPosition(Position::RIGHT);    break;
         case RSPType::SCISSORS: {
@@ -160,6 +325,39 @@ void Man::hit(RSPType type) {
             CCASSERT(false, "Man::hit error: invalid block type.");
             break;
     }
+    
+    // fever point
+//    if( !gameMgr->isFeverMode() ) {
+    auto feverInfo = gameMgr->getConfig()->getFeverInfo();
+    addFeverPoint(feverInfo.points[myHand]);
+    
+    // 피버 게이지 초기화 스케줄러 실행
+    unschedule(SCHEDULER_FEVER_GAGE_RESET);
+    
+    if( gameMgr->getGameMode() == GameMode::NORMAL ) {
+        scheduleOnce([=](float dt) {
+            this->resetFeverPoint();
+        }, feverInfo.gageDuration, SCHEDULER_FEVER_GAGE_RESET);
+    }
+}
+
+/**
+ * 패배
+ */
+void Man::resultLose(RSPType myHand, RSPType oppHand) {
+    
+}
+
+/**
+ * 무승부
+ */
+void Man::resultDraw(RSPType myHand, RSPType oppHand) {
+    
+    auto blink = Blink::create(DRAW_DELAY, 2);
+    img->runAction(blink);
+    
+//if( !gameMgr->isFeverMode() ) {
+    resetFeverPoint();
 }
 
 /**
@@ -167,16 +365,17 @@ void Man::hit(RSPType type) {
  */
 void Man::initImage() {
     
-    auto anim = SBNodeUtils::createAnimation(FILES, DELAY_PER_UNIT);
-    anim->setRestoreOriginalFrame(true);
+    auto anim = SBNodeUtils::createAnimation(ANIM_IDLE_FILES, ANIM_IDLE_DELAY_PER_UNIT);
+//    anim->setRestoreOriginalFrame(true);
     
-    img = SBAnimationSprite::create(anim, 1);
+    img = SBAnimationSprite::create(anim);
     img->setAnchorPoint(ANCHOR_M);
     img->setPosition(Vec2MC(img->getContentSize(), 0, 0));
-    img->setScaleY(0.7f);
     addChild(img);
     
     setContentSize(img->getContentSize());
+    
+    img->runAnimation();
 }
 
 /**
@@ -188,17 +387,25 @@ void Man::initFeverGage() {
     feverGage.bg->setAnchorPoint(ANCHOR_MB);
     feverGage.bg->setPosition(Vec2TC(getContentSize(), -24, 12));
     addChild(feverGage.bg);
+
+    auto bgSize = feverGage.bg->getContentSize();
     
+    feverGage.gage = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_green.png");
+    feverGage.gage->setAnchorPoint(ANCHOR_ML);
+    feverGage.gage->setPosition(Vec2ML(bgSize,
+                                       (bgSize.width-feverGage.gage->getContentSize().width)*0.5f, 0));
+    feverGage.gage->setScaleX(0);
+    feverGage.bg->addChild(feverGage.gage);
+    
+    /*
     auto bar = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_green.png");
-    
+     
     feverGage.gage = ProgressTimer::create(bar);
     feverGage.gage->setType(ProgressTimer::Type::BAR);
     feverGage.gage->setMidpoint(ANCHOR_ML);
     feverGage.gage->setBarChangeRate(Vec2(1, 0));
     feverGage.gage->setAnchorPoint(ANCHOR_M);
     feverGage.gage->setPosition(Vec2MC(feverGage.bg->getContentSize(), 0, 0));
-//    feverGage.gage->setScaleY(1.44f);
     feverGage.bg->addChild(feverGage.gage);
-    
-    feverGage.gage->setPercentage(100);
+    */
 }

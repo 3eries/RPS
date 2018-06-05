@@ -56,10 +56,15 @@ bool RSPBlock::init(RSPType type) {
     return true;
 }
 
+void RSPBlock::changeBlock(RSPType type) {
+    
+    this->type = type;
+    setTexture(UIHelper::getBlockImageFile(type));
+}
+
 void RSPBlock::changeBlock() {
     
-    type = getRandomType();
-    setTexture(UIHelper::getBlockImageFile(type));
+    changeBlock(getRandomType());
 }
 
 bool RSPBlock::isEqualBlock(RSPType type) {

@@ -7,12 +7,14 @@
 
 #include "GameView.hpp"
 
+#include "SceneManager.h"
 #include "User.hpp"
 #include "UIHelper.hpp"
 
 #include "GameDefine.h"
 
 #include "object/RSPBlock.hpp"
+#include "object/RSPButtonLayer.hpp"
 #include "object/RSPButton.hpp"
 #include "object/Man.hpp"
 #include "object/TimeBar.hpp"
@@ -48,8 +50,9 @@ bool GameView::init() {
     setPosition(Vec2::ZERO);
     setContentSize(SB_WIN_SIZE);
     
+    initBg();
     initBlocks();
-    initButtons();
+    initRSPButton();
     initMan();
     initTimeBar();
     initLabels();
@@ -122,6 +125,7 @@ void GameView::onViewChanged(ViewType viewType) {
  */
 void GameView::onGameStart() {
     
+    // bgm
     SBAudioEngine::playBGM(SOUND_BGM_GAME);
     
     // 배너 광고 아래에 위치
@@ -131,6 +135,13 @@ void GameView::onGameStart() {
         auto menuLayer = getChildByTag(Tag::LAYER_MENU);
         menuLayer->getChildByTag(Tag::BTN_PAUSE)->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
     }
+    
+    // 카운트 초기화
+    hitCount = 0;
+    levelLabel->setString("");
+    scoreLabel->setString("0");
+    
+    showLevelLabel();
 }
 
 /**
@@ -138,19 +149,12 @@ void GameView::onGameStart() {
  */
 void GameView::onGameRestart() {
     
-    // 블럭 초기화
+    // 블럭 리셋
     blockLayer->removeFromParent();
     blocks.clear();
     blockIndex = 0;
     
     initBlocks();
-    
-    // 카운트 초기화
-    hitCount = 0;
-    hitCountLabel->setString("");
-    
-    // bgm
-    SBAudioEngine::playBGM(SOUND_BGM_GAME);
 }
 
 /**
@@ -162,14 +166,58 @@ void GameView::onGameOver() {
 }
 
 /**
+ * 게임 모드 전환
+ */
+void GameView::onGameModeChanged(GameMode mode) {
+    
+//    feverModeBg->setVisible(mode == GameMode::FEVER);
+    
+    switch( mode ) {
+        case GameMode::NORMAL: {
+            SBAudioEngine::playBGM(SOUND_BGM_GAME);
+        } break;
+            
+        case GameMode::FEVER: {
+            SBAudioEngine::playBGM(SOUND_BGM_FEVER);
+            
+            // 블럭 변환
+            for( auto block : blocks ) {
+                block->changeBlock(RSPType::ROCK_N_ROLL);
+            }
+            
+        } break;
+    }
+}
+
+/**
+ * 스코어 업데이트
+ */
+void GameView::updateScore() {
+    
+    auto saveLevelInfo = gameMgr->getLevelInfo();
+    
+    gameMgr->setScore(hitCount);
+    scoreLabel->setString(TO_STRING(gameMgr->getScore()));
+    
+    // 레벨 변경된 경우, 레벨 텍스트 연출
+    bool isLevelChanged = (saveLevelInfo.level != gameMgr->getLevelInfo().level);
+    
+    if( isLevelChanged ) {
+        showLevelLabel();
+    }
+}
+
+/**
  * RSP 버튼 클릭
  */
-void GameView::onClickButton(RSPType type) {
+void GameView::onClickNormalButton(RSPType type) {
     
-    CCASSERT(blockIndex < blocks.size(), "GameView::onClickButton error: out of block index.");
+    CCASSERT(blockIndex < blocks.size(), "GameView::onClickNormalButton error: out of block index.");
     
     auto block = blocks.at(blockIndex);
     auto result = getResult(type, block->getType());
+    
+    man->showdown(result, type, block->getType());
     
     switch( result ) {
         case RSPResult::WIN:    this->hitBlock(block, type);      break;
@@ -180,29 +228,56 @@ void GameView::onClickButton(RSPType type) {
 }
 
 /**
+ * 피버 버튼 클릭
+ */
+void GameView::onClickFeverButton(int i) {
+    
+    CCASSERT(blockIndex < blocks.size(), "GameView::onClickFeverButton error: out of block index.");
+    
+    auto block = blocks.at(blockIndex);
+    man->rockNroll((i == 0) ? Man::Position::LEFT : Man::Position::RIGHT);
+    
+    hitBlock(block, RSPType::ROCK_N_ROLL);
+}
+
+/**
  *  블럭 히트다 히트~!
  */
 void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     
+    // hit 카운트 증가
+    ++hitCount;
+    updateScore();
+    
+    // 시간 증가
+    timeBar->increaseTimePoint(gameMgr->getConfig()->getTimeInfo().increasePointPerHit);
+    
     // 히트된 블럭 연출
-    man->hit(btnType);
     runHitBlockEffect(hitBlock);
     
     // 전달된 블럭 색상 변경하여 재활용
-    hitBlock->changeBlock();
+    CCLOG("GameView::hitBlock gameMode: %d", (int)gameMgr->getGameMode());
     
-    // hit 카운트 증가
-    ++hitCount;
-    hitCountLabel->setString(TO_STRING(hitCount));
-    
-    // 시간 증가
-    timeBar->increase(INCREASE_TIME_PER_HIT);
+    if( gameMgr->getGameMode() == GameMode::FEVER ) {
+        hitBlock->changeBlock(RSPType::ROCK_N_ROLL);
+    } else {
+        hitBlock->changeBlock();
+    }
     
     // 블럭 인덱스 증가
     ++blockIndex;
     
     if( blockIndex == blocks.size() ) {
         blockIndex = 0;
+    }
+    
+    // 다음 블럭 타입에 따라 하단 버튼 모드를 변경
+    auto nextBlock = blocks.at(blockIndex);
+    
+    if( nextBlock->getType() == RSPType::ROCK_N_ROLL ) {
+        buttonLayer->switchButton(GameMode::FEVER);
+    } else {
+        buttonLayer->switchButton(GameMode::NORMAL);
     }
     
     // 정렬된 블럭 리스트 생성
@@ -243,21 +318,12 @@ void GameView::misBlock(RSPBlock *block) {
  * 비겼당
  */
 void GameView::drawBlock(RSPBlock *block) {
-
-    man->showdown();
-//    man->draw();
-    
-    auto setButtonTouchEnabled = [=](bool enabled) {
-        for( auto btn : rspButtons ) {
-            btn->setTouchEnabled(enabled);
-        }
-    };
     
     // 버튼 터치 지연
-    setButtonTouchEnabled(false);
+    buttonLayer->setButtonTouchEnabled(false);
     
     scheduleOnce([=](float dt) {
-        setButtonTouchEnabled(true);
+        buttonLayer->setButtonTouchEnabled(true);
     }, DRAW_DELAY, SCHEDULER_DRAW_DELAY);
 }
 
@@ -329,6 +395,32 @@ Vec2 GameView::getBlockPosition(int i) {
 }
 
 /**
+ * Level 라벨 노출
+ */
+void GameView::showLevelLabel() {
+    
+    levelLabel->setVisible(true);
+    
+    levelLabel->stopAllActions();
+    levelLabel->setString(STR_FORMAT("LEVEL %d", gameMgr->getLevelInfo().level));
+    
+    const Vec2 topPos    = Vec2TC(0, levelLabel->getContentSize().height);
+    const Vec2 originPos = Vec2MC(0, 415);
+    levelLabel->setPosition(topPos);
+    
+    // move
+    auto move1 = MoveTo::create(0.2f, originPos);
+    auto move2 = MoveTo::create(0.2f, topPos);
+    auto delay = DelayTime::create(1.0f);
+    levelLabel->runAction(Sequence::create(move1, delay, move2, nullptr));
+    
+    // n초 후 hide
+//    auto delay = DelayTime::create(1.0f);
+//    auto hide = Hide::create();
+//    levelLabel->runAction(Sequence::create(delay, hide, nullptr));
+}
+
+/**
  * 일시정지 팝업 노출
  */
 void GameView::showPausePopup() {
@@ -362,7 +454,7 @@ void GameView::showPausePopup() {
                 break;
         }
     });
-    addChild(popup, SBZOrder::TOP);
+    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
 }
 
 /**
@@ -401,7 +493,7 @@ void GameView::showGameOver() {
                 break;
         }
     });
-    addChild(popup, SBZOrder::TOP);
+    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
     
     // 게임 오버 배경음 재생
     /*
@@ -450,6 +542,16 @@ void GameView::onClick(Node *sender) {
 }
 
 /**
+ * 배경 초기화
+ */
+void GameView::initBg() {
+    
+    feverModeBg = LayerColor::create(Color4B(255,0,0,255*0.2f));
+    feverModeBg->setVisible(false);
+    addChild(feverModeBg, -1);
+}
+
+/**
  * RSP 블럭 초기화
  */
 void GameView::initBlocks() {
@@ -458,7 +560,7 @@ void GameView::initBlocks() {
     blockLayer->setAnchorPoint(ANCHOR_MB);
     blockLayer->setPosition(Vec2BC(0, BLOCK_ORIGIN_POS_Y));
     blockLayer->setContentSize(Size(SB_WIN_SIZE.width, BLOCK_DISPLAY_HEIGHT));
-    addChild(blockLayer);
+    addChild(blockLayer, -1);
     
     // 영역 테스트
     {
@@ -479,36 +581,20 @@ void GameView::initBlocks() {
 /**
  * RSP 버튼 초기화
  */
-void GameView::initButtons() {
+void GameView::initRSPButton() {
     
-    const float POS_Y = 5;
+    buttonLayer = RSPButtonLayer::create();
+    addChild(buttonLayer);
     
-    RSPType types[] = {
-        RSPType::SCISSORS,
-        RSPType::ROCK,
-        RSPType::PAPER,
-    };
+    gameNodes.push_back(buttonLayer);
     
-    SBUIInfo uiInfos[] = {
-        SBUIInfo(ANCHOR_BL, Vec2BL(20,   POS_Y),    ""),
-        SBUIInfo(ANCHOR_MB, Vec2BC(0,    POS_Y),    ""),
-        SBUIInfo(ANCHOR_BR, Vec2BR(-20,  POS_Y),    ""),
-    };
+    buttonLayer->setOnNormalButtonClickListener([=](RSPType type) {
+        this->onClickNormalButton(type);
+    });
     
-    for( int i = 0; i < sizeof(types) / sizeof(RSPType); ++i ) {
-        auto type = types[i];
-        
-        auto btn = RSPButton::create(type);
-        uiInfos[i].apply(btn);
-        addChild(btn);
-        
-        rspButtons.push_back(btn);
-        gameNodes.push_back(btn);
-        
-        btn->setOnClickListener([=](Node*) {
-            this->onClickButton(type);
-        });
-    }
+    buttonLayer->setOnFeverButtonClickListener([=](int i) {
+        this->onClickFeverButton(i);
+    });
 }
 
 /**
@@ -543,23 +629,24 @@ void GameView::initTimeBar() {
  */
 void GameView::initLabels() {
     
-    /*
-    leveLabel = Label::createWithTTF("LEVEL 1", FONT_RETRO, 80);
-    leveLabel->setAnchorPoint(ANCHOR_M);
-    leveLabel->setPosition(Vec2MC(0, 500));
-    leveLabel->setColor(Color3B(244, 206, 66));
-    leveLabel->enableOutline(Color4B(244, 178, 65, 255), 8);
-    addChild(leveLabel);
-    */
+    levelLabel = Label::createWithTTF("", FONT_RETRO, 75);
+    levelLabel->setVisible(false);
+    levelLabel->setAnchorPoint(ANCHOR_M);
+    levelLabel->setPosition(Vec2MC(0, 415));
+    levelLabel->setColor(Color3B(250, 178, 11));
+    levelLabel->enableOutline(Color4B(78, 22, 0, 255), 7);
+    addChild(levelLabel);
     
-    hitCountLabel = Label::createWithTTF("", FONT_RETRO, 75);
-    hitCountLabel->setAnchorPoint(ANCHOR_M);
-    hitCountLabel->setPosition(Vec2MC(0, 260));
-    hitCountLabel->setColor(Color3B::WHITE);
-    hitCountLabel->enableOutline(Color4B::BLACK, 7);
-    addChild(hitCountLabel);
+    gameNodes.push_back(levelLabel);
     
-    gameNodes.push_back(hitCountLabel);
+    scoreLabel = Label::createWithTTF("0", FONT_RETRO, 75);
+    scoreLabel->setAnchorPoint(ANCHOR_M);
+    scoreLabel->setPosition(Vec2MC(0, 300));
+    scoreLabel->setColor(Color3B::WHITE);
+    scoreLabel->enableOutline(Color4B::BLACK, 7);
+    addChild(scoreLabel);
+    
+    gameNodes.push_back(scoreLabel);
 }
 
 /**

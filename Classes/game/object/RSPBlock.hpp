@@ -30,7 +30,9 @@ private:
     bool init(RSPType type);
     
 public:
+    void changeBlock(RSPType type);
     void changeBlock();
+    
     bool isEqualBlock(RSPType type);
     
     RSPBlock* clone();

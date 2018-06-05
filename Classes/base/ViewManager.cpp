@@ -7,7 +7,7 @@
 
 #include "ViewManager.hpp"
 
-#include "MainScene.hpp"
+#include "../main/MainScene.hpp"
 
 #include "../main/MainView.hpp"
 #include "../game/GameView.hpp"

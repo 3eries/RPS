@@ -30,6 +30,7 @@ static const std::string DIR_SOUND                  = "sounds/";
 
 static const std::string SOUND_BGM_MAIN             = DIR_SOUND + "bgm_main.mp3";
 static const std::string SOUND_BGM_GAME             = DIR_SOUND + "bgm_game.mp3";
+static const std::string SOUND_BGM_FEVER            = DIR_SOUND + "bgm_fever.mp3";
 static const std::string SOUND_PUNCH                = DIR_SOUND + "punch.wav";
 static const std::string SOUND_GAME_OVER            = DIR_SOUND + "game_over.mp3";
 
@@ -43,6 +44,7 @@ enum class RSPType {
     ROCK,
     SCISSORS,
     PAPER,
+    ROCK_N_ROLL,
 };
 
 enum class RSPResult {
@@ -60,12 +62,19 @@ static RSPResult getResult(RSPType myHand, RSPType oppHand) {
         return RSPResult::DRAW;
     }
     
+    if( myHand == RSPType::ROCK_N_ROLL ||
+        oppHand == RSPType::ROCK_N_ROLL ) {
+        // 락앤롤
+        return RSPResult::WIN;
+    }
+    
     bool isWin = false;
     
     switch( oppHand ) {
-        case RSPType::ROCK:      isWin = (myHand == RSPType::PAPER);      break;
-        case RSPType::SCISSORS:  isWin = (myHand == RSPType::ROCK);       break;
-        case RSPType::PAPER:     isWin = (myHand == RSPType::SCISSORS);   break;
+        case RSPType::ROCK:            isWin = (myHand == RSPType::PAPER);      break;
+        case RSPType::SCISSORS:        isWin = (myHand == RSPType::ROCK);       break;
+        case RSPType::PAPER:           isWin = (myHand == RSPType::SCISSORS);   break;
+        case RSPType::ROCK_N_ROLL:     isWin = true;                            break;
         default: break;
     }
     

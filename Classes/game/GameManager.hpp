@@ -13,9 +13,15 @@
 #include "superbomb.h"
 
 #include "RSP.h"
+#include "GameConfiguration.hpp"
 
 class GameScene;
 class GameView;
+
+enum class GameMode {
+    NORMAL,
+    FEVER, // rock n roll
+};
 
 #pragma mark- GameListener
 
@@ -28,6 +34,8 @@ public:
     virtual void onPreGameOver() {}     // 게임 오버 전, Continue 상태 처리
     virtual void onGameOver() {}        // 게임 오버
     virtual void onGameEnd() {}         // 게임 종료, 모든 스테이지 완료
+    
+    virtual void onGameModeChanged(GameMode mode) {}   // 게임 모드 전환
 };
 
 #pragma mark- GameManager
@@ -47,19 +55,28 @@ public:
     void onEnterGame(GameView *view);
     void onExitGame();
     
+    void setScore(int score);
+    void addScore(int score);
+    
+private:
+    void reset();
+    
 // getter
 public:
     static cocos2d::Node* getScene();
     static cocos2d::Node* getView();
     
 private:
+    CC_SYNTHESIZE_READONLY(GameConfiguration*, config, Config);
     GameView *view;   // 게임 View
     
-    SB_SYNTHESIZE_BOOL(updateLocked, UpdateLocked);     // update 스케줄러 잠금 여부
-    SB_SYNTHESIZE_BOOL(gamePaused, GamePaused);         // 게임 일시정지 여부
-    SB_SYNTHESIZE_BOOL(gameOver, GameOver);             // 게임 오버 여부
+    SB_SYNTHESIZE_BOOL(updateLocked, UpdateLocked);          // update 스케줄러 잠금 여부
+    SB_SYNTHESIZE_BOOL(gamePaused, GamePaused);              // 게임 일시정지 여부
+    SB_SYNTHESIZE_BOOL(gameOver, GameOver);                  // 게임 오버 여부
+    CC_SYNTHESIZE_READONLY(GameMode, gameMode, GameMode);    // 게임 모드
     
-    CC_SYNTHESIZE(size_t, score, Score);                // 현재 스코어
+    CC_SYNTHESIZE(LevelInfo, levelInfo, LevelInfo);          // 현재 레벨 정보
+    CC_SYNTHESIZE_READONLY(int, score, Score);               // 현재 스코어
     
 // GameListener
 public:
@@ -70,6 +87,10 @@ public:
     void onPreGameOver();
     void onGameOver();
     void onGameEnd();
+    
+    void onGameModeChanged(GameMode mode);
+    void onNormalMode();
+    void onFeverMode();
     
     void addListener(GameListener *listener);
     void removeListener(GameListener *listener);
