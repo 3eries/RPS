@@ -37,6 +37,7 @@ USING_NS_CC;
 using std::min;
 using std::max;
 using std::vector;
+using std::string;
 
 namespace spine {
 
@@ -114,6 +115,8 @@ void SkeletonAnimation::initialize () {
 	_state = spAnimationState_create(spAnimationStateData_create(_skeleton->data));
 	_state->rendererObject = this;
 	_state->listener = animationCallback;
+
+	_spAnimationState* stateInternal = (_spAnimationState*)_state;
 }
 
 SkeletonAnimation::SkeletonAnimation ()
@@ -126,12 +129,16 @@ SkeletonAnimation::~SkeletonAnimation () {
 }
 
 void SkeletonAnimation::update (float deltaTime) {
+    retain();
+    
 	super::update(deltaTime);
 
 	deltaTime *= _timeScale;
 	spAnimationState_update(_state, deltaTime);
 	spAnimationState_apply(_state, _skeleton);
 	spSkeleton_updateWorldTransform(_skeleton);
+    
+    release();
 }
 
 void SkeletonAnimation::setAnimationStateData (spAnimationStateData* stateData) {
@@ -168,6 +175,18 @@ spTrackEntry* SkeletonAnimation::addAnimation (int trackIndex, const std::string
 	return spAnimationState_addAnimation(_state, trackIndex, animation, loop, delay);
 }
 	
+spTrackEntry* SkeletonAnimation::setEmptyAnimation (int trackIndex, float mixDuration) {
+	return spAnimationState_setEmptyAnimation(_state, trackIndex, mixDuration);
+}
+
+void SkeletonAnimation::setEmptyAnimations (float mixDuration) {
+	spAnimationState_setEmptyAnimations(_state, mixDuration);
+}
+
+spTrackEntry* SkeletonAnimation::addEmptyAnimation (int trackIndex, float mixDuration, float delay) {
+	return spAnimationState_addEmptyAnimation(_state, trackIndex, mixDuration, delay);
+}
+
 spAnimation* SkeletonAnimation::findAnimation(const std::string& name) const {
 	return spSkeletonData_findAnimation(_skeleton->data, name.c_str());
 }
@@ -184,6 +203,182 @@ void SkeletonAnimation::clearTrack (int trackIndex) {
 	spAnimationState_clearTrack(_state, trackIndex);
 }
 
+/**
+ *  애니메이션 duration을 반환한다.
+ */
+float SkeletonAnimation::getAnimationDuration(const string &name) {
+    
+    spAnimation* animation = spSkeletonData_findAnimation(_skeleton->data, name.c_str());
+    
+    if( !animation ) {
+        CCLOG("SkeletonAnimation::getAnimationDuration error: animation not found.");
+        return 0;
+    }
+    
+    return animation->duration;
+}
+
+void SkeletonAnimation::setNewAttachment(spSlot *slot,
+                                         const string &attachmentImage,
+                                         float x, float y, float rotation) {
+    
+    int slotIndex = spSkeleton_findSlotIndex(_skeleton, slot->data->name);
+    
+    if( attachmentImage == "" ) {
+        // 슬롯에 아무것도 장착하지 않는다.
+        replaceAttachmentTimeline(attachmentImage, slotIndex);
+        spSlot_setAttachment(slot, 0);
+        
+        return;
+    }
+    
+    spAttachment *attachment = getAttachment(slot->data->name, attachmentImage.c_str());
+    if( attachment ) {
+        // 이미 만들어진 attachment가 있는 경우 새로 생성하지 않고 변경
+        replaceAttachmentTimeline(attachmentImage, slotIndex);
+        spSlot_setAttachment(slot, attachment);
+        
+        return;
+    }
+    
+    // Step 1. Atals 생성
+    spAtlas *atlas = spAtlas_createFromImageFile(attachmentImage.c_str());
+    
+    // Step 2. attachment 생성
+    //    spAttachmentLoader* attachmentLoader = (spAttachmentLoader *)spAtlasAttachmentLoader_create(atlas);
+    spAttachmentLoader* attachmentLoader = SUPER(Cocos2dAttachmentLoader_create(atlas));
+    
+    attachment = spAttachmentLoader_createAttachment(attachmentLoader, 0,
+                                                     spAttachmentType::SP_ATTACHMENT_REGION,
+                                                     attachmentImage.c_str(),
+                                                     attachmentImage.c_str());
+    // Step 3. attachment 속성 초기화
+    spRegionAttachment* region = (spRegionAttachment*)attachment;
+    region->x = x;
+    region->y = y;
+    region->rotation = rotation;
+    region->scaleX = 1;
+    region->scaleY = 1;
+    region->width = region->regionWidth;
+    region->height = region->regionHeight;
+    spRegionAttachment_updateOffset(region);
+    
+    spAttachmentLoader_configureAttachment(attachmentLoader, attachment);
+    
+    // Step 4. 생성된 attachment를 스킨에 등록
+    // 스킨에 등록하고 재사용 할 경우 해당 atlas의 메모리 해제 시점이 불분명하여 주석처리
+    spSkin *skin = nullptr;
+    
+    if( _skeleton->skin ) {
+        skin = _skeleton->skin;
+    } else if( _skeleton->data->defaultSkin ) {
+        skin = _skeleton->data->defaultSkin;
+    }
+    
+    CCAssert(skin, "SkeletonAnimation setNewAttachment : skin in null.");
+    
+    // Step 5. slot의 모든 타임라인에 attachment 변경
+    spSkin_addAttachment(skin, slotIndex, attachmentImage.c_str(), attachment);
+    spSlot_setAttachment(slot, attachment);
+    
+    replaceAttachmentTimeline(attachmentImage, slotIndex);
+}
+
+void SkeletonAnimation::setNewAttachment(spSlot *slot, const string &attachmentImage) {
+    
+    spRegionAttachment *region = (spRegionAttachment *)slot->attachment;
+    
+    if( region ) {
+        setNewAttachment(slot, attachmentImage,
+                         region->x, region->y, region->rotation);
+    } else {
+        setNewAttachment(slot, attachmentImage, 0, 0, 0);
+    }
+}
+
+void SkeletonAnimation::setNewAttachment(const string &slotName, const string &attachmentImage) {
+    
+    setNewAttachment(findSlot(slotName.c_str()), attachmentImage);
+}
+
+void SkeletonAnimation::setNewAttachment(const string &slotName, const string &attachmentImage,
+                                         float x, float y, float rotation) {
+    
+    setNewAttachment(findSlot(slotName.c_str()), attachmentImage, x, y, rotation);
+}
+
+/**
+ *  AttachmentTimeline의 attachment를 변경
+ */
+void SkeletonAnimation::replaceAttachmentTimeline(const string &attachmentName, int slotIndex,
+                                                  string animationName) {
+    
+    auto timelines = getTimelines(animationName,
+                                  spTimelineType::SP_TIMELINE_ATTACHMENT,
+                                  slotIndex);
+    
+    for( auto timeline : timelines ) {
+        auto aTimeline = (spAttachmentTimeline *)timeline;
+        
+        for( int i = 0; i < aTimeline->framesCount; ++i ) {
+            FREE(aTimeline->attachmentNames[i]);
+            MALLOC_STR(aTimeline->attachmentNames[i], attachmentName.c_str());
+        }
+    }
+}
+
+vector<spTimeline*> SkeletonAnimation::getTimelines(const string &animationName,
+                                                    spTimelineType type,
+                                                    int slotIndex) {
+    
+    vector<spTimeline *> timelines;
+    spSkeletonData *data = _skeleton->data;
+    
+    for( int i = 0; i < data->animationsCount; ++i ) {
+        spAnimation *animation = data->animations[i];
+        
+        // 애니메이션명 검사
+        if( animationName != "" && animationName != animation->name ) {
+            continue;
+        }
+        
+        for( int j = 0; j < animation->timelinesCount; ++j ) {
+            spTimeline *timeline = animation->timelines[j];
+            
+            // 타입 검사
+            if( timeline->type != type ) {
+                continue;
+            }
+            
+            switch( type ) {
+                case spTimelineType::SP_TIMELINE_COLOR: {
+                    auto colorTimeline = (spColorTimeline *)timeline;
+                    
+                    if( colorTimeline->slotIndex == slotIndex ) {
+                        timelines.push_back(timeline);
+                    }
+                    
+                } break;
+                    
+                case spTimelineType::SP_TIMELINE_ATTACHMENT: {
+                    auto aTimeline = (spAttachmentTimeline *)timeline;
+                    
+                    if( aTimeline->slotIndex == slotIndex ) {
+                        timelines.push_back(timeline);
+                    }
+                    
+                } break;
+                    
+                default: {
+                    timelines.push_back(timeline);
+                } break;
+            }
+        }
+    }
+    
+    return timelines;
+}
+    
 void SkeletonAnimation::onAnimationStateEvent (spTrackEntry* entry, spEventType type, spEvent* event) {
 	switch (type) {
 	case SP_ANIMATION_START:

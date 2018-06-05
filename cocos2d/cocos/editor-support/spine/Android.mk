@@ -7,45 +7,15 @@ LOCAL_MODULE_FILENAME := libspine
 
 LOCAL_ARM_MODE := arm
 
+CLASSES_DIRECTORY := $(LOCAL_PATH)
+# Get a list of source files
+SOURCE_FILES := $(shell find $(CLASSES_DIRECTORY) -name *.cpp)
+SOURCE_FILES += $(shell find $(CLASSES_DIRECTORY) -name *.c)
+SOURCE_FILES := $(sort $(SOURCE_FILES))
+SOURCE_FILES := $(subst $(LOCAL_PATH)/,,$(SOURCE_FILES))
+
 LOCAL_SRC_FILES := \
-Animation.c \
-AnimationState.c \
-AnimationStateData.c \
-Atlas.c \
-AtlasAttachmentLoader.c \
-Attachment.c \
-AttachmentLoader.c \
-AttachmentVertices.cpp \
-Bone.c \
-BoneData.c \
-BoundingBoxAttachment.c \
-Cocos2dAttachmentLoader.cpp \
-Event.c \
-EventData.c \
-IkConstraint.c \
-IkConstraintData.c \
-Json.c \
-MeshAttachment.c \
-PathAttachment.c \
-PathConstraint.c \
-PathConstraintData.c \
-RegionAttachment.c \
-Skeleton.c \
-SkeletonAnimation.cpp \
-SkeletonBatch.cpp \
-SkeletonBinary.c \
-SkeletonBounds.c \
-SkeletonData.c \
-SkeletonJson.c \
-SkeletonRenderer.cpp \
-Skin.c \
-Slot.c \
-SlotData.c \
-TransformConstraint.c \
-TransformConstraintData.c \
-VertexAttachment.c \
-extension.c \
-spine-cocos2dx.cpp
+$(SOURCE_FILES)
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH)/..
 

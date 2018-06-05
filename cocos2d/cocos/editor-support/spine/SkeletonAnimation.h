@@ -73,11 +73,33 @@ public:
 
 	spTrackEntry* setAnimation (int trackIndex, const std::string& name, bool loop);
 	spTrackEntry* addAnimation (int trackIndex, const std::string& name, bool loop, float delay = 0);
+	spTrackEntry* setEmptyAnimation (int trackIndex, float mixDuration);
+	void setEmptyAnimations (float mixDuration);
+	spTrackEntry* addEmptyAnimation (int trackIndex, float mixDuration, float delay = 0);
 	spAnimation* findAnimation(const std::string& name) const;
 	spTrackEntry* getCurrent (int trackIndex = 0);
 	void clearTracks ();
 	void clearTrack (int trackIndex = 0);
 
+    float getAnimationDuration(const std::string &name);
+    
+    virtual void setNewAttachment(spSlot *slot,
+                                  const std::string &attachmentImage,
+                                  float x, float y, float rotation);
+    virtual void setNewAttachment(spSlot *slot, const std::string &attachmentImage);
+    virtual void setNewAttachment(const std::string &slotName,
+                                  const std::string &attachmentImage);
+    virtual void setNewAttachment(const std::string &slotName,
+                                  const std::string &attachmentImage,
+                                  float x, float y, float rotation);
+    
+    virtual void replaceAttachmentTimeline(const std::string &attachmentName,
+                                           int slotIndex,
+                                           std::string animationName = "");
+    
+    std::vector<spTimeline*> getTimelines(const std::string &animationName,
+                                          spTimelineType type, int slotIndex = 0);
+    
 	void setStartListener (const StartListener& listener);
     void setInterruptListener (const InterruptListener& listener);
 	void setEndListener (const EndListener& listener);
