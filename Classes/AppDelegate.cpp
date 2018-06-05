@@ -2,7 +2,8 @@
 
 #include "superbomb.h"
 
-#include "base/SceneManager.h"
+#include "GameConfiguration.hpp"
+#include "SceneManager.h"
 
 USING_NS_CC;
 
@@ -14,6 +15,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    GameConfiguration::destroyInstance();
     SBDirector::end();
 }
 
@@ -58,6 +60,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     // 초기화
     SBDirector::init();
+    GameConfiguration::getInstance()->init();
 
     // run
     SceneManager::getInstance()->replaceScene(SceneType::SPLASH);

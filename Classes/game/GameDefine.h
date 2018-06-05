@@ -13,11 +13,7 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-static const float          FIRST_PLAY_DURATION          = 10;          // 최초 게임 진행 시간
-static const float          INCREASE_TIME_PER_HIT        = 2.0f;        // 히트 당 증가 시간
 static const float          DRAW_DELAY                   = 0.5f;        // 비긴 경우의 터치 지연 시간
-
-static const float          COMBO_INTERVAL               = 0.8f;        // 콤보 간격 시간
 
 static const int            BANNER_HEIGHT                = 100;
 
