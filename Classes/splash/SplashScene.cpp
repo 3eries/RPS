@@ -6,12 +6,15 @@
 
 #include "SplashScene.hpp"
 
+#include <spine/spine-cocos2dx.h>
+
 #include "RSP.h"
 #include "ResourceHelper.hpp"
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 
 USING_NS_CC;
+using namespace spine;
 using namespace std;
 
 static const float  CHECK_REPLACE_MAIN_SCENE_INTERVAL   = 1.0f;
@@ -89,10 +92,20 @@ void SplashScene::initLaunchImage() {
     addChild(LayerColor::create(Color4B::BLACK));
     
     // first launch image
-    auto img = Sprite::create(DIR_IMG_SPLASH + "logo_3.jpg");
-    img->setAnchorPoint(ANCHOR_M);
-    img->setPosition(Vec2MC(0,0));
-    addChild(img);
+//    auto img = Sprite::create(DIR_IMG_SPLASH + "logo_3.jpg");
+//    img->setAnchorPoint(ANCHOR_M);
+//    img->setPosition(Vec2MC(0,0));
+//    addChild(img);
+
+    // 애니메이션
+    string jsonFile  = DIR_ANIM + "3eries_logo.json";
+    string atlasFile = SBStringUtils::replaceAll(jsonFile, ".json", ".atlas");
+    
+    auto anim = SkeletonAnimation::createWithJsonFile(jsonFile, atlasFile);
+    anim->setAnchorPoint(Vec2::ZERO);
+    anim->setPosition(Vec2(SB_WIN_SIZE*0.5f));
+    anim->setAnimation(0, "run", false);
+    addChild(anim);
     
     /*
     auto titleLabel = Label::createWithTTF("3eries", FONT_RETRO, 50);

@@ -18,6 +18,8 @@ static const std::string DIR_IMG_SPLASH             = DIR_ADD(DIR_IMG, "splash")
 static const std::string DIR_IMG_GAME               = DIR_ADD(DIR_IMG, "game");
 static const std::string DIR_IMG_MAIN               = DIR_ADD(DIR_IMG, "main");
 
+static const std::string DIR_ANIM                   = "anims/";
+
 // 폰트 경로
 static const std::string DIR_FONT                   = "fonts/";
 
