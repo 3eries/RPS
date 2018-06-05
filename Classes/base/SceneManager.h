@@ -37,9 +37,13 @@ public:
   
     bool onBackKeyReleased();
     
+// getter
+public:
+    static cocos2d::Scene* getScene();
+    
 private:
     CC_SYNTHESIZE_READONLY(SceneType, currentSceneType, SceneType);
-    CC_SYNTHESIZE_READONLY(cocos2d::Scene*, currentScene, Scene);
+    cocos2d::Scene *currentScene;
     
     bool isRunningReplaceScene;
 };

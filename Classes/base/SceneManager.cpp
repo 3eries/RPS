@@ -128,3 +128,7 @@ bool SceneManager::onBackKeyReleased() {
     
     return false;
 }
+
+Scene* SceneManager::getScene() {
+    return instance->currentScene;
+}
