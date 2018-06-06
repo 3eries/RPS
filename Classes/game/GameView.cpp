@@ -388,10 +388,20 @@ void GameView::alignBlock(int i, RSPBlock *block) {
 }
 
 Vec2 GameView::getBlockPosition(int i) {
-    float y = (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f);
-    y += (BLOCK_PADDING_Y*i); // padding
     
-    return Vec2BC(blockLayer->getContentSize(), 0, y);
+    // x, 랜덤
+    float x = 0;
+    
+    int ran = arc4random() % 3;
+    if( ran != 0 ) {
+        x = BLOCK_RANDOM_X * (ran == 1 ? 1 : -1);
+    }
+    
+    // y, 블럭 높이 기준
+    float y = (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f);
+    y += (BLOCK_PADDING_Y*i); // padding    
+    
+    return Vec2BC(blockLayer->getContentSize(), x, y);
 }
 
 /**
