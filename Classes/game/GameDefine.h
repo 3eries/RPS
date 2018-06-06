@@ -13,8 +13,6 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-static const float          DRAW_DELAY                   = 0.5f;        // 비긴 경우의 터치 지연 시간
-
 static const int            BANNER_HEIGHT                = 100;
 
 static const size_t         BLOCK_COUNT                  = 11;

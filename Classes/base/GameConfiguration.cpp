@@ -50,6 +50,7 @@ void GameConfiguration::init() {
         timeInfo.maxPoint = timeObj["max_point"].GetInt();
         timeInfo.firstPoint = timeObj["first_point"].GetInt();
         timeInfo.increasePointPerHit = timeObj["increase_point_per_hit"].GetInt();
+        timeInfo.drawDelay = timeObj["draw_delay"].GetFloat();
     }
     
     // fever

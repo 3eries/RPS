@@ -324,7 +324,7 @@ void GameView::drawBlock(RSPBlock *block) {
     
     scheduleOnce([=](float dt) {
         buttonLayer->setButtonTouchEnabled(true);
-    }, DRAW_DELAY, SCHEDULER_DRAW_DELAY);
+    }, gameMgr->getConfig()->getTimeInfo().drawDelay, SCHEDULER_DRAW_DELAY);
 }
 
 /**

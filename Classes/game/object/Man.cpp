@@ -353,7 +353,9 @@ void Man::resultLose(RSPType myHand, RSPType oppHand) {
  */
 void Man::resultDraw(RSPType myHand, RSPType oppHand) {
     
-    auto blink = Blink::create(DRAW_DELAY, 2);
+    float delay = gameMgr->getConfig()->getTimeInfo().drawDelay;
+    
+    auto blink = Blink::create(delay, 2);
     img->runAction(blink);
     
 //if( !gameMgr->isFeverMode() ) {
