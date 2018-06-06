@@ -22,6 +22,7 @@ static const size_t         BLOCK_DISPLAY_COUNT          = 8;
 static const float          BLOCK_WIDTH                  = 180;
 static const float          BLOCK_HEIGHT                 = 132;
 
+static const float          BLOCK_RANDOM_X               = 10;
 static const float          BLOCK_ORIGIN_POS_Y           = 285;
 static const float          BLOCK_PADDING_Y              = 1.6f;
 
