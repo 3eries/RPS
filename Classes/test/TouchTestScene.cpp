@@ -11,8 +11,6 @@
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 
-#include "TouchTestScene.hpp"
-
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;

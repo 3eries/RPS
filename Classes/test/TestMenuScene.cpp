@@ -12,6 +12,7 @@
 #include "UIHelper.hpp"
 
 #include "TouchTestScene.hpp"
+#include "ConfigTestScene.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -38,6 +39,15 @@ bool TestMenuScene::init() {
     
     touchTestBtn->setOnClickListener([=](Node*) {
         Director::getInstance()->pushScene(TouchTestScene::create());
+    });
+    
+    auto configTestBtn = UIHelper::createFontButton("CONFIG", ButtonSize::MEDIUM);
+    configTestBtn->setAnchorPoint(ANCHOR_M);
+    configTestBtn->setPosition(Vec2MC(0, -100));
+    addChild(configTestBtn);
+    
+    configTestBtn->setOnClickListener([=](Node*) {
+        Director::getInstance()->pushScene(ConfigTestScene::create());
     });
     
     return true;

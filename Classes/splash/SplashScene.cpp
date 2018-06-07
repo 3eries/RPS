@@ -9,6 +9,7 @@
 #include <spine/spine-cocos2dx.h>
 
 #include "RSP.h"
+#include "PatchManager.hpp"
 #include "ResourceHelper.hpp"
 #include "SceneManager.h"
 #include "UIHelper.hpp"
@@ -160,6 +161,18 @@ void SplashScene::launchImageFinished() {
  * 로그인
  */
 void SplashScene::login() {
+    
+    auto patchMgr = PatchManager::getInstance();
+    patchMgr->setOnAppVersion([=](AppVersion version) {
+        
+        
+    });
+    
+    patchMgr->setOnGameConfig([=](string version, string json) {
+        
+    });
+    
+    patchMgr->patch();
     
     loginCompleted();
 }

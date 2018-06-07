@@ -37,11 +37,13 @@ struct FeverInfo {
 
 struct LevelInfo {
     int level;
-    int beginRange; // 레벨 시작 범위 (스코어)
+    int beginRange;     // 레벨 시작 범위 (스코어)
     int decreasePointPerSeconds; // 1초당 감소 포인트
+    int continuation;   // 연속으로 같은 블럭이 나올 확률 (0~100)
     
     LevelInfo() {
         level = -1;
+        continuation = 0;
     }
 };
 
@@ -56,6 +58,7 @@ private:
     
 public:
     void init();
+    void parse(const std::string &json);
     
     LevelInfo getLevelInfo(int level);
     LevelInfo getMaxLevelInfo();

@@ -37,11 +37,14 @@ GameConfiguration::~GameConfiguration() {
 
 void GameConfiguration::init() {
 
-    string jsonStr = SBStringUtils::readTextFile(JSON_FILE);
-    CCLOG("jsonStr: %s", jsonStr.c_str());
+//    string jsonStr = SBStringUtils::readTextFile(JSON_FILE);
+//    CCLOG("jsonStr: %s", jsonStr.c_str());
+}
+
+void GameConfiguration::parse(const string &json) {
     
     rapidjson::Document doc;
-    doc.Parse(jsonStr.c_str());
+    doc.Parse(json.c_str());
     
     // time
     {
@@ -72,6 +75,8 @@ void GameConfiguration::init() {
     }
     
     // levels
+    levelInfos.clear();
+    
     {
         auto levelList = doc["levels"].GetArray();
         
@@ -82,6 +87,10 @@ void GameConfiguration::init() {
             info.level = levelValue["level"].GetInt();
             info.beginRange = levelValue["begin_range"].GetInt();
             info.decreasePointPerSeconds = levelValue["decrease_point_per_sec"].GetInt();
+            
+            if( levelValue.HasMember("continuation") ) {
+                info.continuation = levelValue["continuation"].GetInt();
+            }
             
             levelInfos.push_back(info);
         }

@@ -2,6 +2,7 @@
 
 #include "superbomb.h"
 
+#include "PatchManager.hpp"
 #include "GameConfiguration.hpp"
 #include "SceneManager.h"
 
@@ -16,6 +17,7 @@ AppDelegate::AppDelegate()
 AppDelegate::~AppDelegate() 
 {
     GameConfiguration::destroyInstance();
+    PatchManager::destroyInstance();
     SBDirector::end();
 }
 
@@ -60,7 +62,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     // 초기화
     SBDirector::init();
-    GameConfiguration::getInstance()->init();
+    
+    PatchManager::getInstance()->init();
+//    GameConfiguration::getInstance()->init();
 
     // run
     SceneManager::getInstance()->replaceScene(SceneType::SPLASH);

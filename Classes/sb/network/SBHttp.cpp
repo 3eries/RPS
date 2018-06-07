@@ -13,12 +13,10 @@ USING_NS_CC;
 using namespace cocos2d::network;
 using namespace std;
 
-SBHttpRequest::SBHttpRequest(const string &url, HttpRequest::Type requestType) : HttpRequest(),
+SBHttpRequest::SBHttpRequest() : HttpRequest(),
 onSucceedListener(nullptr),
 onErrorListener(nullptr) {
     
-    setUrl(url);
-    setRequestType(requestType);
     setResponseCallback([=](HttpClient *client, HttpResponse *response) {
         
         // error
@@ -65,6 +63,11 @@ void SBHttpRequest::setParameters(const string &params) {
 void SBHttpRequest::setParameters(Parameters params) {
     
     setParameters(toString(params));
+}
+
+void SBHttpRequest::send() {
+    
+    HttpClient::getInstance()->send(this);
 }
 
 string SBHttpRequest::toString(Parameters params) {

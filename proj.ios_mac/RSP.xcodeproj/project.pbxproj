@@ -44,6 +44,8 @@
 		1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49920A8A9E2007E63AD /* UIHelper.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */; };
+		1D97ED9020C7348D0027C319 /* PatchManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED8E20C7348D0027C319 /* PatchManager.cpp */; };
+		1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */; };
 		1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1F620C11E85006DE988 /* MainView.cpp */; };
 		1D9ED1FF20C1303C006DE988 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1FD20C13033006DE988 /* ViewManager.cpp */; };
 		1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */; };
@@ -228,6 +230,10 @@
 		1D6058910D05DD3D006BFB54 /* RSP-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RSP-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButtonLayer.cpp; sourceTree = "<group>"; };
 		1D9542D420C6D27500EDC8BA /* RSPButtonLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPButtonLayer.hpp; sourceTree = "<group>"; };
+		1D97ED8E20C7348D0027C319 /* PatchManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PatchManager.cpp; sourceTree = "<group>"; };
+		1D97ED8F20C7348D0027C319 /* PatchManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PatchManager.hpp; sourceTree = "<group>"; };
+		1D97ED9420C82A220027C319 /* ConfigTestScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConfigTestScene.hpp; sourceTree = "<group>"; };
+		1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigTestScene.cpp; sourceTree = "<group>"; };
 		1D9ED1F620C11E85006DE988 /* MainView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
 		1D9ED1F720C11E85006DE988 /* MainView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainView.hpp; sourceTree = "<group>"; };
 		1D9ED1FD20C13033006DE988 /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewManager.cpp; sourceTree = "<group>"; };
@@ -401,6 +407,8 @@
 			children = (
 				1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */,
 				1D9ED20120C421D8006DE988 /* GameConfiguration.hpp */,
+				1D97ED8E20C7348D0027C319 /* PatchManager.cpp */,
+				1D97ED8F20C7348D0027C319 /* PatchManager.hpp */,
 				1D1F3C8B20ACD36F0035A36C /* ResourceHelper.cpp */,
 				1D1F3C8C20ACD36F0035A36C /* ResourceHelper.hpp */,
 				1D45C44920A8A795007E63AD /* RSP.h */,
@@ -584,6 +592,8 @@
 			children = (
 				1DA98BD320B47EEE006BC169 /* BaseTestScene.cpp */,
 				1DA98BD420B47EEE006BC169 /* BaseTestScene.hpp */,
+				1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */,
+				1D97ED9420C82A220027C319 /* ConfigTestScene.hpp */,
 				1DFDEB1420C11B53001BC81D /* TestHelper.cpp */,
 				1DFDEB1520C11B53001BC81D /* TestHelper.hpp */,
 				1DA98BCA20B47D45006BC169 /* TestMenuScene.cpp */,
@@ -879,6 +889,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */,
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
 				1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */,
@@ -891,6 +902,7 @@
 				1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */,
 				1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */,
 				1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */,
+				1D97ED9020C7348D0027C319 /* PatchManager.cpp in Sources */,
 				1D1F3C9D20AD74240035A36C /* PausePopup.cpp in Sources */,
 				1D45C48520A8A7B8007E63AD /* json_value.cpp in Sources */,
 				1DA98BC120B4676A006BC169 /* Man.cpp in Sources */,

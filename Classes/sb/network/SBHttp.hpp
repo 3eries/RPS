@@ -14,6 +14,7 @@
 #include "network/HttpClient.h"
 
 #include "../base/SBTypes.hpp"
+#include "../base/SBMacros.h"
 
 class SBHttp {
 };
@@ -26,13 +27,14 @@ public:
     typedef std::function<void(cocos2d::network::HttpResponse*)> OnErrorListener;
     
 public:
-    SBHttpRequest(const std::string &url,
-                  cocos2d::network::HttpRequest::Type requestType);
+    SBHttpRequest();
     virtual ~SBHttpRequest();
     
 public:
     void setParameters(const std::string &params);
     void setParameters(Parameters params);
+    
+    void send();
     
 public:
     static std::string toString(Parameters params);

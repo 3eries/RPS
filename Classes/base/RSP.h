@@ -11,6 +11,16 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
+static const std::string SERVER_VERSION_FILE                    = "http://superbomb.co/3eries/rsp/version.json";
+static const std::string SERVER_GAME_CONFIG_FILE                = "http://superbomb.co/3eries/rsp/game_config.json";
+
+static const std::string GAME_CONFIG_FILE                       = "game_config.json";
+
+static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GAME_CONFIG_FILE;
+#define                  EXTERNAL_GAME_CONFIG_FILE                 std::string(cocos2d::FileUtils::getInstance()->getWritablePath() + GAME_CONFIG_FILE)
+
+static const std::string INTERNAL_GAME_CONFIG_FILE_VERSION      = "1.0.0";
+
 // 이미지 경로
 static const std::string DIR_IMG                    = "images/";
 static const std::string DIR_IMG_COMMON             = DIR_ADD(DIR_IMG, "common");
