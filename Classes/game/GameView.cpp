@@ -629,9 +629,11 @@ void GameView::initTimeBar() {
     gameNodes.push_back(timeBar);
     
     // 배너 광고 아래에 위치
+    /*
     if( !User::isOwnRemoveAdsItem() ) {
         timeBar->setPosition(Vec2TC(0, -BANNER_HEIGHT-10));
     }
+    */
 }
 
 /**
@@ -680,7 +682,9 @@ void GameView::initMenu() {
     pauseBtn->setOnClickListener(CC_CALLBACK_1(GameView::onClick, this));
     
     // 배너 광고 아래에 위치
+    /*
     if( !User::isOwnRemoveAdsItem() ) {
         pauseBtn->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
     }
+     */
 }
