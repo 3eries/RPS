@@ -245,6 +245,16 @@ void GameManager::onFeverMode() {
     onGameModeChanged(GameMode::FEVER);
 }
 
+/**
+ * 피버 모드 종료 전
+ */
+void GameManager::onPreFeverModeEnd() {
+    
+    for( auto listener : listeners ) {
+        listener->onPreFeverModeEnd();
+    }
+}
+
 void GameManager::addListener(GameListener *listener) {
     
     CCASSERT(listener != nullptr, "GameManager::addListener error: invalid listener.");

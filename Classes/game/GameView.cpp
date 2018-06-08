@@ -162,7 +162,8 @@ void GameView::onGameOver() {
  */
 void GameView::onGameModeChanged(GameMode mode) {
     
-//    feverModeBg->setVisible(mode == GameMode::FEVER);
+    feverModeBg->stopAllActions();
+    feverModeBg->setVisible(mode == GameMode::FEVER);
     
     switch( mode ) {
         case GameMode::NORMAL: {
@@ -434,7 +435,7 @@ void GameView::onClick(Node *sender) {
  */
 void GameView::initBg() {
     
-    feverModeBg = LayerColor::create(Color4B(255,0,0,255*0.2f));
+    feverModeBg = LayerColor::create(Color4B(255,0,0,255*0.1f));
     feverModeBg->setVisible(false);
     addChild(feverModeBg, -1);
 }

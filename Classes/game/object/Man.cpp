@@ -26,8 +26,9 @@ static const vector<string> ANIM_ATTACK_FILES({
 
 static const float ANIM_ATTACK_PER_UNIT = 0.05f;
 
-static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";
 static const string SCHEDULER_FEVER = "SCHEDULER_FEVER";
+static const string SCHEDULER_FEVER_END_ALERT = "SCHEDULER_FEVER_END_ALERT";
+static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";
 
 Man::Man() :
 gameMgr(GameManager::getInstance()) {
@@ -256,12 +257,22 @@ void Man::runFeverMode() {
     
     gameMgr->onFeverMode();
     
+    // 피버 모드 종료 스케줄러
+    float duration = gameMgr->getConfig()->getFeverInfo().duration;
+    
     scheduleOnce([=](float dt) {
         // 노멀 모드로 복구
         this->resetFeverPoint();
         gameMgr->onNormalMode();
         
-    }, gameMgr->getConfig()->getFeverInfo().duration, SCHEDULER_FEVER);
+    }, duration, SCHEDULER_FEVER);
+    
+    // 피버 모드 종료 알림 스케줄러
+    scheduleOnce([=](float dt) {
+        
+        gameMgr->onPreFeverModeEnd();
+        
+    }, duration - FEVER_END_ALERT_TIME, SCHEDULER_FEVER_END_ALERT);
 }
 
 /**

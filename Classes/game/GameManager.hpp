@@ -36,6 +36,8 @@ public:
     virtual void onGameEnd() {}         // 게임 종료, 모든 스테이지 완료
     
     virtual void onGameModeChanged(GameMode mode) {}   // 게임 모드 전환
+    
+    virtual void onPreFeverModeEnd() {} // 피버 모드 종료 전
 };
 
 #pragma mark- GameManager
@@ -91,6 +93,8 @@ public:
     void onGameModeChanged(GameMode mode);
     void onNormalMode();
     void onFeverMode();
+    
+    void onPreFeverModeEnd();
     
     void addListener(GameListener *listener);
     void removeListener(GameListener *listener);
