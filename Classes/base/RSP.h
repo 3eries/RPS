@@ -95,4 +95,16 @@ static RSPResult getResult(RSPType myHand, RSPType oppHand) {
     }
 }
 
+static std::string typeToString(RSPType type) {
+
+    switch( type ) {
+        case RSPType::ROCK:            return "ROCK";
+        case RSPType::SCISSORS:        return "SCISSORS";
+        case RSPType::PAPER:           return "PAPER";
+        case RSPType::ROCK_N_ROLL:     return "ROCK_N_ROLL";
+        default:
+            return "invalid";
+    }
+}
+
 #endif /* RSP_h */

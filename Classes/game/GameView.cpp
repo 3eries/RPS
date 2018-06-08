@@ -13,6 +13,7 @@
 
 #include "GameDefine.h"
 
+#include "object/RSPBlockLayer.hpp"
 #include "object/RSPBlock.hpp"
 #include "object/RSPButtonLayer.hpp"
 #include "object/RSPButton.hpp"
@@ -30,14 +31,11 @@ static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
 
 GameView::GameView() :
 gameMgr(GameManager::getInstance()),
-blockLayer(nullptr),
-blockIndex(0),
 hitCount(0) {
 }
 
 GameView::~GameView() {
     
-    blocks.clear();
 }
 
 bool GameView::init() {
@@ -50,8 +48,11 @@ bool GameView::init() {
     setPosition(Vec2::ZERO);
     setContentSize(SB_WIN_SIZE);
     
+    gameMgr->addListener(this);
+    gameMgr->onEnterGame(this);
+    
     initBg();
-    initBlocks();
+    initBlock();
     initRSPButton();
     initMan();
     initTimeBar();
@@ -59,8 +60,6 @@ bool GameView::init() {
     initMenu();
     
     ViewManager::getInstance()->addListener(this);
-    gameMgr->addListener(this);
-    gameMgr->onEnterGame(this);
     
     return true;
 }
@@ -148,13 +147,6 @@ void GameView::onGameStart() {
  * 게임 재시작
  */
 void GameView::onGameRestart() {
-    
-    // 블럭 리셋
-    blockLayer->removeFromParent();
-    blocks.clear();
-    blockIndex = 0;
-    
-    initBlocks();
 }
 
 /**
@@ -179,14 +171,17 @@ void GameView::onGameModeChanged(GameMode mode) {
             
         case GameMode::FEVER: {
             SBAudioEngine::playBGM(SOUND_BGM_FEVER);
-            
-            // 블럭 변환
-            for( auto block : blocks ) {
-                block->changeBlock(RSPType::ROCK_N_ROLL);
-            }
-            
         } break;
     }
+}
+
+/**
+ * 피버 모드 종료 전
+ */
+void GameView::onPreFeverModeEnd() {
+    
+    auto blink = Blink::create(FEVER_END_ALERT_TIME, 4);
+    feverModeBg->runAction(blink);
 }
 
 /**
@@ -212,9 +207,7 @@ void GameView::updateScore() {
  */
 void GameView::onClickNormalButton(RSPType type) {
     
-    CCASSERT(blockIndex < blocks.size(), "GameView::onClickNormalButton error: out of block index.");
-    
-    auto block = blocks.at(blockIndex);
+    auto block = blockLayer->getFirstBlock();
     auto result = getResult(type, block->getType());
     
     man->showdown(result, type, block->getType());
@@ -232,9 +225,7 @@ void GameView::onClickNormalButton(RSPType type) {
  */
 void GameView::onClickFeverButton(int i) {
     
-    CCASSERT(blockIndex < blocks.size(), "GameView::onClickFeverButton error: out of block index.");
-    
-    auto block = blocks.at(blockIndex);
+    auto block = blockLayer->getFirstBlock();
     man->rockNroll((i == 0) ? Man::Position::LEFT : Man::Position::RIGHT);
     
     hitBlock(block, RSPType::ROCK_N_ROLL);
@@ -245,6 +236,10 @@ void GameView::onClickFeverButton(int i) {
  */
 void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     
+    CCLOG("GameView::hitBlock gameMode: %d", (int)gameMgr->getGameMode());
+    
+    blockLayer->hitBlock(hitBlock, btnType, man->getManPosition());
+    
     // hit 카운트 증가
     ++hitCount;
     updateScore();
@@ -252,57 +247,13 @@ void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     // 시간 증가
     timeBar->increaseTimePoint(gameMgr->getConfig()->getTimeInfo().increasePointPerHit);
     
-    // 히트된 블럭 연출
-    runHitBlockEffect(hitBlock);
-    
-    // 전달된 블럭 색상 변경하여 재활용
-    CCLOG("GameView::hitBlock gameMode: %d", (int)gameMgr->getGameMode());
-    
-    if( gameMgr->getGameMode() == GameMode::FEVER ) {
-        hitBlock->changeBlock(RSPType::ROCK_N_ROLL);
-    } else {
-        hitBlock->changeBlock();
-    }
-    
-    // 블럭 인덱스 증가
-    ++blockIndex;
-    
-    if( blockIndex == blocks.size() ) {
-        blockIndex = 0;
-    }
-    
     // 다음 블럭 타입에 따라 하단 버튼 모드를 변경
-    auto nextBlock = blocks.at(blockIndex);
+    auto nextBlock = blockLayer->getFirstBlock();
     
     if( nextBlock->getType() == RSPType::ROCK_N_ROLL ) {
         buttonLayer->switchButton(GameMode::FEVER);
     } else {
         buttonLayer->switchButton(GameMode::NORMAL);
-    }
-    
-    // 정렬된 블럭 리스트 생성
-    vector<RSPBlock*> sortBlocks;
-    
-    for( int i = blockIndex; i < blocks.size(); ++i ) {
-        auto block = blocks.at(i);
-        sortBlocks.push_back(block);
-    }
-    
-    for( size_t i = 0; i < blockIndex; ++i ) {
-        auto block = blocks.at(i);
-        sortBlocks.push_back(block);
-    }
-    
-    // 모든 블럭 한 칸씩 내려오기
-    for( int i = 0; i < sortBlocks.size(); ++i ) {
-        auto block = sortBlocks[i];
-        block->stopAllActions();
-        
-        const float y = getBlockPosition(i).y;
-        block->setPositionY(y + BLOCK_HEIGHT);
-        
-        auto move = MoveTo::create(BLOCK_MOVE_DURATION, Vec2(block->getPositionX(), y));
-        block->runAction(move);
     }
 }
 
@@ -311,6 +262,8 @@ void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
  */
 void GameView::misBlock(RSPBlock *block) {
  
+    blockLayer->misBlock(block);
+    
     gameMgr->onGameOver();
 }
 
@@ -319,89 +272,14 @@ void GameView::misBlock(RSPBlock *block) {
  */
 void GameView::drawBlock(RSPBlock *block) {
     
+    blockLayer->drawBlock(block);
+    
     // 버튼 터치 지연
     buttonLayer->setButtonTouchEnabled(false);
     
     scheduleOnce([=](float dt) {
         buttonLayer->setButtonTouchEnabled(true);
     }, gameMgr->getConfig()->getTimeInfo().drawDelay, SCHEDULER_DRAW_DELAY);
-}
-
-/**
- * 히트된 블럭 연출
- */
-void GameView::runHitBlockEffect(RSPBlock *hitBlock) {
-    
-    auto block = hitBlock->clone();
-    hitBlock->getParent()->addChild(block, SBZOrder::BOTTOM);
-    
-    // move
-    const float MOVE_DURATION = 0.15f;
-    
-    {
-        float POS_LEFT  = 0;
-        float POS_RIGHT = SB_WIN_SIZE.width;
-        float posX = 0;
-        
-        switch( man->getManPosition() ) {
-            case Man::Position::LEFT:         posX =  POS_RIGHT;    break;
-            case Man::Position::RIGHT:        posX =  POS_LEFT;     break;
-            default:
-                CCASSERT(false, "GameView::runHitBlockEffect error: invalid man position.");
-                break;
-        }
-        
-        auto moveTo = MoveTo::create(MOVE_DURATION, Vec2(posX, block->getPositionY()));
-        auto callback = CallFunc::create([=]() {
-            
-        });
-        auto remove = RemoveSelf::create();
-        block->runAction(Sequence::create(moveTo, callback, remove, nullptr));
-    }
-    
-    // rotate
-//    block->runAction(RepeatForever::create(RotateBy::create(0.1f, 90)));
-    
-    // fade out
-    /*
-    {
-        auto delay = DelayTime::create(0.1f);
-        auto fadeOut = FadeOut::create(MOVE_DURATION*1.05f);
-        auto callback = CallFunc::create([=]() {
-            
-            block->stopAllActions();
-        });
-        auto remove = RemoveSelf::create();
-        block->runAction(Sequence::create(delay, fadeOut, callback, remove, nullptr));
-    }
-    */
-}
-
-/**
- * 블럭 좌표 정렬
- */
-void GameView::alignBlock(int i, RSPBlock *block) {
-    
-    block->setPosition(getBlockPosition(i));
-//    block->setPosition(Vec2(SB_WIN_SIZE.width*0.5f,
-//                            BLOCK_ORIGIN_POS_Y + (i*BLOCK_HEIGHT)));
-}
-
-Vec2 GameView::getBlockPosition(int i) {
-    
-    // x, 랜덤
-    float x = 0;
-    
-    int ran = arc4random() % 3;
-    if( ran != 0 ) {
-        x = BLOCK_RANDOM_X * (ran == 1 ? 1 : -1);
-    }
-    
-    // y, 블럭 높이 기준
-    float y = (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f);
-    y += (BLOCK_PADDING_Y*i); // padding    
-    
-    return Vec2BC(blockLayer->getContentSize(), x, y);
 }
 
 /**
@@ -564,28 +442,10 @@ void GameView::initBg() {
 /**
  * RSP 블럭 초기화
  */
-void GameView::initBlocks() {
+void GameView::initBlock() {
     
-    blockLayer = Node::create();
-    blockLayer->setAnchorPoint(ANCHOR_MB);
-    blockLayer->setPosition(Vec2BC(0, BLOCK_ORIGIN_POS_Y));
-    blockLayer->setContentSize(Size(SB_WIN_SIZE.width, BLOCK_DISPLAY_HEIGHT));
+    blockLayer = RSPBlockLayer::create();
     addChild(blockLayer, -1);
-    
-    // 영역 테스트
-    {
-//        blockLayer->addChild(SBNodeUtils::createBackgroundNode(blockLayer, Color4B(255,0,0,255*0.5f)));
-    }
-    
-    for( int i = 0; i < BLOCK_COUNT; i++ ) {
-        auto block = RSPBlock::createRandomBlock();
-        block->setAnchorPoint(ANCHOR_M);
-        blockLayer->addChild(block);
-        
-        blocks.push_back(block);
-        
-        alignBlock(i, block);
-    }
 }
 
 /**

@@ -20,6 +20,7 @@
 #include "ViewManager.hpp"
 
 class RSPBlock;
+class RSPBlockLayer;
 class RSPButtonLayer;
 class Man;
 class TimeBar;
@@ -49,7 +50,7 @@ private:
     void onExit() override;
     
     void initBg();
-    void initBlocks();
+    void initBlock();
     void initRSPButton();
     void initMan();
     void initTimeBar();
@@ -75,11 +76,6 @@ private:
     void misBlock(RSPBlock *block);
     void drawBlock(RSPBlock *block);
     
-    void runHitBlockEffect(RSPBlock *hitBlock);
-    
-    void alignBlock(int i, RSPBlock *block);
-    cocos2d::Vec2 getBlockPosition(int i);
-    
 private:
     void showLevelLabel();
     
@@ -99,9 +95,7 @@ private:
     cocos2d::Node *feverModeBg;
     
     // 블럭
-    cocos2d::Node *blockLayer;
-    std::vector<RSPBlock*> blocks;
-    int blockIndex;
+    RSPBlockLayer *blockLayer;
     
     // 가위바위보 버튼 레이어
     RSPButtonLayer *buttonLayer;

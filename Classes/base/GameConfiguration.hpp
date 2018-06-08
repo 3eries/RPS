@@ -64,6 +64,7 @@ public:
     LevelInfo getMaxLevelInfo();
     
 private:
+    int defaultContinuation;
     CC_SYNTHESIZE(TimeInfo, timeInfo, TimeInfo);
     CC_SYNTHESIZE(FeverInfo, feverInfo, FeverInfo);
     CC_SYNTHESIZE(std::vector<LevelInfo>, levelInfos, LevelInfos);

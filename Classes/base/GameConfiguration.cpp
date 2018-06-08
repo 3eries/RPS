@@ -29,7 +29,8 @@ void GameConfiguration::destroyInstance() {
     CC_SAFE_DELETE(instance);
 }
 
-GameConfiguration::GameConfiguration() {
+GameConfiguration::GameConfiguration() :
+defaultContinuation(0) {
 }
 
 GameConfiguration::~GameConfiguration() {
@@ -45,6 +46,8 @@ void GameConfiguration::parse(const string &json) {
     
     rapidjson::Document doc;
     doc.Parse(json.c_str());
+    
+    defaultContinuation = doc["default_continuation"].GetInt();
     
     // time
     {
@@ -90,6 +93,8 @@ void GameConfiguration::parse(const string &json) {
             
             if( levelValue.HasMember("continuation") ) {
                 info.continuation = levelValue["continuation"].GetInt();
+            } else {
+                info.continuation = defaultContinuation;
             }
             
             levelInfos.push_back(info);

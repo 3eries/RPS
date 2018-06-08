@@ -46,6 +46,7 @@
 		1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */; };
 		1D97ED9020C7348D0027C319 /* PatchManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED8E20C7348D0027C319 /* PatchManager.cpp */; };
 		1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */; };
+		1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9720C8E2AA0027C319 /* RSPBlockLayer.cpp */; };
 		1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1F620C11E85006DE988 /* MainView.cpp */; };
 		1D9ED1FF20C1303C006DE988 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1FD20C13033006DE988 /* ViewManager.cpp */; };
 		1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */; };
@@ -227,13 +228,15 @@
 		1D45C49620A8A7D2007E63AD /* MainScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainScene.hpp; sourceTree = "<group>"; };
 		1D45C49920A8A9E2007E63AD /* UIHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIHelper.cpp; sourceTree = "<group>"; };
 		1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIHelper.hpp; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* RSP-mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RSP-mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* God of RPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "God of RPS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButtonLayer.cpp; sourceTree = "<group>"; };
 		1D9542D420C6D27500EDC8BA /* RSPButtonLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPButtonLayer.hpp; sourceTree = "<group>"; };
 		1D97ED8E20C7348D0027C319 /* PatchManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PatchManager.cpp; sourceTree = "<group>"; };
 		1D97ED8F20C7348D0027C319 /* PatchManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PatchManager.hpp; sourceTree = "<group>"; };
 		1D97ED9420C82A220027C319 /* ConfigTestScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ConfigTestScene.hpp; sourceTree = "<group>"; };
 		1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigTestScene.cpp; sourceTree = "<group>"; };
+		1D97ED9720C8E2AA0027C319 /* RSPBlockLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RSPBlockLayer.cpp; sourceTree = "<group>"; };
+		1D97ED9820C8E2AA0027C319 /* RSPBlockLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPBlockLayer.hpp; sourceTree = "<group>"; };
 		1D9ED1F620C11E85006DE988 /* MainView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
 		1D9ED1F720C11E85006DE988 /* MainView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainView.hpp; sourceTree = "<group>"; };
 		1D9ED1FD20C13033006DE988 /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewManager.cpp; sourceTree = "<group>"; };
@@ -377,7 +380,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* RSP-mobile.app */,
+				1D6058910D05DD3D006BFB54 /* God of RPS.app */,
 				5087E76F17EB910900C73F5D /* RSP-desktop.app */,
 			);
 			name = Products;
@@ -577,6 +580,8 @@
 				1DA98BC020B4676A006BC169 /* Man.hpp */,
 				1DA98BBC20B4675A006BC169 /* RSPBlock.cpp */,
 				1DA98BBA20B4675A006BC169 /* RSPBlock.hpp */,
+				1D97ED9720C8E2AA0027C319 /* RSPBlockLayer.cpp */,
+				1D97ED9820C8E2AA0027C319 /* RSPBlockLayer.hpp */,
 				1DA98BBB20B4675A006BC169 /* RSPButton.cpp */,
 				1DA98BB920B4675A006BC169 /* RSPButton.hpp */,
 				1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */,
@@ -752,7 +757,7 @@
 			);
 			name = "RSP-mobile";
 			productName = iphone;
-			productReference = 1D6058910D05DD3D006BFB54 /* RSP-mobile.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* God of RPS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5087E73D17EB910900C73F5D /* RSP-desktop */ = {
@@ -893,6 +898,7 @@
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
 				1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */,
+				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
 				1D1F3C9A20AD6D040035A36C /* SBBasePopup.cpp in Sources */,
 				1D45C48820A8A7B8007E63AD /* SBHttp.cpp in Sources */,
@@ -993,6 +999,7 @@
 					"$(_COCOS_LIB_IOS_END)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.superbomb.series.rsp;
+				PRODUCT_NAME = "God of RPS";
 				PROVISIONING_PROFILE = "2410f1f4-7afd-44f7-a966-391da099f030";
 				PROVISIONING_PROFILE_SPECIFIER = rsp_development;
 				SDKROOT = iphoneos;
@@ -1032,6 +1039,7 @@
 					"$(_COCOS_LIB_IOS_END)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.superbomb.series.rsp;
+				PRODUCT_NAME = "God of RPS";
 				PROVISIONING_PROFILE = "057ff43f-4714-4076-870f-007857288173";
 				PROVISIONING_PROFILE_SPECIFIER = rsp_distribution_app_store;
 				SDKROOT = iphoneos;

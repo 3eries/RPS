@@ -30,12 +30,14 @@ private:
     bool init(RSPType type);
     
 public:
-    void changeBlock(RSPType type);
-    void changeBlock();
+    void setBlock(RSPType type);
+    void changeRandomBlock();
     
     bool isEqualBlock(RSPType type);
     
     RSPBlock* clone();
+    
+    std::string toString();
     
 private:
     CC_SYNTHESIZE(RSPType, type, Type);

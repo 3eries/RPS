@@ -51,20 +51,22 @@ bool RSPBlock::init(RSPType type) {
     
     this->type = type;
     
-    setTexture(UIHelper::getBlockImageFile(type));
+    if( type != RSPType::NONE ) {
+        setTexture(UIHelper::getBlockImageFile(type));
+    }
     
     return true;
 }
 
-void RSPBlock::changeBlock(RSPType type) {
+void RSPBlock::setBlock(RSPType type) {
     
     this->type = type;
     setTexture(UIHelper::getBlockImageFile(type));
 }
 
-void RSPBlock::changeBlock() {
+void RSPBlock::changeRandomBlock() {
     
-    changeBlock(getRandomType());
+    setBlock(getRandomType());
 }
 
 bool RSPBlock::isEqualBlock(RSPType type) {
@@ -74,10 +76,13 @@ bool RSPBlock::isEqualBlock(RSPType type) {
 
 RSPBlock* RSPBlock::clone() {
     
-    auto block = create(type);
+    auto block = RSPBlock::create(type);
     block->setAnchorPoint(getAnchorPoint());
     block->setPosition(getPosition());
     
     return block;
 }
 
+string RSPBlock::toString() {
+    return STR_FORMAT("RSPBlock [%s]", typeToString(type).c_str());
+}
