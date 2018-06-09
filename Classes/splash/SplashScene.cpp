@@ -18,7 +18,7 @@ USING_NS_CC;
 using namespace spine;
 using namespace std;
 
-static const float  CHECK_REPLACE_MAIN_SCENE_INTERVAL   = 1.0f;
+static const float  CHECK_REPLACE_MAIN_SCENE_INTERVAL   = 0.05f;
 static const string CHECK_REPLACE_MAIN_SCENE_SCHEDULER  = "CHECK_REPLACE_MAIN_SCENE_SCHEDULER";
 
 static const float  LAUNCH_IMAGE_DURATION               = 3.0f;
@@ -46,6 +46,7 @@ bool SplashScene::init() {
     
     initLaunchImage();
     login();
+    
     ResourceHelper::preload();
     
     // 메인 화면 전환 체크 스케줄러 실행
@@ -90,7 +91,7 @@ void SplashScene::replaceMainScene() {
  */
 void SplashScene::initLaunchImage() {
     
-    addChild(LayerColor::create(Color4B::BLACK));
+    addChild(LayerColor::create(Color4B::WHITE));
     
     // first launch image
 //    auto img = Sprite::create(DIR_IMG_SPLASH + "logo_3.jpg");
@@ -105,46 +106,40 @@ void SplashScene::initLaunchImage() {
     auto anim = SkeletonAnimation::createWithJsonFile(jsonFile, atlasFile);
     anim->setAnchorPoint(Vec2::ZERO);
     anim->setPosition(Vec2(SB_WIN_SIZE*0.5f));
-    anim->setAnimation(0, "run", false);
     addChild(anim);
     
-    /*
-    auto titleLabel = Label::createWithTTF("3eries", FONT_RETRO, 50);
-    titleLabel->setAnchorPoint(ANCHOR_M);
-    titleLabel->setPosition(Vec2MC(0,0));
-    addChild(titleLabel);
-    */
+    auto track = anim->setAnimation(0, "run", false);
+    anim->update(0);
     
-    // title action
-    // blink
-    /*
-    auto delay = DelayTime::create(1);
-    auto blink = Blink::create(0.9f, 4);
-    auto seq = Sequence::create(delay, blink, nullptr);
+    const float ANIM_DURATION = anim->getAnimationDuration("run");
     
-    titleLabel->runAction(seq);
-    */
+    CCLOG("logo anim duration: %f", ANIM_DURATION);
     
-    // fade in
-    /*
-    titleLabel->setOpacity(0);
+    anim->setTrackEndListener(track, [=](spTrackEntry *entry) {
+        
+        CCLOG("track logo anim end");
+    });
     
-    auto fadeIn = FadeIn::create(1.0f);
-    auto blink = Blink::create(1.0f, 3);
-    titleLabel->runAction(Sequence::create(fadeIn, blink, nullptr));
-    */
+    anim->setTrackCompleteListener(track, [=](spTrackEntry *entry) {
+        
+        CCLOG("track logo anim completed");
+    });
     
-    /*
-    img->setOpacity(0);
+    anim->setEndListener([=](spTrackEntry *entry) {
+       
+        CCLOG("logo anim end");
+    });
+
     
-    auto fadeIn = FadeIn::create(1.0f);
-    img->runAction(fadeIn);
-     */
+    anim->setCompleteListener([=](spTrackEntry *entry) {
+        
+        CCLOG("logo anim completed");
+    });
     
     // scheduler
     scheduleOnce([=](float dt) {
         this->launchImageFinished();
-    }, LAUNCH_IMAGE_DURATION, LAUNCH_IMAGE_SCHEDULER);
+    }, ANIM_DURATION, LAUNCH_IMAGE_SCHEDULER);
 }
 
 /**

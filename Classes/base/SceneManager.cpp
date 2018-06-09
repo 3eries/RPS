@@ -86,7 +86,7 @@ void SceneManager::replaceScene(SceneType type, function<Scene*()> createSceneFu
     
     switch( type ) {
         case SceneType::SPLASH:          break;
-        case SceneType::MAIN:            scene = TransitionFade::create(0.2f, scene);          break;
+        case SceneType::MAIN:            scene = TransitionCrossFade::create(0.7f, scene);     break;
         case SceneType::GAME:            scene = TransitionFade::create(0.2f, scene);          break;
             
         default: break;
