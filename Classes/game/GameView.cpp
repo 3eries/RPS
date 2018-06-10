@@ -243,6 +243,11 @@ void GameView::onClickNormalButton(RSPType type) {
         case RSPResult::DRAW:   this->drawBlock(block);           break;
         default: break;
     }
+    
+    // 타임바 실행
+    if( !timeBar->isStarted() && result != RSPResult::LOSE ) {
+        timeBar->startTimeBar();
+    }
 }
 
 /**

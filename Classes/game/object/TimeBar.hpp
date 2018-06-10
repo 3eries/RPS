@@ -41,11 +41,16 @@ private:
     void onGameResume() override;
     
 public:
+    void startTimeBar();
+    void stopTimeBar();
+    
     void setTimePoint(int point);
     void increaseTimePoint(int point);
     
 private:
     GameManager *gameMgr;
+    
+    SB_SYNTHESIZE_READONLY_BOOL(started, Started);
     int timePoint;
     
     cocos2d::ProgressTimer *gage;

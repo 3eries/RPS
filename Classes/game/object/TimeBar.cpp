@@ -17,7 +17,8 @@ using namespace cocos2d::ui;
 using namespace std;
 
 TimeBar::TimeBar() :
-gameMgr(GameManager::getInstance()) {
+gameMgr(GameManager::getInstance()),
+started(false) {
 }
 
 TimeBar::~TimeBar() {
@@ -60,8 +61,6 @@ void TimeBar::onGameStart() {
  
     reset();
     updateGage();
-    
-    scheduleUpdate();
 }
 
 void TimeBar::onGameRestart() {
@@ -69,17 +68,35 @@ void TimeBar::onGameRestart() {
 
 void TimeBar::onGameOver() {
     
-    unscheduleUpdate();
+    stopTimeBar();
 }
 
 void TimeBar::onGamePause() {
-    
-    pause();
 }
 
 void TimeBar::onGameResume() {
+}
+
+/**
+ * 시작
+ */
+void TimeBar::startTimeBar() {
     
-    resume();
+    if( started ) {
+        return;
+    }
+    
+    started = true;
+    scheduleUpdate();
+}
+
+/**
+ * 중지
+ */
+void TimeBar::stopTimeBar() {
+    
+    started = false;
+    unscheduleUpdate();
 }
 
 /**
