@@ -32,6 +32,27 @@ bool MainScene::init() {
         return false;
     }
     
+    // back key
+    {
+        auto listener = EventListenerKeyboard::create();
+        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+            
+            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
+                return;
+            }
+            
+            switch( ViewManager::getInstance()->getViewType() ) {
+                case ViewType::MAIN: {
+                    SBSystemUtils::exitApp();
+                } break;
+                    
+                default: break;
+            }
+        };
+        
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
+    
     initBg();
     
     ViewManager::getInstance()->addListener(this);
