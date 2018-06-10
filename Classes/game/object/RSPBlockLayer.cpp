@@ -16,6 +16,8 @@
 USING_NS_CC;
 using namespace std;
 
+static const float HIT_BLOCK_MOVE_DURATION = 0.15f;
+
 RSPBlockLayer::RSPBlockLayer() :
 gameMgr(GameManager::getInstance()),
 blockIndex(0) {
@@ -164,19 +166,26 @@ void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType,
         sortBlocks.push_back(block);
     }
     
-    // 모든 블럭 한 칸씩 내려오기
-    for( int i = 0; i < sortBlocks.size(); ++i ) {
+    // 블럭 한 칸씩 내려오기
+    for( int i = 0; i < BLOCK_DISPLAY_COUNT; ++i ) {
         auto block = sortBlocks[i];
         block->stopAllActions();
-        
-        const float y = getBlockPosition(i).y;
-        block->setPositionY(y + BLOCK_HEIGHT);
-        
-        auto move = MoveTo::create(BLOCK_MOVE_DURATION, Vec2(block->getPositionX(), y));
+        block->setVisible(true);
+        block->setLocalZOrder(i);
+        block->setPositionY(getBlockPosition(i+1).y);
+
+        auto move = MoveTo::create(BLOCK_MOVE_DURATION,
+                                   Vec2(block->getPositionX(), getBlockPosition(i).y));
         block->runAction(move);
     }
     
-    CCLOG("RSPBlockLayer::hitBlock: %s", toString().c_str());
+    // 화면 밖 블럭 hide
+    for( int i = BLOCK_DISPLAY_COUNT; i < sortBlocks.size(); ++i ) {
+        auto block = sortBlocks[i];
+        block->setVisible(false);
+    }
+    
+//    CCLOG("RSPBlockLayer::hitBlock: %s", toString().c_str());
 }
 
 /**
@@ -197,11 +206,9 @@ void RSPBlockLayer::drawBlock(RSPBlock *block) {
 void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosition) {
     
     auto block = hitBlock->clone();
-    hitBlock->getParent()->addChild(block, SBZOrder::BOTTOM);
+    hitBlock->getParent()->addChild(block, -1);
     
     // move
-    const float MOVE_DURATION = 0.15f;
-    
     {
         float POS_LEFT  = 0;
         float POS_RIGHT = SB_WIN_SIZE.width;
@@ -215,7 +222,8 @@ void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosit
                 break;
         }
         
-        auto moveTo = MoveTo::create(MOVE_DURATION, Vec2(posX, block->getPositionY()));
+        auto moveTo = MoveTo::create(HIT_BLOCK_MOVE_DURATION,
+                                     Vec2(posX, block->getPositionY()));
         auto callback = CallFunc::create([=]() {
             
         });

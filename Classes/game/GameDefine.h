@@ -24,7 +24,7 @@ static const float          BLOCK_HEIGHT                 = 132;
 
 static const float          BLOCK_RANDOM_X               = 5;
 static const float          BLOCK_ORIGIN_POS_Y           = 285;
-static const float          BLOCK_PADDING_Y              = 1.6f;
+static const float          BLOCK_PADDING_Y              = -4;
 
 // 화면에 보이는 블럭 높이
 static const float          BLOCK_DISPLAY_HEIGHT         = 950; // (BLOCK_HEIGHT*BLOCK_DISPLAY_COUNT)-20;
