@@ -49,7 +49,7 @@ void PatchManager::patch() {
     
     // config
     {
-        string json = SBStringUtils::readTextFile(EXTERNAL_GAME_CONFIG_FILE);
+        string json = SBStringUtils::readTextFile(INTERNAL_GAME_CONFIG_FILE);
         GameConfiguration::getInstance()->parse(json);
     }
     
