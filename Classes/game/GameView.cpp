@@ -7,6 +7,8 @@
 
 #include "GameView.hpp"
 
+#include <spine/spine-cocos2dx.h>
+
 #include "SceneManager.h"
 #include "User.hpp"
 #include "UIHelper.hpp"
@@ -25,6 +27,7 @@
 
 USING_NS_CC;
 using namespace cocos2d::ui;
+using namespace spine;
 using namespace std;
 
 static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
@@ -81,6 +84,11 @@ void GameView::onEnter() {
 void GameView::onEnterTransitionDidFinish() {
     
     Node::onEnterTransitionDidFinish();
+    
+    CCLOG("onEnterTrans");
+    
+    auto cloud = getChildByTag<SkeletonAnimation*>(Tag::CLOUD);
+    cloud->runAction(FadeIn::create(1.0f));
 }
 
 void GameView::onExit() {
@@ -451,9 +459,34 @@ void GameView::onClick(Node *sender) {
  */
 void GameView::initBg() {
     
+    auto bg = Sprite::create(DIR_IMG_GAME + "RSP_bg.png");
+    bg->setTag(Tag::BG);
+    bg->setAnchorPoint(ANCHOR_M);
+    bg->setPosition(Vec2MC(0,0));
+    addChild(bg, (int)ZOrder::BG);
+    
     feverModeBg = LayerColor::create(Color4B(255,0,0,255*0.1f));
     feverModeBg->setVisible(false);
-    addChild(feverModeBg, -1);
+    addChild(feverModeBg, (int)ZOrder::BG);
+    
+    // cloud
+    string jsonFile  = DIR_ANIM + "RSP_cloud.json";
+    string atlasFile = SBStringUtils::replaceAll(jsonFile, ".json", ".atlas");
+    
+    auto cloud = SkeletonAnimation::createWithJsonFile(jsonFile, atlasFile);
+    cloud->setTag(Tag::CLOUD);
+    cloud->setAnchorPoint(Vec2::ZERO);
+    cloud->setPosition(Vec2(SB_WIN_SIZE*0.5f));
+    cloud->setAnimation(0, "run", true);
+    cloud->update(0);
+    cloud->setOpacity(0);
+    addChild(cloud, (int)ZOrder::BG);
+    
+    // 바닥 기둥
+    auto bottomBg = Sprite::create(DIR_IMG_GAME + "RSP_bg_bottom.png");
+    bottomBg->setAnchorPoint(ANCHOR_MB);
+    bottomBg->setPosition(Vec2BC(0,0));
+    addChild(bottomBg, (int)ZOrder::BG);
 }
 
 /**

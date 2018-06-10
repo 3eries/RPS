@@ -31,15 +31,25 @@ public:
     ~GameView();
     
 private:
-    typedef enum {
-        LAYER_MENU               = 10,
+    enum Tag {
+        BG                 = 1,
+        CLOUD,
         
-        BTN_PAUSE                = 100,
+        LABEL_LEVEL,       // 레벨
+        LABEL_SCORE,       // 스코어
         
-        POPUP_PAUSE              = 1000,
+        LAYER_MENU         = 100,
+        
+        BTN_PAUSE          = 1000,
+        
+        POPUP_PAUSE        = 10000,
         POPUP_GAME_OVER,
-        
-    } Tag;
+    };
+    
+    enum class ZOrder {
+        BG = -1,
+        BLOCK = -1,
+    };
     
 private:
     GameView();
