@@ -32,6 +32,7 @@ bool RSPButtonLayer::init() {
     
     initNormalButtons();
     initFeverButtons();
+    initTapHint();
     
     GameManager::getInstance()->addListener(this);
     
@@ -93,6 +94,44 @@ void RSPButtonLayer::setButtonTouchEnabled(bool enabled) {
 }
 
 /**
+ * TAP 힌트 노출
+ */
+void RSPButtonLayer::showTapHint(RSPType winHand) {
+    
+    auto getButton = [=]() -> Node* {
+        for( auto btn : buttons ) {
+            if( btn->getType() == winHand ) {
+                return btn;
+            }
+        }
+        
+        return nullptr;
+    };
+    
+    auto btn = getButton();
+    CCASSERT(btn != nullptr, "RSPButtonLayer::showTapHint error.");
+    
+    auto btnBox = SBNodeUtils::getBoundingBoxInWorld(btn);
+    
+    // 초기 좌표 설정
+    tapHint->setVisible(true);
+    tapHint->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()+50));
+    
+    // Tap 액션
+    auto move1 = MoveTo::create(0.5f, tapHint->getPosition());
+    auto move2 = MoveTo::create(0.5f, tapHint->getPosition() + Vec2(0, 20));
+    auto seq = Sequence::create(move1, move2, nullptr);
+    
+    tapHint->runAction(RepeatForever::create(seq));
+}
+
+void RSPButtonLayer::hideTapHint() {
+    
+    tapHint->setVisible(false);
+    tapHint->stopAllActions();
+}
+
+/**
  * 노멀 모드 버튼 초기화
  */
 void RSPButtonLayer::initNormalButtons() {
@@ -126,6 +165,8 @@ void RSPButtonLayer::initNormalButtons() {
         buttons.push_back(btn);
         
         btn->setOnClickListener([=](Node*) {
+            
+            this->hideTapHint();
             onNormalButtonClickListener(type);
         });
     }
@@ -157,7 +198,28 @@ void RSPButtonLayer::initFeverButtons() {
         buttons.push_back(btn);
         
         btn->setOnClickListener([=](Node*) {
+            
+            this->hideTapHint();
             onFeverButtonClickListener(i);
         });
     }
+}
+
+/**
+ * TAP 힌트 초기화
+ */
+void RSPButtonLayer::initTapHint() {
+    
+    tapHint = LayerColor::create(Color4B(0,0,0,255*0.7f));
+    tapHint->setIgnoreAnchorPointForPosition(false);
+    tapHint->setVisible(false);
+    tapHint->setAnchorPoint(ANCHOR_M);
+    tapHint->setContentSize(Size(130, 70));
+    addChild(tapHint);
+    
+    auto label = Label::createWithTTF("TAP", FONT_RETRO, 50);
+    label->setAnchorPoint(ANCHOR_M);
+    label->setPosition(Vec2MC(tapHint->getContentSize(), 0, 0));
+    label->setColor(Color3B(255,255,255));
+    tapHint->addChild(label);
 }

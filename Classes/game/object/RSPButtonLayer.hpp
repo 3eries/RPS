@@ -34,6 +34,7 @@ private:
     
     void initNormalButtons();
     void initFeverButtons();
+    void initTapHint();
     
 // GameListener
 private:
@@ -44,6 +45,9 @@ public:
     void switchButton(GameMode mode);
     void setButtonTouchEnabled(bool enabled);
     
+    void showTapHint(RSPType winHand);
+    void hideTapHint();
+    
 private:
     CC_SYNTHESIZE(std::function<void(RSPType)>,
                   onNormalButtonClickListener, OnNormalButtonClickListener);
@@ -52,6 +56,8 @@ private:
     
     std::map<GameMode, cocos2d::Node*> buttonLayers;
     std::vector<RSPButton*> buttons;
+    
+    cocos2d::Node *tapHint;
 };
 
 #endif /* RSPButtonLayer_hpp */
