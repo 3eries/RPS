@@ -50,6 +50,7 @@ bool Man::init() {
     setAnchorPoint(ANCHOR_MB);
     setManPosition(Position::LEFT);
     
+    gameMgr->addListener(this);
     ViewManager::getInstance()->addListener(this);
     
     return true;
@@ -58,6 +59,7 @@ bool Man::init() {
 void Man::onExit() {
     
     ViewManager::getInstance()->removeListener(this);
+    gameMgr->removeListener(this);
     
     Node::onExit();
 }
