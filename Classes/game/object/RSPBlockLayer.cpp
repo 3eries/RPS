@@ -16,7 +16,7 @@
 USING_NS_CC;
 using namespace std;
 
-static const float HIT_BLOCK_MOVE_DURATION = 0.15f;
+static const float HIT_BLOCK_MOVE_DURATION = 0.13f;
 
 RSPBlockLayer::RSPBlockLayer() :
 gameMgr(GameManager::getInstance()),
