@@ -100,34 +100,15 @@ void MainView::onClick(Node *sender) {
  */
 void MainView::initBg() {
     
-    // title
-    auto titleLabel = Label::createWithTTF("POLIS MAN", FONT_RETRO, 70);
-    titleLabel->setAnchorPoint(ANCHOR_M);
-    titleLabel->setPosition(Vec2MC(0, 350));
-    titleLabel->setColor(Color3B::WHITE);
-    titleLabel->enableOutline(Color4B::BLACK, 3);
-    addChild(titleLabel);
-    /*
-     string strs[] = {
-     "ROCK", "SCISSORS",  "PAPER",
-     };
-     
-     const float ORIGIN_Y = 310;
-     const float PADDING_Y = 80;
-     
-     Vec2 pos[] = {
-     Vec2MC(-200, ORIGIN_Y + PADDING_Y), Vec2MC(0, ORIGIN_Y), Vec2MC(200, ORIGIN_Y - PADDING_Y)
-     };
-     
-     for( int i = 0; i < sizeof(strs)/sizeof(string); ++i ) {
-     auto titleLabel = Label::createWithTTF(strs[i], FONT_RETRO, 60);
-     titleLabel->setAnchorPoint(ANCHOR_M);
-     titleLabel->setPosition(pos[i]);
-     titleLabel->setColor(Color3B::WHITE);
-     titleLabel->enableOutline(Color4B::BLACK, 3);
-     addChild(titleLabel);
-     }
-     */
+    auto title = SBButton::create(DIR_IMG_GAME + "RSP_title.png");
+    title->setAnchorPoint(ANCHOR_M);
+    title->setPosition(Vec2MC(0, 255));
+    title->setZoomScale(0);
+    addChild(title);
+    
+    title->setOnClickListener([=](Node*) {
+        // TODO: 크레딧
+    });
 }
 
 /**
