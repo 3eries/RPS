@@ -97,14 +97,9 @@ void MainScene::onViewChanged(ViewType viewType) {
 
 void MainScene::initBg() {
     
-    auto bg = Sprite::create(DIR_IMG_GAME + "RSP_bg.png");
-    bg->setAnchorPoint(ANCHOR_M);
-    bg->setPosition(Vec2MC(0,0));
-    addChild(bg, -1);
-    
     // 임시 배너 이미지
     banner = Sprite::create(DIR_IMG_GAME + "RSP_ad_top.png");
     banner->setAnchorPoint(ANCHOR_MT);
     banner->setPosition(Vec2TC(0, 0));
-    addChild(banner, SBZOrder::BOTTOM);
+    addChild(banner, SBZOrder::MIDDLE);
 }
