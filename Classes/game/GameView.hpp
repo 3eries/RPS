@@ -63,6 +63,8 @@ private:
 private:
     void onGameStart() override;
     void onGameRestart() override;
+    void onGamePause() override;
+    void onGameResume() override;
     void onGameOver() override;
     void onGameModeChanged(GameMode mode) override;
     void onPreFeverModeEnd() override;

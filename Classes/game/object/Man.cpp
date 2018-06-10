@@ -106,13 +106,9 @@ void Man::onGameOver() {
 }
 
 void Man::onGamePause() {
-    
-    pause();
 }
 
 void Man::onGameResume() {
-    
-    resume();
 }
 
 /**

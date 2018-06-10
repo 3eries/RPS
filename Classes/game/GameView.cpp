@@ -150,6 +150,22 @@ void GameView::onGameRestart() {
 }
 
 /**
+ * 게임 일시정지
+ */
+void GameView::onGamePause() {
+    
+    SBNodeUtils::recursivePause(this);
+}
+
+/**
+ * 게임 재게
+ */
+void GameView::onGameResume() {
+    
+    SBNodeUtils::recursiveResume(this);
+}
+
+/**
  * 게임 오버
  */
 void GameView::onGameOver() {
