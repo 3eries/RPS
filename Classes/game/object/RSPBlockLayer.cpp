@@ -70,6 +70,7 @@ void RSPBlockLayer::onViewChanged(ViewType viewType) {
         } break;
             
         case ViewType::GAME: {
+//            resetBlocks();
         } break;
             
         default:
@@ -88,15 +89,7 @@ void RSPBlockLayer::onGameStart() {
  */
 void RSPBlockLayer::onGameRestart() {
     
-    // 블럭 리셋
-    for( auto block : blocks ) {
-        block->removeFromParent();
-    }
-    
-    blocks.clear();
-    blockIndex = 0;
-    
-    initBlocks();
+    resetBlocks();
 }
 
 /**
@@ -331,6 +324,18 @@ void RSPBlockLayer::initBlocks() {
     }
     
     CCLOG("RSPBlockLayer::initBlocks: %s", toString().c_str());
+}
+
+void RSPBlockLayer::resetBlocks() {
+    
+    for( auto block : blocks ) {
+        block->removeFromParent();
+    }
+    
+    blocks.clear();
+    blockIndex = 0;
+    
+    initBlocks();
 }
 
 string RSPBlockLayer::toString() {

@@ -36,6 +36,7 @@ private:
     void onExit() override;
     
     void initBlocks();
+    void resetBlocks();
     
     void onViewChanged(ViewType viewType) override;
     
