@@ -20,11 +20,12 @@ static const vector<string> ANIM_IDLE_FILES({
 static const float ANIM_IDLE_DELAY_PER_UNIT = 0.5f;
 
 static const vector<string> ANIM_ATTACK_FILES({
-    DIR_IMG_GAME + "RSP_avatar_idle1.png",
-    DIR_IMG_GAME + "RSP_avatar_attack.png",
+    DIR_IMG_GAME + "RSP_avatar_attack1.png",
+    DIR_IMG_GAME + "RSP_avatar_attack2.png",
+    // DIR_IMG_GAME + "RSP_avatar_idle1.png",
 });
 
-static const float ANIM_ATTACK_PER_UNIT = 0.05f;
+static const float ANIM_ATTACK_PER_UNIT = 0.0666f;
 
 static const string SCHEDULER_FEVER = "SCHEDULER_FEVER";
 static const string SCHEDULER_FEVER_END_ALERT = "SCHEDULER_FEVER_END_ALERT";
