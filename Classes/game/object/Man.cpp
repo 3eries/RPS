@@ -181,7 +181,7 @@ void Man::setManPosition(Position pos) {
             img->setFlippedX(false);
             setPosition(MAN_POS_LEFT);
             
-            feverGage.bg->setPosition(Vec2TC(getContentSize(), -24, 12));
+            feverGage.bg->setPosition(Vec2TC(getContentSize(), -24, 22));
             
         } break;
             
@@ -189,7 +189,7 @@ void Man::setManPosition(Position pos) {
             img->setFlippedX(true);
             setPosition(MAN_POS_RIGHT);
             
-            feverGage.bg->setPosition(Vec2TC(getContentSize(), 24, 12));
+            feverGage.bg->setPosition(Vec2TC(getContentSize(), 24, 22));
             
         } break;
             
@@ -401,7 +401,6 @@ void Man::initFeverGage() {
  
     feverGage.bg = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_bg.png");
     feverGage.bg->setAnchorPoint(ANCHOR_MB);
-    feverGage.bg->setPosition(Vec2TC(getContentSize(), -24, 12));
     addChild(feverGage.bg);
 
     auto bgSize = feverGage.bg->getContentSize();

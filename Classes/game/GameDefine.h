@@ -31,7 +31,7 @@ static const float          BLOCK_DISPLAY_HEIGHT         = 950; // (BLOCK_HEIGHT
 
 static const float          BLOCK_MOVE_DURATION          = 0.1f;
 
-#define                     MAN_POS_LEFT                 Vec2BC(-215, 210)
-#define                     MAN_POS_RIGHT                Vec2BC(215,  210)
+#define                     MAN_POS_LEFT                 Vec2BC(-212, 210)
+#define                     MAN_POS_RIGHT                Vec2BC(212,  210)
 
 #endif /* GameDefine_h */
