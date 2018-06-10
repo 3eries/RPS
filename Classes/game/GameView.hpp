@@ -103,6 +103,10 @@ private:
     
 private:
     GameManager *gameMgr;
+    
+    // 블럭 히트 횟수
+    int hitCount;
+    
     std::vector<cocos2d::Node*> gameNodes;  // 게임 뷰타입의 노드 리스트
     
     cocos2d::Node *feverModeBg;
@@ -118,13 +122,6 @@ private:
     
     // 시간 제한바
     TimeBar *timeBar;
-    
-    // 레벨
-    cocos2d::Label *levelLabel;
-    
-    // 스코어
-    cocos2d::Label *scoreLabel;
-    int hitCount;
 };
 
 #endif /* GameView_hpp */

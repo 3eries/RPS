@@ -47,6 +47,26 @@ bool GameView::init() {
         return false;
     }
     
+    // back key
+    {
+        auto listener = EventListenerKeyboard::create();
+        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+            
+            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
+                return;
+            }
+            
+            switch( ViewManager::getInstance()->getViewType() ) {
+                case ViewType::GAME: {
+                } break;
+                    
+                default: break;
+            }
+        };
+        
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
+    
     setAnchorPoint(Vec2::ZERO);
     setPosition(Vec2::ZERO);
     setContentSize(SB_WIN_SIZE);
@@ -145,10 +165,11 @@ void GameView::onGameStart() {
     
     // 카운트 초기화
     hitCount = 0;
-    levelLabel->setString("");
-    scoreLabel->setString("0");
+    getChildByTag<Label*>(Tag::LABEL_LEVEL)->setString("");
+    getChildByTag<Label*>(Tag::LABEL_SCORE)->setString("0");
     
-    showLevelLabel();
+    // showLevelLabel();
+    buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
 }
 
 /**
@@ -186,8 +207,11 @@ void GameView::onGameOver() {
  */
 void GameView::onGameModeChanged(GameMode mode) {
     
-    feverModeBg->stopAllActions();
-    feverModeBg->setVisible(mode == GameMode::FEVER);
+//    feverModeBg->stopAllActions();
+//    feverModeBg->setVisible(mode == GameMode::FEVER);
+    auto bg = getChildByTag<Sprite*>(Tag::BG);
+    bg->stopAllActions();
+    bg->setColor(mode == GameMode::FEVER ? Color3B(100, 0, 0) : Color3B::WHITE);
     
     switch( mode ) {
         case GameMode::NORMAL: {
@@ -205,8 +229,16 @@ void GameView::onGameModeChanged(GameMode mode) {
  */
 void GameView::onPreFeverModeEnd() {
     
-    auto blink = Blink::create(FEVER_END_ALERT_TIME, 4);
-    feverModeBg->runAction(blink);
+//    auto blink = Blink::create(FEVER_END_ALERT_TIME, 4);
+//    feverModeBg->runAction(blink);
+    
+    auto bg = getChildByTag<Sprite*>(Tag::BG);
+    
+    auto tint1 = TintTo::create(0.1f, Color3B(100, 0, 0));
+//    auto tint2 = TintTo::create(0.1f, Color3B(255, 255, 255));
+    auto tint2 = TintTo::create(0.1f, Color3B(200, 200, 200));
+    auto seq = Sequence::create(tint1, tint2, nullptr);
+    bg->runAction(RepeatForever::create(seq));
 }
 
 /**
@@ -217,7 +249,7 @@ void GameView::updateScore() {
     auto saveLevelInfo = gameMgr->getLevelInfo();
     
     gameMgr->setScore(hitCount);
-    scoreLabel->setString(TO_STRING(gameMgr->getScore()));
+    getChildByTag<Label*>(Tag::LABEL_SCORE)->setString(TO_STRING(gameMgr->getScore()));
     
     // 레벨 변경된 경우, 레벨 텍스트 연출
     bool isLevelChanged = (saveLevelInfo.level != gameMgr->getLevelInfo().level);
@@ -317,6 +349,7 @@ void GameView::drawBlock(RSPBlock *block) {
  */
 void GameView::showLevelLabel() {
     
+    auto levelLabel = getChildByTag<Label*>(Tag::LABEL_LEVEL);
     levelLabel->setVisible(true);
     
     levelLabel->stopAllActions();
@@ -500,7 +533,7 @@ void GameView::initBg() {
 void GameView::initBlock() {
     
     blockLayer = RSPBlockLayer::create();
-    addChild(blockLayer, -1);
+    addChild(blockLayer, (int)ZOrder::BLOCK);
 }
 
 /**
@@ -556,7 +589,8 @@ void GameView::initTimeBar() {
  */
 void GameView::initLabels() {
     
-    levelLabel = Label::createWithTTF("", FONT_RETRO, 75);
+    auto levelLabel = Label::createWithTTF("", FONT_RETRO, 75);
+    levelLabel->setTag(Tag::LABEL_LEVEL);
     levelLabel->setVisible(false);
     levelLabel->setAnchorPoint(ANCHOR_M);
     levelLabel->setPosition(Vec2MC(0, 415));
@@ -566,7 +600,8 @@ void GameView::initLabels() {
     
     gameNodes.push_back(levelLabel);
     
-    scoreLabel = Label::createWithTTF("0", FONT_RETRO, 75);
+    auto scoreLabel = Label::createWithTTF("0", FONT_RETRO, 75);
+    scoreLabel->setTag(Tag::LABEL_SCORE);
     scoreLabel->setAnchorPoint(ANCHOR_M);
     scoreLabel->setPosition(Vec2MC(0, 300));
     scoreLabel->setColor(Color3B::WHITE);
