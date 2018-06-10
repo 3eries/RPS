@@ -16,6 +16,8 @@ using namespace std;
 void ResourceHelper::preload() {
     
     // image
+    auto textureCache = Director::getInstance()->getTextureCache();
+    textureCache->addImageAsync(DIR_ANIM + "RSP_cloud.png", nullptr);
     
     // sound
     SBAudioEngine::preload(SOUND_BGM_MAIN);
