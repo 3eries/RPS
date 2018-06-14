@@ -1,0 +1,48 @@
+{
+"skeleton": { "hash": "5fy0bg1xVD/nKZvuryiZmfj9vg0", "spine": "3.6.52", "width": 984, "height": 1312, "images": "./fever_mode/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bg_fever", "parent": "root", "scaleX": 4.1, "scaleY": 4.1 }
+],
+"slots": [
+	{ "name": "bg_fever", "bone": "bg_fever", "color": "ffffff00", "attachment": "bg_fever" }
+],
+"skins": {
+	"default": {
+		"bg_fever": {
+			"bg_fever": { "width": 240, "height": 320 }
+		}
+	}
+},
+"animations": {
+	"clear": {
+		"slots": {
+			"bg_fever": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
+	"run": {
+		"slots": {
+			"bg_fever": {
+				"color": [
+					{ "time": 0, "color": "ffffff00" },
+					{ "time": 0.3333, "color": "ffffffff", "curve": "stepped" },
+					{ "time": 2.4333, "color": "ffffffff" },
+					{ "time": 2.5333, "color": "ffffff00" },
+					{ "time": 2.6333, "color": "ffffffc7" },
+					{ "time": 2.7333, "color": "ffffff00" },
+					{ "time": 2.8333, "color": "ffffff95" },
+					{ "time": 2.9333, "color": "ffffff00" },
+					{ "time": 3.0333, "color": "ffffff64" },
+					{ "time": 3.1333, "color": "ffffff00" },
+					{ "time": 3.2333, "color": "ffffff32" },
+					{ "time": 3.3333, "color": "ffffff00" }
+				]
+			}
+		}
+	}
+}
+}

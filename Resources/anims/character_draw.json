@@ -1,0 +1,174 @@
+{
+"skeleton": { "hash": "KC2Re4FcwgHzi4GPEzCHgMTusdQ", "spine": "3.6.52", "width": 431.76, "height": 212, "images": "./character/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "block", "parent": "root" },
+	{ "name": "character", "parent": "root", "x": -208.76, "y": -35.88 }
+],
+"slots": [
+	{ "name": "RSP_avatar_attack1", "bone": "character", "attachment": "RSP_avatar_idle1" },
+	{ "name": "RSP_block_paper", "bone": "block", "attachment": "RSP_block_paper" }
+],
+"skins": {
+	"default": {
+		"RSP_avatar_attack1": {
+			"RSP_avatar_attack1": { "width": 266, "height": 212 },
+			"RSP_avatar_attack2": { "width": 266, "height": 212 },
+			"RSP_avatar_idle1": { "width": 266, "height": 212 },
+			"RSP_avatar_idle2": { "width": 266, "height": 212 }
+		},
+		"RSP_block_paper": {
+			"RSP_block_paper": { "width": 180, "height": 132 }
+		}
+	}
+},
+"events": {
+	"move_1": {},
+	"move_2": {},
+	"move_3": {},
+	"move_4": {},
+	"move_5": {},
+	"move_6": {}
+},
+"animations": {
+	"clear": {
+		"slots": {
+			"RSP_avatar_attack1": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"RSP_block_paper": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
+	"draw_left": {
+		"slots": {
+			"RSP_avatar_attack1": {
+				"attachment": [
+					{ "time": 0, "name": "RSP_avatar_attack1" },
+					{ "time": 0.0667, "name": "RSP_avatar_attack2" },
+					{ "time": 0.1333, "name": "RSP_avatar_idle1" }
+				]
+			}
+		},
+		"bones": {
+			"character": {
+				"translate": [
+					{ "time": 0, "x": -0.24, "y": -0.12 },
+					{ "time": 0.0333, "x": -21.24, "y": -0.12 },
+					{ "time": 0.0667, "x": -0.24, "y": -0.12 },
+					{ "time": 0.1, "x": -21.24, "y": -0.12 },
+					{ "time": 0.1333, "x": -0.24, "y": -0.12 },
+					{ "time": 0.1667, "x": -21.24, "y": -0.12 },
+					{ "time": 0.2, "x": -0.24, "y": -0.12 }
+				]
+			},
+			"block": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{
+						"time": 0.0333,
+						"x": 90,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{
+						"time": 0.2333,
+						"x": -20,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{
+						"time": 0.3333,
+						"x": 10,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{ "time": 0.4333, "x": 0, "y": 0 }
+				]
+			}
+		},
+		"events": [
+			{ "time": 0.0333, "name": "move_1" },
+			{ "time": 0.0667, "name": "move_2" },
+			{ "time": 0.1, "name": "move_3" },
+			{ "time": 0.1333, "name": "move_4" },
+			{ "time": 0.1667, "name": "move_5" },
+			{ "time": 0.2, "name": "move_6" }
+		]
+	},
+	"draw_right": {
+		"slots": {
+			"RSP_avatar_attack1": {
+				"attachment": [
+					{ "time": 0, "name": "RSP_avatar_attack1" },
+					{ "time": 0.0667, "name": "RSP_avatar_attack2" },
+					{ "time": 0.1333, "name": "RSP_avatar_idle1" }
+				]
+			}
+		},
+		"bones": {
+			"character": {
+				"translate": [
+					{ "time": 0, "x": 417.76, "y": -0.12 },
+					{ "time": 0.0333, "x": 438.76, "y": -0.12 },
+					{ "time": 0.0667, "x": 417.56, "y": -0.12 },
+					{ "time": 0.1, "x": 438.76, "y": -0.12 },
+					{ "time": 0.1333, "x": 417.56, "y": -0.12 },
+					{ "time": 0.1667, "x": 438.76, "y": -0.12 },
+					{ "time": 0.2, "x": 417.56, "y": -0.12 }
+				],
+				"scale": [
+					{ "time": 0, "x": -1, "y": 1 }
+				]
+			},
+			"block": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{
+						"time": 0.0333,
+						"x": -90,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{
+						"time": 0.2333,
+						"x": 20,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{
+						"time": 0.3333,
+						"x": -10,
+						"y": 0,
+						"curve": [ 0.541, 0, 0.472, 1 ]
+					},
+					{ "time": 0.4333, "x": 0, "y": 0 }
+				]
+			}
+		},
+		"events": [
+			{ "time": 0.0333, "name": "move_1" },
+			{ "time": 0.0667, "name": "move_2" },
+			{ "time": 0.1, "name": "move_3" },
+			{ "time": 0.1333, "name": "move_4" },
+			{ "time": 0.1667, "name": "move_5" },
+			{ "time": 0.2, "name": "move_6" }
+		]
+	}
+}
+}

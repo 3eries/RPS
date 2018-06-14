@@ -16,8 +16,18 @@ using namespace std;
 void ResourceHelper::preload() {
     
     // image
+    auto getAnimPNG = [](string anim) -> string {
+        return SBStringUtils::replaceAll(anim, ANIM_EXT, ".png");
+    };
+    
     auto textureCache = Director::getInstance()->getTextureCache();
-    textureCache->addImageAsync(DIR_ANIM + "RSP_cloud.png", nullptr);
+    textureCache->addImage(getAnimPNG(ANIM_CLOUD));
+    textureCache->addImageAsync(getAnimPNG(ANIM_FEVER_MODE_BG), nullptr);
+    textureCache->addImageAsync(getAnimPNG(ANIM_FEVER_MODE_FIRE), nullptr);
+    textureCache->addImageAsync(getAnimPNG(ANIM_DRAW), nullptr);
+    textureCache->addImageAsync(getAnimPNG(ANIM_DIE), [=](Texture2D *tex) {
+        CCLOG("add image completed : %d", tex != nullptr);
+    });
     
     // sound
     SBAudioEngine::preload(SOUND_BGM_MAIN);

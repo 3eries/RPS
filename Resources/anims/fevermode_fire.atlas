@@ -1,0 +1,132 @@
+
+fevermode_fire.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boom_01
+  rotate: false
+  xy: 294, 110
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_02
+  rotate: false
+  xy: 586, 252
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_03
+  rotate: false
+  xy: 878, 394
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_04
+  rotate: false
+  xy: 390, 110
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_05
+  rotate: false
+  xy: 682, 252
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_06
+  rotate: false
+  xy: 486, 110
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_07
+  rotate: false
+  xy: 778, 252
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_08
+  rotate: false
+  xy: 294, 14
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_09
+  rotate: false
+  xy: 390, 14
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_10
+  rotate: false
+  xy: 486, 14
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+boom_11
+  rotate: false
+  xy: 586, 156
+  size: 94, 94
+  orig: 94, 94
+  offset: 0, 0
+  index: -1
+flame_1
+  rotate: false
+  xy: 2, 348
+  size: 290, 140
+  orig: 290, 140
+  offset: 0, 0
+  index: -1
+flame_2
+  rotate: false
+  xy: 2, 206
+  size: 290, 140
+  orig: 290, 140
+  offset: 0, 0
+  index: -1
+flame_3
+  rotate: false
+  xy: 294, 348
+  size: 290, 140
+  orig: 290, 140
+  offset: 0, 0
+  index: -1
+flame_4
+  rotate: false
+  xy: 2, 64
+  size: 290, 140
+  orig: 290, 140
+  offset: 0, 0
+  index: -1
+flame_5
+  rotate: false
+  xy: 294, 206
+  size: 290, 140
+  orig: 290, 140
+  offset: 0, 0
+  index: -1
+flame_6
+  rotate: false
+  xy: 586, 348
+  size: 290, 140
+  orig: 290, 140
+  offset: 0, 0
+  index: -1
+note
+  rotate: true
+  xy: 2, 2
+  size: 60, 84
+  orig: 60, 84
+  offset: 0, 0
+  index: -1

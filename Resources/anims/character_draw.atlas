@@ -1,0 +1,41 @@
+
+character_draw.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+RSP_avatar_attack1
+  rotate: false
+  xy: 2, 216
+  size: 266, 212
+  orig: 266, 212
+  offset: 0, 0
+  index: -1
+RSP_avatar_attack2
+  rotate: false
+  xy: 2, 2
+  size: 266, 212
+  orig: 266, 212
+  offset: 0, 0
+  index: -1
+RSP_avatar_idle1
+  rotate: false
+  xy: 270, 216
+  size: 266, 212
+  orig: 266, 212
+  offset: 0, 0
+  index: -1
+RSP_avatar_idle2
+  rotate: false
+  xy: 270, 2
+  size: 266, 212
+  orig: 266, 212
+  offset: 0, 0
+  index: -1
+RSP_block_paper
+  rotate: false
+  xy: 538, 296
+  size: 180, 132
+  orig: 180, 132
+  offset: 0, 0
+  index: -1
