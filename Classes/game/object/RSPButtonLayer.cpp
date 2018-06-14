@@ -36,6 +36,8 @@ bool RSPButtonLayer::init() {
     
     GameManager::getInstance()->addListener(this);
     
+    switchButton(GameMode::NORMAL);
+    
     return true;
 }
 

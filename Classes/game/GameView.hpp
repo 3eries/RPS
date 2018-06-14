@@ -17,7 +17,6 @@
 #include "RSP.h"
 #include "GameConfiguration.hpp"
 #include "GameManager.hpp"
-#include "ViewManager.hpp"
 
 class RSPBlock;
 class RSPBlockLayer;
@@ -25,7 +24,7 @@ class RSPButtonLayer;
 class Man;
 class TimeBar;
 
-class GameView : public cocos2d::Node, public SBNodeListener, public ViewListener, public GameListener {
+class GameView : public cocos2d::Node, public GameListener {
 public:
     CREATE_FUNC(GameView);
     ~GameView();
@@ -35,20 +34,17 @@ private:
         BG                 = 1,
         CLOUD,
         
+        FEVER_MODE_BG,
+        FEVER_MODE_FIRE,
+        
         LABEL_LEVEL,       // 레벨
         LABEL_SCORE,       // 스코어
-        
-        LAYER_MENU         = 100,
-        
-        BTN_PAUSE          = 1000,
-        
-        POPUP_PAUSE        = 10000,
-        POPUP_GAME_OVER,
     };
     
     enum class ZOrder {
-        BG = -1,
-        BLOCK = -1,
+        BG = -2,
+        CLOUD = -1,
+        BLOCK = 0,
     };
     
 private:
@@ -65,9 +61,6 @@ private:
     void initMan();
     void initTimeBar();
     void initLabels();
-    void initMenu();
-    
-    void onViewChanged(ViewType viewType) override;
     
 // GameListener
 private:
@@ -92,24 +85,11 @@ private:
 private:
     void showLevelLabel();
     
-    void showPausePopup();
-    void removePausePopup();
-    
-    void showGameOver();
-    
-    void replaceMain();
-    
-    void onClick(cocos2d::Node *sender) override;
-    
 private:
     GameManager *gameMgr;
     
     // 블럭 히트 횟수
     int hitCount;
-    
-    std::vector<cocos2d::Node*> gameNodes;  // 게임 뷰타입의 노드 리스트
-    
-    cocos2d::Node *feverModeBg;
     
     // 블럭
     RSPBlockLayer *blockLayer;

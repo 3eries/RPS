@@ -47,42 +47,21 @@ bool GameView::init() {
         return false;
     }
     
-    // back key
-    {
-        auto listener = EventListenerKeyboard::create();
-        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
-            
-            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-                return;
-            }
-            
-            switch( ViewManager::getInstance()->getViewType() ) {
-                case ViewType::GAME: {
-                } break;
-                    
-                default: break;
-            }
-        };
-        
-        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    }
-    
     setAnchorPoint(Vec2::ZERO);
     setPosition(Vec2::ZERO);
     setContentSize(SB_WIN_SIZE);
     
     gameMgr->addListener(this);
-    gameMgr->onEnterGame(this);
     
     initBg();
     initBlock();
-    initRSPButton();
     initMan();
-    initTimeBar();
-    initLabels();
-    initMenu();
     
-    ViewManager::getInstance()->addListener(this);
+    if( SceneManager::getSceneType() == SceneType::GAME ) {
+        initRSPButton();
+        initTimeBar();
+        initLabels();
+    }
     
     return true;
 }
@@ -113,38 +92,9 @@ void GameView::onEnterTransitionDidFinish() {
 
 void GameView::onExit() {
     
-    ViewManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
     
     Node::onExit();
-}
-
-/**
- * 뷰 타입 변경
- */
-void GameView::onViewChanged(ViewType viewType) {
-    
-    auto setGameNodeVisible = [=](bool visible) {
-        for( auto n : gameNodes ) {
-            n->setVisible(visible);
-        }
-    };
-    
-    switch( viewType ) {
-        case ViewType::MAIN: {
-            setGameNodeVisible(false);
-        } break;
-            
-        case ViewType::GAME: {
-            setGameNodeVisible(true);
-            
-            gameMgr->onGameStart();
-            
-        } break;
-            
-        default:
-            break;
-    }
 }
 
 /**
@@ -158,9 +108,6 @@ void GameView::onGameStart() {
     // 배너 광고 아래에 위치
     if( !User::isOwnRemoveAdsItem() ) {
         timeBar->setPosition(Vec2TC(0, -BANNER_HEIGHT-10));
-        
-        auto menuLayer = getChildByTag(Tag::LAYER_MENU);
-        menuLayer->getChildByTag(Tag::BTN_PAUSE)->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
     }
     
     // 카운트 초기화
@@ -198,8 +145,6 @@ void GameView::onGameResume() {
  * 게임 오버
  */
 void GameView::onGameOver() {
-    
-    showGameOver();
 }
 
 /**
@@ -207,12 +152,19 @@ void GameView::onGameOver() {
  */
 void GameView::onGameModeChanged(GameMode mode) {
     
-//    feverModeBg->stopAllActions();
-//    feverModeBg->setVisible(mode == GameMode::FEVER);
-    auto bg = getChildByTag<Sprite*>(Tag::BG);
-    bg->stopAllActions();
-    bg->setColor(mode == GameMode::FEVER ? Color3B(100, 0, 0) : Color3B::WHITE);
+    // 피버 모드 애니메이션 초기화
+    int feverModeTags [] = {
+        Tag::FEVER_MODE_BG, Tag::FEVER_MODE_FIRE,
+    };
     
+    for( int tag : feverModeTags ) {
+        auto anim = getChildByTag<SkeletonAnimation*>(tag);
+        anim->setVisible(false);
+        anim->clearTracks();
+//        SBSpineHelper::clearAnimation(anim, ANIM_NAME_CLEAR);
+    }
+    
+    // 모드에 따른 처리
     switch( mode ) {
         case GameMode::NORMAL: {
             SBAudioEngine::playBGM(SOUND_BGM_GAME);
@@ -220,6 +172,15 @@ void GameView::onGameModeChanged(GameMode mode) {
             
         case GameMode::FEVER: {
             SBAudioEngine::playBGM(SOUND_BGM_FEVER);
+            
+            for( int tag : feverModeTags ) {
+                auto anim = getChildByTag<SkeletonAnimation*>(tag);
+                anim->setVisible(true);
+                
+                anim->clearTracks();
+                anim->setAnimation(0, ANIM_NAME_RUN, false);
+            }
+            
         } break;
     }
 }
@@ -228,17 +189,6 @@ void GameView::onGameModeChanged(GameMode mode) {
  * 피버 모드 종료 전
  */
 void GameView::onPreFeverModeEnd() {
-    
-//    auto blink = Blink::create(FEVER_END_ALERT_TIME, 4);
-//    feverModeBg->runAction(blink);
-    
-    auto bg = getChildByTag<Sprite*>(Tag::BG);
-    
-    auto tint1 = TintTo::create(0.1f, Color3B(100, 0, 0));
-//    auto tint2 = TintTo::create(0.1f, Color3B(255, 255, 255));
-    auto tint2 = TintTo::create(0.1f, Color3B(200, 200, 200));
-    auto seq = Sequence::create(tint1, tint2, nullptr);
-    bg->runAction(RepeatForever::create(seq));
 }
 
 /**
@@ -372,127 +322,6 @@ void GameView::showLevelLabel() {
 }
 
 /**
- * 일시정지 팝업 노출
- */
-void GameView::showPausePopup() {
-    
-    if( getChildByTag(Tag::POPUP_PAUSE) ) {
-        // 팝업이 이미 존재함
-        return;
-    }
-    
-    gameMgr->onGamePause();
-    
-    auto popup = PausePopup::create();
-    popup->setTag(Tag::POPUP_PAUSE);
-    popup->setOnClickMenuListener([=](PausePopup::MenuType type) {
-        
-        switch( type ) {
-            // resume
-            case PausePopup::MenuType::RESUME: {
-                gameMgr->onGameResume();
-                popup->removeFromParent();
-            } break;
-                
-            // main
-            case PausePopup::MenuType::MAIN: {
-                this->replaceMain();
-                popup->removeFromParent();
-                
-            } break;
-                
-            default:
-                break;
-        }
-    });
-    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
-}
-
-/**
- * 일시정지 팝업 제거
- */
-void GameView::removePausePopup() {
-    
-    removeChildByTag(Tag::POPUP_PAUSE);
-}
-
-/**
- * 게임 오버 출력
- */
-void GameView::showGameOver() {
-    
-    auto popup = GameOverPopup::create();
-    popup->setTag(Tag::POPUP_GAME_OVER);
-    popup->setOnClickMenuListener([=](GameOverPopup::MenuType type) {
-        
-        switch( type ) {
-            // restart
-            case GameOverPopup::MenuType::RESTART: {
-                popup->removeFromParent();
-                gameMgr->onGameRestart();
-                
-            } break;
-                
-            // home
-            case GameOverPopup::MenuType::HOME: {
-                popup->removeFromParent();
-                this->replaceMain();
-                
-            } break;
-                
-            default:
-                break;
-        }
-    });
-    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
-    
-    // 게임 오버 배경음 재생
-    /*
-     auto audioId = SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
-     
-     CCLOG("duration: %f, %f, %f",
-     SBAudioEngine::getDuration(SOUND_BGM),
-     SBAudioEngine::getDuration(SOUND_GAME_OVER),
-     SBAudioEngine::getDuration(audioId));
-     
-     // 배경음 원상복구
-     SBAudioEngine::setOnFinishedListener(audioId, [=](int, const string &) {
-     SBAudioEngine::playBGM(SOUND_BGM);
-     });
-     */
-    
-    /*
-     scheduleOnce([=](float dt) {
-     
-     SBAudioEngine::playBGM(SOUND_BGM);
-     
-     }, SBAudioEngine::getDuration(SOUND_GAME_OVER), "GameOverSound");
-     */
-}
-
-/**
- * 메인 뷰로 전환
- */
-void GameView::replaceMain() {
-    
-    gameMgr->onExitGame();
-    
-    ViewManager::getInstance()->replaceMainView();
-}
-
-/**
- * 버튼 클릭
- */
-void GameView::onClick(Node *sender) {
-    
-    switch( sender->getTag() ) {
-        case Tag::BTN_PAUSE: {
-            showPausePopup();
-        } break;
-    }
-}
-
-/**
  * 배경 초기화
  */
 void GameView::initBg() {
@@ -503,28 +332,44 @@ void GameView::initBg() {
     bg->setPosition(Vec2MC(0,0));
     addChild(bg, (int)ZOrder::BG);
     
-    feverModeBg = LayerColor::create(Color4B(255,0,0,255*0.1f));
-    feverModeBg->setVisible(false);
-    addChild(feverModeBg, (int)ZOrder::BG);
-    
     // cloud
-    string jsonFile  = DIR_ANIM + "RSP_cloud.json";
-    string atlasFile = SBStringUtils::replaceAll(jsonFile, ".json", ".atlas");
-    
-    auto cloud = SkeletonAnimation::createWithJsonFile(jsonFile, atlasFile);
+    auto cloud = SkeletonAnimation::createWithJsonFile(ANIM_CLOUD);
     cloud->setTag(Tag::CLOUD);
     cloud->setAnchorPoint(Vec2::ZERO);
     cloud->setPosition(Vec2(SB_WIN_SIZE*0.5f));
-    cloud->setAnimation(0, "run", true);
+    cloud->setAnimation(0, ANIM_NAME_RUN, true);
     cloud->update(0);
     cloud->setOpacity(0);
-    addChild(cloud, (int)ZOrder::BG);
+    addChild(cloud, (int)ZOrder::CLOUD);
+
+    // 피버 모드
+    {
+        // 배경
+        auto feverModeBg = SkeletonAnimation::createWithJsonFile(ANIM_FEVER_MODE_BG);
+        feverModeBg->setTag(Tag::FEVER_MODE_BG);
+        feverModeBg->setAnchorPoint(Vec2::ZERO);
+        feverModeBg->setPosition(Vec2(SB_WIN_SIZE*0.5f));
+        addChild(feverModeBg, (int)ZOrder::BG);
+        
+        feverModeBg->setVisible(false);
+//        SBSpineHelper::clearAnimation(feverModeBg, ANIM_NAME_CLEAR);
+        
+        // Fire!
+        auto feverModeFire = SkeletonAnimation::createWithJsonFile(ANIM_FEVER_MODE_FIRE);
+        feverModeFire->setTag(Tag::FEVER_MODE_FIRE);
+        feverModeFire->setAnchorPoint(Vec2::ZERO);
+        feverModeFire->setPosition(Vec2(SB_WIN_SIZE*0.5f));
+        addChild(feverModeFire, (int)ZOrder::CLOUD);
+        
+        feverModeFire->setVisible(false);
+//        SBSpineHelper::clearAnimation(feverModeFire, ANIM_NAME_CLEAR);
+    }
     
     // 바닥 기둥
     auto bottomBg = Sprite::create(DIR_IMG_GAME + "RSP_bg_bottom.png");
     bottomBg->setAnchorPoint(ANCHOR_MB);
     bottomBg->setPosition(Vec2BC(0,0));
-    addChild(bottomBg, (int)ZOrder::BG);
+    addChild(bottomBg, (int)ZOrder::CLOUD);
 }
 
 /**
@@ -543,8 +388,6 @@ void GameView::initRSPButton() {
     
     buttonLayer = RSPButtonLayer::create();
     addChild(buttonLayer);
-    
-    gameNodes.push_back(buttonLayer);
     
     buttonLayer->setOnNormalButtonClickListener([=](RSPType type) {
         this->onClickNormalButton(type);
@@ -574,8 +417,6 @@ void GameView::initTimeBar() {
     timeBar->setPosition(Vec2TC(0, -15));
     addChild(timeBar, SBZOrder::BOTTOM);
     
-    gameNodes.push_back(timeBar);
-    
     // 배너 광고 아래에 위치
     /*
     if( !User::isOwnRemoveAdsItem() ) {
@@ -596,9 +437,7 @@ void GameView::initLabels() {
     levelLabel->setPosition(Vec2MC(0, 415));
     levelLabel->setColor(Color3B(250, 178, 11));
     levelLabel->enableOutline(Color4B(78, 22, 0, 255), 7);
-    addChild(levelLabel);
-    
-    gameNodes.push_back(levelLabel);
+    addChild(levelLabel, SBZOrder::BOTTOM);
     
     auto scoreLabel = Label::createWithTTF("0", FONT_RETRO, 75);
     scoreLabel->setTag(Tag::LABEL_SCORE);
@@ -606,35 +445,6 @@ void GameView::initLabels() {
     scoreLabel->setPosition(Vec2MC(0, 300));
     scoreLabel->setColor(Color3B::WHITE);
     scoreLabel->enableOutline(Color4B::BLACK, 7);
-    addChild(scoreLabel);
-    
-    gameNodes.push_back(scoreLabel);
+    addChild(scoreLabel, SBZOrder::BOTTOM);
 }
 
-/**
- * 메뉴 초기화
- */
-void GameView::initMenu() {
-    
-    auto menuLayer = SBNodeUtils::createWinSizeNode();
-    menuLayer->setTag(Tag::LAYER_MENU);
-    addChild(menuLayer, SBZOrder::BOTTOM);
-    
-    gameNodes.push_back(menuLayer);
-    
-    // 일시정지
-    auto pauseBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_pause.png");
-    pauseBtn->setTag(Tag::BTN_PAUSE);
-    pauseBtn->setAnchorPoint(ANCHOR_TR);
-    pauseBtn->setPosition(Vec2TR(-10, -10));
-    menuLayer->addChild(pauseBtn);
-    
-    pauseBtn->setOnClickListener(CC_CALLBACK_1(GameView::onClick, this));
-    
-    // 배너 광고 아래에 위치
-    /*
-    if( !User::isOwnRemoveAdsItem() ) {
-        pauseBtn->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
-    }
-     */
-}

@@ -33,7 +33,7 @@ private:
     CC_SYNTHESIZE_READONLY(RSPType, type, Type);
     CC_SYNTHESIZE(SBCallbackNode, onClickListener, OnClickListener);
     
-    cocos2d::Sprite *img;
+    CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, img, Image);
 };
 
 #endif /* RSPButton_hpp */

@@ -12,8 +12,8 @@
 #include "UIHelper.hpp"
 
 #include "GameDefine.h"
-
 #include "GameView.hpp"
+
 #include "ui/GameOverPopup.hpp"
 #include "ui/PausePopup.hpp"
 
@@ -22,7 +22,8 @@ using namespace cocos2d::ui;
 using namespace std;
 
 GameScene::GameScene() :
-gameMgr(GameManager::getInstance()) {
+gameMgr(GameManager::getInstance()),
+gameView(nullptr) {
 }
 
 GameScene::~GameScene() {
@@ -34,12 +35,25 @@ bool GameScene::init() {
         return false;
     }
     
+    // back key
+    {
+        auto listener = EventListenerKeyboard::create();
+        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+            
+            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
+                return;
+            }
+            
+            
+        };
+        
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
+    
     initBg();
-    initGameView();
     initMenu();
     
     gameMgr->addListener(this);
-//    gameMgr->onEnterGame(this, gameView);
     
     return true;
 }
@@ -47,13 +61,15 @@ bool GameScene::init() {
 void GameScene::onEnter() {
     
     Scene::onEnter();
+    
+    // 게임뷰 초기화
+    gameView = SceneManager::getGameView();
+    gameMgr->onEnterGame(gameView);
 }
 
 void GameScene::onEnterTransitionDidFinish() {
     
     Scene::onEnterTransitionDidFinish();
-    
-    SBAudioEngine::playBGM(SOUND_BGM_GAME);
     
     gameMgr->onGameStart();
 }
@@ -83,9 +99,11 @@ void GameScene::onGameOver() {
 /**
  * 메인 화면으로 이동
  */
-void GameScene::replaceMainScene() {
+void GameScene::replaceMain() {
     
-    SceneManager::getInstance()->replaceScene(SceneType::MAIN);
+    gameMgr->onExitGame();
+    
+    SceneManager::getInstance()->replace(SceneType::MAIN);
 }
 
 /**
@@ -97,32 +115,33 @@ void GameScene::showPausePopup() {
         // 팝업이 이미 존재함
         return;
     }
-
+    
+    gameMgr->onGamePause();
+    
     auto popup = PausePopup::create();
     popup->setTag(Tag::POPUP_PAUSE);
     popup->setOnClickMenuListener([=](PausePopup::MenuType type) {
-
+        
         switch( type ) {
             // resume
             case PausePopup::MenuType::RESUME: {
-//                gameMgr->onGameResume();
+                gameMgr->onGameResume();
                 popup->removeFromParent();
+                
             } break;
-
-            // home
-//            case PausePopup::MenuType::HOME: {
-////                gameMgr->onGameOver();
-//                this->replaceMainScene();
-//                
-//                popup->removeFromParent();
-//                
-//            } break;
-
+                
+            // main
+            case PausePopup::MenuType::MAIN: {
+                this->replaceMain();
+                popup->removeFromParent();
+                
+            } break;
+                
             default:
                 break;
         }
     });
-    addChild(popup, SBZOrder::TOP);
+    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
 }
 
 /**
@@ -142,22 +161,18 @@ void GameScene::showGameOver() {
     popup->setTag(Tag::POPUP_GAME_OVER);
     popup->setOnClickMenuListener([=](GameOverPopup::MenuType type) {
         
-        gameMgr->onExitGame();
-        
         switch( type ) {
             // restart
             case GameOverPopup::MenuType::RESTART: {
+                gameMgr->onGameRestart();
                 popup->removeFromParent();
-                
-                SceneManager::getInstance()->replaceScene(SceneType::GAME);
                 
             } break;
                 
             // home
             case GameOverPopup::MenuType::HOME: {
+                this->replaceMain();
                 popup->removeFromParent();
-                
-                this->replaceMainScene();
                 
             } break;
                 
@@ -165,30 +180,7 @@ void GameScene::showGameOver() {
                 break;
         }
     });
-    addChild(popup, SBZOrder::TOP);
-    
-    // 게임 오버 배경음 재생
-    /*
-    auto audioId = SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
-    
-    CCLOG("duration: %f, %f, %f",
-          SBAudioEngine::getDuration(SOUND_BGM),
-          SBAudioEngine::getDuration(SOUND_GAME_OVER),
-          SBAudioEngine::getDuration(audioId));
-    
-    // 배경음 원상복구
-    SBAudioEngine::setOnFinishedListener(audioId, [=](int, const string &) {
-        SBAudioEngine::playBGM(SOUND_BGM);
-    });
-    */
-    
-    /*
-    scheduleOnce([=](float dt) {
-        
-        SBAudioEngine::playBGM(SOUND_BGM);
-        
-    }, SBAudioEngine::getDuration(SOUND_GAME_OVER), "GameOverSound");
-    */
+    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
 }
 
 /**
@@ -208,31 +200,12 @@ void GameScene::onClick(Node *sender) {
  */
 void GameScene::initBg() {
     
-    // bg
-    addChild(LayerColor::create(Color4B::BLACK), -1);
-    
-    auto bg = Sprite::create(DIR_IMG_GAME + "RSP_bg.png");
-    bg->setAnchorPoint(ANCHOR_M);
-    bg->setPosition(Vec2MC(0,0));
-    addChild(bg, -1);
-    
-    // 배너 광고
-    if( !User::isOwnRemoveAdsItem() ) {
-        // 임시 이미지
-        auto ad = Sprite::create(DIR_IMG_GAME + "RSP_ad_top.png");
-        ad->setAnchorPoint(ANCHOR_MT);
-        ad->setPosition(Vec2TC(0, 0));
-        addChild(ad, SBZOrder::BOTTOM);
-    }
-}
-
-/**
- * 게임 레이어 초기화
- */
-void GameScene::initGameView() {
-    
-    gameView = GameView::create();
-    addChild(gameView);
+    // 임시 배너 이미지
+    banner = Sprite::create(DIR_IMG_GAME + "RSP_ad_top.png");
+    banner->setVisible(!User::isOwnRemoveAdsItem());
+    banner->setAnchorPoint(ANCHOR_MT);
+    banner->setPosition(Vec2TC(0, 0));
+    addChild(banner, SBZOrder::MIDDLE);
 }
 
 /**
@@ -240,15 +213,12 @@ void GameScene::initGameView() {
  */
 void GameScene::initMenu() {
     
-    auto menuLayer = SBNodeUtils::createWinSizeNode();
-    addChild(menuLayer);
-    
     // 일시정지
     auto pauseBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_pause.png");
     pauseBtn->setTag(Tag::BTN_PAUSE);
     pauseBtn->setAnchorPoint(ANCHOR_TR);
     pauseBtn->setPosition(Vec2TR(-10, -10));
-    menuLayer->addChild(pauseBtn);
+    addChild(pauseBtn, SBZOrder::BOTTOM);
     
     pauseBtn->setOnClickListener(CC_CALLBACK_1(GameScene::onClick, this));
     

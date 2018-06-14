@@ -14,10 +14,9 @@
 #include "superbomb.h"
 #include "RSP.h"
 
-#include "../../base/ViewManager.hpp"
 #include "../GameManager.hpp"
 
-class Man : public cocos2d::Node, public ViewListener, public GameListener {
+class Man : public cocos2d::Node, public GameListener {
 public:
     enum class Position {
         LEFT,
@@ -40,8 +39,6 @@ private:
     void onExit() override;
     
     void update(float dt) override;
-    
-    void onViewChanged(ViewType viewType) override;
     
     void initImage();
     void initFeverGage();

@@ -7,6 +7,7 @@
 
 #include "Man.hpp"
 
+#include "SceneManager.h"
 #include "../GameDefine.h"
 
 USING_NS_CC;
@@ -51,36 +52,15 @@ bool Man::init() {
     setManPosition(Position::LEFT);
     
     gameMgr->addListener(this);
-    ViewManager::getInstance()->addListener(this);
     
     return true;
 }
 
 void Man::onExit() {
     
-    ViewManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
     
     Node::onExit();
-}
-
-/**
- * 뷰 타입 변경
- */
-void Man::onViewChanged(ViewType viewType) {
-    
-    switch( viewType ) {
-        case ViewType::MAIN: {
-            feverGage.bg->setVisible(false);
-        } break;
-            
-        case ViewType::GAME: {
-            feverGage.bg->setVisible(true);
-        } break;
-            
-        default:
-            break;
-    }
 }
 
 void Man::onGameStart() {
@@ -396,6 +376,7 @@ void Man::initImage() {
 void Man::initFeverGage() {
  
     feverGage.bg = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_bg.png");
+    feverGage.bg->setVisible(SceneManager::getSceneType() == SceneType::GAME);
     feverGage.bg->setAnchorPoint(ANCHOR_MB);
     addChild(feverGage.bg);
 

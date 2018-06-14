@@ -6,6 +6,8 @@
 #include "GameConfiguration.hpp"
 #include "SceneManager.h"
 
+#include "game/GameManager.hpp"
+
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(720, 1280);
@@ -16,8 +18,10 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    GameManager::destroyInstance();
     GameConfiguration::destroyInstance();
     PatchManager::destroyInstance();
+    SceneManager::destroyInstance();
     SBDirector::end();
 }
 
@@ -61,13 +65,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
     
     // 초기화
-    SBDirector::init();
     
+    SBDirector::init();
     PatchManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();
+    GameManager::getInstance()->init();
 
     // run
-    SceneManager::getInstance()->replaceScene(SceneType::SPLASH);
+    SceneManager::getInstance()->replace(SceneType::SPLASH);
 
     return true;
 }

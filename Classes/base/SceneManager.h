@@ -12,6 +12,8 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
+class GameView;
+
 enum class SceneType {
     NONE,
     SPLASH,
@@ -30,20 +32,24 @@ private:
     SceneManager();
     
     cocos2d::Scene* createScene(SceneType type);
+    void createGameView();
     
 public:
-    void replaceScene(SceneType type, std::function<cocos2d::Scene*()> createSceneFunc);
-    void replaceScene(SceneType type);
+    void replace(SceneType type, std::function<cocos2d::Scene*()> createSceneFunc);
+    void replace(SceneType type);
   
     bool onBackKeyReleased();
     
 // getter
 public:
+    static SceneType getSceneType();
     static cocos2d::Scene* getScene();
+    static GameView* getGameView();
     
 private:
-    CC_SYNTHESIZE_READONLY(SceneType, currentSceneType, SceneType);
-    cocos2d::Scene *currentScene;
+    SceneType sceneType;
+    cocos2d::Scene *scene;
+    GameView *gameView;
     
     bool isRunningReplaceScene;
 };

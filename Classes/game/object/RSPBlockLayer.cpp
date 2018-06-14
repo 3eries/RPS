@@ -42,7 +42,6 @@ bool RSPBlockLayer::init() {
     initBlocks();
     
     gameMgr->addListener(this);
-    ViewManager::getInstance()->addListener(this);
     
     return true;
 }
@@ -54,28 +53,9 @@ void RSPBlockLayer::onEnter() {
 
 void RSPBlockLayer::onExit() {
     
-    ViewManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
     
     Node::onExit();
-}
-
-/**
- * 뷰 타입 변경
- */
-void RSPBlockLayer::onViewChanged(ViewType viewType) {
-    
-    switch( viewType ) {
-        case ViewType::MAIN: {
-        } break;
-            
-        case ViewType::GAME: {
-//            resetBlocks();
-        } break;
-            
-        default:
-            break;
-    }
 }
 
 /**

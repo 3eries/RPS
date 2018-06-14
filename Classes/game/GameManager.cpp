@@ -6,7 +6,6 @@
 
 #include "GameManager.hpp"
 
-#include "GameScene.hpp"
 #include "GameView.hpp"
 
 USING_NS_CC;
@@ -41,6 +40,8 @@ GameManager::~GameManager() {
  * 매니저 초기화
  */
 void GameManager::init() {
+    
+    reset();
 }
 
 void GameManager::reset() {
@@ -101,7 +102,7 @@ void GameManager::addScore(int score) {
     setScore(this->score + score);
 }
 
-Node* GameManager::getView() {
+GameView* GameManager::getView() {
     return instance->view;
 }
 

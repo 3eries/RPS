@@ -9,6 +9,7 @@
 #include "../splash/SplashScene.hpp"
 #include "../main/MainScene.hpp"
 #include "../game/GameScene.hpp"
+#include "../game/GameView.hpp"
 
 USING_NS_CC;
 using namespace std;
@@ -29,13 +30,15 @@ void SceneManager::destroyInstance() {
 }
 
 SceneManager::SceneManager() :
-currentSceneType(SceneType::NONE),
-currentScene(nullptr),
+sceneType(SceneType::NONE),
+scene(nullptr),
+gameView(nullptr),
 isRunningReplaceScene(false) {
 }
 
 SceneManager::~SceneManager() {
     
+    CC_SAFE_RELEASE_NULL(gameView);
 }
 
 /**
@@ -55,10 +58,26 @@ Scene* SceneManager::createScene(SceneType type) {
     return nullptr;
 }
 
+void SceneManager::createGameView() {
+    
+    if( sceneType != SceneType::MAIN && sceneType != SceneType::GAME ) {
+        return;
+    }
+    
+    if( gameView ) {
+        gameView->removeFromParent();
+        CC_SAFE_RELEASE_NULL(gameView);
+    }
+    
+    gameView = GameView::create();
+    gameView->retain();
+    scene->addChild(gameView, -1);
+}
+
 /**
  * Scene 전환
  */
-void SceneManager::replaceScene(SceneType type, function<Scene*()> createSceneFunc) {
+void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
     
     CCASSERT(type != SceneType::NONE, "SceneManager::replaceScene error: invalid scene type.");
     CCASSERT(createSceneFunc != nullptr, "SceneManager::replaceScene error: create scene function is null.");
@@ -68,17 +87,16 @@ void SceneManager::replaceScene(SceneType type, function<Scene*()> createSceneFu
     }
     
     isRunningReplaceScene = true;
-    
-//    SceneType prevScene = this->currentSceneType;
-//    SceneType currScene = type;
-    
-    this->currentSceneType = type;
+    this->sceneType = type;
 
     // Scene 생성
     auto scene = createSceneFunc();
-    this->currentScene = scene;
+    this->scene = scene;
     
     CCASSERT(scene != nullptr, "SceneManager::replaceScene error: invalid scene.");
+    
+    // 게임뷰 생성
+    createGameView();
     
     // Scene 전환 효과
 //    auto trans = TransitionCrossFade::create(0.3f, newScene);
@@ -87,7 +105,7 @@ void SceneManager::replaceScene(SceneType type, function<Scene*()> createSceneFu
     switch( type ) {
         case SceneType::SPLASH:          break;
         case SceneType::MAIN:            scene = TransitionCrossFade::create(0.7f, scene);     break;
-        case SceneType::GAME:            scene = TransitionFade::create(0.2f, scene);          break;
+        case SceneType::GAME:            scene = TransitionFade::create(0.7f, scene);          break;
             
         default: break;
     }
@@ -101,9 +119,9 @@ void SceneManager::replaceScene(SceneType type, function<Scene*()> createSceneFu
     }, this, 0, 0, 0.1f, false, "SCENE_ON_ENTER");
 }
 
-void SceneManager::replaceScene(SceneType type) {
+void SceneManager::replace(SceneType type) {
     
-    return replaceScene(type, [=]() -> Scene* {
+    return replace(type, [=]() -> Scene* {
         return this->createScene(type);
     });
 }
@@ -114,11 +132,11 @@ void SceneManager::replaceScene(SceneType type) {
  */
 bool SceneManager::onBackKeyReleased() {
     
-    if( !currentScene ) {
+    if( !scene ) {
         return false;
     }
     
-    auto children = currentScene->getChildren();
+    auto children = scene->getChildren();
     
     for( auto child : children ) {
         if( false /*TODO*/) {
@@ -129,6 +147,15 @@ bool SceneManager::onBackKeyReleased() {
     return false;
 }
 
-Scene* SceneManager::getScene() {
-    return instance->currentScene;
+SceneType SceneManager::getSceneType() {
+    return instance->sceneType;
 }
+
+Scene* SceneManager::getScene() {
+    return instance->scene;
+}
+
+GameView* SceneManager::getGameView() {
+    return instance->gameView;
+}
+

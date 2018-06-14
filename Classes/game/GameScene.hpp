@@ -25,13 +25,12 @@ public:
     ~GameScene();
     
 private:
-    typedef enum {
+    enum  Tag{
         BTN_PAUSE                = 100,
         
         POPUP_PAUSE              = 1000,
         POPUP_GAME_OVER,
-        
-    } Tag;
+    };
     
 private:
     GameScene();
@@ -42,10 +41,7 @@ private:
     void onExit() override;
     
     void initBg();
-    void initGameView();
     void initMenu();
-    
-    void onClick(cocos2d::Node *sender) override;
     
 // GameListener
 private:
@@ -53,18 +49,20 @@ private:
     void onGameOver() override;
     
 private:
-    void replaceMainScene();
+    void replaceMain();
     
     void showPausePopup();
     void removePausePopup();
     
     void showGameOver();
+
+    void onClick(cocos2d::Node *sender) override;
     
 private:
     GameManager *gameMgr;
+    CC_SYNTHESIZE(GameView*, gameView, GameView);
     
-    GameView *gameView;
-    cocos2d::Node *menuLayer;
+    cocos2d::Sprite *banner; // 임시
 };
 
 #endif /* GameScene_hpp */

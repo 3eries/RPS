@@ -65,8 +65,7 @@ private:
     
 // getter
 public:
-    static cocos2d::Node* getScene();
-    static cocos2d::Node* getView();
+    static GameView* getView();
     
 private:
     CC_SYNTHESIZE_READONLY(GameConfiguration*, config, Config);

@@ -43,12 +43,13 @@
 		1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49520A8A7D2007E63AD /* MainScene.cpp */; };
 		1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49920A8A9E2007E63AD /* UIHelper.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54A220D2A8C4009E2201 /* LogoView.cpp */; };
+		1D8F54A720D2B413009E2201 /* SpineTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54A620D2B413009E2201 /* SpineTestScene.cpp */; };
+		1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54AF20D2D114009E2201 /* SBSpineHelper.cpp */; };
 		1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */; };
 		1D97ED9020C7348D0027C319 /* PatchManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED8E20C7348D0027C319 /* PatchManager.cpp */; };
 		1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */; };
 		1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9720C8E2AA0027C319 /* RSPBlockLayer.cpp */; };
-		1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1F620C11E85006DE988 /* MainView.cpp */; };
-		1D9ED1FF20C1303C006DE988 /* ViewManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED1FD20C13033006DE988 /* ViewManager.cpp */; };
 		1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */; };
 		1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBB20B4675A006BC169 /* RSPButton.cpp */; };
 		1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBC20B4675A006BC169 /* RSPBlock.cpp */; };
@@ -229,6 +230,12 @@
 		1D45C49920A8A9E2007E63AD /* UIHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIHelper.cpp; sourceTree = "<group>"; };
 		1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIHelper.hpp; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* God of RPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "God of RPS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D8F54A220D2A8C4009E2201 /* LogoView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogoView.cpp; sourceTree = "<group>"; };
+		1D8F54A320D2A8C4009E2201 /* LogoView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LogoView.hpp; sourceTree = "<group>"; };
+		1D8F54A520D2B412009E2201 /* SpineTestScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpineTestScene.hpp; sourceTree = "<group>"; };
+		1D8F54A620D2B413009E2201 /* SpineTestScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpineTestScene.cpp; sourceTree = "<group>"; };
+		1D8F54AF20D2D114009E2201 /* SBSpineHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBSpineHelper.cpp; sourceTree = "<group>"; };
+		1D8F54B020D2D114009E2201 /* SBSpineHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBSpineHelper.hpp; sourceTree = "<group>"; };
 		1D9542D320C6D27500EDC8BA /* RSPButtonLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButtonLayer.cpp; sourceTree = "<group>"; };
 		1D9542D420C6D27500EDC8BA /* RSPButtonLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPButtonLayer.hpp; sourceTree = "<group>"; };
 		1D97ED8E20C7348D0027C319 /* PatchManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PatchManager.cpp; sourceTree = "<group>"; };
@@ -237,10 +244,6 @@
 		1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigTestScene.cpp; sourceTree = "<group>"; };
 		1D97ED9720C8E2AA0027C319 /* RSPBlockLayer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RSPBlockLayer.cpp; sourceTree = "<group>"; };
 		1D97ED9820C8E2AA0027C319 /* RSPBlockLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPBlockLayer.hpp; sourceTree = "<group>"; };
-		1D9ED1F620C11E85006DE988 /* MainView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainView.cpp; sourceTree = "<group>"; };
-		1D9ED1F720C11E85006DE988 /* MainView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainView.hpp; sourceTree = "<group>"; };
-		1D9ED1FD20C13033006DE988 /* ViewManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewManager.cpp; sourceTree = "<group>"; };
-		1D9ED1FE20C13034006DE988 /* ViewManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ViewManager.hpp; sourceTree = "<group>"; };
 		1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameConfiguration.cpp; sourceTree = "<group>"; };
 		1D9ED20120C421D8006DE988 /* GameConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameConfiguration.hpp; sourceTree = "<group>"; };
 		1DA98BB920B4675A006BC169 /* RSPButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPButton.hpp; sourceTree = "<group>"; };
@@ -420,8 +423,6 @@
 				1DA98BD020B47E66006BC169 /* User.cpp */,
 				1DA98BD120B47E66006BC169 /* User.hpp */,
 				1D45C44720A8A787007E63AD /* UserDefaultKey.h */,
-				1D9ED1FD20C13033006DE988 /* ViewManager.cpp */,
-				1D9ED1FE20C13034006DE988 /* ViewManager.hpp */,
 			);
 			path = base;
 			sourceTree = "<group>";
@@ -447,8 +448,6 @@
 			children = (
 				1D45C49520A8A7D2007E63AD /* MainScene.cpp */,
 				1D45C49620A8A7D2007E63AD /* MainScene.hpp */,
-				1D9ED1F620C11E85006DE988 /* MainView.cpp */,
-				1D9ED1F720C11E85006DE988 /* MainView.hpp */,
 			);
 			path = main;
 			sourceTree = "<group>";
@@ -458,9 +457,10 @@
 			children = (
 				1D1F3C8020AC9F5E0035A36C /* audio */,
 				1D45C47820A8A7B8007E63AD /* base */,
+				1D8F54AD20D2D107009E2201 /* editor-support */,
 				1D45C45720A8A7B8007E63AD /* jsoncpp */,
-				1D45C47720A8A7B8007E63AD /* superbomb.h */,
 				1D45C46B20A8A7B8007E63AD /* network */,
+				1D45C47720A8A7B8007E63AD /* superbomb.h */,
 				1D45C44D20A8A7B8007E63AD /* ui */,
 				1D45C46E20A8A7B8007E63AD /* utils */,
 			);
@@ -567,10 +567,29 @@
 		1D45C49820A8A9DC007E63AD /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				1D8F54A220D2A8C4009E2201 /* LogoView.cpp */,
+				1D8F54A320D2A8C4009E2201 /* LogoView.hpp */,
 				1D45C49920A8A9E2007E63AD /* UIHelper.cpp */,
 				1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */,
 			);
 			path = ui;
+			sourceTree = "<group>";
+		};
+		1D8F54AD20D2D107009E2201 /* editor-support */ = {
+			isa = PBXGroup;
+			children = (
+				1D8F54AE20D2D107009E2201 /* spine */,
+			);
+			path = "editor-support";
+			sourceTree = "<group>";
+		};
+		1D8F54AE20D2D107009E2201 /* spine */ = {
+			isa = PBXGroup;
+			children = (
+				1D8F54AF20D2D114009E2201 /* SBSpineHelper.cpp */,
+				1D8F54B020D2D114009E2201 /* SBSpineHelper.hpp */,
+			);
+			path = spine;
 			sourceTree = "<group>";
 		};
 		1DA98BB820B4675A006BC169 /* object */ = {
@@ -599,6 +618,8 @@
 				1DA98BD420B47EEE006BC169 /* BaseTestScene.hpp */,
 				1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */,
 				1D97ED9420C82A220027C319 /* ConfigTestScene.hpp */,
+				1D8F54A620D2B413009E2201 /* SpineTestScene.cpp */,
+				1D8F54A520D2B412009E2201 /* SpineTestScene.hpp */,
 				1DFDEB1420C11B53001BC81D /* TestHelper.cpp */,
 				1DFDEB1520C11B53001BC81D /* TestHelper.hpp */,
 				1DA98BCA20B47D45006BC169 /* TestMenuScene.cpp */,
@@ -897,7 +918,6 @@
 				1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */,
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
-				1D9ED1F820C11E85006DE988 /* MainView.cpp in Sources */,
 				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
 				1D1F3C9A20AD6D040035A36C /* SBBasePopup.cpp in Sources */,
@@ -913,6 +933,7 @@
 				1D45C48520A8A7B8007E63AD /* json_value.cpp in Sources */,
 				1DA98BC120B4676A006BC169 /* Man.cpp in Sources */,
 				1D45C48D20A8A7B8007E63AD /* SBTypes.cpp in Sources */,
+				1D8F54A720D2B413009E2201 /* SpineTestScene.cpp in Sources */,
 				1D45C49120A8A7BD007E63AD /* SplashScene.cpp in Sources */,
 				1DA98BCF20B47D4E006BC169 /* TouchTestScene.cpp in Sources */,
 				1D45C49420A8A7C8007E63AD /* GameScene.cpp in Sources */,
@@ -932,10 +953,11 @@
 				1D1F3C9720AD4CCB0035A36C /* GameOverPopup.cpp in Sources */,
 				1DA98BD220B47E66006BC169 /* User.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
+				1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */,
 				1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */,
 				1D45C48920A8A7B8007E63AD /* SBSystemUtils.cpp in Sources */,
+				1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */,
 				1DA98BC420B46776006BC169 /* TimeBar.cpp in Sources */,
-				1D9ED1FF20C1303C006DE988 /* ViewManager.cpp in Sources */,
 				1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */,
 				1D45C47F20A8A7B8007E63AD /* SBToggleButton.cpp in Sources */,
 				1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */,

@@ -15,14 +15,13 @@
 #include "superbomb.h"
 
 #include "RSP.h"
-#include "ViewManager.hpp"
 
 #include "../GameManager.hpp"
 #include "Man.hpp"
 
 class RSPBlock;
 
-class RSPBlockLayer : public cocos2d::Node, public ViewListener, public GameListener {
+class RSPBlockLayer : public cocos2d::Node, public GameListener {
 public:
     CREATE_FUNC(RSPBlockLayer);
     ~RSPBlockLayer();
@@ -37,8 +36,6 @@ private:
     
     void initBlocks();
     void resetBlocks();
-    
-    void onViewChanged(ViewType viewType) override;
     
 // GameListener
 private:
