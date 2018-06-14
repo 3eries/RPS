@@ -31,6 +31,24 @@ static const std::string DIR_IMG_MAIN               = DIR_ADD(DIR_IMG, "main");
 // 애니메이션 경로
 static const std::string DIR_ANIM                   = "anims/";
 
+// 스파인 애니메이션
+static const std::string ANIM_EXT                   = ".json";
+static const std::string ANIM_LOGO                  = DIR_ANIM + "3eries_logo" + ANIM_EXT;
+static const std::string ANIM_CLOUD                 = DIR_ANIM + "RSP_cloud" + ANIM_EXT;
+static const std::string ANIM_FEVER_MODE_BG         = DIR_ANIM + "fevermode_bg" + ANIM_EXT;
+static const std::string ANIM_FEVER_MODE_FIRE       = DIR_ANIM + "fevermode_fire" + ANIM_EXT;
+static const std::string ANIM_DRAW                  = DIR_ANIM + "character_draw" + ANIM_EXT;
+static const std::string ANIM_DIE                   = DIR_ANIM + "die" + ANIM_EXT;
+
+static const std::string ANIM_NAME_RUN              = "run";
+static const std::string ANIM_NAME_CLEAR            = "clear";
+static const std::string ANIM_NAME_DRAW_LEFT        = "draw_left";
+static const std::string ANIM_NAME_DRAW_RIGHT       = "draw_right";
+static const std::string ANIM_NAME_DIE_LEFT         = "die_left";
+static const std::string ANIM_NAME_DIE_RIGHT        = "die_right";
+
+static const std::string ANIM_EVENT_DIE             = "die";
+
 // 폰트 경로
 static const std::string DIR_FONT                   = "fonts/";
 
