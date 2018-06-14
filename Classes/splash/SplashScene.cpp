@@ -14,15 +14,14 @@
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 
+#include "LogoView.hpp"
+
 USING_NS_CC;
 using namespace spine;
 using namespace std;
 
 static const float  CHECK_REPLACE_MAIN_SCENE_INTERVAL   = 0.05f;
 static const string CHECK_REPLACE_MAIN_SCENE_SCHEDULER  = "CHECK_REPLACE_MAIN_SCENE_SCHEDULER";
-
-static const float  LAUNCH_IMAGE_DURATION               = 3.0f;
-static const string LAUNCH_IMAGE_SCHEDULER              = "LAUNCH_IMAGE_SCHEDULER";
 
 static const float  LOGIN_TIME_OUT                      = 3.0f;
 static const string LOGIN_TIME_OUT_SCHEDULER            = "LOGIN_TIME_OUT_SCHEDULER";
@@ -83,7 +82,7 @@ void SplashScene::replaceMainScene() {
     isReplacedMainScene = true;
     
     // Main으로 전환
-    SceneManager::getInstance()->replaceScene(SceneType::MAIN);
+    SceneManager::getInstance()->replace(SceneType::MAIN);
 }
 
 /**
@@ -92,54 +91,15 @@ void SplashScene::replaceMainScene() {
 void SplashScene::initLaunchImage() {
     
     addChild(LayerColor::create(Color4B::WHITE));
-    
-    // first launch image
-//    auto img = Sprite::create(DIR_IMG_SPLASH + "logo_3.jpg");
-//    img->setAnchorPoint(ANCHOR_M);
-//    img->setPosition(Vec2MC(0,0));
-//    addChild(img);
 
-    // 애니메이션
-    string jsonFile  = DIR_ANIM + "3eries_logo.json";
-    string atlasFile = SBStringUtils::replaceAll(jsonFile, ".json", ".atlas");
+    // 로고
+    auto logoView = LogoView::create();
+    addChild(logoView);
     
-    auto anim = SkeletonAnimation::createWithJsonFile(jsonFile, atlasFile);
-    anim->setAnchorPoint(Vec2::ZERO);
-    anim->setPosition(Vec2(SB_WIN_SIZE*0.5f));
-    addChild(anim);
-    
-    auto track = anim->setAnimation(0, "run", false);
-    anim->update(0);
-    
-    const float ANIM_DURATION = anim->getAnimationDuration("run");
-    
-    CCLOG("logo anim duration: %f", ANIM_DURATION);
-    
-    anim->setTrackEndListener(track, [=](spTrackEntry *entry) {
-        
-        CCLOG("track logo anim end");
-    });
-    
-    anim->setTrackCompleteListener(track, [=](spTrackEntry *entry) {
-        
-        CCLOG("track logo anim completed");
-    });
-    
-    anim->setEndListener([=](spTrackEntry *entry) {
-       
-        CCLOG("logo anim end");
-    });
-
-    
-    anim->setCompleteListener([=](spTrackEntry *entry) {
-        
-        CCLOG("logo anim completed");
-    });
-    
-    // scheduler
-    scheduleOnce([=](float dt) {
+    logoView->setOnFinishedListener([=]() {
         this->launchImageFinished();
-    }, ANIM_DURATION, LAUNCH_IMAGE_SCHEDULER);
+    });
+    logoView->run();
 }
 
 /**
