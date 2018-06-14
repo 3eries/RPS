@@ -49,6 +49,7 @@ public:
     }
     
     static std::string replaceAll(std::string str, std::string oldStr, std::string newStr);
+    static bool isContains(const std::string &str, const std::string &findStr);
     
     static const char* toUpper(std::string str);
     static const char* toLower(std::string str);

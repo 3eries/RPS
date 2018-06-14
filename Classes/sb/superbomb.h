@@ -36,4 +36,7 @@
 #include "utils/SBStringUtils.h"
 #include "utils/SBSystemUtils.h"
 
+// editor-support
+#include "editor-support/spine/SBSpineHelper.hpp"
+
 #endif /* superbomb_h */

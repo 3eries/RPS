@@ -88,6 +88,14 @@ string SBStringUtils::replaceAll(string str, string oldStr, string newStr) {
 }
 
 /**
+ * 문자열 포함 여부
+ */
+bool SBStringUtils::isContains(const string &str, const string &findStr) {
+
+    return str.find(findStr) != string::npos;
+}
+
+/**
  *  대문자로 변환
  */
 const char* SBStringUtils::toUpper(string str) {
