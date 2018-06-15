@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "5fy0bg1xVD/nKZvuryiZmfj9vg0", "spine": "3.6.52", "width": 984, "height": 1312, "images": "./fever_mode/" },
+"skeleton": { "hash": "OGb6qeAXsLzqo77hHfXrygHKKec", "spine": "3.6.52", "width": 984, "height": 1312, "images": "./fever_mode/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "bg_fever", "parent": "root", "scaleX": 4.1, "scaleY": 4.1 }
@@ -40,6 +40,9 @@
 					{ "time": 3.1333, "color": "ffffff00" },
 					{ "time": 3.2333, "color": "ffffff32" },
 					{ "time": 3.3333, "color": "ffffff00" }
+				],
+				"attachment": [
+					{ "time": 0, "name": "bg_fever" }
 				]
 			}
 		}
