@@ -16,18 +16,42 @@ using namespace std;
 void ResourceHelper::preload() {
     
     // image
+    auto textureCache = Director::getInstance()->getTextureCache();
+    
     auto getAnimPNG = [](string anim) -> string {
         return SBStringUtils::replaceAll(anim, ANIM_EXT, ".png");
     };
     
-    auto textureCache = Director::getInstance()->getTextureCache();
-    textureCache->addImage(getAnimPNG(ANIM_CLOUD));
-    textureCache->addImageAsync(getAnimPNG(ANIM_FEVER_MODE_BG), nullptr);
-    textureCache->addImageAsync(getAnimPNG(ANIM_FEVER_MODE_FIRE), nullptr);
-    textureCache->addImageAsync(getAnimPNG(ANIM_DRAW), nullptr);
-    textureCache->addImageAsync(getAnimPNG(ANIM_DIE), [=](Texture2D *tex) {
-        CCLOG("add image completed : %d", tex != nullptr);
-    });
+    // add image
+    {
+        string syncFiles[] = {
+            ANIM_CLOUD,
+        };
+        
+        for( string file : syncFiles ) {
+            textureCache->addImage(getAnimPNG(file));
+        }
+    }
+    
+    // add image async
+    {
+        string asyncFiles[] = {
+            ANIM_FEVER_MODE_BG,
+            ANIM_FEVER_MODE_FIRE,
+            ANIM_DRAW,
+            ANIM_DIE,
+        };
+        
+        for( string file : asyncFiles ) {
+            textureCache->addImageAsync(getAnimPNG(file), nullptr);
+        }
+        
+        const string DIE2 = SBStringUtils::replaceAll(getAnimPNG(ANIM_DIE), ".png", "2.png");
+        textureCache->addImageAsync(DIE2, [=](Texture2D *tex) {
+            CCLOG("add image completed : %d, %d", tex != nullptr,
+                  textureCache->getTextureForKey(getAnimPNG(ANIM_DIE)) != nullptr);
+        });
+    }
     
     // sound
     SBAudioEngine::preload(SOUND_BGM_MAIN);
