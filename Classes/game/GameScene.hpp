@@ -26,9 +26,12 @@ public:
     
 private:
     enum  Tag{
-        BTN_PAUSE                = 100,
+        LAYER_MENU               = 100,
         
-        POPUP_PAUSE              = 1000,
+        BTN_PAUSE                = 1000,
+        
+        POPUP_PAUSE              = 10000,
+        POPUP_CONTINUE,
         POPUP_GAME_OVER,
     };
     
@@ -43,18 +46,23 @@ private:
     void initBg();
     void initMenu();
     
+    void reset();
+    
 // GameListener
 private:
     void onGameStart() override;
+    void onPreGameOver() override;
+    void onContinue() override;
     void onGameOver() override;
     
 private:
     void replaceMain();
     
     void showPausePopup();
-    void removePausePopup();
-    
+    void showContinuePopup();
     void showGameOver();
+    
+    void removePausePopup();
 
     void onClick(cocos2d::Node *sender) override;
     

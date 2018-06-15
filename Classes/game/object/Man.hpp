@@ -38,11 +38,11 @@ private:
     bool init() override;
     void onExit() override;
     
-    void update(float dt) override;
-    
     void initImage();
     void initFeverGage();
-    void initAnimations();
+    
+    void reset();
+    void clearRemoveNodes();
     
     void setManAnimation(AnimationType animType, bool runAnimation = true);
     void setManPosition(Position pos);
@@ -58,9 +58,11 @@ private:
 private:
     void onGameStart() override;
     void onGameRestart() override;
-    void onGameOver() override;
     void onGamePause() override;
     void onGameResume() override;
+    void onPreGameOver() override;
+    void onContinue() override;
+    void onGameOver() override;
     void onGameModeChanged(GameMode mode) override;
     
 public:
@@ -73,9 +75,6 @@ public:
     
 private:
     GameManager *gameMgr;
-    
-    CC_SYNTHESIZE(RSPType, lastWinHand, LastWinHand);
-    double lastShowdownTime; // 단위 : sec
     
     CC_SYNTHESIZE_READONLY(Position, manPosition, ManPosition);
     
@@ -95,8 +94,8 @@ private:
     
     FeverGage feverGage;
 
-    // 사망 애니메이션
-    spine::SkeletonAnimation *dieAnimation;
+    // 삭제 예정 노드 리스트 (리셋 시)
+    cocos2d::Vector<cocos2d::Node*> needRemoveNodes;
 };
 
 #endif /* Man_hpp */

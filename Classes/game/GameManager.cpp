@@ -6,6 +6,7 @@
 
 #include "GameManager.hpp"
 
+#include "GameDefine.h"
 #include "GameView.hpp"
 
 USING_NS_CC;
@@ -50,6 +51,7 @@ void GameManager::reset() {
     gamePaused = false;
     gameOver = false;
     gameMode = GameMode::NORMAL;
+    continueCount = 0;
     levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
     score = 0;
 }
@@ -135,6 +137,7 @@ void GameManager::onGameRestart() {
     }
     
     onGameStart();
+//    onGameResume(true);
 }
 
 /**
@@ -157,10 +160,12 @@ void GameManager::onGamePause() {
 /**
  * 게임 재게
  */
-void GameManager::onGameResume() {
+void GameManager::onGameResume(bool force) {
     
-    if( !gamePaused ) {
-        return;
+    if( !force ) {
+        if( !gamePaused ) {
+            return;
+        }
     }
     
     gamePaused = false;
@@ -176,14 +181,25 @@ void GameManager::onGameResume() {
  */
 void GameManager::onPreGameOver() {
     
-    // 전면 광고
-//    AdsManager::getInstance()->showInterstitial();
-    
-    onGamePause();
+//    onGamePause();
     
     for( auto listener : listeners ) {
         listener->onPreGameOver();
     }
+}
+
+/**
+ * 이어하기
+ */
+void GameManager::onContinue() {
+   
+    ++continueCount;
+    
+    for( auto listener : listeners ) {
+        listener->onContinue();
+    }
+    
+//    onGameResume();
 }
 
 /**
@@ -197,8 +213,6 @@ void GameManager::onGameOver() {
     
     gameOver = true;
     updateLocked = true;
-    
-//    onGamePause();
     
     for( auto listener : listeners ) {
         listener->onGameOver();

@@ -54,6 +54,8 @@ void TimeBar::onExit() {
 
 void TimeBar::reset() {
     
+    setVisible(true);
+    
     timePoint = gameMgr->getConfig()->getTimeInfo().firstPoint;
 }
 
@@ -66,15 +68,32 @@ void TimeBar::onGameStart() {
 void TimeBar::onGameRestart() {
 }
 
-void TimeBar::onGameOver() {
-    
-    stopTimeBar();
-}
-
 void TimeBar::onGamePause() {
 }
 
 void TimeBar::onGameResume() {
+}
+
+/**
+ * 게임 오버 전
+ */
+void TimeBar::onPreGameOver() {
+    
+    setVisible(false);
+    stopTimeBar();
+}
+
+/**
+ * 이어하기
+ */
+void TimeBar::onContinue() {
+    
+    reset();
+    updateGage();
+}
+
+void TimeBar::onGameOver() {
+    
 }
 
 /**
@@ -135,7 +154,7 @@ void TimeBar::update(float dt) {
     
     // 타임 포인트 체크
     if( timePoint == 0 ) {
-        GameManager::getInstance()->onGameOver();
+        GameManager::getInstance()->onPreGameOver();
     }
 }
 

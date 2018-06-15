@@ -43,6 +43,7 @@
 		1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49520A8A7D2007E63AD /* MainScene.cpp */; };
 		1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49920A8A9E2007E63AD /* UIHelper.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */; };
 		1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54A220D2A8C4009E2201 /* LogoView.cpp */; };
 		1D8F54A720D2B413009E2201 /* SpineTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54A620D2B413009E2201 /* SpineTestScene.cpp */; };
 		1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54AF20D2D114009E2201 /* SBSpineHelper.cpp */; };
@@ -230,6 +231,8 @@
 		1D45C49920A8A9E2007E63AD /* UIHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIHelper.cpp; sourceTree = "<group>"; };
 		1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIHelper.hpp; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* God of RPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "God of RPS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContinuePopup.cpp; sourceTree = "<group>"; };
+		1D773ACE20D394D200EB4B99 /* ContinuePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContinuePopup.hpp; sourceTree = "<group>"; };
 		1D8F54A220D2A8C4009E2201 /* LogoView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LogoView.cpp; sourceTree = "<group>"; };
 		1D8F54A320D2A8C4009E2201 /* LogoView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LogoView.hpp; sourceTree = "<group>"; };
 		1D8F54A520D2B412009E2201 /* SpineTestScene.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SpineTestScene.hpp; sourceTree = "<group>"; };
@@ -633,6 +636,8 @@
 		1DEB466120A9EF28004B8F87 /* ui */ = {
 			isa = PBXGroup;
 			children = (
+				1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */,
+				1D773ACE20D394D200EB4B99 /* ContinuePopup.hpp */,
 				1D1F3C9520AD4CCB0035A36C /* GameOverPopup.cpp */,
 				1D1F3C9620AD4CCB0035A36C /* GameOverPopup.hpp */,
 				1D1F3C9B20AD74210035A36C /* PausePopup.cpp */,
@@ -920,6 +925,7 @@
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
 				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
+				1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */,
 				1D1F3C9A20AD6D040035A36C /* SBBasePopup.cpp in Sources */,
 				1D45C48820A8A7B8007E63AD /* SBHttp.cpp in Sources */,
 				1D1F3C9420AD4A3D0035A36C /* GameView.cpp in Sources */,

@@ -14,8 +14,9 @@
 #include "GameDefine.h"
 #include "GameView.hpp"
 
-#include "ui/GameOverPopup.hpp"
 #include "ui/PausePopup.hpp"
+#include "ui/ContinuePopup.hpp"
+#include "ui/GameOverPopup.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -81,11 +82,42 @@ void GameScene::onExit() {
     Scene::onExit();
 }
 
+void GameScene::reset() {
+    
+    getChildByTag(Tag::LAYER_MENU)->setVisible(true);
+}
+
 /**
  * 게임 시작
  */
 void GameScene::onGameStart() {
     
+    reset();
+}
+
+/**
+ * 게임 오버 전
+ */
+void GameScene::onPreGameOver() {
+    
+    getChildByTag(Tag::LAYER_MENU)->setVisible(false);
+    
+    // 이어하기
+    if( gameMgr->getScore() >= CONTINUE_CONDITION_SCORE && gameMgr->getContinueCount() == 0 ) {
+        showContinuePopup();
+    }
+    // 게임 오버
+    else {
+        gameMgr->onGameOver();
+    }
+}
+
+/**
+ * 이어하기
+ */
+void GameScene::onContinue() {
+    
+    reset();
 }
 
 /**
@@ -145,15 +177,49 @@ void GameScene::showPausePopup() {
 }
 
 /**
- * 일시정지 팝업 제거
+ * 이어하기 팝업 노출
  */
-void GameScene::removePausePopup() {
+void GameScene::showContinuePopup() {
     
-    removeChildByTag(Tag::POPUP_PAUSE);
+    auto popup = ContinuePopup::create();
+    popup->setTag(Tag::POPUP_CONTINUE);
+    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
+    
+    // onClose
+    popup->setOnClosedListener([=]() {
+        
+    });
+    
+    // onVideo
+    popup->setOnVideoListener([=]() {
+        
+        // TODO: ADS
+        auto bg = SBNodeUtils::createTouchNode(Color4B::BLACK);
+        SceneManager::getScene()->addChild(bg, SBZOrder::TOP);
+        
+        auto label = Label::createWithTTF("Video...", FONT_RETRO, 90);
+        label->setAnchorPoint(ANCHOR_M);
+        label->setPosition(Vec2MC(0, 0));
+        label->setColor(Color3B::WHITE);
+        bg->addChild(label);
+        
+        auto delay = DelayTime::create(3);
+        auto callFunc = CallFunc::create([=]() {
+            // continue
+            gameMgr->onContinue();
+        });
+        auto remove = RemoveSelf::create();
+        bg->runAction(Sequence::create(delay, callFunc, remove, nullptr));
+    });
+    
+    // onTimeOut
+    popup->setOnTimeOutListener([=]() {
+        gameMgr->onGameOver();
+    });
 }
 
 /**
- * 게임 오버 출력
+ * 게임 오버 노출
  */
 void GameScene::showGameOver() {
  
@@ -181,6 +247,14 @@ void GameScene::showGameOver() {
         }
     });
     SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
+}
+
+/**
+ * 일시정지 팝업 제거
+ */
+void GameScene::removePausePopup() {
+    
+    removeChildByTag(Tag::POPUP_PAUSE);
 }
 
 /**
@@ -213,12 +287,16 @@ void GameScene::initBg() {
  */
 void GameScene::initMenu() {
     
+    auto menuLayer = SBNodeUtils::createZeroSizeNode();
+    menuLayer->setTag(Tag::LAYER_MENU);
+    addChild(menuLayer, SBZOrder::BOTTOM);
+    
     // 일시정지
     auto pauseBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_pause.png");
     pauseBtn->setTag(Tag::BTN_PAUSE);
     pauseBtn->setAnchorPoint(ANCHOR_TR);
     pauseBtn->setPosition(Vec2TR(-10, -10));
-    addChild(pauseBtn, SBZOrder::BOTTOM);
+    menuLayer->addChild(pauseBtn);
     
     pauseBtn->setOnClickListener(CC_CALLBACK_1(GameScene::onClick, this));
     

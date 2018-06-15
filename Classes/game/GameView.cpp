@@ -84,10 +84,10 @@ void GameView::onEnterTransitionDidFinish() {
     
     Node::onEnterTransitionDidFinish();
     
-    CCLOG("onEnterTrans");
+    CCLOG("GameView onEnterTransitionDidFinish");
     
     auto cloud = getChildByTag<SkeletonAnimation*>(Tag::CLOUD);
-    cloud->runAction(FadeIn::create(1.0f));
+    cloud->runAction(FadeIn::create(1.5f));
 }
 
 void GameView::onExit() {
@@ -139,6 +139,24 @@ void GameView::onGamePause() {
 void GameView::onGameResume() {
     
     SBNodeUtils::recursiveResume(this);
+}
+
+/**
+ * 게임 오버 전
+ */
+void GameView::onPreGameOver() {
+    
+    getChildByTag<Label*>(Tag::LABEL_LEVEL)->setString("");
+    getChildByTag<Label*>(Tag::LABEL_SCORE)->setString("");
+}
+
+/**
+ * 이어하기
+ */
+void GameView::onContinue() {
+    
+    updateScore();
+    buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
 }
 
 /**
@@ -276,13 +294,16 @@ void GameView::misBlock(RSPBlock *block) {
  
     blockLayer->misBlock(block);
     
-    gameMgr->onGameOver();
+    gameMgr->onPreGameOver();
 }
 
 /**
  * 비겼당
  */
 void GameView::drawBlock(RSPBlock *block) {
+    
+    // vibrate
+    Device::vibrate(DRAW_VIBRATE_DURATION);
     
     blockLayer->drawBlock(block);
     

@@ -36,9 +36,11 @@ private:
 private:
     void onGameStart() override;
     void onGameRestart() override;
-    void onGameOver() override;
     void onGamePause() override;
     void onGameResume() override;
+    void onPreGameOver() override;
+    void onContinue() override;
+    void onGameOver() override;
     
 public:
     void startTimeBar();

@@ -33,8 +33,7 @@ static const string SCHEDULER_FEVER_END_ALERT = "SCHEDULER_FEVER_END_ALERT";
 static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";
 
 Man::Man() :
-gameMgr(GameManager::getInstance()),
-dieAnimation(nullptr) {
+gameMgr(GameManager::getInstance()) {
 }
 
 Man::~Man() {
@@ -48,7 +47,6 @@ bool Man::init() {
     
     initImage();
     initFeverGage();
-    initAnimations();
     
     setAnchorPoint(ANCHOR_MB);
     setManPosition(Position::LEFT);
@@ -60,41 +58,78 @@ bool Man::init() {
 
 void Man::onExit() {
     
+    clearRemoveNodes();
     gameMgr->removeListener(this);
     
     Node::onExit();
 }
 
-void Man::onGameStart() {
+/**
+ * 캐릭터 리셋
+ */
+void Man::reset() {
     
-    lastWinHand = RSPType::NONE;
-    lastShowdownTime = 0;
+    clearRemoveNodes();
     
     setFeverPoint(0);
     
     setManAnimation(AnimationType::IDLE);
     setManPosition(Position::LEFT);
-    
-    scheduleUpdate();
 }
 
+/**
+ * 삭제할 노드 정리
+ */
+void Man::clearRemoveNodes() {
+    
+    for( auto node : needRemoveNodes ) {
+        node->removeFromParent();
+    }
+    
+    needRemoveNodes.clear();
+}
+
+/**
+ * 게임 시작
+ */
+void Man::onGameStart() {
+    
+    reset();
+}
+
+/**
+ * 게임 재시작
+ */
 void Man::onGameRestart() {
     
     setVisible(true);
-    
-    initAnimations();
-}
-
-void Man::onGameOver() {
-    
-    unscheduleAllCallbacks();
-    unscheduleUpdate();
+    clearRemoveNodes();
 }
 
 void Man::onGamePause() {
 }
 
 void Man::onGameResume() {
+}
+
+/**
+ * 게임 오버 전
+ */
+void Man::onPreGameOver() {
+    
+    unscheduleAllCallbacks();
+}
+
+/**
+ * 이어하기
+ */
+void Man::onContinue() {
+    
+    setVisible(true);
+    reset();
+}
+
+void Man::onGameOver() {
 }
 
 /**
@@ -111,10 +146,6 @@ void Man::onGameModeChanged(GameMode mode) {
             unschedule(SCHEDULER_FEVER_GAGE_RESET);
         } break;
     }
-}
-
-void Man::update(float dt) {
-    
 }
 
 /**
@@ -298,8 +329,6 @@ void Man::rockNroll(Position pos) {
  */
 void Man::resultWin(RSPType myHand, RSPType oppHand) {
     
-    lastWinHand = myHand;
-    
     SBAudioEngine::play2d(SOUND_PUNCH);
     
     // switch attack animation
@@ -342,6 +371,9 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
  */
 void Man::resultLose(RSPType myHand, RSPType oppHand) {
  
+    // 벼락 효과음
+    SBAudioEngine::play2d(SOUND_THUNDER);
+    
     // die 애니메이션 재생
     string animName = "";
     
@@ -353,11 +385,20 @@ void Man::resultLose(RSPType myHand, RSPType oppHand) {
             break;
     }
 
-    dieAnimation->setVisible(true);
-    SBSpineHelper::runAnimation(nullptr, dieAnimation, animName);
+    // 사망 애니메이션
+    auto anim = SBSpineHelper::runAnimation(nullptr, ANIM_DIE, animName);
+    SceneManager::getScene()->addChild(anim, SBZOrder::BOTTOM);
     
-    // 벼락 효과음
-    SBAudioEngine::play2d(SOUND_THUNDER);
+    needRemoveNodes.pushBack(anim);
+    
+    anim->setEventListener([=](spTrackEntry *track, spEvent *event) {
+        
+        string eventName = event->data->name;
+        
+        if( eventName == ANIM_EVENT_DIE ) {
+            this->setVisible(false);
+        }
+    });
 }
 
 /**
@@ -422,41 +463,4 @@ void Man::initFeverGage() {
     feverGage.gage->setPosition(Vec2MC(feverGage.bg->getContentSize(), 0, 0));
     feverGage.bg->addChild(feverGage.gage);
     */
-}
-
-/**
- * 애니메이션 초기화
- */
-void Man::initAnimations() {
-    
-    // 사망 애니메이션
-    if( dieAnimation ) {
-        dieAnimation->removeFromParent();
-    }
-    
-    dieAnimation = SBSpineHelper::runAnimation(nullptr, ANIM_DIE);
-    dieAnimation->setVisible(false);
-    SceneManager::getScene()->addChild(dieAnimation, SBZOrder::BOTTOM);
-
-    SBSpineHelper::clearAnimation(dieAnimation, ANIM_NAME_CLEAR);
-    
-    dieAnimation->setEventListener([=](spTrackEntry *track, spEvent *event) {
-        
-        string eventName = event->data->name;
-        
-        if( eventName == ANIM_EVENT_DIE ) {
-            this->setVisible(false);
-        }
-    });
-    
-    /*
-    dieAnimation->setTrackEventListener(anim->getCurrent(), [=](spTrackEntry *track, spEvent *event) {
-        
-        string eventName = event->data->name;
-        
-        if( eventName == ANIM_EVENT_DIE ) {
-            this->setVisible(false);
-        }
-    });
-     */
 }
