@@ -89,5 +89,5 @@ void LogoView::run() {
     // scheduler
     scheduleOnce([=](float dt) {
         this->logoFinished();
-    }, ANIM_DURATION, FINISHED_SCHEDULER);
+    }, 3.5f/*ANIM_DURATION*/, FINISHED_SCHEDULER);
 }

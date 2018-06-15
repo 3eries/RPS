@@ -90,7 +90,7 @@ void SplashScene::replaceMainScene() {
  */
 void SplashScene::initLaunchImage() {
     
-    addChild(LayerColor::create(Color4B::WHITE));
+    // addChild(LayerColor::create(Color4B::WHITE));
 
     // 로고
     auto logoView = LogoView::create();
@@ -106,6 +106,8 @@ void SplashScene::initLaunchImage() {
  * 런치 이미지 종료
  */
 void SplashScene::launchImageFinished() {
+    
+    CCLOG("SplashScene::launchImageFinished");
     
     if( !isLaunchImageFinished ) {
         isLaunchImageFinished = true;
