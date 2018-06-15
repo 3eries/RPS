@@ -62,6 +62,7 @@ static const std::string SOUND_BGM_GAME             = DIR_SOUND + "bgm_game.mp3"
 static const std::string SOUND_BGM_FEVER            = DIR_SOUND + "bgm_fever.mp3";
 static const std::string SOUND_PUNCH                = DIR_SOUND + "punch.wav";
 static const std::string SOUND_GAME_OVER            = DIR_SOUND + "game_over.mp3";
+static const std::string SOUND_THUNDER              = DIR_SOUND + "thunder.mp3";
 
 // Color
 namespace Color {

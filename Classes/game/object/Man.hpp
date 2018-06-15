@@ -42,6 +42,7 @@ private:
     
     void initImage();
     void initFeverGage();
+    void initAnimations();
     
     void setManAnimation(AnimationType animType, bool runAnimation = true);
     void setManPosition(Position pos);
@@ -78,12 +79,13 @@ private:
     
     CC_SYNTHESIZE_READONLY(Position, manPosition, ManPosition);
     
+    // 캐릭터 이미지
     SBAnimationSprite *img;
     
+    // 피버 게이지
     struct FeverGage {
         float point;
         cocos2d::Node *bg;
-//        cocos2d::ProgressTimer *gage;
         cocos2d::Sprite *gage;
         
         FeverGage() {
@@ -92,6 +94,9 @@ private:
     };
     
     FeverGage feverGage;
+
+    // 사망 애니메이션
+    spine::SkeletonAnimation *dieAnimation;
 };
 
 #endif /* Man_hpp */
