@@ -56,13 +56,16 @@ bool MainScene::init() {
 void MainScene::onEnter() {
     
     Scene::onEnter();
+    
+    // bgm
+    scheduleOnce([=](float) {
+        SBAudioEngine::playBGM(SOUND_BGM_MAIN);
+    }, SceneManager::REPLACE_DURATION_MAIN, "MAIN_SCENE_BGM_DELAY");
 }
 
 void MainScene::onEnterTransitionDidFinish() {
     
     Scene::onEnterTransitionDidFinish();
-    
-    SBAudioEngine::playBGM(SOUND_BGM_MAIN);
 }
 
 void MainScene::onExit() {
