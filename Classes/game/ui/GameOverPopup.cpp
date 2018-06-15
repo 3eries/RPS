@@ -9,6 +9,7 @@
 
 #include "RSP.h"
 #include "UIHelper.hpp"
+#include "../GameManager.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -59,7 +60,7 @@ void GameOverPopup::initBg() {
     // background fade in
     {
         bg->setOpacity(0);
-        bg->runAction(FadeTo::create(0.2f, Color::POPUP_BG.a));
+        bg->runAction(FadeTo::create(0.2f, 255*0.3f));
     }
     
     contentLayer = SBNodeUtils::createZeroSizeNode();
@@ -68,11 +69,33 @@ void GameOverPopup::initBg() {
     // 타이틀
     auto titleLabel = Label::createWithTTF("GAME OVER", FONT_RETRO, 90);
     titleLabel->setAnchorPoint(ANCHOR_M);
-    titleLabel->setPosition(Vec2MC(0, 300));
-//    titleLabel->setScale(3);
+    titleLabel->setPosition(Vec2MC(0, 400));
     titleLabel->setColor(Color3B::WHITE);
     titleLabel->enableOutline(Color4B::BLACK, 3);
     contentLayer->addChild(titleLabel);
+    
+    // 스코어 타이틀
+    auto scoreTitleLabel = Label::createWithTTF("SCORE", FONT_RETRO, 80);
+    scoreTitleLabel->setAnchorPoint(ANCHOR_M);
+    scoreTitleLabel->setPosition(Vec2MC(0, 270));
+    scoreTitleLabel->setColor(Color3B::WHITE);
+    scoreTitleLabel->enableOutline(Color4B::BLACK, 3);
+    contentLayer->addChild(scoreTitleLabel);
+    
+    // 스코어
+    auto scoreBg = LayerColor::create(Color4B::WHITE);
+    scoreBg->setIgnoreAnchorPointForPosition(false);
+    scoreBg->setAnchorPoint(ANCHOR_M);
+    scoreBg->setPosition(Vec2MC(0, 100));
+    scoreBg->setContentSize(Size(500, 100));
+    contentLayer->addChild(scoreBg);
+    
+    auto scoreLabel = Label::createWithTTF(TO_STRING(GameManager::getInstance()->getScore()),
+                                           FONT_RETRO, 80);
+    scoreLabel->setAnchorPoint(ANCHOR_M);
+    scoreLabel->setPosition(Vec2MC(scoreBg->getContentSize(), 0, 0));
+    scoreLabel->setColor(Color3B::BLACK);
+    scoreBg->addChild(scoreLabel);
 }
 
 void GameOverPopup::initMenu() {
@@ -127,6 +150,6 @@ void GameOverPopup::initMenu() {
     Size size = SBNodeUtils::getChildrenBoundingSize(menuLayer);
     
     menuLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    menuLayer->setPosition(Vec2MC(0, size.height-200));
+    menuLayer->setPosition(Vec2MC(0, size.height-250));
     menuLayer->setContentSize(size);
 }
