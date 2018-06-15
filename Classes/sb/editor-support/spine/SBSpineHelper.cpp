@@ -12,6 +12,20 @@ USING_NS_CC;
 using namespace spine;
 using namespace std;
 
+SkeletonAnimation* SBSpineHelper::runAnimation(SBCallback completeListener,
+                                            const string &jsonFile, const string &animName) {
+    
+    auto anim = SkeletonAnimation::createWithJsonFile(jsonFile);
+    anim->setAnchorPoint(Vec2::ZERO);
+    anim->setPosition(Vec2(SB_WIN_SIZE*0.5f));
+    
+    if( animName != "" ) {
+        runAnimation(completeListener, anim, animName);
+    }
+    
+    return anim;
+}
+
 void SBSpineHelper::runAnimation(SBCallback completeListener, SpineAnimation *anim, const string &animName) {
     
     CCASSERT(anim != nullptr, "SBSpineHelper::runAnimation error: invalid anim.");

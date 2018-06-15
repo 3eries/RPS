@@ -18,9 +18,11 @@ public:
     typedef spine::SkeletonAnimation SpineAnimation;
     
 public:
+    static SpineAnimation* runAnimation(SBCallback completeListener,
+                                        const std::string &jsonFile, const std::string &animName = "");
+    
     static void runAnimation(SBCallback completeListener,
-                             SpineAnimation *anim,
-                             const std::string &animName);
+                             SpineAnimation *anim, const std::string &animName);
     static void clearAnimation(SpineAnimation *anim, std::string clearAnimName = "");
 };
 
