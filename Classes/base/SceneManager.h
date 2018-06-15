@@ -23,6 +23,11 @@ enum class SceneType {
 
 class SceneManager : public cocos2d::Ref {
 public:
+    static const float REPLACE_DURATION_SPLASH_TO_MAIN;
+    static const float REPLACE_DURATION_MAIN;
+    static const float REPLACE_DURATION_GAME;
+    
+public:
     static SceneManager* getInstance();
     static void destroyInstance();
     

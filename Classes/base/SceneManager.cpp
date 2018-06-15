@@ -14,6 +14,10 @@
 USING_NS_CC;
 using namespace std;
 
+const float SceneManager::REPLACE_DURATION_SPLASH_TO_MAIN = 1.5f;
+const float SceneManager::REPLACE_DURATION_MAIN = 0.3f;
+const float SceneManager::REPLACE_DURATION_GAME = 0.3f;
+
 static SceneManager *instance = nullptr;
 SceneManager* SceneManager::getInstance() {
     
@@ -86,6 +90,8 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
         return;
     }
     
+    auto prevSceneType = this->sceneType;
+    
     isRunningReplaceScene = true;
     this->sceneType = type;
 
@@ -104,8 +110,19 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
     
     switch( type ) {
         case SceneType::SPLASH:          break;
-        case SceneType::MAIN:            scene = TransitionCrossFade::create(0.7f, scene);     break;
-        case SceneType::GAME:            scene = TransitionFade::create(0.7f, scene);          break;
+        case SceneType::MAIN: {
+            // Splash -> Main
+            if( prevSceneType == SceneType::SPLASH ) {
+                scene = TransitionCrossFade::create(REPLACE_DURATION_SPLASH_TO_MAIN, scene);
+            }
+            // XXX -> Main
+            else {
+                scene = TransitionFade::create(REPLACE_DURATION_MAIN, scene);
+            }
+        } break;
+        case SceneType::GAME: {
+            scene = TransitionFade::create(REPLACE_DURATION_GAME, scene);
+        } break;
             
         default: break;
     }
