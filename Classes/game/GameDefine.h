@@ -13,7 +13,11 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
+static const int            CONTINUE_CONDITION_SCORE     = 30;      // 이어하기 노출 조건
+
 static const float          FEVER_END_ALERT_TIME         = 1.0f;
+
+static const float          DRAW_VIBRATE_DURATION        = 0.1f;
 
 static const int            BANNER_HEIGHT                = 100;
 
