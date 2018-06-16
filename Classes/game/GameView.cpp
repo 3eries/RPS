@@ -305,14 +305,11 @@ void GameView::drawBlock(RSPBlock *block) {
     // vibrate
     Device::vibrate(DRAW_VIBRATE_DURATION);
     
+    // 블럭 연출
     blockLayer->drawBlock(block);
     
     // 버튼 터치 지연
-    buttonLayer->setButtonTouchEnabled(false);
-    
-    scheduleOnce([=](float dt) {
-        buttonLayer->setButtonTouchEnabled(true);
-    }, gameMgr->getConfig()->getTimeInfo().drawDelay, SCHEDULER_DRAW_DELAY);
+    buttonLayer->touchLocked(gameMgr->getConfig()->getTimeInfo().drawDelay);
 }
 
 /**

@@ -45,6 +45,8 @@ public:
     void switchButton(GameMode mode);
     void setButtonTouchEnabled(bool enabled);
     
+    void touchLocked(float delay);
+    
     void showTapHint(RSPType winHand);
     void hideTapHint();
     

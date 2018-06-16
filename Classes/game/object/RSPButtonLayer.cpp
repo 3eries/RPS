@@ -12,6 +12,8 @@
 USING_NS_CC;
 using namespace std;
 
+static const string SCHEDULER_TOUCH_LOCKED = "SCHEDULER_TOUCH_LOCKED";
+
 RSPButtonLayer::RSPButtonLayer() :
 onNormalButtonClickListener(nullptr),
 onFeverButtonClickListener(nullptr) {
@@ -88,10 +90,28 @@ void RSPButtonLayer::switchButton(GameMode mode) {
     }
 }
 
+/**
+ * 버튼 터치 활성화 설정
+ */
 void RSPButtonLayer::setButtonTouchEnabled(bool enabled) {
     
     for( auto btn : buttons ) {
         btn->setTouchEnabled(enabled);
+    }
+}
+
+/**
+ * 터치 잠금
+ * @param duration 잠금 시간
+ */
+void RSPButtonLayer::touchLocked(float duration) {
+    
+    setButtonTouchEnabled(false);
+    
+    if( duration > 0 ) {
+        scheduleOnce([=](float dt) {
+            this->setButtonTouchEnabled(true);
+        }, duration, SCHEDULER_TOUCH_LOCKED);
     }
 }
 
