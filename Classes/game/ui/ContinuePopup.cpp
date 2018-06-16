@@ -15,7 +15,7 @@ using namespace cocos2d::ui;
 using namespace std;
 
 static const string SCHEDULER_COUNTDOWN = "SCHEDULER_COUNTDOWN";
-static const int    COUNTDOWN           = 11;
+static const int    COUNTDOWN           = 10;
 
 ContinuePopup::ContinuePopup() : SBBasePopup(),
 onClosedListener(nullptr),
@@ -71,12 +71,14 @@ void ContinuePopup::countdown() {
     
     auto updateCount = [=]() {
         int i = COUNTDOWN - elapsed;
-        i = MAX(0, i);
         
-        if( i == 0 ) {
+        if( i < 0 ) {
             this->timeOut();
         } else {
-            countdownLabel->setString(TO_STRING(i-1));
+            i = MAX(0, i);
+            i = MIN(COUNTDOWN-1, i);
+            
+            countdownLabel->setString(TO_STRING(i));
         }
     };
     
