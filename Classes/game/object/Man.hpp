@@ -52,8 +52,6 @@ private:
     void resetFeverPoint(bool isRunAction = true);
     void updateFeverGage();
     
-    void runFeverMode();
-    
 // GameListener
 private:
     void onGameStart() override;

@@ -12,6 +12,9 @@
 USING_NS_CC;
 using namespace std;
 
+static const string SCHEDULER_FEVER_END       = "GM_SCHEDULER_FEVER_END";           // 피버 모드 종료
+static const string SCHEDULER_FEVER_END_ALERT = "GM_SCHEDULER_FEVER_END_ALERT";     // 피버 모드 종료 알림
+
 static GameManager *instance = nullptr;
 GameManager* GameManager::getInstance() {
     
@@ -258,6 +261,23 @@ void GameManager::onNormalMode() {
 void GameManager::onFeverMode() {
     
     onGameModeChanged(GameMode::FEVER);
+    
+    // 피버 모드 종료 스케줄러
+    const float DURATION = config->getFeverInfo().duration;
+    const float END_ALERT_DELAY = DURATION - FEVER_END_ALERT_TIME;
+    
+    view->scheduleOnce([=](float dt) {
+        // 노멀 모드로 복구
+        this->onNormalMode();
+        
+    }, DURATION, SCHEDULER_FEVER_END);
+    
+    // 피버 모드 종료 알림 스케줄러
+    view->scheduleOnce([=](float dt) {
+        
+        this->onPreFeverModeEnd();
+        
+    }, END_ALERT_DELAY, SCHEDULER_FEVER_END_ALERT);
 }
 
 /**

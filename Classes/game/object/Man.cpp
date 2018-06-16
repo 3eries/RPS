@@ -13,6 +13,7 @@
 USING_NS_CC;
 using namespace std;
 
+// idle 애니메이션
 static const vector<string> ANIM_IDLE_FILES({
     DIR_IMG_GAME + "RSP_avatar_idle1.png",
     DIR_IMG_GAME + "RSP_avatar_idle2.png",
@@ -20,6 +21,7 @@ static const vector<string> ANIM_IDLE_FILES({
 
 static const float ANIM_IDLE_DELAY_PER_UNIT = 0.5f;
 
+// attack 애니메이션
 static const vector<string> ANIM_ATTACK_FILES({
     DIR_IMG_GAME + "RSP_avatar_attack1.png",
     DIR_IMG_GAME + "RSP_avatar_attack2.png",
@@ -28,9 +30,8 @@ static const vector<string> ANIM_ATTACK_FILES({
 
 static const float ANIM_ATTACK_PER_UNIT = 0.0666f;
 
-static const string SCHEDULER_FEVER = "SCHEDULER_FEVER";
-static const string SCHEDULER_FEVER_END_ALERT = "SCHEDULER_FEVER_END_ALERT";
-static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";
+// 스케줄러
+static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";   // 피버 포인트 게이지 초기화
 
 Man::Man() :
 gameMgr(GameManager::getInstance()) {
@@ -230,9 +231,9 @@ void Man::setFeverPoint(float point, bool isUpdateGage) {
         updateFeverGage();
     }
     
-    // 피버 모드 발동 체크
+    // 피버 포인트 충족 시 피버 발동
     if( point == maxPoint ) {
-        runFeverMode();
+        gameMgr->onFeverMode();
     }
 }
 
@@ -267,31 +268,6 @@ void Man::updateFeverGage() {
 //    float per = ((float)feverGage.point / maxPoint) * 100;
 //    feverGage.gage->setPercentage(per);
     feverGage.gage->setScaleX((float)feverGage.point / maxPoint);
-}
-
-/**
- * 피버 모드 발동
- */
-void Man::runFeverMode() {
-    
-    gameMgr->onFeverMode();
-    
-    // 피버 모드 종료 스케줄러
-    float duration = gameMgr->getConfig()->getFeverInfo().duration;
-    
-    scheduleOnce([=](float dt) {
-        // 노멀 모드로 복구
-        this->resetFeverPoint();
-        gameMgr->onNormalMode();
-        
-    }, duration, SCHEDULER_FEVER);
-    
-    // 피버 모드 종료 알림 스케줄러
-    scheduleOnce([=](float dt) {
-        
-        gameMgr->onPreFeverModeEnd();
-        
-    }, duration - FEVER_END_ALERT_TIME, SCHEDULER_FEVER_END_ALERT);
 }
 
 /**
