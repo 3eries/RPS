@@ -84,6 +84,7 @@ void GameScene::onExit() {
 
 void GameScene::reset() {
     
+    touchLockNode->setVisible(false);
     getChildByTag(Tag::LAYER_MENU)->setVisible(true);
 }
 
@@ -96,10 +97,33 @@ void GameScene::onGameStart() {
 }
 
 /**
+ * 게임 재시작
+ */
+void GameScene::onGameRestart() {
+}
+
+/**
+ * 게임 일시정지
+ */
+void GameScene::onGamePause() {
+    
+    touchLockNode->setVisible(true);
+}
+
+/**
+ * 게임 재게
+ */
+void GameScene::onGameResume() {
+    
+    touchLockNode->setVisible(false);
+}
+
+/**
  * 게임 오버 전
  */
 void GameScene::onPreGameOver() {
     
+    touchLockNode->setVisible(true);
     getChildByTag(Tag::LAYER_MENU)->setVisible(false);
     
     // 이어하기
@@ -273,6 +297,10 @@ void GameScene::onClick(Node *sender) {
  * 배경 초기화
  */
 void GameScene::initBg() {
+    
+    touchLockNode = SBNodeUtils::createTouchNode();
+    touchLockNode->setVisible(false);
+    addChild(touchLockNode, SBZOrder::MIDDLE);
     
     // 임시 배너 이미지
     banner = Sprite::create(DIR_IMG_GAME + "RSP_ad_top.png");

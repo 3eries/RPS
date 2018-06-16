@@ -34,7 +34,7 @@ public:
     virtual void onPreGameOver() {}     // 게임 오버 전, 이어하기 상태 처리
     virtual void onContinue() {}        // 이어하기
     virtual void onGameOver() {}        // 게임 오버
-    virtual void onGameEnd() {}         // 게임 종료, 모든 스테이지 완료
+    virtual void onGameEnd() {}         // 게임 종료
     
     virtual void onGameModeChanged(GameMode mode) {}   // 게임 모드 전환
     

@@ -25,7 +25,7 @@ public:
     ~GameScene();
     
 private:
-    enum  Tag{
+    enum Tag {
         LAYER_MENU               = 100,
         
         BTN_PAUSE                = 1000,
@@ -51,6 +51,9 @@ private:
 // GameListener
 private:
     void onGameStart() override;
+    void onGameRestart() override;
+    void onGamePause() override;
+    void onGameResume() override;
     void onPreGameOver() override;
     void onContinue() override;
     void onGameOver() override;
@@ -70,6 +73,7 @@ private:
     GameManager *gameMgr;
     CC_SYNTHESIZE(GameView*, gameView, GameView);
     
+    cocos2d::Node *touchLockNode;   // 터치 방지 노드
     cocos2d::Sprite *banner; // 임시
 };
 
