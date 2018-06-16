@@ -73,6 +73,8 @@ public:
     void resultLose(RSPType myHand, RSPType oppHand);
     void resultDraw(RSPType myHand, RSPType oppHand);
     
+    void runDieAnimation();
+    
 private:
     GameManager *gameMgr;
     

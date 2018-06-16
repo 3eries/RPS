@@ -117,6 +117,9 @@ void Man::onGameResume() {
  */
 void Man::onPreGameOver() {
     
+    // 사망 애니메이션
+    runDieAnimation();
+    
     unscheduleAllCallbacks();
 }
 
@@ -370,35 +373,6 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
  * 패배
  */
 void Man::resultLose(RSPType myHand, RSPType oppHand) {
- 
-    // 벼락 효과음
-    SBAudioEngine::play2d(SOUND_THUNDER);
-    
-    // die 애니메이션 재생
-    string animName = "";
-    
-    switch( manPosition ) {
-        case Position::LEFT:    animName = ANIM_NAME_DIE_LEFT;      break;
-        case Position::RIGHT:   animName = ANIM_NAME_DIE_RIGHT;     break;
-        default:
-            CCASSERT(false, "Man::resultLose error: invalid man position");
-            break;
-    }
-
-    // 사망 애니메이션
-    auto anim = SBSpineHelper::runAnimation(nullptr, ANIM_DIE, animName);
-    SceneManager::getScene()->addChild(anim, SBZOrder::BOTTOM);
-    
-    needRemoveNodes.pushBack(anim);
-    
-    anim->setEventListener([=](spTrackEntry *track, spEvent *event) {
-        
-        string eventName = event->data->name;
-        
-        if( eventName == ANIM_EVENT_DIE ) {
-            this->setVisible(false);
-        }
-    });
 }
 
 /**
@@ -413,6 +387,41 @@ void Man::resultDraw(RSPType myHand, RSPType oppHand) {
     
 //if( !gameMgr->isFeverMode() ) {
     resetFeverPoint();
+}
+
+/**
+ * 사망 애니메이션 재생
+ */
+void Man::runDieAnimation() {
+    
+    // 벼락 효과음
+    SBAudioEngine::play2d(SOUND_THUNDER);
+    
+    // die 애니메이션 재생
+    string animName = "";
+    
+    switch( manPosition ) {
+        case Position::LEFT:    animName = ANIM_NAME_DIE_LEFT;      break;
+        case Position::RIGHT:   animName = ANIM_NAME_DIE_RIGHT;     break;
+        default:
+            CCASSERT(false, "Man::resultLose error: invalid man position");
+            break;
+    }
+    
+    // 사망 애니메이션
+    auto anim = SBSpineHelper::runAnimation(nullptr, ANIM_DIE, animName);
+    SceneManager::getScene()->addChild(anim, SBZOrder::BOTTOM);
+    
+    needRemoveNodes.pushBack(anim);
+    
+    anim->setEventListener([=](spTrackEntry *track, spEvent *event) {
+        
+        string eventName = event->data->name;
+        
+        if( eventName == ANIM_EVENT_DIE ) {
+            this->setVisible(false);
+        }
+    });
 }
 
 /**
