@@ -46,6 +46,7 @@ private:
     
 public:
     RSPBlock* getFirstBlock();
+    std::vector<RSPBlock*> getSortedBlocks();
     
     void hitBlock(RSPBlock *block, RSPType btnType,
                   Man::Position manPosition);
@@ -59,7 +60,9 @@ public:
 private:
     RSPType getBlockType(int i);
     
+    void alignBlocks();
     void alignBlock(int i, RSPBlock *block);
+    
     cocos2d::Vec2 getBlockPosition(int i);
     
 private:

@@ -108,6 +108,26 @@ RSPBlock* RSPBlockLayer::getFirstBlock() {
 }
 
 /**
+ * 정렬된 블럭 목록
+ */
+std::vector<RSPBlock*> RSPBlockLayer::getSortedBlocks() {
+    
+    vector<RSPBlock*> sortBlocks;
+    
+    for( int i = blockIndex; i < blocks.size(); ++i ) {
+        auto block = blocks.at(i);
+        sortBlocks.push_back(block);
+    }
+    
+    for( size_t i = 0; i < blockIndex; ++i ) {
+        auto block = blocks.at(i);
+        sortBlocks.push_back(block);
+    }
+    
+    return sortBlocks;
+}
+
+/**
  *  블럭 히트다 히트~!
  */
 void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType,
@@ -171,6 +191,8 @@ void RSPBlockLayer::misBlock(RSPBlock *block) {
  * 비겼당
  */
 void RSPBlockLayer::drawBlock(RSPBlock *block) {
+    
+    alignBlocks();
 }
 
 /**
@@ -243,6 +265,21 @@ RSPType RSPBlockLayer::getBlockType(int i) {
     
     // 랜덤 타입
     return RSPBlock::getRandomType();
+}
+
+/**
+ * 블럭 좌표 정렬
+ */
+void RSPBlockLayer::alignBlocks() {
+    
+    auto sortBlocks = getSortedBlocks();
+    
+    for( int i = 0; i < BLOCK_DISPLAY_COUNT; ++i ) {
+        auto block = sortBlocks[i];
+        block->stopAllActions();
+        block->setLocalZOrder(i);
+        block->setPositionY(getBlockPosition(i).y);
+    }
 }
 
 /**
@@ -322,21 +359,13 @@ string RSPBlockLayer::toString() {
     
     string str = "RSPBlockLayer [\n";
     
-    vector<RSPBlock*> sortBlocks;
+    vector<RSPBlock*> sortBlocks = getSortedBlocks();
     
-    for( int i = blockIndex; i < blocks.size(); ++i ) {
-        auto block = blocks.at(i);
-        sortBlocks.push_back(block);
-    }
-    
-    for( size_t i = 0; i < blockIndex; ++i ) {
-        auto block = blocks.at(i);
-        sortBlocks.push_back(block);
-    }
-    
-    // for( int i = 0; i < blocks.size(); ++i ) {
-    for( int i = 0; i < sortBlocks.size(); ++i ) {
-        str += STR_FORMAT("%d: %s\n", i, blocks[i]->toString().c_str());
+    for( int i = (int)sortBlocks.size()-1; i >= 0; --i ) {
+        auto block = sortBlocks[i];
+        str += STR_FORMAT("%2d (%2d): %s\n", i,
+                          (int)SBCollection::getIndex(blocks, block),
+                          block->toString().c_str());
     }
     
     str += "]";

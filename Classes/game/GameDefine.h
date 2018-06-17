@@ -33,6 +33,7 @@ static const float          BLOCK_PADDING_Y              = -4;
 // 화면에 보이는 블럭 높이
 static const float          BLOCK_DISPLAY_HEIGHT         = 950; // (BLOCK_HEIGHT*BLOCK_DISPLAY_COUNT)-20;
 
+// 블럭 내려오는 시간
 static const float          BLOCK_MOVE_DURATION          = 0.1f;
 
 #define                     MAN_POS_LEFT                 Vec2BC(-212, 210)
