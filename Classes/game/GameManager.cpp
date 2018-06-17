@@ -290,6 +290,16 @@ void GameManager::onPreFeverModeEnd() {
     }
 }
 
+/**
+ * 마지막 피버 블럭 히트
+ */
+void GameManager::onLastFeverBlockHit() {
+    
+    for( auto listener : listeners ) {
+        listener->onLastFeverBlockHit();
+    }
+}
+
 void GameManager::addListener(GameListener *listener) {
     
     CCASSERT(listener != nullptr, "GameManager::addListener error: invalid listener.");

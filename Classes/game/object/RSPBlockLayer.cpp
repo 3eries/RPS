@@ -133,10 +133,12 @@ std::vector<RSPBlock*> RSPBlockLayer::getSortedBlocks() {
 void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType,
                              Man::Position manPosition) {
     
-    // 히트된 블럭 연출
+    const RSPType hitBlockType = hitBlock->getType();
+    
+    // 히트 블럭 연출
     runHitBlockEffect(hitBlock, manPosition);
     
-    // 전달된 블럭 타입 변경하여 재활용
+    // 히트 블럭 타입 변경하여 재활용
     hitBlock->setBlock(getBlockType(blockIndex));
     
     // 블럭 인덱스 증가
@@ -144,6 +146,11 @@ void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType,
     
     if( blockIndex == blocks.size() ) {
         blockIndex = 0;
+    }
+    
+    // 마지막 피버 블럭인지 체크
+    if( hitBlockType == RSPType::ROCK_N_ROLL && blocks[blockIndex]->getType() != RSPType::ROCK_N_ROLL ) {
+        gameMgr->onLastFeverBlockHit();
     }
     
     // 정렬된 블럭 리스트 생성

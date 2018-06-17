@@ -73,6 +73,7 @@ void Man::reset() {
     clearRemoveNodes();
     
     setFeverPoint(0);
+    setFeverGageVisible(true);
     
     setManAnimation(AnimationType::IDLE);
     setManPosition(Position::LEFT);
@@ -143,13 +144,22 @@ void Man::onGameModeChanged(GameMode mode) {
     
     switch( mode ) {
         case GameMode::NORMAL: {
-            resetFeverPoint();
+            resetFeverPoint(false);
         } break;
             
         case GameMode::FEVER: {
             unschedule(SCHEDULER_FEVER_GAGE_RESET);
+            setFeverGageVisible(false);
         } break;
     }
+}
+
+/**
+ * 마지막 피버 블럭 히트
+ */
+void Man::onLastFeverBlockHit() {
+    
+    setFeverGageVisible(true);
 }
 
 /**
@@ -410,6 +420,11 @@ void Man::runDieAnimation() {
 bool Man::isPositionLeft() {
     
     return manPosition == Man::Position::LEFT;
+}
+
+void Man::setFeverGageVisible(bool visible) {
+    
+    feverGage.bg->setVisible(visible);
 }
 
 /**

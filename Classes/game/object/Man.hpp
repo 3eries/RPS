@@ -64,6 +64,7 @@ private:
     void onContinue() override;
     void onGameOver() override;
     void onGameModeChanged(GameMode mode) override;
+    void onLastFeverBlockHit() override;
     
 public:
     void showdown(RSPResult result, RSPType myHand, RSPType oppHand);
@@ -75,6 +76,8 @@ public:
     
     void runAttackAnimation();
     void runDieAnimation();
+    
+    void setFeverGageVisible(bool visible);
     
     bool isPositionLeft();
     

@@ -39,6 +39,8 @@ public:
     virtual void onGameModeChanged(GameMode mode) {}   // 게임 모드 전환
     
     virtual void onPreFeverModeEnd() {} // 피버 모드 종료 전
+    
+    virtual void onLastFeverBlockHit() {}              // 마지막 피버 블럭 히트
 };
 
 #pragma mark- GameManager
@@ -97,6 +99,8 @@ public:
     void onFeverMode();
     
     void onPreFeverModeEnd();
+    
+    void onLastFeverBlockHit();
     
     void addListener(GameListener *listener);
     void removeListener(GameListener *listener);
