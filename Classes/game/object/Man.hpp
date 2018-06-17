@@ -18,6 +18,8 @@
 
 class Man : public cocos2d::Node, public GameListener {
 public:
+    static const int ACTION_TAG_DRAW_MOVE = 1000;
+    
     enum class Position {
         LEFT,
         RIGHT,
@@ -71,7 +73,10 @@ public:
     void resultLose(RSPType myHand, RSPType oppHand);
     void resultDraw(RSPType myHand, RSPType oppHand);
     
+    void runAttackAnimation();
     void runDieAnimation();
+    
+    bool isPositionLeft();
     
 private:
     GameManager *gameMgr;

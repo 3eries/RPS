@@ -308,6 +308,35 @@ void GameView::drawBlock(RSPBlock *block) {
     // 블럭 연출
     blockLayer->drawBlock(block);
     
+    const Vec2 originManPos = man->getPosition();
+    block->runDrawAnimation(man->isPositionLeft(), [=](int i) {
+        
+        // 캐릭터 이동
+        // 할아범은 총 3번 진동하는데, draw애니메이션이 시작된후
+        // 0.033초후에 20px뒤로 밀려나고
+        // 0.66초 후에 제자리로 돌아오고
+        // 0.1초후에 다시 20px뒤로 밀려나고
+        // 0.133초후에 제자리로 돌아오고
+        // 0.166초후에 20px밀려났다가
+        // 0.2초에 다시 제자리로 돌아옵니당
+        
+        // move_1 ~ move_6
+        float moveX[] = {
+            -20, 0, -20, 0, -20, 0
+        };
+        
+        float x = originManPos.x;
+        x += man->isPositionLeft() ? moveX[i-1] : -moveX[i-1];
+        
+//        man->setPositionX(x);
+        
+        man->stopActionByTag(Man::ACTION_TAG_DRAW_MOVE);
+        
+        auto move = MoveTo::create(0.03f, Vec2(x, originManPos.y));
+        move->setTag(Man::ACTION_TAG_DRAW_MOVE);
+        man->runAction(move);
+    });
+    
     // 버튼 터치 지연
     buttonLayer->touchLocked(gameMgr->getConfig()->getTimeInfo().drawDelay);
 }

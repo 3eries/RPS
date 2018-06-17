@@ -292,13 +292,7 @@ void Man::rockNroll(Position pos) {
     
     SBAudioEngine::play2d(SOUND_PUNCH);
     
-    // switch attack animation
-    setManAnimation(AnimationType::ATTACK, false);
-    
-    img->runAnimation([=](Node*) {
-        // restore animation
-        setManAnimation(AnimationType::IDLE);
-    });
+    runAttackAnimation();
     
     setManPosition(pos);
 }
@@ -310,13 +304,7 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
     
     SBAudioEngine::play2d(SOUND_PUNCH);
     
-    // switch attack animation
-    setManAnimation(AnimationType::ATTACK, false);
-    
-    img->runAnimation([=](Node*) {
-        // restore animation
-        setManAnimation(AnimationType::IDLE);
-    });
+    runAttackAnimation();
     
     switch( myHand ) {
         case RSPType::ROCK:     setManPosition(Position::LEFT);     break;
@@ -356,13 +344,32 @@ void Man::resultLose(RSPType myHand, RSPType oppHand) {
  */
 void Man::resultDraw(RSPType myHand, RSPType oppHand) {
     
+//if( !gameMgr->isFeverMode() ) {
+    resetFeverPoint();
+    
+    // blink
+    /*
     float delay = gameMgr->getConfig()->getTimeInfo().drawDelay;
     
     auto blink = Blink::create(delay, 2);
     img->runAction(blink);
+     */
     
-//if( !gameMgr->isFeverMode() ) {
-    resetFeverPoint();
+    runAttackAnimation();
+}
+
+/**
+ * 공격 애니메이션 재생
+ */
+void Man::runAttackAnimation() {
+    
+    // switch attack animation
+    setManAnimation(AnimationType::ATTACK, false);
+    
+    img->runAnimation([=](Node*) {
+        // restore animation
+        setManAnimation(AnimationType::IDLE);
+    });
 }
 
 /**
@@ -398,6 +405,11 @@ void Man::runDieAnimation() {
             this->setVisible(false);
         }
     });
+}
+
+bool Man::isPositionLeft() {
+    
+    return manPosition == Man::Position::LEFT;
 }
 
 /**

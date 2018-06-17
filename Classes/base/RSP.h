@@ -21,6 +21,21 @@ static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GA
 
 static const std::string INTERNAL_GAME_CONFIG_FILE_VERSION      = "1.0.0";
 
+// 가위바위보 타입
+enum class RSPType {
+    NONE = -1,
+    ROCK,
+    SCISSORS,
+    PAPER,
+    ROCK_N_ROLL,
+};
+
+enum class RSPResult {
+    WIN,
+    LOSE,
+    DRAW,
+};
+
 // 이미지 경로
 static const std::string DIR_IMG                    = "images/";
 static const std::string DIR_IMG_COMMON             = DIR_ADD(DIR_IMG, "common");
@@ -42,12 +57,22 @@ static const std::string ANIM_DIE                   = DIR_ANIM + "die" + ANIM_EX
 
 static const std::string ANIM_NAME_RUN              = "run";
 static const std::string ANIM_NAME_CLEAR            = "clear";
-static const std::string ANIM_NAME_DRAW_LEFT        = "draw_left";
-static const std::string ANIM_NAME_DRAW_RIGHT       = "draw_right";
 static const std::string ANIM_NAME_DIE_LEFT         = "die_left";
 static const std::string ANIM_NAME_DIE_RIGHT        = "die_right";
 
+static std::map<RSPType, std::string> ANIM_NAME_DRAW_LEFT({
+    { RSPType::ROCK,     "draw_left_rock" },
+    { RSPType::SCISSORS, "draw_left_scissors" },
+    { RSPType::PAPER,    "draw_left_paper" },
+});
+static std::map<RSPType, std::string> ANIM_NAME_DRAW_RIGHT({
+    { RSPType::ROCK,     "draw_right_rock" },
+    { RSPType::SCISSORS, "draw_right_scissors" },
+    { RSPType::PAPER,    "draw_right_paper" },
+});
+
 static const std::string ANIM_EVENT_DIE             = "die";
+static const std::string ANIM_EVENT_MAN_MOVE        = "move";
 
 // 폰트 경로
 static const std::string DIR_FONT                   = "fonts/";
@@ -69,20 +94,10 @@ namespace Color {
     static const cocos2d::Color4B POPUP_BG          = cocos2d::Color4B(0,0,0,255*0.75f);
 }
 
-enum class RSPType {
-    NONE = -1,
-    ROCK,
-    SCISSORS,
-    PAPER,
-    ROCK_N_ROLL,
-};
 
-enum class RSPResult {
-    WIN,
-    LOSE,
-    DRAW,
-};
-
+////////////
+// 공통 함수
+////////////
 static RSPType getWinHand(RSPType hand) {
 
     switch( hand ) {

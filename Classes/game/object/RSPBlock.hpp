@@ -33,6 +33,8 @@ public:
     void setBlock(RSPType type);
     void changeRandomBlock();
     
+    void runDrawAnimation(bool isLeft, std::function<void(int)> eventListener);
+    
     bool isEqualBlock(RSPType type);
     
     RSPBlock* clone();
