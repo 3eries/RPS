@@ -79,6 +79,18 @@ public:
         return findDatas;
     }
     
+    template <class T>
+    static ssize_t getIndex(std::vector<T> datas, T obj) {
+        
+        auto it = std::find(datas.begin(), datas.end(), obj);
+        
+        if( it != datas.end() ) {
+            return it - datas.begin();
+        }
+        
+        return -1;
+    }
+    
     /**
      * add
      */
