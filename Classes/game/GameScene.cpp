@@ -322,15 +322,15 @@ void GameScene::initMenu() {
     // 일시정지
     auto pauseBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_pause.png");
     pauseBtn->setTag(Tag::BTN_PAUSE);
-    pauseBtn->setAnchorPoint(ANCHOR_TR);
-    pauseBtn->setPosition(Vec2TR(-10, -10));
+    pauseBtn->setAnchorPoint(ANCHOR_MR);
+    pauseBtn->setPosition(Vec2TR(-20, TOP_MENU_MARGIN_Y));
     menuLayer->addChild(pauseBtn);
     
     pauseBtn->setOnClickListener(CC_CALLBACK_1(GameScene::onClick, this));
     
     // 배너 광고 아래에 위치
     if( !User::isOwnRemoveAdsItem() ) {
-        pauseBtn->setPosition(Vec2TR(-10, -BANNER_HEIGHT-10));
+        pauseBtn->setPositionY(Vec2TR(0, TOP_MENU_MARGIN_Y_BANNER).y);
     }
 }
 

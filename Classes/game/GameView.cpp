@@ -107,7 +107,7 @@ void GameView::onGameStart() {
     
     // 배너 광고 아래에 위치
     if( !User::isOwnRemoveAdsItem() ) {
-        timeBar->setPosition(Vec2TC(0, -BANNER_HEIGHT-10));
+        timeBar->setPositionY(Vec2TC(0, TOP_MENU_MARGIN_Y_BANNER).y);
     }
     
     // 카운트 초기화
@@ -460,8 +460,8 @@ void GameView::initMan() {
 void GameView::initTimeBar() {
     
     timeBar = TimeBar::create();
-    timeBar->setAnchorPoint(ANCHOR_MT);
-    timeBar->setPosition(Vec2TC(0, -15));
+    timeBar->setAnchorPoint(ANCHOR_M);
+    timeBar->setPosition(Vec2TC(0, TOP_MENU_MARGIN_Y));
     addChild(timeBar, SBZOrder::BOTTOM);
     
     // 배너 광고 아래에 위치
