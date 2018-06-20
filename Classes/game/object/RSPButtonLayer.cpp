@@ -172,9 +172,9 @@ void RSPButtonLayer::initNormalButtons() {
     };
     
     SBUIInfo uiInfos[] = {
-        SBUIInfo(ANCHOR_BL, Vec2BL(20,   POS_Y),    ""),
+        SBUIInfo(ANCHOR_BL, Vec2BL(10,   POS_Y),    ""),
         SBUIInfo(ANCHOR_MB, Vec2BC(0,    POS_Y),    ""),
-        SBUIInfo(ANCHOR_BR, Vec2BR(-20,  POS_Y),    ""),
+        SBUIInfo(ANCHOR_BR, Vec2BR(-10,  POS_Y),    ""),
     };
     
     for( int i = 0; i < sizeof(types) / sizeof(RSPType); ++i ) {
