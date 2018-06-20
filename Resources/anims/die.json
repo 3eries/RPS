@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "HklPBEgN6MiDJoaRrbewHI11nwY", "spine": "3.6.52", "width": 1260, "height": 1296, "images": "./die/" },
+"skeleton": { "hash": "B+hgLP7aR9mGRuiFhaWgAjRC1fM", "spine": "3.6.52", "width": 1368.16, "height": 1400.88, "images": "./die/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "skull", "parent": "root", "x": -230, "y": -266.16 },
@@ -10,7 +10,7 @@
 	{ "name": "shadow", "parent": "skull", "x": -2.5, "y": -152.5 },
 	{ "name": "skull_back", "parent": "face_skull_folder", "y": -5.94 },
 	{ "name": "skull_front", "parent": "face_skull_folder", "y": 15.89 },
-	{ "name": "thunder_L", "parent": "root", "x": -182.03, "y": 124, "scaleX": -4, "scaleY": 4 }
+	{ "name": "thunder_L", "parent": "root", "rotation": 5, "x": -220, "y": 124, "scaleX": -4, "scaleY": 4 }
 ],
 "slots": [
 	{ "name": "thunder_01", "bone": "thunder_L", "attachment": "thunder_01" },
@@ -424,8 +424,11 @@
 		},
 		"bones": {
 			"thunder_L": {
+				"rotate": [
+					{ "time": 0, "angle": -10 }
+				],
 				"translate": [
-					{ "time": 0, "x": 364.03, "y": 0 }
+					{ "time": 0, "x": 440, "y": 0 }
 				],
 				"scale": [
 					{ "time": 0, "x": -1, "y": 1 }
