@@ -37,7 +37,8 @@ RSPBlock* RSPBlock::createRandomBlock() {
 }
 
 RSPBlock::RSPBlock() :
-type(RSPType::NONE) {
+type(RSPType::NONE),
+idx(-1) {
 }
 
 RSPBlock::~RSPBlock() {
@@ -52,7 +53,7 @@ bool RSPBlock::init(RSPType type) {
     this->type = type;
     
     if( type != RSPType::NONE ) {
-        setTexture(UIHelper::getBlockImageFile(type));
+        setBlock(type);
     }
     
     return true;
@@ -65,6 +66,13 @@ void RSPBlock::setBlock(RSPType type) {
     
     this->type = type;
     setTexture(UIHelper::getBlockImageFile(type));
+    
+    if( type == RSPType::ROCK_N_ROLL ) {
+        int ran = arc4random() % 2;
+        setFlippedX(ran == 0);
+    } else {
+        setFlippedX(false);
+    }
 }
 
 /**

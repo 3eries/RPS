@@ -43,6 +43,7 @@ public:
     
 private:
     CC_SYNTHESIZE(RSPType, type, Type);
+    CC_SYNTHESIZE(int, idx, Index);
 };
 
 #endif /* RSPBlock_hpp */

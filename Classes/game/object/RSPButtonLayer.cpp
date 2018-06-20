@@ -226,8 +226,8 @@ void RSPButtonLayer::initFeverButtons() {
         });
     }
     
-    // 피버 모드 2번째(우측) 버튼 flip
-    auto btn = buttons[buttons.size()-1];
+    // 피버 모드 1번째(좌측) 버튼 flip
+    auto btn = buttons[FEVER_MODE_BUTTON_INDEX];
     btn->getImage()->setFlippedX(true);
 }
 

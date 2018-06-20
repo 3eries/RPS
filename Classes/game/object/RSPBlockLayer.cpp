@@ -329,8 +329,9 @@ void RSPBlockLayer::initBlocks() {
     
     // 블랙 생성
     for( int i = 0; i < BLOCK_COUNT; i++ ) {
-        //        auto block = RSPBlock::createRandomBlock();
+//        auto block = RSPBlock::createRandomBlock();
         auto block = RSPBlock::create(RSPType::NONE);
+        block->setIndex(i);
         block->setAnchorPoint(ANCHOR_M);
         addChild(block);
         
