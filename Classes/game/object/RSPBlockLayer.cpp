@@ -98,6 +98,30 @@ void RSPBlockLayer::onGameModeChanged(GameMode mode) {
 }
 
 /**
+ * 블럭 업데이트
+ */
+void RSPBlockLayer::updateBlocks() {
+    
+    switch( gameMgr->getGameMode() ) {
+        case GameMode::NORMAL: {
+            for( int i = 0; i < blocks.size(); i++ ) {
+                auto block = blocks[i];
+                block->setBlock(getBlockType(i));
+            }
+            
+        } break;
+            
+        case GameMode::FEVER: {
+            // 모든 블럭 락앤롤로 변환
+            for( auto block : blocks ) {
+                block->setBlock(RSPType::ROCK_N_ROLL);
+            }
+            
+        } break;
+    }
+}
+
+/**
  * 첫번째 블럭 반환, 화면 상에 제일 아래에 위치한 블럭
  */
 RSPBlock* RSPBlockLayer::getFirstBlock() {
@@ -256,8 +280,18 @@ void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosit
  */
 RSPType RSPBlockLayer::getBlockType(int i) {
     
+    // 피버 모드, 락앤롤
     if( gameMgr->getGameMode() == GameMode::FEVER ) {
         return RSPType::ROCK_N_ROLL;
+    }
+    
+    // 노멀 모드
+    size_t prev = (i == 0) ? blocks.size()-1 : i-1;
+    auto   prevType = blocks[prev]->getType();
+    
+    if( prevType == RSPType::ROCK_N_ROLL ) {
+        // 이전 타입이 락앤롤
+        return RSPBlock::getRandomType();
     }
     
     // 블럭 연속될 확률 체크
@@ -266,8 +300,7 @@ RSPType RSPBlockLayer::getBlockType(int i) {
     
     if( ran <= continuation ) {
         // 이전과 동일한 타입
-        int prev = (i == 0) ? blocks.size()-1 : i-1;
-        return blocks[prev]->getType();
+        return prevType;
     }
     
     // 랜덤 타입

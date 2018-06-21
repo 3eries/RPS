@@ -45,6 +45,8 @@ private:
     void onGameModeChanged(GameMode mode) override;
     
 public:
+    void updateBlocks();
+    
     RSPBlock* getFirstBlock();
     std::vector<RSPBlock*> getSortedBlocks();
     
