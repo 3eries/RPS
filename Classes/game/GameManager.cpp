@@ -80,6 +80,7 @@ void GameManager::onExitGame() {
     onGamePause();
     
     view = nullptr;
+    reset();
     
     listeners.clear();
 }
