@@ -39,7 +39,11 @@ private:
 // GameListener
 private:
     void onGameStart() override;
+    void onPreGameOver() override;
+    void onContinue() override;
+    void onGameOver() override;
     void onGameModeChanged(GameMode mode) override;
+    void onLastFeverBlockHit() override;
     
 public:
     void switchButton(GameMode mode);
@@ -47,8 +51,15 @@ public:
     
     void touchLocked(float delay);
     
+    void showTapHint(std::vector<RSPButton*> buttons);
     void showTapHint(RSPType winHand);
-    void hideTapHint();
+    void showTapHintFeverMode();
+    
+    void hideTapHint(bool runAction = true);
+    
+private:
+    void onClickNormalButton(RSPType type);
+    void onClickFeverButton(int i);
     
 private:
     CC_SYNTHESIZE(std::function<void(RSPType)>,
@@ -57,9 +68,14 @@ private:
                   onFeverButtonClickListener, OnFeverButtonClickListener);
     
     std::map<GameMode, cocos2d::Node*> buttonLayers;
-    std::vector<RSPButton*> buttons;
     
-    cocos2d::Node *tapHint;
+    static const int FEVER_MODE_BUTTON_INDEX = 3;
+    std::vector<RSPButton*> buttons; // 노멀 모드 3개 + 피버 모드 2개
+    
+    cocos2d::Node *tapHintLayer;
+    std::vector<cocos2d::Node*> tapHints;
+    
+    int feverButtonTouchCount;
 };
 
 #endif /* RSPButtonLayer_hpp */
