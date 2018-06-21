@@ -24,25 +24,26 @@ void ResourceHelper::preload() {
     
     // add image
     {
-        string syncFiles[] = {
+        string files[] = {
             ANIM_CLOUD,
         };
         
-        for( string file : syncFiles ) {
+        for( string file : files ) {
             textureCache->addImage(getAnimPNG(file));
         }
     }
     
     // add image async
     {
-        string asyncFiles[] = {
+        string files[] = {
+            ANIM_CLOUD_DARK,
             ANIM_FEVER_MODE_BG,
             ANIM_FEVER_MODE_FIRE,
             ANIM_DRAW,
             ANIM_DIE,
         };
         
-        for( string file : asyncFiles ) {
+        for( string file : files ) {
             textureCache->addImageAsync(getAnimPNG(file), nullptr);
         }
         

@@ -50,6 +50,7 @@ static const std::string DIR_ANIM                   = "anims/";
 static const std::string ANIM_EXT                   = ".json";
 static const std::string ANIM_LOGO                  = DIR_ANIM + "3eries_logo" + ANIM_EXT;
 static const std::string ANIM_CLOUD                 = DIR_ANIM + "RSP_cloud" + ANIM_EXT;
+static const std::string ANIM_CLOUD_DARK            = DIR_ANIM + "cloud_dark" + ANIM_EXT;
 static const std::string ANIM_FEVER_MODE_BG         = DIR_ANIM + "fevermode_bg" + ANIM_EXT;
 static const std::string ANIM_FEVER_MODE_FIRE       = DIR_ANIM + "fevermode_fire" + ANIM_EXT;
 static const std::string ANIM_DRAW                  = DIR_ANIM + "character_draw" + ANIM_EXT;
