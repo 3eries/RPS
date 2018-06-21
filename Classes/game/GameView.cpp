@@ -195,12 +195,18 @@ void GameView::onGameModeChanged(GameMode mode) {
         case GameMode::FEVER: {
             SBAudioEngine::playBGM(SOUND_BGM_FEVER);
             
+            // 피버 모드 애니메이션 재생
             for( int tag : feverModeTags ) {
                 auto anim = getChildByTag<SkeletonAnimation*>(tag);
                 anim->setVisible(true);
                 
                 anim->clearTracks();
                 anim->setAnimation(0, ANIM_NAME_RUN, false);
+            }
+            
+            // 최초 피버 모드시에만 Tap Hint 노출
+            if( gameMgr->getFeverModeCount() == 1 ) {
+                buttonLayer->showTapHintFeverMode();
             }
             
         } break;
