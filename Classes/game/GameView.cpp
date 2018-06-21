@@ -32,6 +32,9 @@ using namespace std;
 
 static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
 
+#define DARK_CLOUD_POS_TOP         Vec2MC(0, 660)
+#define DARK_CLOUD_POS_BOTTOM      Vec2MC(0, -130)
+
 GameView::GameView() :
 gameMgr(GameManager::getInstance()),
 hitCount(0) {
@@ -477,17 +480,25 @@ void GameView::initMan() {
  */
 void GameView::initTimeBar() {
     
+    darkCloudAnim = SkeletonAnimation::createWithJsonFile(ANIM_CLOUD_DARK);
+    darkCloudAnim->setAnchorPoint(Vec2::ZERO);
+    darkCloudAnim->setPosition(DARK_CLOUD_POS_TOP);
+    darkCloudAnim->setAnimation(0, ANIM_NAME_RUN, true);
+    addChild(darkCloudAnim, SBZOrder::BOTTOM);
+    
     timeBar = TimeBar::create();
     timeBar->setAnchorPoint(ANCHOR_M);
     timeBar->setPosition(Vec2TC(0, TOP_MENU_MARGIN_Y));
     addChild(timeBar, SBZOrder::BOTTOM);
     
-    // 배너 광고 아래에 위치
-    /*
-    if( !User::isOwnRemoveAdsItem() ) {
-        timeBar->setPosition(Vec2TC(0, -BANNER_HEIGHT-10));
-    }
-    */
+    timeBar->setOnTimeChangedListener([=](int timePoint, float ratio) {
+        
+        // 먹구름 좌표 업데이트
+        float h = DARK_CLOUD_POS_TOP.y - DARK_CLOUD_POS_BOTTOM.y;
+        float posY = DARK_CLOUD_POS_BOTTOM.y + (h * ratio);
+        
+        darkCloudAnim->setPositionY(posY);
+    });
 }
 
 /**

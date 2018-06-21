@@ -105,6 +105,9 @@ private:
     
     // 시간 제한바
     TimeBar *timeBar;
+    
+    // 먹구름
+    spine::SkeletonAnimation *darkCloudAnim;
 };
 
 #endif /* GameView_hpp */
