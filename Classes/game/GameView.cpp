@@ -156,6 +156,10 @@ void GameView::onPreGameOver() {
 void GameView::onContinue() {
     
     updateScore();
+    
+    blockLayer->updateBlocks();
+    updateButtonMode();
+    
     buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
 }
 

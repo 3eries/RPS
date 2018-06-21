@@ -187,6 +187,8 @@ void GameManager::onGameResume(bool force) {
 void GameManager::onPreGameOver() {
     
 //    onGamePause();
+    view->unschedule(SCHEDULER_FEVER_END);
+    view->unschedule(SCHEDULER_FEVER_END_ALERT);
     
     for( auto listener : listeners ) {
         listener->onPreGameOver();
@@ -199,6 +201,11 @@ void GameManager::onPreGameOver() {
 void GameManager::onContinue() {
    
     ++continueCount;
+    
+    // 피버 모드 였다면, 노멀 모드로 전환
+    if( gameMode == GameMode::FEVER ) {
+        onNormalMode();
+    }
     
     for( auto listener : listeners ) {
         listener->onContinue();
