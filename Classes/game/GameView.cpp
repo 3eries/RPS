@@ -374,7 +374,7 @@ void GameView::showLevelLabel() {
     levelLabel->setString(STR_FORMAT("LEVEL %d", gameMgr->getLevelInfo().level));
     
     const Vec2 topPos    = Vec2TC(0, levelLabel->getContentSize().height);
-    const Vec2 originPos = Vec2MC(0, 415);
+    const Vec2 originPos = Vec2MC(0, 290);
     levelLabel->setPosition(topPos);
     
     // move
@@ -510,7 +510,7 @@ void GameView::initLabels() {
     levelLabel->setTag(Tag::LABEL_LEVEL);
     levelLabel->setVisible(false);
     levelLabel->setAnchorPoint(ANCHOR_M);
-    levelLabel->setPosition(Vec2MC(0, 415));
+    levelLabel->setPosition(Vec2MC(0, 290));
     levelLabel->setColor(Color3B(250, 178, 11));
     levelLabel->enableOutline(Color4B(78, 22, 0, 255), 7);
     addChild(levelLabel, SBZOrder::BOTTOM);
@@ -518,7 +518,7 @@ void GameView::initLabels() {
     auto scoreLabel = Label::createWithTTF("0", FONT_RETRO, 75);
     scoreLabel->setTag(Tag::LABEL_SCORE);
     scoreLabel->setAnchorPoint(ANCHOR_M);
-    scoreLabel->setPosition(Vec2MC(0, 300));
+    scoreLabel->setPosition(Vec2MC(0, 170));
     scoreLabel->setColor(Color3B::WHITE);
     scoreLabel->enableOutline(Color4B::BLACK, 7);
     addChild(scoreLabel, SBZOrder::BOTTOM);
