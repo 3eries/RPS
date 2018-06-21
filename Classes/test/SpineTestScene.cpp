@@ -19,7 +19,7 @@ using namespace cocos2d::ui;
 using namespace std;
 
 static const string ANIM_FILES[] = {
-    ANIM_LOGO, ANIM_CLOUD,
+    ANIM_LOGO, ANIM_CLOUD, ANIM_CLOUD_DARK,
     ANIM_FEVER_MODE_BG, ANIM_FEVER_MODE_FIRE,
     ANIM_DRAW, ANIM_DIE,
 };
