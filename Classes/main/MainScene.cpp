@@ -87,16 +87,21 @@ void MainScene::replaceGame() {
 void MainScene::onClick(Node *sender) {
     
     switch( sender->getTag() ) {
-        case Tag::BTN_TITLE: {
-            // TODO: 크레딧
-        } break;
-            
         case Tag::BTN_START: {
             replaceGame();
         } break;
             
+        case Tag::BTN_TITLE: {
+            // TODO: 크레딧
+        } break;
+            
         case Tag::BTN_REMOVE_ADS: {
             User::setOwnRemoveAdsItem(!User::isOwnRemoveAdsItem());
+        } break;
+            
+        // test
+        case Tag::BTN_TEST: {
+            Director::getInstance()->pushScene(TestMenuScene::create());
         } break;
             
         default:
@@ -122,18 +127,20 @@ void MainScene::initBg() {
 void MainScene::initMenu() {
     
     SBUIInfo infos[] = {
-        SBUIInfo(Tag::BTN_START, ANCHOR_MB, Vec2BC(0, 120), ""),
-        SBUIInfo(Tag::BTN_REMOVE_ADS, ANCHOR_M, Vec2MC(0, 0),    ""),
-    };
-    
-    string titles[] = {
-        "START",
-        "REMOVE ADS",
+        SBUIInfo(Tag::BTN_START,        ANCHOR_MB,   Vec2BC(0, 20),     "RSP_btn_start.png"),
+        SBUIInfo(Tag::BTN_REMOVE_ADS,   ANCHOR_M,    Vec2MC(0, 25),     "RSP_btn_remove_ads.png"),
+        SBUIInfo(Tag::BTN_LEADER_BOARD, ANCHOR_BL,   Vec2BL(10, 20),    "RSP_btn_ranking.png"),
+        SBUIInfo(Tag::BTN_SHOP,         ANCHOR_BR,   Vec2BR(-10, 20),   "RSP_btn_shop.png"),
+        SBUIInfo(Tag::BTN_OPTION,       ANCHOR_TR,   Vec2TR(-10, -10),  "RSP_btn_option.png"),
+        SBUIInfo(Tag::BTN_TEST,         ANCHOR_TL,   Vec2TL(10, -10),   "RSP_btn_test.png"),
     };
     
     for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
-        auto btn = UIHelper::createFontButton(titles[i], ButtonSize::MEDIUM);
-        infos[i].apply(btn);
+        auto info = infos[i];
+        
+        auto btn = SBButton::create(DIR_IMG_GAME + info.file);
+        btn->setZoomScale(0.1f);
+        info.apply(btn);
         addChild(btn);
         
         btn->setOnClickListener(CC_CALLBACK_1(MainScene::onClick, this));
@@ -155,16 +162,4 @@ void MainScene::initMenu() {
      
      getChildByTag(Tag::BTN_START)->runAction(Sequence::create(fadeOut, callFuncN, nullptr));
      */
-    
-    // test
-    {
-        auto btn = UIHelper::createFontButton("TEST", ButtonSize::MEDIUM);
-        btn->setAnchorPoint(ANCHOR_MB);
-        btn->setPosition(Vec2BC(0, 10));
-        addChild(btn);
-        
-        btn->setOnClickListener([=](Node*) {
-            Director::getInstance()->pushScene(TestMenuScene::create());
-        });
-    }
 }
