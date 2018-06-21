@@ -228,6 +228,20 @@ void GameView::updateScore() {
 }
 
 /**
+ * 첫번째 블럭 타입에 따라 하단 버튼 모드를 변경
+ */
+void GameView::updateButtonMode() {
+    
+    auto block = blockLayer->getFirstBlock();
+    
+    if( block->getType() == RSPType::ROCK_N_ROLL ) {
+        buttonLayer->switchButton(GameMode::FEVER);
+    } else {
+        buttonLayer->switchButton(GameMode::NORMAL);
+    }
+}
+
+/**
  * RSP 버튼 클릭
  */
 void GameView::onClickNormalButton(RSPType type) {
@@ -277,14 +291,8 @@ void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     // 시간 증가
     timeBar->increaseTimePoint(gameMgr->getConfig()->getTimeInfo().increasePointPerHit);
     
-    // 다음 블럭 타입에 따라 하단 버튼 모드를 변경
-    auto nextBlock = blockLayer->getFirstBlock();
-    
-    if( nextBlock->getType() == RSPType::ROCK_N_ROLL ) {
-        buttonLayer->switchButton(GameMode::FEVER);
-    } else {
-        buttonLayer->switchButton(GameMode::NORMAL);
-    }
+    // 버튼 업데이트
+    updateButtonMode();
 }
 
 /**

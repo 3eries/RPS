@@ -76,6 +76,7 @@ private:
     
 private:
     void updateScore();
+    void updateButtonMode();
     
     void onClickNormalButton(RSPType type);
     void onClickFeverButton(int i);
