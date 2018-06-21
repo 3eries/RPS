@@ -80,6 +80,7 @@ private:
     CC_SYNTHESIZE_READONLY(GameMode, gameMode, GameMode);         // 게임 모드
     
     CC_SYNTHESIZE_READONLY(int, continueCount, ContinueCount);    // 이어하기한 횟수
+    CC_SYNTHESIZE_READONLY(int, feverModeCount, FeverModeCount);  // 피버 모드한 횟수
     CC_SYNTHESIZE(LevelInfo, levelInfo, LevelInfo);               // 현재 레벨 정보
     CC_SYNTHESIZE_READONLY(int, score, Score);                    // 현재 스코어
     

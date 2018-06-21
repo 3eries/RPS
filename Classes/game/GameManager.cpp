@@ -55,6 +55,7 @@ void GameManager::reset() {
     gameOver = false;
     gameMode = GameMode::NORMAL;
     continueCount = 0;
+    feverModeCount = 0;
     levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
     score = 0;
 }
@@ -260,6 +261,7 @@ void GameManager::onNormalMode() {
  */
 void GameManager::onFeverMode() {
     
+    ++feverModeCount;
     onGameModeChanged(GameMode::FEVER);
     
     // 피버 모드 종료 스케줄러
@@ -269,7 +271,7 @@ void GameManager::onFeverMode() {
     view->scheduleOnce([=](float dt) {
         // 노멀 모드로 복구
         this->onNormalMode();
-        
+
     }, DURATION, SCHEDULER_FEVER_END);
     
     // 피버 모드 종료 알림 스케줄러
