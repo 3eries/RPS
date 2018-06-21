@@ -17,6 +17,7 @@ using namespace cocos2d::ui;
 using namespace std;
 
 TimeBar::TimeBar() :
+onTimeChangedListener(nullptr),
 gameMgr(GameManager::getInstance()),
 started(false) {
 }
@@ -40,14 +41,16 @@ bool TimeBar::init() {
     gage->setPosition(Vec2MC(getContentSize(), 0, 0));
     addChild(gage);
     
-    GameManager::getInstance()->addListener(this);
+    reset();
+    
+    gameMgr->addListener(this);
     
     return true;
 }
 
 void TimeBar::onExit() {
     
-    GameManager::getInstance()->removeListener(this);
+    gameMgr->removeListener(this);
     
     Sprite::onExit();
 }
@@ -57,12 +60,12 @@ void TimeBar::reset() {
     setVisible(true);
     
     timePoint = gameMgr->getConfig()->getTimeInfo().firstPoint;
+    updateGage();
 }
 
 void TimeBar::onGameStart() {
  
     reset();
-    updateGage();
 }
 
 void TimeBar::onGameRestart() {
@@ -89,7 +92,6 @@ void TimeBar::onPreGameOver() {
 void TimeBar::onContinue() {
     
     reset();
-    updateGage();
 }
 
 void TimeBar::onGameOver() {
@@ -163,14 +165,13 @@ void TimeBar::update(float dt) {
  */
 void TimeBar::updateGage() {
     
-//    float per = (elapsed / duration) * 100;
-//    per = MIN(100, per);
-//    per = 100 - per;
-//
-//    gage->setPercentage(per);
-    
     const int maxPoint = gameMgr->getConfig()->getTimeInfo().maxPoint;
     
-    float per = ((float)timePoint / maxPoint) * 100;
+    float ratio = (float)timePoint / maxPoint;
+    float per = ratio * 100;
     gage->setPercentage(per);
+    
+    if( onTimeChangedListener ) {
+        onTimeChangedListener(timePoint, ratio);
+    }
 }

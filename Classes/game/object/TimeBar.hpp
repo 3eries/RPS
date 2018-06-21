@@ -50,6 +50,8 @@ public:
     void increaseTimePoint(int point);
     
 private:
+    CC_SYNTHESIZE(std::function<void(int, float)>, onTimeChangedListener, OnTimeChangedListener);
+    
     GameManager *gameMgr;
     
     SB_SYNTHESIZE_READONLY_BOOL(started, Started);
