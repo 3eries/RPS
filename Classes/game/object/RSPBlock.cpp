@@ -12,6 +12,26 @@
 USING_NS_CC;
 using namespace std;
 
+string RSPBlock::getBlockImageFile(RSPType type, bool flippedX) {
+    
+    switch( type ) {
+        case RSPType::ROCK:          return DIR_IMG_GAME + "RSP_block_rock.png";
+        case RSPType::SCISSORS:      return DIR_IMG_GAME + "RSP_block_scissors.png";
+        case RSPType::PAPER:         return DIR_IMG_GAME + "RSP_block_paper.png";
+        case RSPType::ROCK_N_ROLL:
+            if( flippedX ) {
+                return DIR_IMG_GAME + "RSP_block_fever.png";
+            } else {
+                return DIR_IMG_GAME + "RSP_block_fever2.png";
+            }
+        default:
+            CCASSERT(false, "UIHelper::getBlockImageFile error: invalid rsp type.");
+            break;
+    }
+    
+    return "";
+}
+
 RSPType RSPBlock::getRandomType() {
     
     int ran = arc4random() % 3;
@@ -65,13 +85,15 @@ bool RSPBlock::init(RSPType type) {
 void RSPBlock::setBlock(RSPType type) {
     
     this->type = type;
-    setTexture(UIHelper::getBlockImageFile(type));
     
+    // 락앤롤만 flip
     if( type == RSPType::ROCK_N_ROLL ) {
         int ran = arc4random() % 2;
-        setFlippedX(ran == 0);
+        bool flippedX = (ran == 0);
+        setTexture(getBlockImageFile(type, flippedX));
+        
     } else {
-        setFlippedX(false);
+        setTexture(getBlockImageFile(type));
     }
 }
 

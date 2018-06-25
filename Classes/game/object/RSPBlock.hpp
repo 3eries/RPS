@@ -17,6 +17,7 @@
 
 class RSPBlock : public cocos2d::Sprite {
 public:
+    static std::string getBlockImageFile(RSPType type, bool flippedX = false);
     static RSPType getRandomType();
     
 public:

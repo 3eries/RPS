@@ -31,7 +31,6 @@ struct ButtonSize {
  */
 class UIHelper {
 public:
-    static std::string getBlockImageFile(RSPType type);
     static std::string getButtonImageFile(RSPType type);
     
     static cocos2d::Color3B getColor(RSPType type);
