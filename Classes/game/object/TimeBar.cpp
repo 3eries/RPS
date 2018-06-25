@@ -9,6 +9,7 @@
 
 #include "RSP.h"
 #include "GameConfiguration.hpp"
+#include "UserDefaultKey.h"
 
 #include "../GameDefine.h"
 
@@ -57,7 +58,8 @@ void TimeBar::onExit() {
 
 void TimeBar::reset() {
     
-    setVisible(true);
+    // setVisible(true);
+    setVisible(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, true));
     
     timePoint = gameMgr->getConfig()->getTimeInfo().firstPoint;
     updateGage();
