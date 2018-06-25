@@ -47,11 +47,18 @@ void ResourceHelper::preload() {
             textureCache->addImageAsync(getAnimPNG(file), nullptr);
         }
         
-        const string DIE2 = SBStringUtils::replaceAll(getAnimPNG(ANIM_DIE), ".png", "2.png");
-        textureCache->addImageAsync(DIE2, [=](Texture2D *tex) {
-            CCLOG("add image completed : %d, %d", tex != nullptr,
-                  textureCache->getTextureForKey(getAnimPNG(ANIM_DIE)) != nullptr);
-        });
+        // ...2.png
+        {
+            string files[] = {
+                ANIM_CLOUD_DARK,
+                ANIM_DIE,
+            };
+            
+            for( string file : files ) {
+                const string secondFile = SBStringUtils::replaceAll(getAnimPNG(file), ".png", "2.png");
+                textureCache->addImageAsync(getAnimPNG(secondFile), nullptr);
+            }
+        }
     }
     
     // sound
