@@ -281,11 +281,21 @@ void Man::updateFeverGage() {
     
     feverGage.gage->stopAllActions();
     
-    const int maxPoint = gameMgr->getConfig()->getFeverInfo().maxPoint;
+    int maxPoint = gameMgr->getConfig()->getFeverInfo().maxPoint;
+    float ratio = (float)feverGage.point / maxPoint;
+    bool isIncrease = (ratio > feverGage.gage->getScaleX());
     
-//    float per = ((float)feverGage.point / maxPoint) * 100;
-//    feverGage.gage->setPercentage(per);
-    feverGage.gage->setScaleX((float)feverGage.point / maxPoint);
+    feverGage.gage->setScaleX(ratio);
+    
+    // 게이지가 증가한 경우, 흰색 이펙트
+    if( isIncrease ) {
+        feverGage.whiteGage->setVisible(true);
+        feverGage.whiteGage->setScaleX(ratio);
+        
+        auto delay = DelayTime::create(0.04f);
+        auto hide = Hide::create();
+        feverGage.whiteGage->runAction(Sequence::create(delay, hide, nullptr));
+    }
 }
 
 /**
@@ -464,13 +474,21 @@ void Man::initFeverGage() {
     addChild(feverGage.bg);
 
     auto bgSize = feverGage.bg->getContentSize();
-    
+
+    // gage
     feverGage.gage = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_green.png");
     feverGage.gage->setAnchorPoint(ANCHOR_ML);
     feverGage.gage->setPosition(Vec2ML(bgSize,
                                        (bgSize.width-feverGage.gage->getContentSize().width)*0.5f, 0));
     feverGage.gage->setScaleX(0);
     feverGage.bg->addChild(feverGage.gage);
+    
+    // white gage
+    feverGage.whiteGage = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_white.png");
+    feverGage.whiteGage->setVisible(false);
+    feverGage.whiteGage->setAnchorPoint(feverGage.gage->getAnchorPoint());
+    feverGage.whiteGage->setPosition(feverGage.gage->getPosition());
+    feverGage.bg->addChild(feverGage.whiteGage);
     
     /*
     auto bar = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_green.png");

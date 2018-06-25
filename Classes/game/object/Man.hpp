@@ -95,6 +95,7 @@ private:
         float point;
         cocos2d::Node *bg;
         cocos2d::Sprite *gage;
+        cocos2d::Sprite *whiteGage;
         
         FeverGage() {
             point = 0;
