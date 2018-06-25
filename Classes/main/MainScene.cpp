@@ -159,6 +159,9 @@ void MainScene::initMenu() {
         comingSoon->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()));
         comingSoon->setAnimation(0, ANIM_NAME_RUN, true);
         addChild(comingSoon);
+        
+        comingSoon->setOpacity(0);
+        comingSoon->runAction(FadeIn::create(1.5f));
     }
     
     // START 버튼 연출
