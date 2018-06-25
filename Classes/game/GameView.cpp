@@ -484,7 +484,7 @@ void GameView::initTimeBar() {
     darkCloudAnim->setAnchorPoint(Vec2::ZERO);
     darkCloudAnim->setPosition(DARK_CLOUD_POS_TOP);
     darkCloudAnim->setAnimation(0, ANIM_NAME_RUN, true);
-    addChild(darkCloudAnim, SBZOrder::BOTTOM);
+    addChild(darkCloudAnim, (int)ZOrder::CLOUD);
     
     timeBar = TimeBar::create();
     timeBar->setAnchorPoint(ANCHOR_M);
