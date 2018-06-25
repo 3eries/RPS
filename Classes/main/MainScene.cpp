@@ -161,7 +161,7 @@ void MainScene::initMenu() {
         addChild(comingSoon);
         
         comingSoon->setOpacity(0);
-        comingSoon->runAction(FadeIn::create(1.5f));
+        comingSoon->runAction(FadeIn::create(1.0f));
     }
     
     // START 버튼 연출
