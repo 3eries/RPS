@@ -140,7 +140,7 @@ void TimeBar::setTimePoint(float point) {
     
     this->timePoint = point;
     
-//    CCLOG("timePoint: %d", point);
+//    CCLOG("timePoint: %f", point);
 }
 
 /**
