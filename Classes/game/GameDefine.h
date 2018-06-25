@@ -38,7 +38,7 @@ static const float          BLOCK_MOVE_DURATION          = 0.1f;
 
 // 상단 메뉴 y좌표
 #define                     TOP_MENU_MARGIN_Y            -61
-#define                     TOP_MENU_MARGIN_Y_BANNER     TOP_MENU_MARGIN_Y-BANNER_HEIGHT-10
+#define                     TOP_MENU_MARGIN_Y_BANNER     (TOP_MENU_MARGIN_Y-BANNER_HEIGHT)
 
 // 캐릭터 좌표
 #define                     MAN_POS_LEFT                 Vec2BC(-212, 210)
