@@ -16,6 +16,7 @@
 
 USING_NS_CC;
 using namespace cocos2d::ui;
+using namespace spine;
 using namespace std;
 
 MainScene::MainScene() {
@@ -144,6 +145,20 @@ void MainScene::initMenu() {
         addChild(btn);
         
         btn->setOnClickListener(CC_CALLBACK_1(MainScene::onClick, this));
+    }
+    
+    // Shop 버튼 커밍순
+    {
+        auto btn = getChildByTag<SBButton*>(Tag::BTN_SHOP);
+        btn->setTouchEnabled(false);
+        
+        auto btnBox = SBNodeUtils::getBoundingBoxInWorld(btn);
+        
+        auto comingSoon = SkeletonAnimation::createWithJsonFile(DIR_ANIM + "coming_soon.json");
+        comingSoon->setAnchorPoint(Vec2::ZERO);
+        comingSoon->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()));
+        comingSoon->setAnimation(0, ANIM_NAME_RUN, true);
+        addChild(comingSoon);
     }
     
     // START 버튼 연출
