@@ -1,48 +1,61 @@
 
 cloud_dark.png
-size: 1024,512
+size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 cloud_dark
   rotate: false
-  xy: 2, 218
-  size: 240, 214
-  orig: 240, 214
+  xy: 2, 746
+  size: 960, 252
+  orig: 960, 252
   offset: 0, 0
   index: -1
 cloud_dark2
   rotate: false
   xy: 2, 2
-  size: 240, 214
-  orig: 240, 214
+  size: 688, 132
+  orig: 688, 132
   offset: 0, 0
   index: -1
 cloud_dark3
   rotate: false
-  xy: 244, 218
-  size: 240, 214
-  orig: 240, 214
+  xy: 2, 314
+  size: 960, 176
+  orig: 960, 176
   offset: 0, 0
   index: -1
 cloud_dark_light
   rotate: false
-  xy: 244, 2
-  size: 240, 214
-  orig: 240, 214
-  offset: 0, 0
-  index: -1
-cloud_dark_light2
-  rotate: false
-  xy: 486, 218
-  size: 240, 214
-  orig: 240, 214
+  xy: 2, 492
+  size: 960, 252
+  orig: 960, 252
   offset: 0, 0
   index: -1
 cloud_dark_light3
   rotate: false
-  xy: 486, 2
-  size: 240, 214
-  orig: 240, 214
+  xy: 2, 136
+  size: 960, 176
+  orig: 960, 176
+  offset: 0, 0
+  index: -1
+
+cloud_dark2.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud_dark_big
+  rotate: true
+  xy: 692, 2
+  size: 240, 267
+  orig: 240, 267
+  offset: 0, 0
+  index: -1
+cloud_dark_light2
+  rotate: false
+  xy: 2, 110
+  size: 688, 132
+  orig: 688, 132
   offset: 0, 0
   index: -1

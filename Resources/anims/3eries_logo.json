@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "qDcOfEVsaTyMV8y9+YnmdahUBtw", "spine": "3.6.52", "width": 963.22, "height": 1282.41, "images": "./3eries_logo/" },
+"skeleton": { "hash": "fTkxVH9yC8Ri+wl2ElXLqSPPNn8", "spine": "3.6.52", "width": 963.22, "height": 1282.41, "images": "./3eries_logo/" },
 "bones": [
 	{ "name": "root", "rotation": -0.14 },
 	{ "name": "bg", "parent": "root", "scaleX": 4, "scaleY": 4 },
@@ -45,6 +45,35 @@
 	}
 },
 "animations": {
+	"clear": {
+		"slots": {
+			"bg": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"coin_1": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"hole": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"logo": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"mask": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
 	"run": {
 		"slots": {
 			"bg": {
