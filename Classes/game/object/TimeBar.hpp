@@ -41,6 +41,7 @@ private:
     void onPreGameOver() override;
     void onContinue() override;
     void onGameOver() override;
+    void onStartTimer() override;
     
 public:
     void startTimeBar();

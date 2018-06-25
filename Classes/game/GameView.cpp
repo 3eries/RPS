@@ -277,7 +277,7 @@ void GameView::onClickNormalButton(RSPType type) {
     
     // 타임바 실행
     if( !timeBar->isStarted() && result != RSPResult::LOSE ) {
-        timeBar->startTimeBar();
+        gameMgr->onStartTimer();
     }
 }
 

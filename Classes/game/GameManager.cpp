@@ -244,6 +244,16 @@ void GameManager::onGameEnd() {
 }
 
 /**
+ * 타이머 시작
+ */
+void GameManager::onStartTimer() {
+
+    for( auto listener : listeners ) {
+        listener->onStartTimer();
+    }
+}
+
+/**
  * 게임 모드 전환
  */
 void GameManager::onGameModeChanged(GameMode mode) {

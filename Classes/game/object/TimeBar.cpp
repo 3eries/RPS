@@ -99,6 +99,14 @@ void TimeBar::onGameOver() {
 }
 
 /**
+ * 타이머 시작
+ */
+void TimeBar::onStartTimer() {
+    
+    startTimeBar();
+}
+
+/**
  * 시작
  */
 void TimeBar::startTimeBar() {

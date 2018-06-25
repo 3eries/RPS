@@ -27,19 +27,18 @@ enum class GameMode {
 
 class GameListener {
 public:
-    virtual void onGameStart() {}       // 게임 시작
-    virtual void onGameRestart() {}     // 게임 재시작
-    virtual void onGamePause() {}       // 게임 일시정지
-    virtual void onGameResume() {}      // 게임 재게
-    virtual void onPreGameOver() {}     // 게임 오버 전, 이어하기 상태 처리
-    virtual void onContinue() {}        // 이어하기
-    virtual void onGameOver() {}        // 게임 오버
-    virtual void onGameEnd() {}         // 게임 종료
+    virtual void onGameStart() {}                      // 게임 시작
+    virtual void onGameRestart() {}                    // 게임 재시작
+    virtual void onGamePause() {}                      // 게임 일시정지
+    virtual void onGameResume() {}                     // 게임 재게
+    virtual void onPreGameOver() {}                    // 게임 오버 전, 이어하기 상태 처리
+    virtual void onContinue() {}                       // 이어하기
+    virtual void onGameOver() {}                       // 게임 오버
+    virtual void onGameEnd() {}                        // 게임 종료
     
+    virtual void onStartTimer() {}                     // 타이머 시작
     virtual void onGameModeChanged(GameMode mode) {}   // 게임 모드 전환
-    
-    virtual void onPreFeverModeEnd() {} // 피버 모드 종료 전
-    
+    virtual void onPreFeverModeEnd() {}                // 피버 모드 종료 전
     virtual void onLastFeverBlockHit() {}              // 마지막 피버 블럭 히트
 };
 
@@ -95,12 +94,13 @@ public:
     void onGameOver();
     void onGameEnd();
     
+    void onStartTimer();
+    
     void onGameModeChanged(GameMode mode);
     void onNormalMode();
     void onFeverMode();
     
     void onPreFeverModeEnd();
-    
     void onLastFeverBlockHit();
     
     void addListener(GameListener *listener);
