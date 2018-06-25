@@ -307,8 +307,8 @@ void RSPButtonLayer::initNormalButtons() {
     
     RSPType types[] = {
         RSPType::ROCK,
-        RSPType::SCISSORS,
         RSPType::PAPER,
+        RSPType::SCISSORS,
     };
     
     SBUIInfo uiInfos[] = {
