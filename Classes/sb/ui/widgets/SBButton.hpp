@@ -69,7 +69,9 @@ protected:
     virtual void updateTitlePosition();
     
     virtual void onTouchBegan();
+    virtual void onTouchMoved();
     virtual void onTouchEnded();
+    virtual void onTouchCanceled();
     virtual void onClick();
     
 public:
@@ -87,6 +89,7 @@ public:
 protected:
     Config config;
     CC_SYNTHESIZE(SBCallbackNode, onClickListener, OnClickListener);
+    CC_SYNTHESIZE(std::function<void(cocos2d::Node*, SBTouchEventType)>, onTouchListener, OnTouchListener);
     CC_SYNTHESIZE(float, zoomScale, ZoomScale);
     SB_SYNTHESIZE_READONLY_BOOL(scale9Enabled, Scale9Enabled);
     

@@ -37,6 +37,7 @@ SBButton* SBButton::create(const string &title, const string &font, float fontSi
 
 SBButton::SBButton() :
 onClickListener(nullptr),
+onTouchListener(nullptr),
 zoomScale(ZOOM_SCALE),
 scale9Enabled(false),
 contentsLayer(nullptr),
@@ -147,8 +148,9 @@ void SBButton::initListener() {
     addTouchEventListener([=](Ref *sender, Widget::TouchEventType eventType) {
         switch( eventType ) {
             case Widget::TouchEventType::BEGAN:         this->onTouchBegan();       break;
-            case Widget::TouchEventType::ENDED:
-            case Widget::TouchEventType::CANCELED:      this->onTouchEnded();       break;
+            case Widget::TouchEventType::MOVED:         this->onTouchMoved();       break;
+            case Widget::TouchEventType::ENDED:         this->onTouchEnded();       break;
+            case Widget::TouchEventType::CANCELED:      this->onTouchCanceled();    break;
             default: break;
         }
     });
@@ -201,7 +203,29 @@ void SBButton::updateTitlePosition() {
  */
 void SBButton::onTouchBegan() {
     
+    retain();
+    
+    if( onTouchListener ) {
+        onTouchListener(this, SBTouchEventType::BEGAN);
+    }
+    
     contentsLayer->setScale(1 + zoomScale);
+    
+    release();
+}
+
+/**
+ * 터치 이동
+ */
+void SBButton::onTouchMoved() {
+
+    retain();
+    
+    if( onTouchListener ) {
+        onTouchListener(this, SBTouchEventType::MOVED);
+    }
+    
+    release();
 }
 
 /**
@@ -209,7 +233,31 @@ void SBButton::onTouchBegan() {
  */
 void SBButton::onTouchEnded() {
     
+    retain();
+    
+    if( onTouchListener ) {
+        onTouchListener(this, SBTouchEventType::ENDED);
+    }
+    
     contentsLayer->setScale(1);
+    
+    release();
+}
+
+/**
+ * 터치 취소
+ */
+void SBButton::onTouchCanceled() {
+    
+    retain();
+    
+    if( onTouchListener ) {
+        onTouchListener(this, SBTouchEventType::CANCELED);
+    }
+    
+    contentsLayer->setScale(1);
+    
+    release();
 }
 
 /**
