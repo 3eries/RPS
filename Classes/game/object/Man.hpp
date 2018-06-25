@@ -63,6 +63,7 @@ private:
     void onPreGameOver() override;
     void onContinue() override;
     void onGameOver() override;
+    void onStartTimer() override;
     void onGameModeChanged(GameMode mode) override;
     void onLastFeverBlockHit() override;
     

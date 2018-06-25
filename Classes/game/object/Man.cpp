@@ -73,7 +73,7 @@ void Man::reset() {
     clearRemoveNodes();
     
     setFeverPoint(0);
-    setFeverGageVisible(true);
+    setFeverGageVisible(false);
     
     setManAnimation(AnimationType::IDLE);
     setManPosition(Position::LEFT);
@@ -135,6 +135,14 @@ void Man::onContinue() {
 }
 
 void Man::onGameOver() {
+}
+
+/**
+ * 타이머 시작
+ */
+void Man::onStartTimer() {
+    
+    setFeverGageVisible(true);
 }
 
 /**
