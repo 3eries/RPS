@@ -208,9 +208,13 @@ void GameView::onGameModeChanged(GameMode mode) {
             }
             
             // 최초 피버 모드시에만 Tap Hint 노출
+            /*
             if( gameMgr->getFeverModeCount() == 1 ) {
                 buttonLayer->showTapHintFeverMode();
             }
+            */
+            // Tap Hint 노출
+            buttonLayer->showTapHintFeverMode();
             
         } break;
     }

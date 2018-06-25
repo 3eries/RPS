@@ -10,10 +10,10 @@
 #include "RSPButton.hpp"
 
 USING_NS_CC;
+using namespace spine;
 using namespace std;
 
 static const string SCHEDULER_TOUCH_LOCKED = "SCHEDULER_TOUCH_LOCKED";
-static const int    TAP_HINT_COUNT         = 2; // 탭 힌트 생성 갯 수
 
 RSPButtonLayer::RSPButtonLayer() :
 onNormalButtonClickListener(nullptr),
@@ -153,30 +153,26 @@ void RSPButtonLayer::touchLocked(float duration) {
  */
 void RSPButtonLayer::showTapHint(std::vector<RSPButton*> buttons) {
     
+    CCASSERT(buttons.size() > 0, "RSPButtonLayer::showTapHint error: invalid button list");
+    
     hideTapHint(false);
     
-    for( int i = 0; i < buttons.size(); ++i ) {
-        if( i == tapHints.size() ) {
-            CCLOG("RSPButtonLayer::showTapHint(std::vector<RSPButton*>) warning: index out");
-            break;
-        }
+    // 첫번째 버튼 기준으로 애니메이션 재생
+    auto firstBtn = buttons[0];
+    string animName;
     
-        // 검색된 버튼 기준으로 좌표 설정
-        auto btn = buttons[i];
-        auto btnBox = SBNodeUtils::getBoundingBoxInWorld(btn);
-        
-        auto tapHint = tapHints[i];
-        tapHint->setVisible(true);
-        tapHint->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()+50));
+    switch( firstBtn->getType() ) {
+        case RSPType::ROCK:          animName = "tap_normal_left";          break;
+        case RSPType::PAPER:         animName = "tap_normal_center";        break;
+        case RSPType::SCISSORS:      animName = "tap_normal_right";         break;
+        case RSPType::ROCK_N_ROLL:   animName = "tap_fever";                break;
+        default:
+            CCASSERT(false, "RSPButtonLayer::showTapHint error: invalid rsp type.");
+            break;
     }
     
-    tapHintLayer->setVisible(true);
-    
-    auto move1 = MoveTo::create(0.5f, Vec2(0, 20));
-    auto move2 = MoveTo::create(0.5f, Vec2(0, 0));
-    auto seq = Sequence::create(move1, move2, nullptr);
-    
-    tapHintLayer->runAction(RepeatForever::create(seq));
+    tapHint->setVisible(true);
+    tapHint->setAnimation(0, animName, true);
 }
 
 void RSPButtonLayer::showTapHint(RSPType winHand) {
@@ -209,18 +205,14 @@ void RSPButtonLayer::showTapHintFeverMode() {
  * TAP 힌트 숨김
  */
 void RSPButtonLayer::hideTapHint(bool runAction) {
-    
-    tapHintLayer->stopAllActions();
 
+    tapHint->stopAllActions();
+//    tapHint->setScale(1);
+    
     auto hide = [=]() {
-        for( auto tapHint : tapHints ) {
-            tapHint->stopAllActions();
-            tapHint->setScale(1);
-            tapHint->setVisible(false);
-        }
-        
-        tapHintLayer->setVisible(false);
-        tapHintLayer->setPosition(Vec2::ZERO);
+        tapHint->setVisible(false);
+        tapHint->setOpacity(255);
+        SBSpineHelper::clearAnimation(tapHint, ANIM_NAME_CLEAR);
     };
     
     if( !runAction ) {
@@ -229,45 +221,17 @@ void RSPButtonLayer::hideTapHint(bool runAction) {
     }
     
     // scale out
-    const float duration = 0.1f;
-    
-    for( auto tapHint : tapHints ) {
-        tapHint->stopAllActions();
-        
-        if( !tapHint->isVisible() ) {
-            continue;
-        }
-        
-        auto scaleOut = ScaleTo::create(0.1f, 1, 0);
-        tapHint->runAction(scaleOut);
-    }
-    
-    auto delay = DelayTime::create(duration*1.1f);
+    /*
+    auto scaleOut = ScaleTo::create(0.1f, 1, 0);
     auto callFunc = CallFunc::create(hide);
-    tapHintLayer->runAction(Sequence::create(delay, callFunc, nullptr));
-    
+    tapHint->runAction(Sequence::create(scaleOut, callFunc, nullptr));
+     */
     // fade out
-//    auto hide = [=]() {
-//        for( auto tapHint : tapHints ) {
-//            tapHint->setVisible(false);
-//        }
-//
-//        tapHintLayer->setOpacity(255);
-//        tapHintLayer->setVisible(false);
-//    };
-//
-//    auto fadeOut = FadeOut::create(0.1f);
-//    auto callFunc = CallFunc::create(hide);
-//    tapHintLayer->runAction(Sequence::create(fadeOut, callFunc, nullptr));
+    tapHint->setOpacity(255);
     
-    // no action
-//    for( auto tapHint : tapHints ) {
-//        tapHint->setVisible(false);
-//    }
-//
-//    tapHintLayer->stopAllActions();
-//    tapHintLayer->setVisible(false);
-//    tapHintLayer->setPosition(Vec2::ZERO);
+    auto fadeOut = FadeOut::create(0.1f);
+    auto callFunc = CallFunc::create(hide);
+    tapHint->runAction(Sequence::create(fadeOut, callFunc, nullptr));
 }
 
 /**
@@ -372,38 +336,11 @@ void RSPButtonLayer::initFeverButtons() {
  */
 void RSPButtonLayer::initTapHint() {
     
-    auto createTapHint = []() -> Node* {
-        auto tapHint = Node::create();
-        tapHint->setCascadeOpacityEnabled(true);
-        tapHint->setVisible(false);
-        tapHint->setAnchorPoint(ANCHOR_M);
-        // tapHint->setAnchorPoint(ANCHOR_MB);
-        tapHint->setContentSize(Size(130, 70));
-        
-        auto bg = LayerColor::create(Color4B(0,0,0,255*0.7f));
-        bg->setIgnoreAnchorPointForPosition(false);
-        bg->setAnchorPoint(ANCHOR_M);
-        bg->setPosition(Vec2MC(tapHint->getContentSize(), 0, 0));
-        bg->setContentSize(tapHint->getContentSize());
-        tapHint->addChild(bg);
-        
-        auto label = Label::createWithTTF("TAP", FONT_RETRO, 50);
-        label->setAnchorPoint(ANCHOR_M);
-        label->setPosition(Vec2MC(tapHint->getContentSize(), 0, 0));
-        label->setColor(Color3B(255,255,255));
-        tapHint->addChild(label);
-        
-        return tapHint;
-    };
+    tapHint = SkeletonAnimation::createWithJsonFile(DIR_ANIM + "tap.json");
+    tapHint->setAnchorPoint(Vec2::ZERO);
+    tapHint->setPosition(Vec2MC(0, 0));
+    addChild(tapHint);
     
-    tapHintLayer = SBNodeUtils::createZeroSizeNode();
-    tapHintLayer->setCascadeOpacityEnabled(true);
-    addChild(tapHintLayer);
-    
-    for( int i = 0; i < TAP_HINT_COUNT; ++i ) {
-        auto tapHint = createTapHint();
-        tapHintLayer->addChild(tapHint);
-        
-        tapHints.push_back(tapHint);
-    }
+    tapHint->setVisible(false);
+    SBSpineHelper::clearAnimation(tapHint, ANIM_NAME_CLEAR);
 }

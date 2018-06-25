@@ -72,8 +72,7 @@ private:
     static const int FEVER_MODE_BUTTON_INDEX = 3;
     std::vector<RSPButton*> buttons; // 노멀 모드 3개 + 피버 모드 2개
     
-    cocos2d::Node *tapHintLayer;
-    std::vector<cocos2d::Node*> tapHints;
+    spine::SkeletonAnimation *tapHint;
     
     int feverButtonTouchCount;
 };

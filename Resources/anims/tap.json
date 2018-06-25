@@ -1,0 +1,241 @@
+{
+"skeleton": { "hash": "HCYRbawe17RsTwYPld5506Y8ddw", "spine": "3.6.52", "width": 960, "height": 1280, "images": "./tap/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "tap_fever_left", "parent": "root", "x": -183, "y": -453 },
+	{ "name": "tap_fever_right", "parent": "root", "x": 166, "y": -453 },
+	{ "name": "tap_normal", "parent": "root", "y": -458 }
+],
+"slots": [
+	{ "name": "tap_normal", "bone": "tap_normal", "attachment": "tap_normal" },
+	{ "name": "tap_fever_right", "bone": "tap_fever_right", "attachment": "tap_fever" },
+	{ "name": "tap_fever_left", "bone": "tap_fever_left", "attachment": "tap_fever" }
+],
+"skins": {
+	"default": {
+		"tap_fever_left": {
+			"tap_fever": { "width": 228, "height": 164 }
+		},
+		"tap_fever_right": {
+			"tap_fever": { "width": 228, "height": 164 }
+		},
+		"tap_normal": {
+			"tap_normal": { "width": 128, "height": 92 }
+		}
+	}
+},
+"animations": {
+	"clear": {
+		"slots": {
+			"tap_fever_left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"tap_fever_right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"tap_normal": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
+	"tap_fever": {
+		"slots": {
+			"tap_normal": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"tap_fever_right": {
+				"scale": [
+					{ "time": 0, "x": 0, "y": 0, "curve": "stepped" },
+					{
+						"time": 0.1333,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.2667,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.4,
+						"x": 0.7,
+						"y": 0.7,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.5333,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.6667,
+						"x": 0.7,
+						"y": 0.7,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.8,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{ "time": 1.1333, "x": 0, "y": 0 }
+				]
+			},
+			"tap_fever_left": {
+				"scale": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.1333,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.2667,
+						"x": 0.7,
+						"y": 0.7,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.4,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.5333,
+						"x": 0.7,
+						"y": 0.7,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{
+						"time": 0.6667,
+						"x": 1,
+						"y": 1,
+						"curve": [ 0.539, 0, 0.468, 1 ]
+					},
+					{ "time": 1, "x": 0, "y": 0 }
+				]
+			}
+		}
+	},
+	"tap_normal_center": {
+		"slots": {
+			"tap_fever_left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"tap_fever_right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"tap_normal": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.529, 0, 0.471, 1 ]
+					},
+					{
+						"time": 0.5667,
+						"x": 0,
+						"y": 6,
+						"curve": [ 0.529, 0, 0.471, 1 ]
+					},
+					{ "time": 1.1333, "x": 0, "y": 0 }
+				]
+			}
+		}
+	},
+	"tap_normal_left": {
+		"slots": {
+			"tap_fever_left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"tap_fever_right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"tap_normal": {
+				"translate": [
+					{
+						"time": 0,
+						"x": -235,
+						"y": 0,
+						"curve": [ 0.529, 0, 0.471, 1 ]
+					},
+					{
+						"time": 0.5667,
+						"x": -235,
+						"y": 6,
+						"curve": [ 0.529, 0, 0.471, 1 ]
+					},
+					{ "time": 1.1333, "x": -235, "y": 0 }
+				]
+			}
+		}
+	},
+	"tap_normal_right": {
+		"slots": {
+			"tap_fever_left": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"tap_fever_right": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		},
+		"bones": {
+			"tap_normal": {
+				"translate": [
+					{
+						"time": 0,
+						"x": 235,
+						"y": 0,
+						"curve": [ 0.529, 0, 0.471, 1 ]
+					},
+					{
+						"time": 0.5667,
+						"x": 235,
+						"y": 6,
+						"curve": [ 0.529, 0, 0.471, 1 ]
+					},
+					{ "time": 1.1333, "x": 235, "y": 0 }
+				]
+			}
+		}
+	}
+}
+}
