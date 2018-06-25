@@ -15,10 +15,10 @@
 #include "RSP.h"
 
 struct TimeInfo {
-    int maxPoint;               // 최대 포인트
-    int firstPoint;             // 최초 포인트
-    int increasePointPerHit;    // 블럭 히트 획득 포인트
-    float drawDelay;            // 비긴 경우의 터치 지연 시간
+    float maxPoint;               // 최대 포인트
+    float firstPoint;             // 최초 포인트
+    float increasePointPerHit;    // 블럭 히트 획득 포인트
+    float drawDelay;              // 비긴 경우의 터치 지연 시간
     
     TimeInfo() {
     }
@@ -38,7 +38,7 @@ struct FeverInfo {
 struct LevelInfo {
     int level;
     int beginRange;     // 레벨 시작 범위 (스코어)
-    int decreasePointPerSeconds; // 1초당 감소 포인트
+    float decreasePointPerSeconds; // 1초당 감소 포인트
     int continuation;   // 연속으로 같은 블럭이 나올 확률 (0~100)
     
     LevelInfo() {

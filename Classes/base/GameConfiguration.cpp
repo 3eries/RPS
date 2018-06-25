@@ -53,9 +53,9 @@ void GameConfiguration::parse(const string &json) {
     {
         auto timeObj = doc["time"].GetObject();
         
-        timeInfo.maxPoint = timeObj["max_point"].GetInt();
-        timeInfo.firstPoint = timeObj["first_point"].GetInt();
-        timeInfo.increasePointPerHit = timeObj["increase_point_per_hit"].GetInt();
+        timeInfo.maxPoint = timeObj["max_point"].GetFloat();
+        timeInfo.firstPoint = timeObj["first_point"].GetFloat();
+        timeInfo.increasePointPerHit = timeObj["increase_point_per_hit"].GetFloat();
         timeInfo.drawDelay = timeObj["draw_delay"].GetFloat();
     }
     
@@ -89,7 +89,7 @@ void GameConfiguration::parse(const string &json) {
             LevelInfo info;
             info.level = levelValue["level"].GetInt();
             info.beginRange = levelValue["begin_range"].GetInt();
-            info.decreasePointPerSeconds = levelValue["decrease_point_per_sec"].GetInt();
+            info.decreasePointPerSeconds = levelValue["decrease_point_per_sec"].GetFloat();
             
             if( levelValue.HasMember("continuation") ) {
                 info.continuation = levelValue["continuation"].GetInt();

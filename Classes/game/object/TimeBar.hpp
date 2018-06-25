@@ -47,16 +47,16 @@ public:
     void startTimeBar();
     void stopTimeBar();
     
-    void setTimePoint(int point);
-    void increaseTimePoint(int point);
+    void setTimePoint(float point);
+    void increaseTimePoint(float point);
     
 private:
-    CC_SYNTHESIZE(std::function<void(int, float)>, onTimeChangedListener, OnTimeChangedListener);
+    CC_SYNTHESIZE(std::function<void(float, float)>, onTimeChangedListener, OnTimeChangedListener);
     
     GameManager *gameMgr;
     
     SB_SYNTHESIZE_READONLY_BOOL(started, Started);
-    int timePoint;
+    float timePoint;
     
     cocos2d::ProgressTimer *gage;
 };

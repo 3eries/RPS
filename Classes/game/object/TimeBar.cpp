@@ -131,7 +131,7 @@ void TimeBar::stopTimeBar() {
 /**
  * 타임 포인트 설정
  */
-void TimeBar::setTimePoint(int point) {
+void TimeBar::setTimePoint(float point) {
     
     point = MAX(0, point);
     point = MIN(gameMgr->getConfig()->getTimeInfo().maxPoint, point);
@@ -144,7 +144,7 @@ void TimeBar::setTimePoint(int point) {
 /**
  * 타임 포인트 증가
  */
-void TimeBar::increaseTimePoint(int point) {
+void TimeBar::increaseTimePoint(float point) {
     
     CCASSERT(point > 0, "TimeBar::increaseTimePoint error: invalid point.");
     
@@ -156,14 +156,14 @@ void TimeBar::increaseTimePoint(int point) {
 void TimeBar::update(float dt) {
     
     // update time point
-    int decreasePoint = gameMgr->getLevelInfo().decreasePointPerSeconds * dt;
-    int newTimePoint = timePoint - decreasePoint;
+    float decreasePoint = gameMgr->getLevelInfo().decreasePointPerSeconds * dt;
+    float newTimePoint = timePoint - decreasePoint;
     
     setTimePoint(newTimePoint);
     updateGage();
     
     // 타임 포인트 체크
-    if( timePoint == 0 ) {
+    if( timePoint == 0.0f ) {
         GameManager::getInstance()->onPreGameOver();
     }
 }
@@ -175,7 +175,7 @@ void TimeBar::updateGage() {
     
     const int maxPoint = gameMgr->getConfig()->getTimeInfo().maxPoint;
     
-    float ratio = (float)timePoint / maxPoint;
+    float ratio = timePoint / maxPoint;
     float per = ratio * 100;
     gage->setPercentage(per);
     
