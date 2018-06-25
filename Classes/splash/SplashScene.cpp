@@ -16,6 +16,8 @@
 
 #include "LogoView.hpp"
 
+#include "../game/GameManager.hpp"
+
 USING_NS_CC;
 using namespace spine;
 using namespace std;
@@ -80,6 +82,9 @@ void SplashScene::replaceMainScene() {
     }
     
     isReplacedMainScene = true;
+    
+    // 매니저 초기화
+    GameManager::getInstance()->init();
     
     // Main으로 전환
     SceneManager::getInstance()->replace(SceneType::MAIN);

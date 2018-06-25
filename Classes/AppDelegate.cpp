@@ -69,7 +69,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     SBDirector::init();
     PatchManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();
-    GameManager::getInstance()->init();
 
     // run
     SceneManager::getInstance()->replace(SceneType::SPLASH);
