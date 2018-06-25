@@ -1,9 +1,9 @@
 {
     "default_continuation": 40,
     "time": {
-        "max_point": 500,
-        "first_point": 250,
-        "increase_point_per_hit": 80,
+        "max_point": 1000,
+        "first_point": 500,
+        "increase_point_per_hit": 30,
         "draw_delay": 1.0
     },
     "fever": {
@@ -19,90 +19,210 @@
     "levels": [{
                "level": 1,
                "begin_range": 0,
-               "decrease_point_per_sec": 100,
+               "decrease_point_per_sec": 105,
                "continuation": 60
                }, {
                "level": 2,
-               "begin_range": 10,
+               "begin_range": 15,
                "decrease_point_per_sec": 110,
                "continuation": 60
                }, {
                "level": 3,
-               "begin_range": 25,
-               "decrease_point_per_sec": 130,
+               "begin_range": 30,
+               "decrease_point_per_sec": 115,
                "continuation": 55
                }, {
                "level": 4,
                "begin_range": 45,
-               "decrease_point_per_sec": 150,
+               "decrease_point_per_sec": 120,
                "continuation": 55
                }, {
                "level": 5,
-               "begin_range": 70,
-               "decrease_point_per_sec": 170,
+               "begin_range": 60,
+               "decrease_point_per_sec": 125,
                "continuation": 55
                }, {
                "level": 6,
-               "begin_range": 100,
-               "decrease_point_per_sec": 190,
+               "begin_range": 75,
+               "decrease_point_per_sec": 130,
                "continuation": 50
                }, {
                "level": 7,
-               "begin_range": 135,
-               "decrease_point_per_sec": 210,
+               "begin_range": 90,
+               "decrease_point_per_sec": 135,
                "continuation": 50
                }, {
                "level": 8,
-               "begin_range": 175,
-               "decrease_point_per_sec": 230,
+               "begin_range": 105,
+               "decrease_point_per_sec": 140,
                "continuation": 40
                }, {
                "level": 9,
-               "begin_range": 220,
-               "decrease_point_per_sec": 250
+               "begin_range": 120,
+               "decrease_point_per_sec": 145
                }, {
                "level": 10,
-               "begin_range": 270,
-               "decrease_point_per_sec": 270
+               "begin_range": 135,
+               "decrease_point_per_sec": 150
                }, {
                "level": 11,
-               "begin_range": 325,
-               "decrease_point_per_sec": 290
+               "begin_range": 150,
+               "decrease_point_per_sec": 155
                }, {
                "level": 12,
-               "begin_range": 385,
-               "decrease_point_per_sec": 310
+               "begin_range": 165,
+               "decrease_point_per_sec": 160
                }, {
                "level": 13,
-               "begin_range": 450,
-               "decrease_point_per_sec": 330
+               "begin_range": 180,
+               "decrease_point_per_sec": 165
                }, {
                "level": 14,
-               "begin_range": 520,
-               "decrease_point_per_sec": 350
+               "begin_range": 195,
+               "decrease_point_per_sec": 170
                }, {
                "level": 15,
-               "begin_range": 595,
-               "decrease_point_per_sec": 370
+               "begin_range": 210,
+               "decrease_point_per_sec": 175
                }, {
                "level": 16,
-               "begin_range": 675,
-               "decrease_point_per_sec": 390
+               "begin_range": 225,
+               "decrease_point_per_sec": 180
                }, {
                "level": 17,
-               "begin_range": 760,
-               "decrease_point_per_sec": 410
+               "begin_range": 240,
+               "decrease_point_per_sec": 185
                }, {
                "level": 18,
-               "begin_range": 850,
-               "decrease_point_per_sec": 430
+               "begin_range": 255,
+               "decrease_point_per_sec": 190
                }, {
                "level": 19,
-               "begin_range": 945,
-               "decrease_point_per_sec": 450
+               "begin_range": 270,
+               "decrease_point_per_sec": 195
                }, {
                "level": 20,
-               "begin_range": 1045,
-               "decrease_point_per_sec": 470
+               "begin_range": 285,
+               "decrease_point_per_sec": 200
+               },{
+               "level": 21,
+               "begin_range": 300,
+               "decrease_point_per_sec": 205
+               },{
+               "level": 22,
+               "begin_range": 315,
+               "decrease_point_per_sec": 210
+               },{
+               "level": 23,
+               "begin_range": 330,
+               "decrease_point_per_sec": 215
+               },{
+               "level": 24,
+               "begin_range": 345,
+               "decrease_point_per_sec": 220
+               },{
+               "level": 25,
+               "begin_range": 360,
+               "decrease_point_per_sec": 225
+               },{
+               "level": 26,
+               "begin_range": 375,
+               "decrease_point_per_sec": 230
+               },{
+               "level": 27,
+               "begin_range": 390,
+               "decrease_point_per_sec": 235
+               },{
+               "level": 28,
+               "begin_range": 405,
+               "decrease_point_per_sec": 240
+               },{
+               "level": 29,
+               "begin_range": 420,
+               "decrease_point_per_sec": 245
+               },{
+               "level": 30,
+               "begin_range": 435,
+               "decrease_point_per_sec": 250
+               },{
+               "level": 31,
+               "begin_range": 450,
+               "decrease_point_per_sec": 255
+               },{
+               "level": 32,
+               "begin_range": 465,
+               "decrease_point_per_sec": 260
+               },{
+               "level": 33,
+               "begin_range": 480,
+               "decrease_point_per_sec": 265
+               },{
+               "level": 34,
+               "begin_range": 495,
+               "decrease_point_per_sec": 270
+               },{
+               "level": 35,
+               "begin_range": 510,
+               "decrease_point_per_sec": 275
+               },{
+               "level": 36,
+               "begin_range": 525,
+               "decrease_point_per_sec": 280
+               },{
+               "level": 37,
+               "begin_range": 540,
+               "decrease_point_per_sec": 285
+               },{
+               "level": 38,
+               "begin_range": 555,
+               "decrease_point_per_sec": 290
+               },{
+               "level": 39,
+               "begin_range": 570,
+               "decrease_point_per_sec": 295
+               },{
+               "level": 40,
+               "begin_range": 585,
+               "decrease_point_per_sec": 300
+               },{
+               "level": 41,
+               "begin_range": 600,
+               "decrease_point_per_sec": 305
+               },{
+               "level": 42,
+               "begin_range": 615,
+               "decrease_point_per_sec": 310
+               },{
+               "level": 43,
+               "begin_range": 630,
+               "decrease_point_per_sec": 315
+               },{
+               "level": 44,
+               "begin_range": 645,
+               "decrease_point_per_sec": 320
+               },{
+               "level": 45,
+               "begin_range": 660,
+               "decrease_point_per_sec": 325
+               },{
+               "level": 46,
+               "begin_range": 675,
+               "decrease_point_per_sec": 330
+               },{
+               "level": 47,
+               "begin_range": 690,
+               "decrease_point_per_sec": 335
+               },{
+               "level": 48,
+               "begin_range": 705,
+               "decrease_point_per_sec": 340
+               },{
+               "level": 49,
+               "begin_range": 720,
+               "decrease_point_per_sec": 345
+               },{
+               "level": 50,
+               "begin_range": 735,
+               "decrease_point_per_sec": 350
                }]
 }
