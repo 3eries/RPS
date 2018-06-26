@@ -43,7 +43,32 @@ bool TestMenuScene::init() {
                                           TextHAlignment::RIGHT,
                                           TextVAlignment::CENTER);
         label->setAnchorPoint(ANCHOR_M);
-        label->setPosition(Vec2MC(-40, PADDING_Y));
+        label->setPosition(Vec2MC(-40, PADDING_Y*2));
+        addChild(label);
+        
+        auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
+                                               DIR_IMG_COMMON + "check_box_selected.png");
+        checkBox->setAnchorPoint(ANCHOR_ML);
+        checkBox->setPosition(Vec2MC(150, PADDING_Y*2));
+        addChild(checkBox);
+        
+        checkBox->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, true));
+        checkBox->setOnSelectedListener([=](bool isSelected) -> bool {
+            
+            UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, isSelected);
+            UserDefault::getInstance()->flush();
+            
+            return true;
+        });
+    }
+    
+    // dark cloud on/off
+    {
+        auto label = Label::createWithTTF("DARK CLOUD", FONT_RETRO, FONT_SIZE, Size::ZERO,
+                                          TextHAlignment::RIGHT,
+                                          TextVAlignment::CENTER);
+        label->setAnchorPoint(ANCHOR_M);
+        label->setPosition(Vec2MC(-60, PADDING_Y));
         addChild(label);
         
         auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
@@ -52,10 +77,10 @@ bool TestMenuScene::init() {
         checkBox->setPosition(Vec2MC(150, PADDING_Y));
         addChild(checkBox);
         
-        checkBox->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, true));
+        checkBox->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, true));
         checkBox->setOnSelectedListener([=](bool isSelected) -> bool {
             
-            UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, isSelected);
+            UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, isSelected);
             UserDefault::getInstance()->flush();
             
             return true;

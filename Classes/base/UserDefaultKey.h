@@ -19,6 +19,7 @@ namespace UserDefaultKey {
     
     // Test
     static const char* TEST_TIME_BAR_ENABLED                 = "TEST_TIME_BAR_ENABLED";
+    static const char* TEST_DARK_CLOUD_ENABLED               = "TEST_DARK_CLOUD_ENABLED";
 }
 
 #endif /* UserDefaultKey_h */

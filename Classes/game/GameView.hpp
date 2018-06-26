@@ -62,6 +62,8 @@ private:
     void initTimeBar();
     void initLabels();
     
+    void reset();
+    
 // GameListener
 private:
     void onGameStart() override;
@@ -71,12 +73,14 @@ private:
     void onPreGameOver() override;
     void onContinue() override;
     void onGameOver() override;
+    void onStartTimer() override;
     void onGameModeChanged(GameMode mode) override;
     void onPreFeverModeEnd() override;
     
 private:
     void updateScore();
     void updateButtonMode();
+    void updateDarkCloudPosition(float ratio, bool forceMove = false);
     
     void onClickNormalButton(RSPType type);
     void onClickFeverButton(int i);
@@ -107,7 +111,14 @@ private:
     TimeBar *timeBar;
     
     // 먹구름
+    static const int DARK_CLOUD_MOVE_ACTION_NONE = -1;
+    static const int DARK_CLOUD_MOVE_ACTION      = 100;
+    static const int DARK_CLOUD_MOVE_ACTION_UP   = 100;
+    static const int DARK_CLOUD_MOVE_ACTION_DOWN = 200;
+    
     spine::SkeletonAnimation *darkCloudAnim;
+    int darkCloudSection;
+    int darkCloudActionTag;
 };
 
 #endif /* GameView_hpp */
