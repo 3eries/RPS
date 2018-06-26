@@ -34,6 +34,7 @@ static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
 
 #define DARK_CLOUD_POS_TOP         Vec2MC(0, 660)
 #define DARK_CLOUD_POS_BOTTOM      Vec2MC(0, -130)
+#define LEVEL_LABEL_POS            Vec2MC(0, 290 + 130 - 30)
 
 GameView::GameView() :
 gameMgr(GameManager::getInstance()),
@@ -378,7 +379,7 @@ void GameView::showLevelLabel() {
     levelLabel->setString(STR_FORMAT("LEVEL %d", gameMgr->getLevelInfo().level));
     
     const Vec2 topPos    = Vec2TC(0, levelLabel->getContentSize().height);
-    const Vec2 originPos = Vec2MC(0, 290);
+    const Vec2 originPos = LEVEL_LABEL_POS;
     levelLabel->setPosition(topPos);
     
     // move
@@ -510,21 +511,21 @@ void GameView::initTimeBar() {
  */
 void GameView::initLabels() {
     
-    auto levelLabel = Label::createWithTTF("", FONT_RETRO, 75);
+    auto levelLabel = Label::createWithTTF("", FONT_RETRO, 70);
     levelLabel->setTag(Tag::LABEL_LEVEL);
     levelLabel->setVisible(false);
     levelLabel->setAnchorPoint(ANCHOR_M);
-    levelLabel->setPosition(Vec2MC(0, 290));
+    levelLabel->setPosition(LEVEL_LABEL_POS);
     levelLabel->setColor(Color3B(250, 178, 11));
-    levelLabel->enableOutline(Color4B(78, 22, 0, 255), 7);
+    levelLabel->enableOutline(Color4B(78, 22, 0, 255), 5);
     addChild(levelLabel, SBZOrder::BOTTOM);
     
-    auto scoreLabel = Label::createWithTTF("0", FONT_RETRO, 75);
+    auto scoreLabel = Label::createWithTTF("0", FONT_RETRO, 70);
     scoreLabel->setTag(Tag::LABEL_SCORE);
     scoreLabel->setAnchorPoint(ANCHOR_M);
-    scoreLabel->setPosition(Vec2MC(0, 170));
+    scoreLabel->setPosition(Vec2MC(0, 170 + 130 - 10));
     scoreLabel->setColor(Color3B::WHITE);
-    scoreLabel->enableOutline(Color4B::BLACK, 7);
+    scoreLabel->enableOutline(Color4B::BLACK, 5);
     addChild(scoreLabel, SBZOrder::BOTTOM);
 }
 
