@@ -51,6 +51,7 @@ bool Man::init() {
     
     setAnchorPoint(ANCHOR_MB);
     setManPosition(Position::LEFT);
+    setFeverGageVisible(false);
     
     gameMgr->addListener(this);
     
@@ -469,7 +470,6 @@ void Man::initImage() {
 void Man::initFeverGage() {
  
     feverGage.bg = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_bg.png");
-    feverGage.bg->setVisible(SceneManager::getSceneType() == SceneType::GAME);
     feverGage.bg->setAnchorPoint(ANCHOR_MB);
     addChild(feverGage.bg);
 
