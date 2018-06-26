@@ -295,14 +295,83 @@ RSPType RSPBlockLayer::getBlockType(int i) {
     }
     
     // 블럭 연속될 확률 체크
-    int continuation = gameMgr->getLevelInfo().continuation;
-    int ran = (arc4random() % 100) + 1;
+    const int continuation = gameMgr->getLevelInfo().continuation;
+    int ran = random<int>(1, 100);
     
     if( ran <= continuation ) {
-        // 이전과 동일한 타입
+        // 이전과 같은 타입
         return prevType;
     }
     
+    // 발키리 방식
+    /*
+    auto isContinue = [](int ran, int chance) -> bool {
+        return ran <= chance;
+    };
+    
+    // 10% 미만
+    if( continuation < 10 ) {
+        int ran = random<int>(1, (int)(100/continuation));
+        
+        if( isContinue(ran, 1) ) {
+            return prevType;
+        }
+    }
+    // 10% 이상
+    else {
+        int ran = random<int>(1, 10);
+        
+        if( isContinue(ran, continuation/10) ) {
+            return prevType;
+        }
+        
+        // 1의 자리 체크
+        int mod = continuation%10;
+        
+        if( mod > 0 ) {
+            int r = (arc4random() % 9) + 1;
+            
+            if( isContinue(r, mod) ) {
+                return prevType;
+            }
+        }
+    }
+    
+    // 원본
+    {
+//        if( battleChance < 10 ) {
+//            // 10% 미만
+//            uniform_int_distribution<int> dist(1,100 / battleChance);
+//            int roll = dist(monsterDropDiceRandomEngine);
+//            
+//            CCLOG("MonsterDrop(0%%~9%%) roll:%d, battleChance:%d", roll, battleChance);
+//            
+//            if( !isDrop(roll, 1) ) {
+//                return false;
+//            }
+//            
+//        } else {
+//            // 10% 이상
+//            uniform_int_distribution<int> dist(1,10);
+//            int roll = dist(monsterDropDiceRandomEngine);
+//            
+//            CCLOG("MonsterDrop(10%%~100%%) roll:%d, battleChance:%d", roll, battleChance);
+//            
+//            if( !isDrop(roll, battleChance / 10) ) {
+//                int mod = battleChance % 10;
+//                if( mod == 0 ) {
+//                    return false;
+//                }
+//                
+//                int r = (arc4random() % 9) + 1;
+//                if( !isDrop(r, mod) ) {
+//                    return false;
+//                }
+//            }
+//        }
+    }
+    */
+     
     // 랜덤 타입
     return RSPBlock::getRandomType();
 }
