@@ -155,6 +155,11 @@ void TimeBar::increaseTimePoint(float point) {
     updateGage();
 }
 
+float TimeBar::getTimeRatio() {
+    
+    return timePoint / gameMgr->getConfig()->getTimeInfo().maxPoint;
+}
+
 void TimeBar::update(float dt) {
     
     // update time point
@@ -175,9 +180,7 @@ void TimeBar::update(float dt) {
  */
 void TimeBar::updateGage() {
     
-    const int maxPoint = gameMgr->getConfig()->getTimeInfo().maxPoint;
-    
-    float ratio = timePoint / maxPoint;
+    float ratio = getTimeRatio();
     float per = ratio * 100;
     gage->setPercentage(per);
     

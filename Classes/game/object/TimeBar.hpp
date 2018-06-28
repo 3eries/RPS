@@ -50,6 +50,8 @@ public:
     void setTimePoint(float point);
     void increaseTimePoint(float point);
     
+    float getTimeRatio();
+    
 private:
     CC_SYNTHESIZE(std::function<void(float, float)>, onTimeChangedListener, OnTimeChangedListener);
     
