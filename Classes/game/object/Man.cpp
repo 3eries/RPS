@@ -337,11 +337,8 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
     
     switch( myHand ) {
         case RSPType::ROCK:     setManPosition(Position::LEFT);     break;
-        case RSPType::PAPER:    setManPosition(Position::RIGHT);    break;
-        case RSPType::SCISSORS: {
-            
-        } break;
-            
+        case RSPType::PAPER:    break;
+        case RSPType::SCISSORS: setManPosition(Position::RIGHT);    break;
         default:
             CCASSERT(false, "Man::hit error: invalid block type.");
             break;
