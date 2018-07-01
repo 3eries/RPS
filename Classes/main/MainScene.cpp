@@ -12,6 +12,7 @@
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 
+#include "CreditPopup.hpp"
 #include "../test/TestMenuScene.hpp"
 
 USING_NS_CC;
@@ -92,8 +93,10 @@ void MainScene::onClick(Node *sender) {
             replaceGame();
         } break;
             
+        // 크레딧
         case Tag::BTN_TITLE: {
-            // TODO: 크레딧
+            auto popup = CreditPopup::create();
+            addChild(popup, SBZOrder::TOP);
         } break;
             
         case Tag::BTN_REMOVE_ADS: {
@@ -165,6 +168,43 @@ void MainScene::initMenu() {
     }
     
     // START 버튼 연출
+    /*
+    {
+        auto scale1 = ScaleTo::create(0.005f, 1.07f, 0.91f);
+        auto scale2 = ScaleTo::create(0.005f, 1.15f, 1.13f);
+        auto scale3 = ScaleTo::create(0.005f, 1.09f, 1.27f);
+        auto scale4 = ScaleTo::create(0.065f, 0.95f, 1.06f);
+        auto scale5 = ScaleTo::create(0.065f, 1.0f, 1.0f);
+        auto scaleSeq = Sequence::create(scale1, scale2, scale3, scale4, scale5, nullptr);
+        
+        auto delay = DelayTime::create(5.0f);
+        auto seq = Sequence::create(delay, scaleSeq, nullptr);
+        auto repeat = RepeatForever::create(seq);
+        
+        auto btn = getChildByTag<SBButton*>(Tag::BTN_START);
+        auto contentLayer = btn->getContentsLayer();
+        
+        btn->setOnTouchListener([=](Node*, SBTouchEventType eventType) {
+            
+            switch( eventType ) {
+                case SBTouchEventType::BEGAN: {
+                    contentLayer->pause();
+                } break;
+                    
+                case SBTouchEventType::ENDED:
+                case SBTouchEventType::CANCELED: {
+                    contentLayer->resume();
+                } break;
+                    
+                default:
+                    break;
+            }
+        });
+        
+        contentLayer->runAction(repeat);
+    }
+    */
+    
     /*
      auto fadeOut = FadeOut::create(0.2f);
      auto callFuncN = CallFuncN::create([=](Node *sender) {
