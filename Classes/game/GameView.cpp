@@ -22,6 +22,7 @@
 #include "object/RSPButton.hpp"
 #include "object/Man.hpp"
 #include "object/TimeBar.hpp"
+#include "object/DarkCloud.hpp"
 
 #include "ui/GameOverPopup.hpp"
 #include "ui/PausePopup.hpp"
@@ -32,10 +33,6 @@ using namespace spine;
 using namespace std;
 
 static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
-
-#define DARK_CLOUD_POS_TOP         Vec2MC(0, 1100)
-#define DARK_CLOUD_POS_BOTTOM      Vec2MC(0, 0)
-#define DARK_CLOUD_MOVE_RANGE      (DARK_CLOUD_POS_TOP.y - DARK_CLOUD_POS_BOTTOM.y)
 
 #define LEVEL_LABEL_POS            Vec2MC(0, 290 + 130 - 30)
 
@@ -107,7 +104,7 @@ void GameView::onExit() {
 void GameView::reset() {
     
     // 먹구름
-    darkCloudAnim->setOpacity(0);
+//    darkCloudAnim->setOpacity(0);
     
     buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
 }
@@ -188,13 +185,6 @@ void GameView::onGameOver() {
  * 타이머 시자
  */
 void GameView::onStartTimer() {
-    
-    darkCloudAnim->stopAllActions();
-    darkCloudAnim->runAction(FadeIn::create(1.0f));
-    darkCloudActionTag = DARK_CLOUD_MOVE_ACTION_NONE;
-    darkCloudSection = 0;
-    
-    updateDarkCloudPosition(0.8f, true);
 }
 
 /**
@@ -281,275 +271,6 @@ void GameView::updateButtonMode() {
     } else {
         buttonLayer->switchButton(GameMode::NORMAL);
     }
-}
-
-/**
- * 먹구름 좌표 업데이트
- * @param ratio 범위: 0(bottom) ~ 1(top)
- */
-void GameView::updateDarkCloudPosition(float ratio, bool forceMove) {
-    
-    const float posY = DARK_CLOUD_POS_BOTTOM.y + (DARK_CLOUD_MOVE_RANGE * ratio);
-    const float diff = posY - darkCloudAnim->getPositionY();
-    const float diffAbs = fabsf(diff);
-    
-    auto stopAction = [=]() {
-        if( darkCloudActionTag != DARK_CLOUD_MOVE_ACTION_NONE ) {
-            darkCloudAnim->stopActionByTag(darkCloudActionTag);
-        }
-    };
-    
-    // debug label
-    /*
-    int DEBUG_LABEL_TAG = 130419;
-    
-    {
-        if( !getChildByTag(DEBUG_LABEL_TAG) ) {
-            auto label = Label::createWithTTF("", FONT_RETRO, 100);
-            label->setTag(DEBUG_LABEL_TAG);
-            label->setColor(Color3B::ORANGE);
-            label->enableOutline(Color4B::BLACK);
-            label->setAnchorPoint(ANCHOR_TL);
-            label->setPosition(Vec2TL(100, -100));
-            addChild(label, INT_MAX);
-            
-            for( int i = 10; i >= 0; --i ) {
-                CCLOG("pos %d%% : %f", i*10,
-                      (DARK_CLOUD_POS_BOTTOM.y + (DARK_CLOUD_MOVE_RANGE * i*0.1f)));
-            }
-        }
-    }
-     */
-    
-    auto move = [=](int section) {
-        stopAction();
-        
-//        CCLOG("이동 section: [%d] posY: [%f]", section, posY);
-        
-        this->darkCloudSection = section;
-        darkCloudAnim->setPositionY(posY);
-        
-//        getChildByTag<Label*>(DEBUG_LABEL_TAG)->setString(TO_STRING(darkCloudSection));
-    };
-    
-    // 강제 이동
-    if( forceMove ) {
-        move(darkCloudSection);
-        return;
-    }
-    
-//    CCLOG("GameView::updateDarkCloudPosition ratio: [%f] diff: [%f] diffAbs: [%f]", ratio, diff, diffAbs);
-    
-    auto action = [=](int section, int speed) {
-        if( section == darkCloudSection ) {
-            // 이전과 같은 구간은 skip
-            return;
-        }
-        
-        this->darkCloudSection = section;
-//        getChildByTag<Label*>(DEBUG_LABEL_TAG)->setString(TO_STRING(darkCloudSection));
-        
-        // 이전 액션 정지
-        stopAction();
-        
-        // 속도 계산
-        const float DURATION_PER_PX = 0.008f;    // 1픽셀 당 이동 시간
-        float duration = DURATION_PER_PX;
-        
-        switch( speed ) {
-            case 1:     duration = DURATION_PER_PX;         break;
-            case 2:     duration = DURATION_PER_PX*0.8f;    break;
-            case 3:     duration = DURATION_PER_PX*0.65f;   break;
-            case 4:     duration = DURATION_PER_PX*0.55f;   break;
-            case 5:     duration = DURATION_PER_PX*0.45f;   break;
-            default:
-                CCASSERT(false, "GameView::updateDarkCloudPosition::action error: invalid speed.");
-                break;
-        }
-        
-        duration *= diffAbs;
-        
-        // 이동 액션
-//        const float fixRatio = ((int)(ratio*10) / 10.0f);
-//        const float posY = DARK_CLOUD_POS_BOTTOM.y + (DARK_CLOUD_MOVE_RANGE * fixRatio);
-//        CCLOG("액션 section: [%d] fixRatio: [%f] posY: [%f]", section, fixRatio, posY);
-        
-        // CCLOG("액션 section: [%d] posY: [%f]", section, posY);
-        
-        darkCloudActionTag = DARK_CLOUD_MOVE_ACTION;
-        
-        auto move = MoveTo::create(duration, Vec2(DARK_CLOUD_POS_TOP.x, posY));
-        auto callFunc = CallFunc::create([=]() {
-            darkCloudActionTag = DARK_CLOUD_MOVE_ACTION_NONE;
-        });
-        
-        auto seq = Sequence::create(move, callFunc, nullptr);
-        seq->setTag(darkCloudActionTag);
-        darkCloudAnim->runAction(seq);
-    };
-    
-    if( ratio <= 0.15f )         move(1);            // 15%
-    else if( ratio <= 0.155f )   action(2, 5);       // 15.5%
-    else if( ratio <= 0.2f )     action(3, 5);       // 20%
-    else if( ratio <= 0.25f )    action(4, 5);       // 25%
-    else if( ratio <= 0.3f )     action(5, 4);       // 30%
-    else if( ratio <= 0.35f )    action(6, 4);       // 35%
-    else if( ratio <= 0.4f )     action(7, 3);       // 40%
-    else if( ratio <= 0.45f )    action(8, 3);       // 45%
-    else if( ratio <= 0.5f )     action(9, 3);       // 50%
-    else if( ratio <= 0.55f )    action(10, 3);      // 55%
-    else if( ratio <= 0.6f )     action(11, 2);      // 60%
-    else if( ratio <= 0.65f )    action(12, 2);      // 65%
-    else if( ratio <= 0.7f )     action(13, 2);      // 70%
-    else if( ratio <= 0.75f )    action(14, 1);      // 75%
-    else if( ratio <= 0.8f )     action(15, 1);      // 80%
-    else if( ratio <= 0.9f )     action(16, 1);      // 90%
-    else                         move(17);
-    
-//    auto action = [=](int speed, bool isUp, int localTag) {
-//        int tag = (isUp) ? DARK_CLOUD_MOVE_ACTION_UP : DARK_CLOUD_MOVE_ACTION_DOWN;
-//        tag += localTag;
-//
-//        if( tag == darkCloudActionTag ) {
-//            // 같은 동작의 액션 skip
-//            return;
-//        }
-//
-//        // 이전 액션 정지
-//        stopAction();
-//
-//        // 속도 계산
-//        // const float DURATION_PER_PX = 0.006f;    // 1픽셀 당 이동 시간
-//        const float DURATION_PER_PX = 0.01f;    // 1픽셀 당 이동 시간
-//        float duration = DURATION_PER_PX;
-//
-//        switch( speed ) {
-//            case 1:     duration = DURATION_PER_PX;         break;
-//            case 2:     duration = DURATION_PER_PX*0.8f;    break;
-//            case 3:     duration = DURATION_PER_PX*0.7f;    break;
-//            default:
-//                CCASSERT(false, "GameView::updateDarkCloudPosition::action error: invalid speed.");
-//                break;
-//        }
-//
-//        duration *= diffAbs;
-//
-//        // 이동 액션
-//        darkCloudActionTag = tag;
-//
-//        auto move = MoveTo::create(duration, Vec2(DARK_CLOUD_POS_TOP.x, posY));
-//        auto callFunc = CallFunc::create([=]() {
-//            darkCloudActionTag = DARK_CLOUD_MOVE_ACTION_NONE;
-//        });
-//
-//        auto seq = Sequence::create(move, callFunc, nullptr);
-//        seq->setTag(darkCloudActionTag);
-//        darkCloudAnim->runAction(seq);
-//    };
-//
-//    auto actionUp = [=](int speed, int localTag) {
-//        action(speed, true, localTag);
-//    };
-//
-//    auto actionDown = [=](int speed, int localTag) {
-//        action(speed, false, localTag);
-//    };
-//
-//    // 상승
-//    if( diff > 0 ) {
-//        if( ratio <= 0.1f )          actionUp(3, 1);    // 10%
-//        else if( ratio <= 0.2f )     actionUp(3, 2);    // 20%
-//        else if( ratio <= 0.3f )     actionUp(3, 3);    // 30%
-////        else if( ratio <= 0.4f )     actionUp(2, 4);    // 40%
-//        else if( ratio <= 0.5f )     actionUp(2, 5);    // 50%
-////        else if( ratio <= 0.6f )     actionUp(2, 6);    // 60%
-//        else if( ratio <= 0.7f )     actionUp(1, 7);    // 70%
-////        else if( ratio <= 0.8f )     actionUp(1, 8);    // 80%
-//        else if( ratio <= 0.9f )     actionUp(1, 9);    // 90%
-//        else                         actionUp(1, 10);
-//
-//        /*
-//        // 20%
-//        if( ratio <= 0.2f ) {
-//            if( diffAbs > 10 ) {
-//                actionUp(3, 1);
-//            }
-//        }
-//        // 30%
-//        else if( ratio <= 0.3f ) {
-//            if( diffAbs > 20 ) {
-//                actionUp(3, 2);
-//            }
-//        }
-//        // 40%
-//        else if( ratio <= 0.4f ) {
-//            if( diffAbs > 30 ) {
-//                actionUp(2, 3);
-//            }
-//        }
-//        // 70%
-//        else if( ratio <= 0.7f ) {
-//            if( diffAbs > 60 ) {
-//                actionUp(1, 4);
-//            }
-//        }
-//        // 기본
-//        else {
-//            if( diffAbs > 70 ) {
-//                actionUp(1, 5);
-//            }
-//        }
-//        */
-//    }
-//    // 하락
-//    else if( diff < 0 ) {
-//        // 상승중이 아니면 이동
-//        if( darkCloudActionTag == DARK_CLOUD_MOVE_ACTION_NONE ||
-//            darkCloudActionTag > DARK_CLOUD_MOVE_ACTION_DOWN ) {
-////        if( !darkCloudAnim->getActionByTag(DARK_CLOUD_MOVE_ACTION_UP) ) {
-//            CCLOG("하락!!");
-//            move();
-//        } else {
-//            CCLOG("하락값이지만 상승 액션중임");
-//        }
-//
-//        /*
-//        // 20%
-//        if( ratio <= 0.2f ) {
-//            if( diffAbs > 10 ) {
-//                actionDown(3, 1);
-//            } else {
-//                move();
-//            }
-//        }
-//        // 30%
-//        else if( ratio <= 0.3f ) {
-//            if( diffAbs > 20 ) {
-//                actionDown(3, 2);
-//            } else {
-//                move();
-//            }
-//        }
-//        // 40%
-//        else if( ratio <= 0.4f ) {
-//            if( diffAbs > 30 ) {
-//                actionDown(2, 3);
-//            }
-//        }
-//        // 70%
-//        else if( ratio <= 0.7f ) {
-//            if( diffAbs > 60 ) {
-//                actionDown(1, 4);
-//            }
-//        }
-//        // 기본
-//        else {
-//            if( diffAbs > 70 ) {
-//                actionDown(1, 5);
-//            }
-//        }
-//        */
-//    }
 }
 
 /**
@@ -719,13 +440,8 @@ void GameView::initBg() {
 
     // dark cloud
     if( SceneManager::getSceneType() == SceneType::GAME ) {
-        darkCloudAnim = SkeletonAnimation::createWithJsonFile(ANIM_CLOUD_DARK);
-        darkCloudAnim->setAnchorPoint(Vec2::ZERO);
-        darkCloudAnim->setPosition(DARK_CLOUD_POS_TOP);
-        darkCloudAnim->setAnimation(0, ANIM_NAME_RUN, true);
-        darkCloudAnim->setOpacity(0);
-        darkCloudAnim->setVisible(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, true));
-        addChild(darkCloudAnim, (int)ZOrder::CLOUD);
+        darkCloud = DarkCloud::create();
+        addChild(darkCloud, (int)ZOrder::CLOUD);
     }
     
     // 피버 모드
@@ -805,8 +521,10 @@ void GameView::initTimeBar() {
     
     timeBar->setOnTimeChangedListener([=](float timePoint, float ratio) {
         // 먹구름 좌표 업데이트
-        this->updateDarkCloudPosition(ratio);
+        darkCloud->updateCloud(ratio);
     });
+    
+    darkCloud->setTimeBar(timeBar);
 }
 
 /**

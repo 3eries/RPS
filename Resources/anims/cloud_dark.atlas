@@ -48,8 +48,8 @@ repeat: none
 cloud_dark_big
   rotate: true
   xy: 692, 2
-  size: 240, 267
-  orig: 240, 267
+  size: 240, 280
+  orig: 240, 280
   offset: 0, 0
   index: -1
 cloud_dark_light2

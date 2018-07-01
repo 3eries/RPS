@@ -23,6 +23,7 @@ class RSPBlockLayer;
 class RSPButtonLayer;
 class Man;
 class TimeBar;
+class DarkCloud;
 
 class GameView : public cocos2d::Node, public GameListener {
 public:
@@ -80,7 +81,6 @@ private:
 private:
     void updateScore();
     void updateButtonMode();
-    void updateDarkCloudPosition(float ratio, bool forceMove = false);
     
     void onClickNormalButton(RSPType type);
     void onClickFeverButton(int i);
@@ -111,14 +111,7 @@ private:
     TimeBar *timeBar;
     
     // 먹구름
-    static const int DARK_CLOUD_MOVE_ACTION_NONE = -1;
-    static const int DARK_CLOUD_MOVE_ACTION      = 100;
-    static const int DARK_CLOUD_MOVE_ACTION_UP   = 100;
-    static const int DARK_CLOUD_MOVE_ACTION_DOWN = 200;
-    
-    spine::SkeletonAnimation *darkCloudAnim;
-    int darkCloudSection;
-    int darkCloudActionTag;
+    DarkCloud *darkCloud;
 };
 
 #endif /* GameView_hpp */
