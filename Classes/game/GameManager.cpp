@@ -93,12 +93,20 @@ void GameManager::setScore(int score) {
     this->score = score;
     
     // 스코어에 해당하는 레벨 설정
+    auto saveLevelInfo = this->levelInfo;
     auto infos = GameConfiguration::getInstance()->getLevelInfos();
     
     for( auto info : infos ) {
         if( this->score >= info.beginRange ) {
             this->levelInfo = info;
         }
+    }
+    
+    // 레벨 변경 체크
+    bool isLevelChanged = (saveLevelInfo.level != this->levelInfo.level);
+    
+    if( isLevelChanged ) {
+        onLevelChanged();
     }
     
     CCLOG("GameManager::setScore: %d level: %d", this->score, this->levelInfo.level);
@@ -250,6 +258,16 @@ void GameManager::onStartTimer() {
 
     for( auto listener : listeners ) {
         listener->onStartTimer();
+    }
+}
+
+/**
+ * 레벨 변경
+ */
+void GameManager::onLevelChanged() {
+    
+    for( auto listener : listeners ) {
+        listener->onLevelChanged(levelInfo);
     }
 }
 

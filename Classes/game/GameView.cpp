@@ -188,6 +188,15 @@ void GameView::onStartTimer() {
 }
 
 /**
+ * 레벨 변경
+ */
+void GameView::onLevelChanged(LevelInfo level) {
+ 
+    // 레벨 텍스트 연출
+    showLevelLabel();
+}
+
+/**
  * 게임 모드 전환
  */
 void GameView::onGameModeChanged(GameMode mode) {
@@ -246,17 +255,8 @@ void GameView::onPreFeverModeEnd() {
  */
 void GameView::updateScore() {
     
-    auto saveLevelInfo = gameMgr->getLevelInfo();
-    
     gameMgr->setScore(hitCount);
     getChildByTag<Label*>(Tag::LABEL_SCORE)->setString(TO_STRING(gameMgr->getScore()));
-    
-    // 레벨 변경된 경우, 레벨 텍스트 연출
-    bool isLevelChanged = (saveLevelInfo.level != gameMgr->getLevelInfo().level);
-    
-    if( isLevelChanged ) {
-        showLevelLabel();
-    }
 }
 
 /**
