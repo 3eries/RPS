@@ -593,6 +593,7 @@ void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     
     CCLOG("GameView::hitBlock gameMode: %d", (int)gameMgr->getGameMode());
     
+    auto hitBlockType = hitBlock->getType();
     blockLayer->hitBlock(hitBlock, btnType, man->getManPosition());
     
     // hit 카운트 증가
@@ -600,7 +601,15 @@ void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     updateScore();
     
     // 시간 증가
-    timeBar->increaseTimePoint(gameMgr->getConfig()->getTimeInfo().increasePointPerHit);
+    auto levelInfo = gameMgr->getLevelInfo();
+    float increasePoint = levelInfo.increasePointPerHit;
+    
+    if( hitBlockType == RSPType::ROCK_N_ROLL ) {
+        // 피버 블럭
+        increasePoint = levelInfo.increasePointPerFeverHit;
+    }
+    
+    timeBar->increaseTimePoint(increasePoint);
     
     // 버튼 업데이트
     updateButtonMode();

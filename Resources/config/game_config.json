@@ -1,5 +1,5 @@
 {
-    "default_continuation": 43,
+    "continuation": 43,
     "time": {
         "max_point": 1000,
         "first_point": 500,
@@ -19,214 +19,291 @@
     "levels": [{
                "level": 1,
                "begin_range": 0,
-               "decrease_point_per_sec": 90,
+               "increase_point_per_hit": 20,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 71.81999969482422,
+               "gage_duration": 3.0,
                "continuation": 60
                }, {
                "level": 2,
                "begin_range": 20,
-               "decrease_point_per_sec": 95,
+               "increase_point_per_hit": 20,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 75.80999755859375,
+               "gage_duration": 3.0,
                "continuation": 60
                }, {
                "level": 3,
                "begin_range": 40,
-               "decrease_point_per_sec": 100,
+               "increase_point_per_hit": 20,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 79.79999542236328,
+               "gage_duration": 3.0,
                "continuation": 55
                }, {
                "level": 4,
                "begin_range": 60,
-               "decrease_point_per_sec": 105,
+               "increase_point_per_hit": 20,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 83.79000091552735,
+               "gage_duration": 3.0,
                "continuation": 55
                }, {
                "level": 5,
                "begin_range": 80,
-               "decrease_point_per_sec": 110,
+               "increase_point_per_hit": 21,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 87.77999877929688,
+               "gage_duration": 3.0,
                "continuation": 55
                }, {
                "level": 6,
                "begin_range": 100,
-               "decrease_point_per_sec": 115,
+               "increase_point_per_hit": 21,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 91.7699966430664,
+               "gage_duration": 3.0,
                "continuation": 50
                }, {
                "level": 7,
                "begin_range": 120,
-               "decrease_point_per_sec": 120,
+               "increase_point_per_hit": 21,
+               "increase_point_per_fever_hit": 50,
+               "decrease_point_per_sec": 95.76000213623047,
+               "gage_duration": 3.0,
                "continuation": 50
                }, {
                "level": 8,
+               "increase_point_per_hit": 21,
+               "increase_point_per_fever_hit": 50,
                "begin_range": 140,
-               "decrease_point_per_sec": 125,
+               "decrease_point_per_sec": 99.75,
+               "gage_duration": 2.5,
                "continuation": 50
                }, {
                "level": 9,
+               "increase_point_per_hit": 22,
+               "increase_point_per_fever_hit": 50,
                "begin_range": 160,
-               "decrease_point_per_sec": 130
+               "decrease_point_per_sec": 103.73999786376953,
+               "gage_duration": 2.5
                }, {
                "level": 10,
+               "increase_point_per_hit": 22,
+               "increase_point_per_fever_hit": 50,
                "begin_range": 180,
-               "decrease_point_per_sec": 134
+               "decrease_point_per_sec": 106.93199920654297,
+               "gage_duration": 2.5
                }, {
                "level": 11,
+               "increase_point_per_hit": 22,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 200,
-               "decrease_point_per_sec": 138
+               "decrease_point_per_sec": 110.1240005493164,
+               "gage_duration": 2.5
                }, {
                "level": 12,
+               "increase_point_per_hit": 22,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 220,
-               "decrease_point_per_sec": 142
+               "decrease_point_per_sec": 113.31600189208985,
+               "gage_duration": 2.5
                }, {
                "level": 13,
+               "increase_point_per_hit": 23,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 240,
-               "decrease_point_per_sec": 146
+               "decrease_point_per_sec": 116.50799560546875,
+               "gage_duration": 2.5
                }, {
                "level": 14,
+               "increase_point_per_hit": 23,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 260,
-               "decrease_point_per_sec": 150
+               "decrease_point_per_sec": 119.69999694824219,
+               "gage_duration": 2.5
                }, {
                "level": 15,
+               "increase_point_per_hit": 23,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 280,
-               "decrease_point_per_sec": 154
+               "decrease_point_per_sec": 122.89199829101563,
+               "gage_duration": 2.5
                }, {
                "level": 16,
+               "increase_point_per_hit": 23,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 300,
-               "decrease_point_per_sec": 158
+               "decrease_point_per_sec": 126.08399963378906,
+               "gage_duration": 2.0
                }, {
                "level": 17,
+               "increase_point_per_hit": 24,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 320,
-               "decrease_point_per_sec": 162
+               "decrease_point_per_sec": 129.2760009765625,
+               "gage_duration": 2.0
                }, {
                "level": 18,
+               "increase_point_per_hit": 24,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 340,
-               "decrease_point_per_sec": 166
+               "decrease_point_per_sec": 132.46800231933595,
+               "gage_duration": 2.0
                }, {
                "level": 19,
+               "increase_point_per_hit": 24,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 360,
-               "decrease_point_per_sec": 170
+               "decrease_point_per_sec": 135.66000366210938,
+               "gage_duration": 2.0
                }, {
                "level": 20,
+               "increase_point_per_hit": 24,
+               "increase_point_per_fever_hit": 45,
                "begin_range": 380,
-               "decrease_point_per_sec": 174
-               },{
+               "decrease_point_per_sec": 138.8520050048828,
+               "gage_duration": 1.5
+               }, {
                "level": 21,
+               "increase_point_per_hit": 25,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 400,
-               "decrease_point_per_sec": 177
-               },{
+               "decrease_point_per_sec": 141.24600219726563,
+               "gage_duration": 1.5
+               }, {
                "level": 22,
+               "increase_point_per_hit": 25,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 420,
-               "decrease_point_per_sec": 180
-               },{
+               "decrease_point_per_sec": 143.63999938964845,
+               "gage_duration": 1.5
+               }, {
                "level": 23,
+               "increase_point_per_hit": 25,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 440,
-               "decrease_point_per_sec": 183
-               },{
+               "decrease_point_per_sec": 146.0340118408203,
+               "gage_duration": 1.5
+               }, {
                "level": 24,
+               "increase_point_per_hit": 25,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 460,
-               "decrease_point_per_sec": 186
-               },{
+               "decrease_point_per_sec": 148.42799377441407
+               }, {
                "level": 25,
                "begin_range": 480,
-               "decrease_point_per_sec": 189
-               },{
+               "decrease_point_per_sec": 150.82200622558595
+               }, {
                "level": 26,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 500,
-               "decrease_point_per_sec": 192
-               },{
+               "decrease_point_per_sec": 153.2159881591797
+               }, {
                "level": 27,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 520,
-               "decrease_point_per_sec": 195
-               },{
+               "decrease_point_per_sec": 155.61000061035157
+               }, {
                "level": 28,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 540,
-               "decrease_point_per_sec": 198
-               },{
+               "decrease_point_per_sec": 158.00399780273438
+               }, {
                "level": 29,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 560,
-               "decrease_point_per_sec": 201
-               },{
+               "decrease_point_per_sec": 160.3979949951172
+               }, {
                "level": 30,
+               "increase_point_per_fever_hit": 40,
                "begin_range": 580,
-               "decrease_point_per_sec": 204
-               },{
+               "decrease_point_per_sec": 162.79200744628907
+               }, {
                "level": 31,
                "begin_range": 600,
-               "decrease_point_per_sec": 206
-               },{
+               "decrease_point_per_sec": 164.38800048828126
+               }, {
                "level": 32,
                "begin_range": 620,
-               "decrease_point_per_sec": 208
-               },{
+               "decrease_point_per_sec": 165.9840087890625
+               }, {
                "level": 33,
                "begin_range": 640,
-               "decrease_point_per_sec": 210
-               },{
+               "decrease_point_per_sec": 167.5800018310547
+               }, {
                "level": 34,
                "begin_range": 660,
-               "decrease_point_per_sec": 212
-               },{
+               "decrease_point_per_sec": 169.17599487304688
+               }, {
                "level": 35,
                "begin_range": 680,
-               "decrease_point_per_sec": 214
-               },{
+               "decrease_point_per_sec": 170.77200317382813
+               }, {
                "level": 36,
                "begin_range": 700,
-               "decrease_point_per_sec": 216
-               },{
+               "decrease_point_per_sec": 172.3679962158203
+               }, {
                "level": 37,
                "begin_range": 720,
-               "decrease_point_per_sec": 218
-               },{
+               "decrease_point_per_sec": 173.96400451660157
+               }, {
                "level": 38,
                "begin_range": 740,
-               "decrease_point_per_sec": 220
-               },{
+               "decrease_point_per_sec": 175.55999755859376
+               }, {
                "level": 39,
                "begin_range": 760,
-               "decrease_point_per_sec": 222
-               },{
+               "decrease_point_per_sec": 177.15599060058595
+               }, {
                "level": 40,
                "begin_range": 780,
-               "decrease_point_per_sec": 224
-               },{
+               "decrease_point_per_sec": 178.7519989013672
+               }, {
                "level": 41,
                "begin_range": 800,
-               "decrease_point_per_sec": 226
-               },{
+               "decrease_point_per_sec": 180.34799194335938
+               }, {
                "level": 42,
                "begin_range": 820,
-               "decrease_point_per_sec": 228
-               },{
+               "decrease_point_per_sec": 181.94400024414063
+               }, {
                "level": 43,
                "begin_range": 840,
-               "decrease_point_per_sec": 230
-               },{
+               "decrease_point_per_sec": 183.5399932861328
+               }, {
                "level": 44,
                "begin_range": 860,
-               "decrease_point_per_sec": 232
-               },{
+               "decrease_point_per_sec": 185.135986328125
+               }, {
                "level": 45,
                "begin_range": 880,
-               "decrease_point_per_sec": 234
-               },{
+               "decrease_point_per_sec": 186.73199462890626
+               }, {
                "level": 46,
                "begin_range": 900,
-               "decrease_point_per_sec": 236
-               },{
+               "decrease_point_per_sec": 188.32798767089845
+               }, {
                "level": 47,
                "begin_range": 920,
-               "decrease_point_per_sec": 238
-               },{
+               "decrease_point_per_sec": 189.92401123046876
+               }, {
                "level": 48,
                "begin_range": 940,
-               "decrease_point_per_sec": 240
-               },{
+               "decrease_point_per_sec": 191.52000427246095
+               }, {
                "level": 49,
                "begin_range": 960,
-               "decrease_point_per_sec": 242
-               },{
+               "decrease_point_per_sec": 193.11599731445313
+               }, {
                "level": 50,
                "begin_range": 980,
-               "decrease_point_per_sec": 244
-               },{
+               "decrease_point_per_sec": 194.71200561523438
+               }, {
                "level": 51,
                "begin_range": 1000,
-               "decrease_point_per_sec": 255
-}]
+               "decrease_point_per_sec": 205.1999969482422,
+               "continuation": 33
+               }]
 }

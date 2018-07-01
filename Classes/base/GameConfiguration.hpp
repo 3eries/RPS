@@ -38,11 +38,18 @@ struct FeverInfo {
 struct LevelInfo {
     int level;
     int beginRange;     // 레벨 시작 범위 (스코어)
-    float decreasePointPerSeconds; // 1초당 감소 포인트
+    float increasePointPerHit;      // 블럭 히트 획득 포인트
+    float increasePointPerFeverHit; // 피버 블럭 히트 획득 포인트
+    float decreasePointPerSeconds;  // 1초당 감소 포인트
+    float gageDuration; // 게이지 지속 시간
     int continuation;   // 연속으로 같은 블럭이 나올 확률 (0~100)
     
     LevelInfo() {
         level = -1;
+        increasePointPerHit = 0;
+        increasePointPerFeverHit = 0;
+        decreasePointPerSeconds = 0;
+        gageDuration = 0;
         continuation = 0;
     }
 };
@@ -64,7 +71,7 @@ public:
     LevelInfo getMaxLevelInfo();
     
 private:
-    int defaultContinuation;
+    int continuation;
     CC_SYNTHESIZE(TimeInfo, timeInfo, TimeInfo);
     CC_SYNTHESIZE(FeverInfo, feverInfo, FeverInfo);
     CC_SYNTHESIZE(std::vector<LevelInfo>, levelInfos, LevelInfos);
