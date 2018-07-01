@@ -126,6 +126,10 @@ void GameScene::onPreGameOver() {
     touchLockNode->setVisible(true);
     getChildByTag(Tag::LAYER_MENU)->setVisible(false);
     
+    showContinuePopup();
+    
+    return;
+    
     // 이어하기
     if( gameMgr->getScore() >= CONTINUE_CONDITION_SCORE && gameMgr->getContinueCount() == 0 ) {
         showContinuePopup();
