@@ -22,18 +22,6 @@ class TimeBar;
  * @brief 먹구름
  */
 class DarkCloud : public cocos2d::Node, public GameListener {
-private:
-    static const int MOVE_ACTION_TAG_NONE = -1;
-    static const int MOVE_ACTION_TAG      = 100;
-    static const int MOVE_ACTION_TAG_UP   = 100;
-    static const int MOVE_ACTION_TAG_DOWN = 200;
-    
-private:
-    enum ActionTag {
-        MOVE = 100,
-        FADE,
-    };
-    
 public:
     CREATE_FUNC(DarkCloud);
     ~DarkCloud();
@@ -56,25 +44,29 @@ private:
     void onContinue() override;
     void onGameOver() override;
     void onStartTimer() override;
+    void onLevelChanged(LevelInfo level) override;
     
 public:
-    void updateCloud(float timeRatio);
-    void updateCloudPosition(float timeRatio);
+    void update(float dt) override;
+    
+    void updateCloud(float timeRatio, bool forceUpdate = false);
+    void updateCloudPosition(float timeRatio, bool forceMove = false);
     void updateCloudOpacity(float timeRatio);
     
-    float getCloudPositionY(float timeRatio);
+    float getCloudPosition(float timeRatio);
     float getCloudOpacity(float timeRatio);
     
 private:
+    GameManager *gameMgr;
     CC_SYNTHESIZE(TimeBar*, timeBar, TimeBar);
     
     float timeRatio;
     bool isPositionLocked;      // 좌표 변경 잠금 여부
     bool isOpacityLocked;       // 투명도 변경 잠금 여부
     
+    float targetPosition;       // 목표 좌표
+    
     spine::SkeletonAnimation *anim;
-    int actionTag;
-    int section;
 };
 
 #endif /* DarkCloud_hpp */
