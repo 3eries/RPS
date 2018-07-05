@@ -25,10 +25,13 @@ private:
     
 public:
     void init();
+    
     void setMute(bool mute);
+    void setEffectMute(bool mute);
+    void setBGMMute(bool mute);
     
 public:
-    static int play2d(const std::string &file, bool loop = false);
+    static int play2d(const std::string &file, bool loop = false, float volume = 1);
     
     static void resumeAll();
     static void resume(const std::string &file);
@@ -44,6 +47,10 @@ public:
     static float getDuration(int audioId);
     static float getDuration(const std::string &file);
     
+// Effect
+public:
+    static int playEffect(const std::string &file, bool loop = false);
+    
 // BGM
 public:
     static int playBGM(const std::string &bgm, bool loop = true);
@@ -55,11 +62,17 @@ public:
 
 private:
     static std::list<int> getAudioId(const std::string &file);
-    static float getVolume();
+    
+    static float getVolume(bool isMute);
+    static float getEffectVolume();
+    static float getBGMVolume();
     
 private:
-    SB_SYNTHESIZE_READONLY_BOOL(mute, Mute);        // 음소거 여부
-    SB_SYNTHESIZE_READONLY_BOOL(paused, Paused);    // 일시정지 여부
+    SB_SYNTHESIZE_READONLY_BOOL(effectMute, EffectMute);  // 효과음 음소거 여부
+    SB_SYNTHESIZE_READONLY_BOOL(bgmMute, BGMMute);        // 배경음 음소거 여부
+    SB_SYNTHESIZE_READONLY_BOOL(paused, Paused);          // 일시정지 여부
+    
+    std::vector<std::string> effectFiles;
     std::string bgm;
     
     std::map<std::string, float> durationMap;

@@ -319,7 +319,7 @@ void Man::showdown(RSPResult result, RSPType myHand, RSPType oppHand) {
  */
 void Man::rockNroll(Position pos) {
     
-    SBAudioEngine::play2d(SOUND_PUNCH);
+    SBAudioEngine::playEffect(SOUND_PUNCH);
     
     runAttackAnimation();
     
@@ -331,7 +331,7 @@ void Man::rockNroll(Position pos) {
  */
 void Man::resultWin(RSPType myHand, RSPType oppHand) {
     
-    SBAudioEngine::play2d(SOUND_PUNCH);
+    SBAudioEngine::playEffect(SOUND_PUNCH);
     
     runAttackAnimation();
     
@@ -406,7 +406,7 @@ void Man::runAttackAnimation() {
 void Man::runDieAnimation() {
     
     // 벼락 효과음
-    SBAudioEngine::play2d(SOUND_THUNDER);
+    SBAudioEngine::playEffect(SOUND_THUNDER);
     
     // die 애니메이션 재생
     string animName = "";
