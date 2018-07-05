@@ -59,7 +59,7 @@ void SBToggleButton::releaseUpEvent() {
     bool isSelected = !this->selected;
     
     if( onSelectedListener ) {
-        if( onSelectedListener(isSelected) ) {
+        if( !onSelectedListener(isSelected) ) {
             setSelected(isSelected);
         }
     } else {

@@ -58,7 +58,7 @@ bool TestMenuScene::init() {
             UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, isSelected);
             UserDefault::getInstance()->flush();
             
-            return true;
+            return false;
         });
     }
     
@@ -83,7 +83,7 @@ bool TestMenuScene::init() {
             UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, isSelected);
             UserDefault::getInstance()->flush();
             
-            return true;
+            return false;
         });
     }
     
