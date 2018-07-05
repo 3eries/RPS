@@ -10,11 +10,24 @@
 #include <stdio.h>
 
 #include "cocos2d.h"
+#include "SBMacros.h"
 
 class SBDirector {
 public:
+    static SBDirector* getInstance();
+    static void destroyInstance();
+    ~SBDirector();
+    
+private:
+    SBDirector();
+    
+public:
     static void init();
     static void end();
+    
+private:
+    cocos2d::EventListenerTouchOneByOne *touchListener;
+    SB_SYNTHESIZE_BOOL(screenTouchLocked, ScreenTouchLocked);   // 화면 터치 잠금 여부
 };
 
 #endif /* SBDirector_hpp */
