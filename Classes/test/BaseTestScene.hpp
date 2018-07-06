@@ -14,6 +14,8 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
+#include "TestHelper.hpp"
+
 class BaseTestScene : public cocos2d::Scene {
 public:
     CREATE_FUNC(BaseTestScene);
@@ -28,6 +30,9 @@ protected:
     virtual void onExit() override;
     
     virtual void onBack();
+    
+protected:
+    TestHelper *testHelper;
 };
 
 #endif /* BaseTestScene_hpp */

@@ -15,8 +15,8 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-BaseTestScene::BaseTestScene() {
-    
+BaseTestScene::BaseTestScene() :
+testHelper(TestHelper::getInstance()) {
 }
 
 BaseTestScene::~BaseTestScene() {

@@ -37,9 +37,33 @@ bool TestMenuScene::init() {
     const int FONT_SIZE = 50;
     const float PADDING_Y = 120;
     
+    // cheat mode on/off
+    {
+        auto label = Label::createWithTTF("cheat mode", FONT_RETRO, FONT_SIZE, Size::ZERO,
+                                          TextHAlignment::RIGHT,
+                                          TextVAlignment::CENTER);
+        label->setAnchorPoint(ANCHOR_M);
+        label->setPosition(Vec2MC(-50, PADDING_Y*3));
+        addChild(label);
+        
+        auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
+                                               DIR_IMG_COMMON + "check_box_selected.png");
+        checkBox->setAnchorPoint(ANCHOR_ML);
+        checkBox->setPosition(Vec2MC(160, PADDING_Y*3));
+        addChild(checkBox);
+        
+        checkBox->setSelected(testHelper->isCheatMode());
+        checkBox->setOnSelectedListener([=](bool isSelected) -> bool {
+            
+            testHelper->setCheatMode(isSelected);
+            
+            return false;
+        });
+    }
+    
     // time bar on/off
     {
-        auto label = Label::createWithTTF("TIME BAR", FONT_RETRO, FONT_SIZE, Size::ZERO,
+        auto label = Label::createWithTTF("time bar", FONT_RETRO, FONT_SIZE, Size::ZERO,
                                           TextHAlignment::RIGHT,
                                           TextVAlignment::CENTER);
         label->setAnchorPoint(ANCHOR_M);
@@ -52,11 +76,10 @@ bool TestMenuScene::init() {
         checkBox->setPosition(Vec2MC(150, PADDING_Y*2));
         addChild(checkBox);
         
-        checkBox->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, true));
+        checkBox->setSelected(testHelper->isTimeBarEnabled());
         checkBox->setOnSelectedListener([=](bool isSelected) -> bool {
             
-            UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, isSelected);
-            UserDefault::getInstance()->flush();
+            testHelper->setTimeBarEnabled(isSelected);
             
             return false;
         });
@@ -64,7 +87,7 @@ bool TestMenuScene::init() {
     
     // dark cloud on/off
     {
-        auto label = Label::createWithTTF("DARK CLOUD", FONT_RETRO, FONT_SIZE, Size::ZERO,
+        auto label = Label::createWithTTF("dark cloud", FONT_RETRO, FONT_SIZE, Size::ZERO,
                                           TextHAlignment::RIGHT,
                                           TextVAlignment::CENTER);
         label->setAnchorPoint(ANCHOR_M);
@@ -77,18 +100,17 @@ bool TestMenuScene::init() {
         checkBox->setPosition(Vec2MC(150, PADDING_Y));
         addChild(checkBox);
         
-        checkBox->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, true));
+        checkBox->setSelected(testHelper->isDarkCloudEnabled());
         checkBox->setOnSelectedListener([=](bool isSelected) -> bool {
             
-            UserDefault::getInstance()->setBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, isSelected);
-            UserDefault::getInstance()->flush();
+            testHelper->setDarkCloudEnabled(isSelected);
             
             return false;
         });
     }
     
     // touch
-    auto touchTestBtn = UIHelper::createFontButton("TOUCH", ButtonSize::MEDIUM);
+    auto touchTestBtn = UIHelper::createFontButton("touch", ButtonSize::MEDIUM);
     touchTestBtn->setAnchorPoint(ANCHOR_M);
     touchTestBtn->setPosition(Vec2MC(0, 0));
     addChild(touchTestBtn);
@@ -98,7 +120,7 @@ bool TestMenuScene::init() {
     });
     
     // config
-    auto configTestBtn = UIHelper::createFontButton("CONFIG", ButtonSize::MEDIUM);
+    auto configTestBtn = UIHelper::createFontButton("config", ButtonSize::MEDIUM);
     configTestBtn->setAnchorPoint(ANCHOR_M);
     configTestBtn->setPosition(Vec2MC(0, -PADDING_Y));
     addChild(configTestBtn);
@@ -108,7 +130,7 @@ bool TestMenuScene::init() {
     });
     
     // spine
-    auto spineTestBtn = UIHelper::createFontButton("SPINE", ButtonSize::MEDIUM);
+    auto spineTestBtn = UIHelper::createFontButton("spine", ButtonSize::MEDIUM);
     spineTestBtn->setAnchorPoint(ANCHOR_M);
     spineTestBtn->setPosition(Vec2MC(0, -PADDING_Y*2));
     addChild(spineTestBtn);

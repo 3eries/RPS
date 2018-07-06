@@ -10,6 +10,7 @@
 #include "RSP.h"
 #include "GameConfiguration.hpp"
 #include "UserDefaultKey.h"
+#include "TestHelper.hpp"
 
 #include "../GameDefine.h"
 
@@ -58,8 +59,11 @@ void TimeBar::onExit() {
 
 void TimeBar::reset() {
     
-    // setVisible(true);
-    setVisible(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_TIME_BAR_ENABLED, true));
+    setVisible(true);
+    
+#if ENABLE_TEST_MENU
+    setVisible(TestHelper::getInstance()->isTimeBarEnabled());
+#endif
     
     timePoint = gameMgr->getConfig()->getTimeInfo().firstPoint;
     updateGage();

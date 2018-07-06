@@ -9,6 +9,7 @@
 
 #include "RSP.h"
 #include "UserDefaultKey.h"
+#include "TestHelper.hpp"
 
 #include "TimeBar.hpp"
 
@@ -60,7 +61,9 @@ bool DarkCloud::init() {
     anim->setVisible(false);
     addChild(anim);
     
-    setVisible(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::TEST_DARK_CLOUD_ENABLED, true));
+#if ENABLE_TEST_MENU
+    setVisible(TestHelper::getInstance()->isDarkCloudEnabled());
+#endif
     
     gameMgr->addListener(this);
     

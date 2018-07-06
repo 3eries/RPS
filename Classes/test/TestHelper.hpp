@@ -13,12 +13,7 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-enum class SceneType {
-    NONE,
-    SPLASH,
-    MAIN,
-    GAME,
-};
+#define ENABLE_TEST_MENU        1
 
 class TestHelper : public cocos2d::Ref {
 public:
@@ -29,6 +24,11 @@ public:
     
 private:
     TestHelper();
+    
+private:
+    SB_SYNTHESIZE_BOOL(cheatMode, CheatMode);               // 치트 모드 on/off
+    SB_SYNTHESIZE_BOOL(timeBarEnabled, TimeBarEnabled);     // 타임바 on/off
+    SB_SYNTHESIZE_BOOL(darkCloudEnabled, DarkCloudEnabled); // 먹구름 on/off
 };
 
 #endif /* TestHelper_hpp */

@@ -25,7 +25,10 @@ void TestHelper::destroyInstance() {
     CC_SAFE_DELETE(instance);
 }
 
-TestHelper::TestHelper() {
+TestHelper::TestHelper() :
+cheatMode(false),
+timeBarEnabled(true),
+darkCloudEnabled(true) {
 }
 
 TestHelper::~TestHelper() {

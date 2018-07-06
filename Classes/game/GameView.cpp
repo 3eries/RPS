@@ -281,6 +281,12 @@ void GameView::onClickNormalButton(RSPType type) {
     auto block = blockLayer->getFirstBlock();
     auto result = getResult(type, block->getType());
     
+#if ENABLE_TEST_MENU
+    if( TestHelper::getInstance()->isCheatMode() ) {
+        result = RSPResult::WIN;
+    }
+#endif
+    
     man->showdown(result, type, block->getType());
     
     switch( result ) {
