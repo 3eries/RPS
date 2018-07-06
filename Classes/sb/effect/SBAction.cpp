@@ -18,11 +18,11 @@ const string SBRollingNumber::SCHEDULER_ROLLING      = "SB_SCHEDULER_ROLLING";
 const string SBRollingNumber::SCHEDULER_ROLLING_STOP = "SB_SCHEDULER_ROLLING_STOP";
 
 SBRollingNumber* SBRollingNumber::create(OnRollingListener onRollingListener, int number,
-                                         float duration, float rollSpeed) {
+                                         float timePerDigit, float rollSpeed) {
     
     auto action = new SBRollingNumber();
     
-    if( action && action->init(onRollingListener, number, duration, rollSpeed) ) {
+    if( action && action->init(onRollingListener, number, timePerDigit, rollSpeed) ) {
         action->autorelease();
         return action;
     }
@@ -40,7 +40,11 @@ SBRollingNumber::~SBRollingNumber() {
     Director::getInstance()->getScheduler()->unscheduleAllForTarget(this);
 }
 
-bool SBRollingNumber::init(OnRollingListener onRollingListener, int number, float duration, float rollSpeed) {
+bool SBRollingNumber::init(OnRollingListener onRollingListener,
+                           int number, float timePerDigit, float rollSpeed) {
+    
+    auto chars = SBStringUtils::toArray(TO_STRING(number));
+    float duration = chars.size() * timePerDigit;
     
     if( !ActionInterval::initWithDuration(duration) ) {
         return false;
@@ -50,12 +54,11 @@ bool SBRollingNumber::init(OnRollingListener onRollingListener, int number, floa
     
     this->onRollingListener = onRollingListener;
     this->number = number;
+    this->timePerDigit = timePerDigit;
     this->rollSpeed = rollSpeed;
     this->rollIndex = 0;
     
     // 숫자 목록 초기화
-    auto chars = SBStringUtils::toArray(TO_STRING(number));
-    
     for( int i = (int)chars.size()-1; i >= 0; --i ) {
         numberList.push_back(chars[i]);
     }
@@ -78,8 +81,6 @@ void SBRollingNumber::startWithTarget(Node *target) {
     }, this, rollSpeed, false, SCHEDULER_ROLLING);
     
     // 롤링중인 숫자 차례로 정지
-    float interval = getDuration() / numberList.size();
-    
     scheduler->schedule([=](float dt) {
         
         rollNumberList[rollIndex] = numberList[rollIndex];
@@ -93,7 +94,7 @@ void SBRollingNumber::startWithTarget(Node *target) {
             this->onRollingFinished();
         }
         
-    }, this, interval, false, SCHEDULER_ROLLING_STOP);
+    }, this, timePerDigit, false, SCHEDULER_ROLLING_STOP);
 }
 
 void SBRollingNumber::stop() {

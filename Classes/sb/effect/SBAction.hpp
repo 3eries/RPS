@@ -23,7 +23,7 @@ public:
     
 public:
     static SBRollingNumber* create(OnRollingListener onRollingListener, int number,
-                                   float duration, float rollSpeed = 0.06f);
+                                   float timePerDigit, float rollSpeed = 0.06f);
     virtual ~SBRollingNumber();
     
     virtual void startWithTarget(cocos2d::Node *target) override;
@@ -35,7 +35,7 @@ protected:
     SBRollingNumber();
     
     virtual bool init(OnRollingListener onRollingListener, int number,
-                      float duration, float rollSpeed);
+                      float timePerDigit, float rollSpeed);
     
     virtual void onRolling();
     virtual void onRollingFinished();
@@ -47,6 +47,7 @@ protected:
 protected:
     OnRollingListener onRollingListener;
     int number;
+    float timePerDigit;
     float rollSpeed;
     
     std::vector<std::string> numberList;
