@@ -118,14 +118,14 @@ static RSPResult getResult(RSPType myHand, RSPType oppHand) {
     CCASSERT(myHand != RSPType::NONE, "getResult error: invalid my hand.");
     CCASSERT(oppHand != RSPType::NONE, "getResult error: invalid opp hand.");
     
-    if( myHand == oppHand ) {
-        return RSPResult::DRAW;
+    // 락앤롤
+    if( myHand == RSPType::ROCK_N_ROLL ||
+       oppHand == RSPType::ROCK_N_ROLL ) {
+        return RSPResult::WIN;
     }
     
-    if( myHand == RSPType::ROCK_N_ROLL ||
-        oppHand == RSPType::ROCK_N_ROLL ) {
-        // 락앤롤
-        return RSPResult::WIN;
+    if( myHand == oppHand ) {
+        return RSPResult::DRAW;
     }
     
     bool isWin = false;
