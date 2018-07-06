@@ -17,6 +17,9 @@
 // audio
 #include "audio/SBAudioEngine.hpp"
 
+// effect
+#include "effect/SBAction.hpp"
+
 // jsoncpp
 #include "jsoncpp/SBJSON.h"
 
