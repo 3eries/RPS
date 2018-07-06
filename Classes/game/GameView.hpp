@@ -103,10 +103,10 @@ private:
     RSPBlockLayer *blockLayer;
     
     // 가위바위보 버튼 레이어
-    RSPButtonLayer *buttonLayer;
+    CC_SYNTHESIZE_READONLY(RSPButtonLayer*, buttonLayer, ButtonLayer);
     
     // 캐릭터
-    Man *man;
+    CC_SYNTHESIZE_READONLY(Man*, man, Man);
     
     // 시간 제한바
     TimeBar *timeBar;
