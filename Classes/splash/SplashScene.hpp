@@ -37,6 +37,8 @@ private:
     bool isReplacedMainScene;
     bool isLaunchImageFinished;
     bool isLoginCompleted;
+    
+    SB_SYNTHESIZE_READONLY_BOOL(logoMode, LogoMode);
 };
 
 #endif /* SplashScene_hpp */

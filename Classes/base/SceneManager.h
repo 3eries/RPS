@@ -42,7 +42,7 @@ private:
 public:
     void replace(SceneType type, std::function<cocos2d::Scene*()> createSceneFunc);
     void replace(SceneType type);
-  
+    
     bool onBackKeyReleased();
     
 // getter
@@ -50,6 +50,9 @@ public:
     static SceneType getSceneType();
     static cocos2d::Scene* getScene();
     static GameView* getGameView();
+    
+    // 임시
+    static bool isBannerVisible();
     
 private:
     SceneType sceneType;

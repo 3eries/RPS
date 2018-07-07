@@ -6,6 +6,10 @@
 
 #include "SceneManager.h"
 
+//
+#include "User.hpp"
+//
+
 #include "../splash/SplashScene.hpp"
 #include "../main/MainScene.hpp"
 #include "../game/GameScene.hpp"
@@ -91,6 +95,7 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
     }
     
     auto prevSceneType = this->sceneType;
+    auto prevScene = this->scene;
     
     isRunningReplaceScene = true;
     this->sceneType = type;
@@ -113,7 +118,13 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
         case SceneType::MAIN: {
             // Splash -> Main
             if( prevSceneType == SceneType::SPLASH ) {
-                scene = TransitionCrossFade::create(REPLACE_DURATION_SPLASH_TO_MAIN, scene);
+                auto splashScene = dynamic_cast<SplashScene*>(prevScene);
+                
+                if( splashScene->isLogoMode() ) {
+                    scene = TransitionCrossFade::create(REPLACE_DURATION_SPLASH_TO_MAIN, scene);
+                } else {
+                    scene = TransitionFade::create(REPLACE_DURATION_MAIN, scene);
+                }
             }
             // XXX -> Main
             else {
@@ -176,3 +187,11 @@ GameView* SceneManager::getGameView() {
     return instance->gameView;
 }
 
+bool SceneManager::isBannerVisible() {
+    
+    if( getSceneType() == SceneType::GAME ) {
+        return !User::isOwnRemoveAdsItem();
+    }
+    
+    return false;
+}
