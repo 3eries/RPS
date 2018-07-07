@@ -33,8 +33,6 @@ class UIHelper {
 public:
     static std::string getButtonImageFile(RSPType type);
     
-    static cocos2d::Color3B getColor(RSPType type);
-    
     static SBButton* createButton(SBButton::Config config);
     static SBButton* createFontButton(const std::string &title, const cocos2d::Size &size);
 };

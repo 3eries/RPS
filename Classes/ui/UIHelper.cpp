@@ -31,20 +31,6 @@ string UIHelper::getButtonImageFile(RSPType type) {
     return "";
 }
 
-Color3B UIHelper::getColor(RSPType type) {
-    
-    switch( type ) {
-        case RSPType::ROCK:        return Color3B(255, 0, 0);
-        case RSPType::SCISSORS:    return Color3B(0, 255, 0);
-        case RSPType::PAPER:       return Color3B(0, 0, 255);
-        default:
-            CCASSERT(false, "UIHelper::getColor error: invalid rsp type.");
-            break;
-    }
-    
-    return Color3B::WHITE;
-}
-
 /**
  * 기본 버튼 생성
  */
@@ -68,3 +54,5 @@ SBButton* UIHelper::createFontButton(const string &title, const Size &size) {
     
     return btn;
 }
+
+
