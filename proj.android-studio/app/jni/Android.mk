@@ -24,6 +24,8 @@ $(SOURCE_FILES)
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes \
 $(LOCAL_PATH)/../../../Classes/sb \
 $(LOCAL_PATH)/../../../Classes/base \
+$(LOCAL_PATH)/../../../Classes/ranking \
+$(LOCAL_PATH)/../../../Classes/test \
 $(LOCAL_PATH)/../../../Classes/ui \
 
 # _COCOS_HEADER_ANDROID_BEGIN
