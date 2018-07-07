@@ -8,13 +8,16 @@
 
 #include "RSP.h"
 #include "UIHelper.hpp"
+#include "UserDefaultKey.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-PausePopup::PausePopup() : SBBasePopup(),
-contentsLayer(nullptr),
+static const float FADE_DURATION    = 0.15f;
+static const float SLIDE_DURATION   = 0.2f;
+
+PausePopup::PausePopup() : BasePopup(Type::PAUSE),
 onClickMenuListener(nullptr) {
     
 }
@@ -25,108 +28,159 @@ PausePopup::~PausePopup() {
 
 bool PausePopup::init() {
     
-    if( !SBBasePopup::init() ) {
+    if( !BasePopup::init() ) {
         return false;
     }
 
-    initBg();
-    initTopMenu();
-    initCenterMenu();
+    runEnterAction();
     
     return true;
 }
 
-void PausePopup::onExit() {
+void PausePopup::initBackgroundView() {
     
-    SBBasePopup::onExit();
+    BasePopup::initBackgroundView();
+    
+    setBackgroundColor(Color::POPUP_BG);
 }
 
-void PausePopup::initBg() {
+void PausePopup::initContentView() {
     
-    addChild(LayerColor::create(Color::POPUP_BG));
+    BasePopup::initContentView();
     
-    contentsLayer = SBNodeUtils::createZeroSizeNode();
-    addChild(contentsLayer);
-}
-
-void PausePopup::initTopMenu() {
+    // RSP_popup_bg_pause.png Vec2MC(0, 0) , Size(552, 420)
+    stoneBg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_pause.png");
+    stoneBg->setAnchorPoint(ANCHOR_M);
+    stoneBg->setPosition(Vec2MC(0, 0));
+    addContentChild(stoneBg);
     
-    // mute
-    /*
-    auto muteBtn = SBToggleButton::create(DIR_IMG_COMMON + "common_sound_01.png",
-                                          DIR_IMG_COMMON + "common_sound_02.png");
-    muteBtn->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
-    muteBtn->setPosition(Vec2TR(-10, -10));
-    contentsLayer->addChild(muteBtn);
-    
-    muteBtn->setSelected(SoundManager::getInstance()->isMute());
-    muteBtn->setOnSelectedListener([=](bool isSelected) -> bool {
-        
-        bool isMute = isSelected;
-        SoundManager::getInstance()->setMute(isMute);
-        
-        return true;
-    });
-    */
-}
-
-void PausePopup::initCenterMenu() {
+    // title
+    // RSP_popup_title_pause.png Vec2MC(4, 141) , Size(292, 64)
+    auto title = Sprite::create(DIR_IMG_GAME + "RSP_popup_title_pause.png");
+    title->setAnchorPoint(ANCHOR_M);
+    title->setPosition(Vec2MC(0, 141));
+    addContentChild(title);
  
-    auto menuLayer = Node::create();
-    contentsLayer->addChild(menuLayer);
+    // 사운드
+    // RSP_btn_sound.png Vec2MC(-172, 6) , Size(160, 152)
+    auto soundBtn = SBToggleButton::create(DIR_IMG_GAME + "RSP_btn_sound_off.png",
+                                           DIR_IMG_GAME + "RSP_btn_sound.png");
+    soundBtn->setZoomScale(0.07f);
+    soundBtn->setAnchorPoint(ANCHOR_M);
+    soundBtn->setPosition(Vec2MC(-172, 6));
+    addContentChild(soundBtn);
     
-    const Size MENU_SIZE(ButtonSize::LARGE);
+    auto audioEngine = SBAudioEngine::getInstance();
     
-    MenuType types[] = {
-        MenuType::RESUME,
-        MenuType::MAIN,
-    };
-    
-    string titles[] = {
-        "RESUME",
-        "HOME",
-    };
-    
-    float posY = 0;
-    float paddingY = 50;
-    
-    auto setLabelEffect = [](Label *label) {
-//        label->enableOutline(Color4B::BLACK, 3);
-//        label->enableShadow(Color4B(221, 6, 6, 255), Size(1,-1));
-    };
-    
-    for( int i = 0; i < sizeof(types)/sizeof(MenuType); ++i ) {
-        MenuType type = types[i];
+    soundBtn->setSelected(!audioEngine->isEffectMute() || !audioEngine->isBGMMute());
+    soundBtn->setOnSelectedListener([=](bool isSelected) -> bool {
+      
+        audioEngine->setMute(!isSelected);
         
-        auto btn = UIHelper::createFontButton(titles[i], MENU_SIZE);
-        btn->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-        btn->setPosition(Vec2(MENU_SIZE.width*0.5f, posY));
-        menuLayer->addChild(btn);
+        return false;
+    });
+    
+    // 진동
+    // RSP_btn_Vibrate.png Vec2MC(0, 10) , Size(160, 152)
+    auto vibrateBtn = SBToggleButton::create(DIR_IMG_GAME + "RSP_btn_vibrate_off.png",
+                                             DIR_IMG_GAME + "RSP_btn_vibrate.png");
+    vibrateBtn->setZoomScale(0.07f);
+    vibrateBtn->setAnchorPoint(ANCHOR_M);
+    vibrateBtn->setPosition(Vec2MC(0, 10));
+    addContentChild(vibrateBtn);
+    
+    vibrateBtn->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::VIBRATE, true));
+    vibrateBtn->setOnSelectedListener([=](bool isSelected) -> bool {
         
-        setLabelEffect(btn->getTitle());
+        UserDefault::getInstance()->setBoolForKey(UserDefaultKey::VIBRATE, isSelected);
+        UserDefault::getInstance()->flush();
         
-        // 클릭 리스너
-        btn->setOnClickListener([=](Node*) {
+        return false;
+    });
+    
+    // 기타 메뉴
+    {
+        // RSP_btn_close.png Vec2MC(236, 175) , Size(100, 90)
+        // RSP_btn_home.png Vec2MC(172, 10) , Size(160, 152)
+        // RSP_btn_remove_ads.png Vec2MC(2, -130) , Size(316, 80)
+        SBUIInfo infos[] = {
+            SBUIInfo(Tag::RESUME,        ANCHOR_M,   Vec2MC(236, 175),   "RSP_btn_close.png"),
+            SBUIInfo(Tag::MAIN,          ANCHOR_M,   Vec2MC(172, 10),    "RSP_btn_home.png"),
+            SBUIInfo(Tag::REMOVE_ADS,    ANCHOR_M,   Vec2MC(0, -130),    "RSP_btn_remove_ads.png"),
+        };
+        
+        for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
+            auto info = infos[i];
             
-            if( onClickMenuListener ) {
-                this->retain();
-                onClickMenuListener(type);
-                this->release();
-            }
-        });
-        
-        posY -= btn->getContentSize().height;
-        posY -= paddingY;
+            auto btn = SBButton::create(DIR_IMG_GAME + info.file);
+            btn->setZoomScale(0.07f);
+            info.apply(btn);
+            addContentChild(btn);
+            
+            btn->setOnClickListener([=](Node*) {
+                this->performListener((Tag)info.tag);
+            });
+        }
     }
-    
-    Size size = SBNodeUtils::getChildrenBoundingSize(menuLayer);
-    
-    menuLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    menuLayer->setPosition(Vec2MC(0, size.height));
-    menuLayer->setContentSize(size);
-//    menuLayer->setContentSize(SBNodeUtils::getChildrenBoundingSize(menuLayer));
-//    menuLayer->setPosition(Vec2MC(0,
-//                                  menuLayer->getContentSize().height*0.5f));
 }
 
+void PausePopup::performListener(Tag tag) {
+    
+    retain();
+    onClickMenuListener(tag);
+    release();
+}
 
+/**
+ * 등장 연출
+ */
+void PausePopup::runEnterAction(SBCallback onFinished) {
+    
+    BasePopup::runEnterAction(onFinished);
+    
+    runBackgroundFadeInAction(nullptr, FADE_DURATION);      // 배경 fade in
+    runSlideInAction([=]() {                                // 컨텐츠 slide in
+        
+        this->onEnterActionFinished();
+        SB_SAFE_PERFORM_LISTENER(this, onFinished);
+        
+    }, SLIDE_DURATION);
+}
+
+/**
+ * 퇴장 연출
+ */
+void PausePopup::runExitAction(SBCallback onFinished) {
+    
+    BasePopup::runExitAction(onFinished);
+    
+    runBackgroundFadeOutAction(nullptr, FADE_DURATION);     // 배경 fade out
+    runSlideOutAction([=]() {                               // 컨텐츠 slide out
+        
+        this->onExitActionFinished();
+        SB_SAFE_PERFORM_LISTENER(this, onFinished);
+        
+    }, SLIDE_DURATION);
+}
+
+/**
+ * 등장 연출 완료
+ */
+void PausePopup::onEnterActionFinished() {
+    
+    // 비석 바깥 영역 터치 시 팝업 종료
+    auto touchNode = SBNodeUtils::createTouchNode();
+    addChild(touchNode);
+    
+    touchNode->addClickEventListener([=](Ref*) {
+        this->performListener(Tag::RESUME);
+    });
+    
+    // auto box = SBNodeUtils::getBoundingBoxInWorld(stoneBg);
+    
+    auto stoneTouchNode = SBNodeUtils::createTouchNode();
+    stoneTouchNode->setAnchorPoint(stoneBg->getAnchorPoint());
+    stoneTouchNode->setPosition(stoneBg->getPosition());
+    stoneTouchNode->setContentSize(stoneBg->getContentSize());
+    addChild(stoneTouchNode);
+}

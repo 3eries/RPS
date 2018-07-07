@@ -13,12 +13,14 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
-class PausePopup : public SBBasePopup {
+#include "BasePopup.hpp"
+
+class PausePopup : public BasePopup {
 public:
-    enum class MenuType {
-        NONE,
-        RESUME,
+    enum Tag {
+        RESUME = 100,
         MAIN,
+        REMOVE_ADS,
     };
     
 public:
@@ -29,17 +31,21 @@ private:
     PausePopup();
     
     bool init() override;
-    void onExit() override;
     
-    void initBg();
-    void initTopMenu();
-    void initCenterMenu();
+    void initBackgroundView() override;
+    void initContentView() override;
+
+    void performListener(Tag tag);
+    
+    void runEnterAction(SBCallback onFinished = nullptr) override;
+    void runExitAction(SBCallback onFinished = nullptr) override;
+    
+    void onEnterActionFinished() override;
     
 private:
-    cocos2d::Node *contentsLayer;
-    
-    CC_SYNTHESIZE(std::function<void(MenuType)>, onClickMenuListener,
+    CC_SYNTHESIZE(std::function<void(Tag)>, onClickMenuListener,
                   OnClickMenuListener);
+    cocos2d::Node *stoneBg;
 };
 
 #endif /* PausePopup_hpp */
