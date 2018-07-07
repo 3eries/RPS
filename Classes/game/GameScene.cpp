@@ -9,14 +9,20 @@
 
 #include "User.hpp"
 #include "SceneManager.h"
+#include "PopupManager.hpp"
 #include "UIHelper.hpp"
 
 #include "GameDefine.h"
 #include "GameView.hpp"
 
+#include "../main/MainMenu.hpp"
+
 #include "ui/PausePopup.hpp"
 #include "ui/ContinuePopup.hpp"
 #include "ui/GameOverPopup.hpp"
+
+#include "RankingManager.hpp"
+#include "NewRecordPopup.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -45,7 +51,27 @@ bool GameScene::init() {
                 return;
             }
             
+            if( SceneManager::getInstance()->onBackKeyReleased() ) {
+                return;
+            }
             
+            if( gameMgr->isPreGameOver() || gameMgr->isGameOver() ) {
+                return;
+            }
+            
+            // 일시 정지 팝업 처리
+            auto pausePopup = PopupManager::getInstance()->getPopup(BasePopup::Type::PAUSE);
+            
+            // 팝업 제거
+            if( pausePopup ) {
+                gameMgr->onGameResume();
+                pausePopup->dismissWithAction();
+            }
+            // 팝업 생성
+            else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+                // TODO: 효과음 ?
+                this->showPausePopup();
+            }
         };
         
         getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
@@ -126,10 +152,6 @@ void GameScene::onPreGameOver() {
     touchLockNode->setVisible(true);
     getChildByTag(Tag::LAYER_MENU)->setVisible(false);
     
-    showContinuePopup();
-    
-    return;
-    
     // 이어하기
     if( gameMgr->getScore() >= CONTINUE_CONDITION_SCORE && gameMgr->getContinueCount() == 0 ) {
         showContinuePopup();
@@ -153,7 +175,17 @@ void GameScene::onContinue() {
  */
 void GameScene::onGameOver() {
     
-    showGameOver();
+    const int score = gameMgr->getScore();
+    const int ranking = RankingManager::getNewRanking(score);
+    
+    // 신기록 달성
+    if( score > 0 && ranking != INVALID_RANKING ) {
+        showNewRecordPopup(ranking, score);
+    }
+    // 게임 오버
+    else {
+        showGameOver();
+    }
 }
 
 /**
@@ -162,7 +194,6 @@ void GameScene::onGameOver() {
 void GameScene::replaceMain() {
     
     gameMgr->onExitGame();
-    
     SceneManager::getInstance()->replace(SceneType::MAIN);
 }
 
@@ -180,28 +211,34 @@ void GameScene::showPausePopup() {
     
     auto popup = PausePopup::create();
     popup->setTag(Tag::POPUP_PAUSE);
-    popup->setOnClickMenuListener([=](PausePopup::MenuType type) {
+    popup->setOnClickMenuListener([=](PausePopup::Tag tag) {
         
-        switch( type ) {
+        switch( tag ) {
             // resume
-            case PausePopup::MenuType::RESUME: {
+            case PausePopup::Tag::RESUME: {
                 gameMgr->onGameResume();
-                popup->removeFromParent();
+                popup->dismissWithAction();
                 
             } break;
                 
             // main
-            case PausePopup::MenuType::MAIN: {
+            case PausePopup::Tag::MAIN: {
                 this->replaceMain();
-                popup->removeFromParent();
+                popup->dismissWithAction();
                 
             } break;
                 
-            default:
-                break;
+            // remove ads
+            case PausePopup::Tag::REMOVE_ADS: {
+                // TODO:
+                // popup->dismissWithAction();
+                
+            } break;
+                
+            default: break;
         }
     });
-    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
+    SceneManager::getScene()->addChild(popup, POPUP_ZORDER);
 }
 
 /**
@@ -211,14 +248,14 @@ void GameScene::showContinuePopup() {
     
     auto popup = ContinuePopup::create();
     popup->setTag(Tag::POPUP_CONTINUE);
-    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
+    SceneManager::getScene()->addChild(popup, POPUP_ZORDER);
     
-    // onClose
-    popup->setOnClosedListener([=]() {
+    // 팝업 종료
+    popup->setOnDismissListener([=](Node*){
         
     });
     
-    // onVideo
+    // 비디오 클릭
     popup->setOnVideoListener([=]() {
         
         // TODO: ADS
@@ -240,10 +277,37 @@ void GameScene::showContinuePopup() {
         bg->runAction(Sequence::create(delay, callFunc, remove, nullptr));
     });
     
-    // onTimeOut
+    // 타임 오버
     popup->setOnTimeOutListener([=]() {
         gameMgr->onGameOver();
     });
+}
+
+/**
+ * 신기록 달성 팝업 노출
+ */
+void GameScene::showNewRecordPopup(int ranking, int score) {
+    
+    auto popup = NewRecordPopup::create(ranking, score);
+    SceneManager::getScene()->addChild(popup, POPUP_ZORDER);
+    
+    popup->setOnRecordCompletedListener([=](RankingRecord record) {
+        
+        // 신기록 등록
+        RankingManager::setRecord(record);
+    });
+    
+    // 팝업 종료 시 게임 오버 노출
+    popup->setOnExitActionListener([=]() {
+        
+        popup->setLocalZOrder(POPUP_ZORDER+1);
+        this->showGameOver();
+    });
+    
+    popup->setOnDismissListener([=](Node*) {
+    });
+    
+    popup->runEnterAction();
 }
 
 /**
@@ -251,38 +315,35 @@ void GameScene::showContinuePopup() {
  */
 void GameScene::showGameOver() {
  
-    auto popup = GameOverPopup::create();
-    popup->setTag(Tag::POPUP_GAME_OVER);
-    popup->setOnClickMenuListener([=](GameOverPopup::MenuType type) {
-        
-        switch( type ) {
-            // restart
-            case GameOverPopup::MenuType::RESTART: {
-                gameMgr->onGameRestart();
-                popup->removeFromParent();
-                
-            } break;
-                
-            // home
-            case GameOverPopup::MenuType::HOME: {
-                this->replaceMain();
-                popup->removeFromParent();
-                
-            } break;
-                
-            default:
-                break;
-        }
-    });
-    SceneManager::getScene()->addChild(popup, SBZOrder::TOP);
-}
-
-/**
- * 일시정지 팝업 제거
- */
-void GameScene::removePausePopup() {
+    // 메인 메뉴
+    mainMenu->runEnterAction();
     
-    removeChildByTag(Tag::POPUP_PAUSE);
+    // 팝업
+    auto popup = GameOverPopup::create(gameMgr->getScore());
+    popup->setTag(Tag::POPUP_GAME_OVER);
+    
+//    popup->setOnClickMenuListener([=](GameOverPopup::MenuType type) {
+//
+//        switch( type ) {
+//            // restart
+//            case GameOverPopup::MenuType::RESTART: {
+//                gameMgr->onGameRestart();
+//                popup->removeFromParent();
+//
+//            } break;
+//
+//            // home
+//            case GameOverPopup::MenuType::HOME: {
+//                this->replaceMain();
+//                popup->removeFromParent();
+//
+//            } break;
+//
+//            default:
+//                break;
+//        }
+//    });
+    SceneManager::getScene()->addChild(popup, POPUP_ZORDER);
 }
 
 /**
@@ -311,7 +372,7 @@ void GameScene::initBg() {
     banner->setVisible(!User::isOwnRemoveAdsItem());
     banner->setAnchorPoint(ANCHOR_MT);
     banner->setPosition(Vec2TC(0, 0));
-    addChild(banner, SBZOrder::MIDDLE);
+    addChild(banner, SBZOrder::TOP);
 }
 
 /**
@@ -336,6 +397,36 @@ void GameScene::initMenu() {
     if( !User::isOwnRemoveAdsItem() ) {
         pauseBtn->setPositionY(Vec2TR(0, TOP_MENU_MARGIN_Y_BANNER).y);
     }
+    
+    // 메인 메뉴
+    mainMenu = MainMenu::create();
+    mainMenu->setOnClickListener([=](MainMenu::Tag tag) -> bool {
+        
+        switch( tag ) {
+            case MainMenu::Tag::START: {
+                // gameMgr->onGameRestart();
+                gameMgr->onExitGame();
+                SceneManager::getInstance()->replace(SceneType::GAME);
+                
+                // 게임 오버 창 제거
+                auto popup = PopupManager::getInstance()->getPopup(BasePopup::Type::GAME_OVER);
+                if( popup ) {
+                    popup->dismissWithAction();
+                }
+                
+                // 메인 메뉴 퇴장
+                mainMenu->runExitAction();
+                
+            } return true;
+                
+            default:
+                break;
+        }
+        
+        return false;
+    });
+    mainMenu->setVisible(false);
+    addChild(mainMenu, POPUP_ZORDER+1);
 }
 
 
