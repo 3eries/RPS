@@ -14,32 +14,39 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
-class GameOverPopup : public SBBasePopup {
+#include "BasePopup.hpp"
+
+class GameOverPopup : public BasePopup {
 public:
-    enum class MenuType {
-        NONE,
-        RESTART,
-        HOME,
-    };
+    static const float SLIDE_IN_DURATION;
+    static const float SLIDE_OUT_DURATION;
+    static const float FADE_IN_DURATION;
+    static const float FADE_OUT_DURATION;
     
 public:
-    CREATE_FUNC(GameOverPopup);
+    static GameOverPopup* create(int score);
     ~GameOverPopup();
     
 private:
-    GameOverPopup();
+    GameOverPopup(int score);
     
     bool init() override;
-    void onExit() override;
     
-    void initBg();
-    void initMenu();
+    void initBackgroundView() override;
+    void initContentView() override;
+    
+    void runEnterAction(SBCallback onFinished = nullptr) override;
+    void runExitAction(SBCallback onFinished = nullptr) override;
+    
+    void onEnterActionFinished() override;
     
 private:
-    cocos2d::Node *contentLayer;
+    int score;
     
-    CC_SYNTHESIZE(std::function<void(MenuType)>, onClickMenuListener,
-                  OnClickMenuListener);
+    cocos2d::Node *stone;       // 배경 비석
+    cocos2d::Label *scoreLabel; // 스코어 라벨
+    
+    std::vector<cocos2d::Node*> fadeNodes;
 };
 
 #endif /* GameOverPopup_hpp */

@@ -9,15 +9,35 @@
 
 #include "RSP.h"
 #include "UIHelper.hpp"
-#include "../GameManager.hpp"
+
+#include "PopupManager.hpp"
+#include "RankingManager.hpp"
+#include "RecordRowView.hpp"
+
+const float GameOverPopup::SLIDE_IN_DURATION               = 0.2f;
+const float GameOverPopup::SLIDE_OUT_DURATION              = 0.2f;
+const float GameOverPopup::FADE_IN_DURATION                = 0.5f;
+const float GameOverPopup::FADE_OUT_DURATION               = 0.2f;
 
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-GameOverPopup::GameOverPopup() : SBBasePopup(),
-contentLayer(nullptr),
-onClickMenuListener(nullptr) {
+GameOverPopup* GameOverPopup::create(int score) {
+    
+    auto popup = new GameOverPopup(score);
+    
+    if( popup && popup->init() ) {
+        popup->autorelease();
+        return popup;
+    }
+    
+    CC_SAFE_DELETE(popup);
+    return nullptr;
+}
+
+GameOverPopup::GameOverPopup(int score) : BasePopup(Type::GAME_OVER),
+score(score) {
     
 }
 
@@ -27,129 +47,211 @@ GameOverPopup::~GameOverPopup() {
 
 bool GameOverPopup::init() {
     
-    if( !SBBasePopup::init() ) {
+    if( !BasePopup::init() ) {
         return false;
     }
     
-    initBg();
-    initMenu();
-    
-    // 연출
-    contentLayer->setPositionY(SB_WIN_SIZE.height);
-    
-    auto move = MoveTo::create(0.3f, Vec2(contentLayer->getPositionX(), 0));
-    auto callFunc = CallFunc::create([=]() {
-        // 배경음 재생
-        SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
-    });
-    contentLayer->runAction(Sequence::create(move, callFunc, nullptr));
+    runEnterAction();
     
     return true;
 }
 
-void GameOverPopup::onExit() {
+void GameOverPopup::initBackgroundView() {
     
-    SBBasePopup::onExit();
+    BasePopup::initBackgroundView();
 }
 
-void GameOverPopup::initBg() {
+void GameOverPopup::initContentView() {
     
-    auto bg = LayerColor::create(Color::POPUP_BG);
-    addChild(bg);
+    BasePopup::initContentView();
     
-    // background fade in
+    // RSP_popup_bg_big.png Vec2MC(0, 46) , Size(696, 956)
+    stone = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_big.png");
+    stone->setAnchorPoint(ANCHOR_M);
+    stone->setPosition(Vec2MC(0, 46));
+    addContentChild(stone);
+    
+    // images
     {
-        bg->setOpacity(0);
-        bg->runAction(FadeTo::create(0.2f, 255*0.3f));
+        // RSP_popup_title_rip.png Vec2MC(-4, 310) , Size(296, 108)
+        // RSP_popup_text_score.png Vec2MC(0, 158) , Size(272, 60)
+        // RSP_popup_text_top3.png Vec2MC(0, -72) , Size(216, 60)
+        SBUIInfo infos[] = {
+            SBUIInfo(ANCHOR_M,   Vec2MC(-4, 310),  "RSP_popup_title_rip.png"),      // rip
+            SBUIInfo(ANCHOR_M,   Vec2MC(0, 158),   "RSP_popup_text_score.png"),     // score title
+            SBUIInfo(ANCHOR_M,   Vec2MC(0, -72),   "RSP_popup_text_top3.png"),      // top3 title
+        };
+        
+        for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
+            auto info = infos[i];
+            
+            auto spr = Sprite::create(DIR_IMG_GAME + info.file);
+            info.apply(spr);
+            addContentChild(spr);
+            
+            fadeNodes.push_back(spr);
+            
+            /**
+            if( i > 0 ) {
+                spr->setScale(0.7f);
+            }
+             */
+        }
     }
     
-    contentLayer = SBNodeUtils::createZeroSizeNode();
-    addChild(contentLayer);
+    // score
+    {
+        // RSP_popup_bg_score.png Vec2MC(-2, 66) , Size(420, 100)
+        auto scoreBg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_score.png");
+        scoreBg->setAnchorPoint(ANCHOR_M);
+        scoreBg->setPosition(Vec2MC(-2, 66));
+        addContentChild(scoreBg);
+        
+        fadeNodes.push_back(scoreBg);
+        
+        scoreLabel = Label::createWithTTF(TO_STRING(score), FONT_RETRO, 85);
+        scoreLabel->setAnchorPoint(ANCHOR_M);
+        scoreLabel->setPosition(Vec2MC(scoreBg->getContentSize(), 0, 0));
+        scoreLabel->setColor(Color3B(255,255,0));
+        scoreBg->addChild(scoreLabel);
+    }
     
-    // 타이틀
-    auto titleLabel = Label::createWithTTF("GAME OVER", FONT_RETRO, 90);
-    titleLabel->setAnchorPoint(ANCHOR_M);
-    titleLabel->setPosition(Vec2MC(0, 400));
-    titleLabel->setColor(Color3B::WHITE);
-    titleLabel->enableOutline(Color4B::BLACK, 3);
-    contentLayer->addChild(titleLabel);
+//    노랑글씨 크기는 85 컬러는 (rgb:255,255,0)
+//    탑 3 흰글씨는 컬러는 완전 화이트, 크기는 50
+//    폰트 종류는 둘다 commodore입니당
     
-    // 스코어 타이틀
-    auto scoreTitleLabel = Label::createWithTTF("SCORE", FONT_RETRO, 80);
-    scoreTitleLabel->setAnchorPoint(ANCHOR_M);
-    scoreTitleLabel->setPosition(Vec2MC(0, 270));
-    scoreTitleLabel->setColor(Color3B::WHITE);
-    scoreTitleLabel->enableOutline(Color4B::BLACK, 3);
-    contentLayer->addChild(scoreTitleLabel);
-    
-    // 스코어
-    auto scoreBg = LayerColor::create(Color4B::WHITE);
-    scoreBg->setIgnoreAnchorPointForPosition(false);
-    scoreBg->setAnchorPoint(ANCHOR_M);
-    scoreBg->setPosition(Vec2MC(0, 100));
-    scoreBg->setContentSize(Size(500, 100));
-    contentLayer->addChild(scoreBg);
-    
-    auto scoreLabel = Label::createWithTTF(TO_STRING(GameManager::getInstance()->getScore()),
-                                           FONT_RETRO, 80);
-    scoreLabel->setAnchorPoint(ANCHOR_M);
-    scoreLabel->setPosition(Vec2MC(scoreBg->getContentSize(), 0, 0));
-    scoreLabel->setColor(Color3B::BLACK);
-    scoreBg->addChild(scoreLabel);
+    // top3
+    {
+        // 1.BSJ - 1500 Vec2MC(-1, -138) , Size(376, 34)
+        // 2.BSJ - 1500 Vec2MC(-1, -194) , Size(376, 34)
+        // 3.BSJ - 1500 Vec2MC(-1, -255) , Size(376, 34)
+        float posY[] = { -138, -194, -255 };
+        
+        auto records = RankingManager::getTopRecords(3);
+        
+        for( int i = 0; i < records.size(); ++i ) {
+            auto record = records[i];
+            
+            auto rowView = RecordRowView::create(record);
+            rowView->setPosition(Vec2MC(0, posY[i]));
+            addContentChild(rowView);
+            
+            fadeNodes.push_back(rowView);
+            
+            // 달성 기록 하이라이트
+            if( record.score == score ) {
+                rowView->changeToHighlight();
+            }
+        }
+    }
 }
 
-void GameOverPopup::initMenu() {
+/**
+ * 등장 연출
+ */
+void GameOverPopup::runEnterAction(SBCallback onFinished) {
     
-    auto menuLayer = SBNodeUtils::createZeroSizeNode();
-    contentLayer->addChild(menuLayer);
+    BasePopup::runEnterAction(onFinished);
     
-    const Size MENU_SIZE(ButtonSize::LARGE);
+    const bool existOtherPopup = PopupManager::getInstance()->exists(BasePopup::Type::NEW_RECORD);
     
-    MenuType types[] = {
-        MenuType::RESTART,
-        MenuType::HOME,
+    // 터치 잠금
+    SBDirector::getInstance()->setScreenTouchLocked(true);
+    
+    // 액션 완료
+    auto onActionFinished = [=]() {
+        CCLOG("GameOverPopup::runEnterAction onActionFinished");
+        
+        // 터치 잠금 해제
+        SBDirector::getInstance()->setScreenTouchLocked(false);
+        
+        // 배경음
+        if( !existOtherPopup ) {
+            SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
+        } else {
+            SBAudioEngine::stopBGM();
+        }
+        
+        this->onEnterActionFinished();
+        SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
     
-    string titles[] = {
-        "RESTART",
-        "HOME",
-    };
-    
-    float posY = 0;
-    float paddingY = 50;
-    
-    auto setLabelEffect = [](Label *label) {
-        //        label->enableOutline(Color4B::BLACK, 3);
-        //        label->enableShadow(Color4B(221, 6, 6, 255), Size(1,-1));
-    };
-    
-    for( int i = 0; i < sizeof(types)/sizeof(MenuType); ++i ) {
-        MenuType type = types[i];
+    // 다른 팝업 있음, fade in
+    if( existOtherPopup ) {
+        // 연출 없음
+        onActionFinished();
         
-        auto btn = UIHelper::createFontButton(titles[i], MENU_SIZE);
-        btn->setAnchorPoint(Vec2::ANCHOR_MIDDLE_TOP);
-        btn->setPosition(Vec2(MENU_SIZE.width*0.5f, posY));
-        menuLayer->addChild(btn);
-        
-        setLabelEffect(btn->getTitle());
-        
-        // 클릭 리스너
-        btn->setOnClickListener([=](Node*) {
+        // fade in
+        /*
+        for( auto n : fadeNodes ) {
+            SBNodeUtils::recursiveCascadeOpacityEnabled(n, true);
             
-            if( onClickMenuListener ) {
-                this->retain();
-                onClickMenuListener(type);
-                this->release();
-            }
-        });
+            n->setOpacity(0);
+            n->runAction(FadeIn::create(FADE_IN_DURATION));
+        }
         
-        posY -= btn->getContentSize().height;
-        posY -= paddingY;
+        auto delay = DelayTime::create(FADE_IN_DURATION * 1.05);
+        auto callFunc = CallFunc::create(onActionFinished);
+        runAction(Sequence::create(delay, callFunc, nullptr));
+         */
     }
-    
-    Size size = SBNodeUtils::getChildrenBoundingSize(menuLayer);
-    
-    menuLayer->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
-    menuLayer->setPosition(Vec2MC(0, size.height-250));
-    menuLayer->setContentSize(size);
+    // 다른 팝업 없음, slide in
+    else {
+        runSlideInAction(onActionFinished, SLIDE_IN_DURATION);
+        
+        /*
+        runSlideInAction([=]() {
+            
+            SBDirector::getInstance()->setScreenTouchLocked(false);
+            this->onEnterActionFinished();
+            
+            SB_SAFE_PERFORM_LISTENER(this, onFinished);
+            
+        }, SLIDE_IN_DURATION);
+        */
+    }
 }
+
+/**
+ * 퇴장 연출
+ */
+void GameOverPopup::runExitAction(SBCallback onFinished) {
+    
+    BasePopup::runExitAction(onFinished);
+    
+    /*
+    SBDirector::getInstance()->setScreenTouchLocked(true);
+    
+    runSlideOutAction([=]() {
+        
+        SBDirector::getInstance()->setScreenTouchLocked(false);
+        this->onExitActionFinished();
+        
+        SB_SAFE_PERFORM_LISTENER(this, onFinished);
+        
+    }, SLIDE_OUT_DURATION);
+    */
+    
+    // fade out
+    SBNodeUtils::recursiveCascadeOpacityEnabled(this, true);
+    // SBDirector::getInstance()->setScreenTouchLocked(true);
+    
+    auto fade = FadeOut::create(FADE_OUT_DURATION);
+    auto callFunc = CallFunc::create([=]() {
+        
+        CCLOG("GameOverPopup::runExitAction finished");
+        
+        // SBDirector::getInstance()->setScreenTouchLocked(false);
+        this->onExitActionFinished();
+        
+        SB_SAFE_PERFORM_LISTENER(this, onFinished);
+    });
+    runAction(Sequence::create(fade, callFunc, nullptr));
+}
+
+/**
+ * 등장 연출 완료
+ */
+void GameOverPopup::onEnterActionFinished() {
+}
+
