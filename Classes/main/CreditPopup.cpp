@@ -14,97 +14,92 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
+// Member
+struct Member {
+    string image;
+    string name;
+    string job;
+    
+    Member(string _image, string _name, string _job) :
+    image(_image), name(_name), job(_job) {}
+};
+
+// ART PROGRAMMING DESIGN
+static const vector<Member> MEMBERS = {
+    Member("", "MW9", "PROGRAMMING"),
+    Member("", "W0N", "DESIGN"),
+    Member("", "B3O", "ART"),
+};
+
 static const std::string FONT_NORMAL = "fonts/BorisBlackBloxx.ttf";
 
-void CreditPopup::show(Node *parent, int zOrder) {
-    
-    CCASSERT(parent != nullptr, "CreditPopup::show error: invalid parent.");
-    
-    auto layer = SBNodeUtils::createWinSizeNode();
-    
-    auto popup = CreditPopup::create();
-    parent->addChild(popup, zOrder);
-    
-    //
-}
-
-CreditPopup::CreditPopup() : SBBasePopup(),
-onClosedListener(nullptr),
-contentView(nullptr) {
-    
+CreditPopup::CreditPopup() : BasePopup(Type::CREDIT) {
 }
 
 CreditPopup::~CreditPopup() {
-    
 }
 
 bool CreditPopup::init() {
     
-    if( !SBBasePopup::init() ) {
+    if( !BasePopup::init() ) {
         return false;
     }
     
-    initBg();
     initCredit();
+    
+    runEnterAction();
     
     return true;
 }
 
-void CreditPopup::onExit() {
+/**
+ * 등장 연출
+ */
+void CreditPopup::runEnterAction(SBCallback onFinished) {
     
-    SBBasePopup::onExit();
-}
-
-void CreditPopup::close() {
+    BasePopup::runEnterAction(onFinished);
     
-    retain();
+    SBNodeUtils::recursiveCascadeOpacityEnabled(this, true);
     
-    if( onClosedListener ) {
-        onClosedListener();
-    }
+    // fade in
+    setOpacity(0);
     
-    removeFromParent();
-    release();
+    auto fadeIn = FadeIn::create(0.3f);
+    auto callFunc = CallFunc::create([=]() {
+        
+        this->retain();
+        
+        if( onFinished ) {
+            onFinished();
+        }
+        
+        this->onEnterActionFinished();
+        this->release();
+    });
+    runAction(Sequence::create(fadeIn, callFunc, nullptr));
 }
 
 /**
- * 화면 연출 완료
+ * 등장 연출 완료
  */
-void CreditPopup::onActionCompleted() {
+void CreditPopup::onEnterActionFinished() {
+    
+    BasePopup::onEnterActionFinished();
     
     // 화면 터치 시 팝업 종료
     auto touchNode = SBNodeUtils::createTouchNode();
     addChild(touchNode, SBZOrder::TOP);
     
     touchNode->addClickEventListener([=](Ref*) {
-        this->close();
+        this->dismiss();
     });
 }
 
-void CreditPopup::initBg() {
+void CreditPopup::initBackgroundView() {
     
-    auto bg = LayerColor::create(Color::POPUP_BG);
-    addChild(bg);
+    BasePopup::initBackgroundView();
     
-    contentView = SBNodeUtils::createZeroSizeNode();
-    addChild(contentView);
-    
-    SBNodeUtils::recursiveCascadeOpacityEnabled(contentView, true);
-    
-    // 배경 연출
-    bg->setOpacity(0);
-    
-    const float DURATION = 0.3f;
-    bg->runAction(FadeTo::create(DURATION, Color::POPUP_BG.a));
-    
-    // 컨텐츠 연출
-    contentView->setOpacity(0);
-    
-    auto fadeIn = FadeIn::create(DURATION);
-    auto callFunc = CallFunc::create([=]() {
-        this->onActionCompleted();
-    });
-    contentView->runAction(Sequence::create(fadeIn, callFunc, nullptr));
+    setBackgroundColor(Color::POPUP_BG);
 }
 
 void CreditPopup::initCredit() {
@@ -113,28 +108,13 @@ void CreditPopup::initCredit() {
     auto title = Label::createWithTTF("3ERIES", FONT_RETRO, 80);
     title->setAnchorPoint(ANCHOR_MT);
     title->setPosition(Vec2TC(0, -100));
-    contentView->addChild(title);
+    addChild(title);
     
     // Member
-    struct Member {
-        string image;
-        string name;
-        string job;
-        
-        Member(string _image, string _name, string _job) :
-        image(_image), name(_name), job(_job) {}
-    };
-    
-    // ART PROGRAMMING DESIGN
-    float posY = Vec2MC(0, 200).y;
-    
-    vector<Member> members = {
-        Member("", "MW9", "PROGRAMMING"),
-        Member("", "W0N", "DESIGN"),
-        Member("", "B3O", "ART"),
-    };
-    
+    auto members = MEMBERS;
     random_shuffle(members.begin(), members.end());
+    
+    float posY = Vec2MC(0, 200).y;
     
     for( int i = 0; i < 3; ++i ) {
         auto member = members[i];
@@ -145,7 +125,7 @@ void CreditPopup::initCredit() {
                                         TextVAlignment::TOP);
         job->setAnchorPoint(ANCHOR_MT);
         job->setPosition(Vec2(Vec2MC(0, 0).x, posY));
-        contentView->addChild(job);
+        addChild(job);
         
         posY -= job->getContentSize().height;
         posY -= 20;
@@ -156,7 +136,7 @@ void CreditPopup::initCredit() {
                                          TextVAlignment::TOP);
         name->setAnchorPoint(ANCHOR_MT);
         name->setPosition(Vec2(Vec2MC(0, 0).x, posY));
-        contentView->addChild(name);
+        addChild(name);
         
         posY -= name->getContentSize().height;
         posY -= 50;

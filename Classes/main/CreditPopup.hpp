@@ -14,10 +14,9 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
-class CreditPopup : public SBBasePopup {
-public:
-    static void show(cocos2d::Node *parent, int zOrder);
-    
+#include "BasePopup.hpp"
+
+class CreditPopup : public BasePopup {
 public:
     CREATE_FUNC(CreditPopup);
     ~CreditPopup();
@@ -26,18 +25,12 @@ private:
     CreditPopup();
     
     bool init() override;
-    void onExit() override;
     
-    void initBg();
+    void initBackgroundView() override;
     void initCredit();
     
-    void onActionCompleted();
-    
-    void close();
-    
-private:
-    CC_SYNTHESIZE(SBCallback, onClosedListener, OnClosedListener);
-    cocos2d::Node *contentView;
+    void runEnterAction(SBCallback onFinished = nullptr) override;
+    void onEnterActionFinished() override;
 };
 
 #endif /* CreditPopup_hpp */
