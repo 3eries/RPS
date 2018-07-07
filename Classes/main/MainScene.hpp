@@ -17,12 +17,8 @@
 class MainScene : public cocos2d::Scene, public SBNodeListener {
 private:
     enum Tag {
-        BTN_START        = 100,
         BTN_TITLE,
         BTN_REMOVE_ADS,
-        BTN_LEADER_BOARD,
-        BTN_SHOP,
-        BTN_OPTION,
         BTN_TEST,
     };
     
@@ -41,10 +37,15 @@ private:
     void initBg();
     void initMenu();
     
+    void addPopupListener();
+    
 private:
     void replaceGame();
     
     void onClick(cocos2d::Node *sender) override;
+    
+private:
+    cocos2d::Node *contentView;
 };
 
 #endif /* MainScene_hpp */

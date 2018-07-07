@@ -10,10 +10,17 @@
 #include "RSP.h"
 #include "User.hpp"
 #include "SceneManager.h"
+#include "PopupManager.hpp"
 #include "UIHelper.hpp"
 
+#include "MainMenu.hpp"
 #include "CreditPopup.hpp"
+#include "RankingPopup.hpp"
+
 #include "../test/TestMenuScene.hpp"
+
+#include "../game/GameView.hpp"
+#include "../game/object/Man.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -59,6 +66,8 @@ void MainScene::onEnter() {
     
     Scene::onEnter();
     
+    addPopupListener();
+    
     // bgm
     scheduleOnce([=](float) {
         SBAudioEngine::playBGM(SOUND_BGM_MAIN);
@@ -71,6 +80,8 @@ void MainScene::onEnterTransitionDidFinish() {
 }
 
 void MainScene::onExit() {
+    
+    PopupManager::getInstance()->removeListener(this);
     
     Scene::onExit();
 }
@@ -89,16 +100,13 @@ void MainScene::replaceGame() {
 void MainScene::onClick(Node *sender) {
     
     switch( sender->getTag() ) {
-        case Tag::BTN_START: {
-            replaceGame();
-        } break;
-            
         // 크레딧
         case Tag::BTN_TITLE: {
             auto popup = CreditPopup::create();
             addChild(popup, SBZOrder::TOP);
         } break;
-            
+        
+        // 광고 제거 아이템
         case Tag::BTN_REMOVE_ADS: {
             User::setOwnRemoveAdsItem(!User::isOwnRemoveAdsItem());
         } break;
@@ -115,12 +123,15 @@ void MainScene::onClick(Node *sender) {
 
 void MainScene::initBg() {
     
+    contentView = SBNodeUtils::createZeroSizeNode();
+    addChild(contentView);
+    
     auto title = SBButton::create(DIR_IMG_GAME + "RSP_title.png");
     title->setTag(Tag::BTN_TITLE);
     title->setAnchorPoint(ANCHOR_M);
     title->setPosition(Vec2MC(0, 255));
     title->setZoomScale(0);
-    addChild(title);
+    contentView->addChild(title);
     
     title->setOnClickListener(CC_CALLBACK_1(MainScene::onClick, this));
 }
@@ -130,12 +141,9 @@ void MainScene::initBg() {
  */
 void MainScene::initMenu() {
     
+    // 메인 화면 전용 메뉴
     SBUIInfo infos[] = {
-        SBUIInfo(Tag::BTN_START,        ANCHOR_MB,   Vec2BC(0, 20),     "RSP_btn_start.png"),
         SBUIInfo(Tag::BTN_REMOVE_ADS,   ANCHOR_M,    Vec2MC(0, 25),     "RSP_btn_remove_ads.png"),
-        SBUIInfo(Tag::BTN_LEADER_BOARD, ANCHOR_BL,   Vec2BL(10, 20),    "RSP_btn_ranking.png"),
-        SBUIInfo(Tag::BTN_SHOP,         ANCHOR_BR,   Vec2BR(-10, 20),   "RSP_btn_shop.png"),
-        SBUIInfo(Tag::BTN_OPTION,       ANCHOR_TR,   Vec2TR(-10, -10),  "RSP_btn_option.png"),
         SBUIInfo(Tag::BTN_TEST,         ANCHOR_TL,   Vec2TL(10, -10),   "RSP_btn_test.png"),
     };
     
@@ -145,79 +153,51 @@ void MainScene::initMenu() {
         auto btn = SBButton::create(DIR_IMG_GAME + info.file);
         btn->setZoomScale(0.1f);
         info.apply(btn);
-        addChild(btn);
+        contentView->addChild(btn);
         
         btn->setOnClickListener(CC_CALLBACK_1(MainScene::onClick, this));
     }
     
-    // Shop 버튼 커밍순
-    {
-        auto btn = getChildByTag<SBButton*>(Tag::BTN_SHOP);
-        btn->setTouchEnabled(false);
-        
-        auto btnBox = SBNodeUtils::getBoundingBoxInWorld(btn);
-        
-        auto comingSoon = SkeletonAnimation::createWithJsonFile(DIR_ANIM + "coming_soon.json");
-        comingSoon->setAnchorPoint(Vec2::ZERO);
-        comingSoon->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()));
-        comingSoon->setAnimation(0, ANIM_NAME_RUN, true);
-        addChild(comingSoon);
-        
-        comingSoon->setOpacity(0);
-        comingSoon->runAction(FadeIn::create(1.0f));
-    }
+    // 기본 메뉴
+    auto mainMenu = MainMenu::create();
+    addChild(mainMenu, POPUP_ZORDER+1);
     
-    // START 버튼 연출
-    /*
-    {
-        auto scale1 = ScaleTo::create(0.005f, 1.07f, 0.91f);
-        auto scale2 = ScaleTo::create(0.005f, 1.15f, 1.13f);
-        auto scale3 = ScaleTo::create(0.005f, 1.09f, 1.27f);
-        auto scale4 = ScaleTo::create(0.065f, 0.95f, 1.06f);
-        auto scale5 = ScaleTo::create(0.065f, 1.0f, 1.0f);
-        auto scaleSeq = Sequence::create(scale1, scale2, scale3, scale4, scale5, nullptr);
-        
-        auto delay = DelayTime::create(5.0f);
-        auto seq = Sequence::create(delay, scaleSeq, nullptr);
-        auto repeat = RepeatForever::create(seq);
-        
-        auto btn = getChildByTag<SBButton*>(Tag::BTN_START);
-        auto contentLayer = btn->getContentsLayer();
-        
-        btn->setOnTouchListener([=](Node*, SBTouchEventType eventType) {
-            
-            switch( eventType ) {
-                case SBTouchEventType::BEGAN: {
-                    contentLayer->pause();
-                } break;
-                    
-                case SBTouchEventType::ENDED:
-                case SBTouchEventType::CANCELED: {
-                    contentLayer->resume();
-                } break;
-                    
-                default:
-                    break;
-            }
-        });
-        
-        contentLayer->runAction(repeat);
-    }
-    */
+    mainMenu->setOnClickListener([=](MainMenu::Tag tag) -> bool {
+        return false;
+    });
+}
+
+void MainScene::addPopupListener() {
     
-    /*
-     auto fadeOut = FadeOut::create(0.2f);
-     auto callFuncN = CallFuncN::create([=](Node *sender) {
-     
-     auto fadeIn = FadeIn::create(0.7f);
-     auto fadeOut = FadeOut::create(0.1f);
-     //        auto scale1 = ScaleTo::create(0.1, 0);
-     //        auto scale2 = ScaleTo::create(0.7f, ICON_SCALE * 1.05f);
-     
-     auto seq = Sequence::create(fadeIn, fadeOut, nullptr);
-     sender->runAction(RepeatForever::create(seq));
-     });
-     
-     getChildByTag(Tag::BTN_START)->runAction(Sequence::create(fadeOut, callFuncN, nullptr));
-     */
+    auto listener = PopupListener::create();
+    listener->setTarget(this);
+    listener->onEvent = [=](BasePopup *popup, PopupEventType type) {
+        
+        if( popup->getType() != BasePopup::Type::RANKING ) {
+            return;
+        }
+        
+        auto man = SceneManager::getGameView()->getMan();
+        
+        switch( type ) {
+            case PopupEventType::ENTER_ACTION: {
+                contentView->runAction(MoveTo::create(RankingPopup::SLIDE_IN_DURATION*1.5f,
+                                                      Vec2(0, SB_WIN_SIZE.height)));
+            } break;
+                
+            case PopupEventType::ENTER_ACTION_FINISHED: {
+                man->setVisible(false);
+            } break;
+                
+            case PopupEventType::EXIT_ACTION: {
+                contentView->runAction(MoveTo::create(RankingPopup::SLIDE_OUT_DURATION*1.2f,
+                                                      Vec2(0, 0)));
+                man->setVisible(true);
+            } break;
+                
+            default: break;
+        }
+    };
+    
+    PopupManager::getInstance()->addListener(listener);
 }
