@@ -61,10 +61,6 @@ bool DarkCloud::init() {
     anim->setVisible(false);
     addChild(anim);
     
-#if ENABLE_TEST_MENU
-    setVisible(TestHelper::getInstance()->isDarkCloudEnabled());
-#endif
-    
     gameMgr->addListener(this);
     
 #if (DEBUG_DRAW)
@@ -111,6 +107,12 @@ void DarkCloud::onExit() {
 
 void DarkCloud::reset() {
     
+    setVisible(true);
+    
+#if ENABLE_TEST_MENU
+    setVisible(TestHelper::getInstance()->isDarkCloudEnabled());
+#endif
+    
     anim->stopAllActions();
     anim->setOpacity(0);
     anim->setVisible(false);
@@ -154,6 +156,7 @@ void DarkCloud::onContinue() {
 
 void DarkCloud::onGameOver() {
 
+    // setVisible(false);
 }
 
 /**

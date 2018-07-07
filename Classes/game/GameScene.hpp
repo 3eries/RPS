@@ -18,6 +18,7 @@
 #include "GameManager.hpp"
 
 class GameView;
+class MainMenu;
 
 class GameScene : public cocos2d::Scene, public SBNodeListener, public GameListener {
 public:
@@ -58,20 +59,21 @@ private:
     void onContinue() override;
     void onGameOver() override;
     
-private:
+public:
     void replaceMain();
     
     void showPausePopup();
     void showContinuePopup();
+    void showNewRecordPopup(int ranking, int score);
     void showGameOver();
-    
-    void removePausePopup();
 
     void onClick(cocos2d::Node *sender) override;
     
 private:
     GameManager *gameMgr;
     CC_SYNTHESIZE(GameView*, gameView, GameView);
+    
+    MainMenu *mainMenu;
     
     cocos2d::Node *touchLockNode;   // 터치 방지 노드
     cocos2d::Sprite *banner; // 임시

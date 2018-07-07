@@ -10,9 +10,10 @@
 #include <spine/spine-cocos2dx.h>
 
 #include "SceneManager.h"
+#include "UserDefaultKey.h"
 #include "User.hpp"
 #include "UIHelper.hpp"
-#include "UserDefaultKey.h"
+#include "TestHelper.hpp"
 
 #include "GameDefine.h"
 
@@ -103,9 +104,7 @@ void GameView::onExit() {
 
 void GameView::reset() {
     
-    // 먹구름
-//    darkCloudAnim->setOpacity(0);
-    
+    buttonLayer->setVisible(true);
     buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
 }
 
@@ -179,6 +178,8 @@ void GameView::onContinue() {
  * 게임 오버
  */
 void GameView::onGameOver() {
+    
+    buttonLayer->setVisible(false);
 }
 
 /**
