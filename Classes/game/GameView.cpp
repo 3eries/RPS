@@ -358,7 +358,9 @@ void GameView::misBlock(RSPBlock *block) {
 void GameView::drawBlock(RSPBlock *block) {
     
     // vibrate
-    Device::vibrate(DRAW_VIBRATE_DURATION);
+    if( UserDefault::getInstance()->getBoolForKey(UserDefaultKey::VIBRATE, true) ) {
+        Device::vibrate(DRAW_VIBRATE_DURATION);
+    }
     
     // 블럭 연출
     blockLayer->drawBlock(block);
