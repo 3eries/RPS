@@ -81,6 +81,19 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
 void AppDelegate::applicationDidEnterBackground() {
+    
+    // 게임이 진행중인 경우, 일시정지 팝업을 노출
+    if( SceneManager::getSceneType() == SceneType::GAME ) {
+        auto gameScene = dynamic_cast<GameScene*>(SceneManager::getScene());
+        
+        if( gameScene &&
+           !GameManager::getInstance()->isGamePaused() &&
+           !GameManager::getInstance()->isPreGameOver() &&
+           !GameManager::getInstance()->isGameOver() ) {
+            gameScene->showPausePopup();
+        }
+    }
+    
     Director::getInstance()->stopAnimation();
 
     SBAudioEngine::pauseAll();
@@ -88,7 +101,8 @@ void AppDelegate::applicationDidEnterBackground() {
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
+    
     Director::getInstance()->startAnimation();
-
+    
     SBAudioEngine::resumeAll();
 }
