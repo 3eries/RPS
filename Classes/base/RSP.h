@@ -79,6 +79,8 @@ static const std::string ANIM_EVENT_MAN_MOVE        = "move";
 static const std::string DIR_FONT                   = "fonts/";
 
 static const std::string FONT_RETRO                 = DIR_FONT + "Commodore.ttf";
+static const std::string FONT_NEW_RECORD            = DIR_FONT + "Sabo-Filled.otf";
+static const std::string FONT_FAMOUS_SAYING         = DIR_FONT + "game_over.ttf";
 
 // 사운드 경로
 static const std::string DIR_SOUND                  = "sounds/";
