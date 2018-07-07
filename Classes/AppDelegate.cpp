@@ -5,8 +5,10 @@
 #include "PatchManager.hpp"
 #include "GameConfiguration.hpp"
 #include "SceneManager.h"
-
+#include "RankingManager.hpp"
 #include "game/GameManager.hpp"
+
+#include "game/GameScene.hpp"
 
 USING_NS_CC;
 
@@ -18,6 +20,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    RankingManager::destroyInstance();
     GameManager::destroyInstance();
     GameConfiguration::destroyInstance();
     PatchManager::destroyInstance();
@@ -65,9 +68,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     register_all_packages();
     
     // 초기화
-    
     SBDirector::init();
     PatchManager::getInstance()->init();
+    RankingManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();
 
     // run
