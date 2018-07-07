@@ -76,6 +76,7 @@ private:
     
     SB_SYNTHESIZE_BOOL(updateLocked, UpdateLocked);               // update 스케줄러 잠금 여부
     SB_SYNTHESIZE_BOOL(gamePaused, GamePaused);                   // 게임 일시정지 여부
+    SB_SYNTHESIZE_BOOL(preGameOver, PreGameOver);                 // 게임 오버 직전 상태 여부
     SB_SYNTHESIZE_BOOL(gameOver, GameOver);                       // 게임 오버 여부
     CC_SYNTHESIZE_READONLY(GameMode, gameMode, GameMode);         // 게임 모드
     

@@ -52,6 +52,7 @@ void GameManager::reset() {
     
     updateLocked = false;
     gamePaused = false;
+    preGameOver = false;
     gameOver = false;
     gameMode = GameMode::NORMAL;
     continueCount = 0;
@@ -109,7 +110,7 @@ void GameManager::setScore(int score) {
         onLevelChanged();
     }
     
-    CCLOG("GameManager::setScore: %d level: %d", this->score, this->levelInfo.level);
+    // CCLOG("GameManager::setScore: %d level: %d", this->score, this->levelInfo.level);
 }
 
 void GameManager::addScore(int score) {
@@ -194,6 +195,8 @@ void GameManager::onGameResume(bool force) {
  */
 void GameManager::onPreGameOver() {
     
+    preGameOver = true;
+    
 //    onGamePause();
     view->unschedule(SCHEDULER_FEVER_END);
     view->unschedule(SCHEDULER_FEVER_END_ALERT);
@@ -209,6 +212,7 @@ void GameManager::onPreGameOver() {
 void GameManager::onContinue() {
    
     ++continueCount;
+    preGameOver = false;
     
     // 피버 모드 였다면, 노멀 모드로 전환
     if( gameMode == GameMode::FEVER ) {
@@ -232,6 +236,7 @@ void GameManager::onGameOver() {
     }
     
     gameOver = true;
+    preGameOver = false;
     updateLocked = true;
     
     for( auto listener : listeners ) {
