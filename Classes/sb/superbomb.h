@@ -42,4 +42,7 @@
 // editor-support
 #include "editor-support/spine/SBSpineHelper.hpp"
 
+// plugins
+#include "plugins/iap/IAPHelper.hpp"
+
 #endif /* superbomb_h */
