@@ -33,6 +33,7 @@ MainScene::MainScene() {
 
 MainScene::~MainScene() {
     
+    superbomb::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool MainScene::init() {
@@ -54,6 +55,19 @@ bool MainScene::init() {
         };
         
         getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
+    
+    // IAP 리스너
+    {
+        auto listener = superbomb::IAPListener::create();
+        listener->onRemoveAdsPurchased = [=](const superbomb::Product &prod) {
+            
+            // vip 마크 표시
+            contentView->getChildByTag(Tag::BTN_REMOVE_ADS)->setVisible(false);
+            contentView->getChildByTag(Tag::VIP_MARK)->setVisible(true);
+        };
+        
+        superbomb::IAPHelper::getInstance()->addListener(this, listener);
     }
     
     initBg();
@@ -108,7 +122,7 @@ void MainScene::onClick(Node *sender) {
         
         // 광고 제거 아이템
         case Tag::BTN_REMOVE_ADS: {
-            User::setOwnRemoveAdsItem(!User::isOwnRemoveAdsItem());
+            // User::setOwnRemoveAdsItem(!User::isOwnRemoveAdsItem());
         } break;
             
         // test
@@ -156,6 +170,15 @@ void MainScene::initMenu() {
         contentView->addChild(btn);
         
         btn->setOnClickListener(CC_CALLBACK_1(MainScene::onClick, this));
+    }
+    
+    // VIP 마크
+    auto vip = UIHelper::createVIPMark(contentView->getChildByTag(Tag::BTN_REMOVE_ADS));
+    vip->setTag(Tag::VIP_MARK);
+    vip->setVisible(User::isOwnRemoveAdsItem());
+    
+    if( User::isOwnRemoveAdsItem() ) {
+        contentView->getChildByTag(Tag::BTN_REMOVE_ADS)->setVisible(false);
     }
     
     // 기본 메뉴

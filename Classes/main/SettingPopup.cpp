@@ -8,6 +8,7 @@
 #include "SettingPopup.hpp"
 
 #include "RSP.h"
+#include "User.hpp"
 #include "UIHelper.hpp"
 #include "UserDefaultKey.h"
 
@@ -25,12 +26,26 @@ onClickMenuListener(nullptr) {
 
 SettingPopup::~SettingPopup() {
     
+    superbomb::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool SettingPopup::init() {
     
     if( !BasePopup::init() ) {
         return false;
+    }
+    
+    // IAP 리스너
+    {
+        auto listener = superbomb::IAPListener::create();
+        listener->onRemoveAdsPurchased = [=](const superbomb::Product &prod) {
+            
+            // vip 마크 표시
+            stoneBg->getChildByTag(Tag::REMOVE_ADS)->setVisible(false);
+            stoneBg->getChildByTag(Tag::VIP_MARK)->setVisible(true);
+        };
+        
+        superbomb::IAPHelper::getInstance()->addListener(this, listener);
     }
     
     runEnterAction();
@@ -142,6 +157,15 @@ void SettingPopup::initContentView() {
             btn->setOnClickListener([=](Node*) {
                 this->performListener((Tag)info.tag);
             });
+        }
+        
+        // VIP 마크
+        auto vip = UIHelper::createVIPMark(stoneBg->getChildByTag(Tag::REMOVE_ADS));
+        vip->setTag(Tag::VIP_MARK);
+        vip->setVisible(User::isOwnRemoveAdsItem());
+        
+        if( User::isOwnRemoveAdsItem() ) {
+            stoneBg->getChildByTag(Tag::REMOVE_ADS)->setVisible(false);
         }
     }
 }

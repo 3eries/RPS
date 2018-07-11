@@ -17,6 +17,8 @@
 class MainScene : public cocos2d::Scene, public SBNodeListener {
 private:
     enum Tag {
+        VIP_MARK,
+        
         BTN_TITLE,
         BTN_REMOVE_ADS,
         BTN_TEST,

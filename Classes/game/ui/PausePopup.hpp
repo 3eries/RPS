@@ -21,6 +21,9 @@ public:
         RESUME = 100,
         MAIN,
         REMOVE_ADS,
+        
+        // private
+        VIP_MARK,
     };
     
 public:

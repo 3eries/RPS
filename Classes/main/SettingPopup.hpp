@@ -23,6 +23,9 @@ public:
         WORLD_RANKING,
         RESTORE_PURCHASE,
         REMOVE_ADS,
+        
+        // private
+        VIP_MARK,
     };
     
 public:

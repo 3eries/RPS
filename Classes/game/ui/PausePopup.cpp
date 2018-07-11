@@ -7,6 +7,7 @@
 #include "PausePopup.hpp"
 
 #include "RSP.h"
+#include "User.hpp"
 #include "UIHelper.hpp"
 #include "UserDefaultKey.h"
 
@@ -24,6 +25,7 @@ onClickMenuListener(nullptr) {
 
 PausePopup::~PausePopup() {
     
+    superbomb::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool PausePopup::init() {
@@ -32,6 +34,19 @@ bool PausePopup::init() {
         return false;
     }
 
+    // IAP 리스너
+    {
+        auto listener = superbomb::IAPListener::create();
+        listener->onRemoveAdsPurchased = [=](const superbomb::Product &prod) {
+            
+            // vip 마크 표시
+            getContentView()->getChildByTag(Tag::REMOVE_ADS)->setVisible(false);
+            getContentView()->getChildByTag(Tag::VIP_MARK)->setVisible(true);
+        };
+        
+        superbomb::IAPHelper::getInstance()->addListener(this, listener);
+    }
+    
     runEnterAction();
     
     return true;
@@ -115,11 +130,20 @@ void PausePopup::initContentView() {
             auto btn = SBButton::create(DIR_IMG_GAME + info.file);
             btn->setZoomScale(0.07f);
             info.apply(btn);
-            addContentChild(btn);
+            addContentChild(btn, info.zOrder, info.tag);
             
             btn->setOnClickListener([=](Node*) {
                 this->performListener((Tag)info.tag);
             });
+        }
+        
+        // VIP 마크
+        auto vip = UIHelper::createVIPMark(getContentView()->getChildByTag(Tag::REMOVE_ADS));
+        vip->setTag(Tag::VIP_MARK);
+        vip->setVisible(User::isOwnRemoveAdsItem());
+        
+        if( User::isOwnRemoveAdsItem() ) {
+            getContentView()->getChildByTag(Tag::REMOVE_ADS)->setVisible(false);
         }
     }
 }
