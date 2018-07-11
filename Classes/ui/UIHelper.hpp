@@ -35,6 +35,8 @@ public:
     
     static SBButton* createButton(SBButton::Config config);
     static SBButton* createFontButton(const std::string &title, const cocos2d::Size &size);
+    
+    static cocos2d::Sprite* createVIPMark(cocos2d::Node *removeAdsBtn);
 };
 
 #endif /* GAMEUIHelper_h */

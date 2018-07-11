@@ -55,4 +55,15 @@ SBButton* UIHelper::createFontButton(const string &title, const Size &size) {
     return btn;
 }
 
-
+/**
+ * VIP 마크 생성
+ */
+Sprite* UIHelper::createVIPMark(Node *removeAdsBtn) {
+    
+    auto vip = Sprite::create(DIR_IMG_GAME + "RSP_btn_vip_version.png");
+    vip->setAnchorPoint(removeAdsBtn->getAnchorPoint());
+    vip->setPosition(removeAdsBtn->getPosition());
+    removeAdsBtn->getParent()->addChild(vip, removeAdsBtn->getLocalZOrder()+1);
+    
+    return vip;
+}
