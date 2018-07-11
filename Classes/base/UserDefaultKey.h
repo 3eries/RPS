@@ -19,6 +19,7 @@ namespace UserDefaultKey {
     static const char* OWN_REMOVE_ADS_ITEM                   = "OWN_REMOVE_ADS_ITEM";               // 광고 제거 아이템 보유 여부
     static const char* VIBRATE                               = "VIBRATE";                           // 진동 on/off 여부
     static const char* RANKING                               = "RANKING";                           // 랭킹 JSON
+    static const char* LAST_RECORD_NAME                      = "LAST_RECORD_NAME";                  // 랭킹에 마지막으로 기록된 이름
 }
 
 #endif /* UserDefaultKey_h */
