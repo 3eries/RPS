@@ -8,6 +8,7 @@
 #include "TestMenuScene.hpp"
 
 #include "RSP.h"
+#include "User.hpp"
 #include "SceneManager.h"
 #include "RankingManager.hpp"
 #include "UIHelper.hpp"
@@ -42,7 +43,7 @@ bool TestMenuScene::init() {
     {
         auto btn = UIHelper::createFontButton("reset ranking", ButtonSize::MEDIUM);
         btn->setAnchorPoint(ANCHOR_M);
-        btn->setPosition(Vec2MC(0, PADDING_Y*4));
+        btn->setPosition(Vec2MC(0, PADDING_Y*3));
         addChild(btn);
         
         btn->setOnClickListener([=](Node*) {
@@ -53,19 +54,47 @@ bool TestMenuScene::init() {
         });
     }
     
+    // remove ads on/off
+    {
+        auto label = Label::createWithTTF("remove ads", FONT_RETRO, FONT_SIZE, Size::ZERO,
+                                          TextHAlignment::RIGHT,
+                                          TextVAlignment::CENTER);
+        label->setAnchorPoint(ANCHOR_M);
+        label->setPosition(Vec2MC(-50, PADDING_Y*2));
+        addChild(label);
+        
+        auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
+                                               DIR_IMG_COMMON + "check_box_selected.png");
+        checkBox->setAnchorPoint(ANCHOR_ML);
+        checkBox->setPosition(Vec2MC(160, PADDING_Y*2));
+        addChild(checkBox);
+        
+        checkBox->setSelected(User::isOwnRemoveAdsItem());
+        checkBox->setOnSelectedListener([=](bool isSelected) -> bool {
+            
+            User::setOwnRemoveAdsItem(isSelected);
+            
+            if( isSelected ) {
+                superbomb::IAPHelper::getInstance()->onRemoveAdsPurchased();
+            }
+            
+            return false;
+        });
+    }
+    
     // cheat mode on/off
     {
         auto label = Label::createWithTTF("cheat mode", FONT_RETRO, FONT_SIZE, Size::ZERO,
                                           TextHAlignment::RIGHT,
                                           TextVAlignment::CENTER);
         label->setAnchorPoint(ANCHOR_M);
-        label->setPosition(Vec2MC(-50, PADDING_Y*3));
+        label->setPosition(Vec2MC(-50, PADDING_Y*1));
         addChild(label);
         
         auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
                                                DIR_IMG_COMMON + "check_box_selected.png");
         checkBox->setAnchorPoint(ANCHOR_ML);
-        checkBox->setPosition(Vec2MC(160, PADDING_Y*3));
+        checkBox->setPosition(Vec2MC(160, PADDING_Y*1));
         addChild(checkBox);
         
         checkBox->setSelected(testHelper->isCheatMode());
@@ -83,13 +112,13 @@ bool TestMenuScene::init() {
                                           TextHAlignment::RIGHT,
                                           TextVAlignment::CENTER);
         label->setAnchorPoint(ANCHOR_M);
-        label->setPosition(Vec2MC(-40, PADDING_Y*2));
+        label->setPosition(Vec2MC(-40, PADDING_Y*0));
         addChild(label);
         
         auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
                                                DIR_IMG_COMMON + "check_box_selected.png");
         checkBox->setAnchorPoint(ANCHOR_ML);
-        checkBox->setPosition(Vec2MC(150, PADDING_Y*2));
+        checkBox->setPosition(Vec2MC(150, PADDING_Y*0));
         addChild(checkBox);
         
         checkBox->setSelected(testHelper->isTimeBarEnabled());
@@ -107,13 +136,13 @@ bool TestMenuScene::init() {
                                           TextHAlignment::RIGHT,
                                           TextVAlignment::CENTER);
         label->setAnchorPoint(ANCHOR_M);
-        label->setPosition(Vec2MC(-60, PADDING_Y));
+        label->setPosition(Vec2MC(-60, -PADDING_Y*1));
         addChild(label);
         
         auto checkBox = SBToggleButton::create(DIR_IMG_COMMON + "check_box_unselected.png",
                                                DIR_IMG_COMMON + "check_box_selected.png");
         checkBox->setAnchorPoint(ANCHOR_ML);
-        checkBox->setPosition(Vec2MC(150, PADDING_Y));
+        checkBox->setPosition(Vec2MC(150, -PADDING_Y*1));
         addChild(checkBox);
         
         checkBox->setSelected(testHelper->isDarkCloudEnabled());
@@ -128,7 +157,7 @@ bool TestMenuScene::init() {
     // touch
     auto touchTestBtn = UIHelper::createFontButton("touch", ButtonSize::MEDIUM);
     touchTestBtn->setAnchorPoint(ANCHOR_M);
-    touchTestBtn->setPosition(Vec2MC(0, 0));
+    touchTestBtn->setPosition(Vec2MC(0, -PADDING_Y*2));
     addChild(touchTestBtn);
     
     touchTestBtn->setOnClickListener([=](Node*) {
@@ -138,7 +167,7 @@ bool TestMenuScene::init() {
     // config
     auto configTestBtn = UIHelper::createFontButton("config", ButtonSize::MEDIUM);
     configTestBtn->setAnchorPoint(ANCHOR_M);
-    configTestBtn->setPosition(Vec2MC(0, -PADDING_Y));
+    configTestBtn->setPosition(Vec2MC(0, -PADDING_Y*3));
     addChild(configTestBtn);
     
     configTestBtn->setOnClickListener([=](Node*) {
@@ -148,7 +177,7 @@ bool TestMenuScene::init() {
     // spine
     auto spineTestBtn = UIHelper::createFontButton("spine", ButtonSize::MEDIUM);
     spineTestBtn->setAnchorPoint(ANCHOR_M);
-    spineTestBtn->setPosition(Vec2MC(0, -PADDING_Y*2));
+    spineTestBtn->setPosition(Vec2MC(0, -PADDING_Y*4));
     addChild(spineTestBtn);
     
     spineTestBtn->setOnClickListener([=](Node*) {

@@ -45,8 +45,8 @@ bool BaseTestScene::init() {
     }
     
     auto backBtn = UIHelper::createFontButton("BACK", ButtonSize::MEDIUM);
-    backBtn->setAnchorPoint(ANCHOR_MB);
-    backBtn->setPosition(Vec2BC(0, 10));
+    backBtn->setAnchorPoint(ANCHOR_BR);
+    backBtn->setPosition(Vec2BR(-10, 10));
     addChild(backBtn);
     
     backBtn->setOnClickListener([=](Node*) {
