@@ -11,10 +11,10 @@
 #include "cocos2d.h"
 
 #ifdef __cplusplus
-#define NS_SB_BEGIN                     namespace sb {
+#define NS_SB_BEGIN                     namespace superbomb {
 #define NS_SB_END                       }
-#define USING_NS_SB                     using namespace sb
-#define NS_SB                           ::sb
+#define USING_NS_SB                     using namespace superbomb
+#define NS_SB                           ::superbomb
 #else
 #define NS_SB_BEGIN
 #define NS_SB_END

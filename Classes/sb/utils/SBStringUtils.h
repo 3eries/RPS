@@ -24,7 +24,7 @@ class SBStringUtils {
 public:
     static std::string floatToString(const std::string &foramt, float num);
     static std::string floatToString(int decimalPointDigit, float num);
-    static std::string toCommaString(sb::UInt64 number);
+    static std::string toCommaString(superbomb::UInt64 number);
     
     template <typename T>
     static std::string toString(T number) {
