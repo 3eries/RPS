@@ -316,7 +316,7 @@ void GameScene::showNewRecordPopup(int ranking, int score) {
 void GameScene::showGameOver() {
  
     // 메인 메뉴
-    mainMenu->runEnterAction();
+    mainMenu->openMenu();
     
     // 팝업
     auto popup = GameOverPopup::create(gameMgr->getScore());
@@ -415,7 +415,7 @@ void GameScene::initMenu() {
                 }
                 
                 // 메인 메뉴 퇴장
-                mainMenu->runExitAction();
+                mainMenu->closeMenu();
                 
             } return true;
                 

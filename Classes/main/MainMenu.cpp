@@ -153,16 +153,26 @@ void MainMenu::showSettingPopup() {
 }
 
 /**
- * 등장 액션
+ * 메뉴 오픈
  */
-void MainMenu::runEnterAction() {
+void MainMenu::openMenu() {
+    
+    /*
+    if( topMenu->isOpened() && bottomMenu->isOpened() ) {
+        // 이미 오픈됨
+        return;
+    }
+     */
     
     stopAllActions();
     setVisible(true);
     setTouchEnabled(false);
     
-    runTopMenuEnterAction();
-    runBottomMenuEnterAction();
+    if( !topMenu->isOpened() )      runTopMenuEnterAction();
+    if( !bottomMenu->isOpened() )   runBottomMenuEnterAction();
+    
+    topMenu->setOpened(true);
+    bottomMenu->setOpened(true);
     
     auto delay = DelayTime::create(SLIDE_IN_DURATION);
     auto callFunc = CallFunc::create([=]() {
@@ -172,16 +182,26 @@ void MainMenu::runEnterAction() {
 }
 
 /**
- * 퇴장 액션
+ * 메뉴 닫기
  */
-void MainMenu::runExitAction() {
+void MainMenu::closeMenu() {
+    
+    /*
+    if( !topMenu->isOpened() && !bottomMenu->isOpened() ) {
+        // 이미 닫힘
+        return;
+    }
+    */
     
     stopAllActions();
     setVisible(true);
     setTouchEnabled(false);
     
-    runTopMenuExitAction();
-    runBottomMenuExitAction();
+    if( topMenu->isOpened() )      runTopMenuExitAction();
+    if( bottomMenu->isOpened() )   runBottomMenuExitAction();
+    
+    topMenu->setOpened(false);
+    bottomMenu->setOpened(false);
     
     auto delay = DelayTime::create(SLIDE_OUT_DURATION);
     auto callFunc = CallFunc::create([=]() {
@@ -282,7 +302,8 @@ void MainMenu::initBg() {
  */
 void MainMenu::initTopMenu() {
     
-    topMenu = SBNodeUtils::createZeroSizeNode();
+    topMenu = Menu::create();
+    SBNodeUtils::createZeroSizeNode(topMenu);
     addChild(topMenu);
     
     // RSP_btn_option.png Vec2TC(298, -158) , Size(92, 92)   // 배너 좌표 고려?
@@ -318,7 +339,8 @@ void MainMenu::initTopMenu() {
  */
 void MainMenu::initBottomMenu() {
     
-    bottomMenu = SBNodeUtils::createZeroSizeNode();
+    bottomMenu = Menu::create();
+    SBNodeUtils::createZeroSizeNode(bottomMenu);
     addChild(bottomMenu);
     
     // RSP_btn_ranking.png Vec2BC(-268, 100) , Size(160, 152)

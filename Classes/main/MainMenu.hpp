@@ -46,17 +46,14 @@ private:
     void onClick(cocos2d::Node *sender) override;
     
 public:
-//    void openMenu();
-//    void closeMenu();
-    
     void setTouchEnabled(bool enabled);
     void setRankingButton(Tag tag);
     
     void showRankingPopup();
     void showSettingPopup();
     
-    void runEnterAction();
-    void runExitAction();
+    void openMenu();
+    void closeMenu();
     
     void runTopMenuEnterAction(float duration = SLIDE_IN_DURATION);
     void runTopMenuExitAction(float duration = SLIDE_OUT_DURATION);
@@ -72,8 +69,18 @@ private:
     
     cocos2d::Node *touchLockNode;
     
-    cocos2d::Node *topMenu;
-    cocos2d::Node *bottomMenu;
+    // Top & Bottom Menu
+    class Menu : public cocos2d::Node {
+    public:
+        CREATE_FUNC(Menu);
+        Menu() : opened(true) {}
+        
+    private:
+        SB_SYNTHESIZE_BOOL(opened, Opened);
+    };
+    
+    Menu *topMenu;
+    Menu *bottomMenu;
 };
 
 #endif /* MainMenu_hpp */
