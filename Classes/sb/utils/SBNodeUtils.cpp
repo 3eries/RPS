@@ -14,9 +14,8 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-Node* SBNodeUtils::createZeroSizeNode() {
+Node* SBNodeUtils::createZeroSizeNode(Node *n) {
     
-    auto n = Node::create();
     n->setAnchorPoint(Vec2::ZERO);
     n->setPosition(Vec2::ZERO);
     n->setContentSize(Size::ZERO);
@@ -24,9 +23,8 @@ Node* SBNodeUtils::createZeroSizeNode() {
     return n;
 }
 
-Node* SBNodeUtils::createWinSizeNode() {
+Node* SBNodeUtils::createWinSizeNode(Node *n) {
     
-    auto n = Node::create();
     n->setAnchorPoint(Vec2::ZERO);
     n->setPosition(Vec2::ZERO);
     n->setContentSize(SB_WIN_SIZE);

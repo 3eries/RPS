@@ -37,8 +37,8 @@ public:
     }
     
 public:
-    static cocos2d::Node* createZeroSizeNode();
-    static cocos2d::Node* createWinSizeNode();
+    static cocos2d::Node* createZeroSizeNode(cocos2d::Node *n = cocos2d::Node::create());
+    static cocos2d::Node* createWinSizeNode(cocos2d::Node *n = cocos2d::Node::create());
     static cocos2d::ui::Widget* createTouchNode();
     static cocos2d::ui::Widget* createTouchNode(cocos2d::Color4B color);
     static cocos2d::Node* createBackgroundNode(cocos2d::Node *parent, cocos2d::Color4B color);
