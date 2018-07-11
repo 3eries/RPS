@@ -9,6 +9,7 @@
 
 #include "RSP.h"
 #include "SceneManager.h"
+#include "RankingManager.hpp"
 #include "UIHelper.hpp"
 #include "UserDefaultKey.h"
 
@@ -36,6 +37,21 @@ bool TestMenuScene::init() {
     
     const int FONT_SIZE = 50;
     const float PADDING_Y = 120;
+    
+    // reset ranking
+    {
+        auto btn = UIHelper::createFontButton("reset ranking", ButtonSize::MEDIUM);
+        btn->setAnchorPoint(ANCHOR_M);
+        btn->setPosition(Vec2MC(0, PADDING_Y*4));
+        addChild(btn);
+        
+        btn->setOnClickListener([=](Node*) {
+            UserDefault::getInstance()->setStringForKey(UserDefaultKey::RANKING, "");
+            UserDefault::getInstance()->flush();
+            
+            RankingManager::getInstance()->init();
+        });
+    }
     
     // cheat mode on/off
     {
