@@ -31,6 +31,8 @@ private:
     void initInitial();
     
     void setInitial(int nameIndex, int initialIndex);
+    void setInitial(int nameIndex, const std::string &initial);
+    
     void initialUp(int nameIndex);
     void initialDown(int nameIndex);
     

@@ -10,6 +10,7 @@
 #include "RSP.h"
 #include "UIHelper.hpp"
 #include "SceneManager.h"
+#include "UserDefaultKey.h"
 
 #include "NewRecordBoard.hpp"
 
@@ -17,7 +18,7 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-static const int   VISIBLE_RANKING_COUNT = 7;
+static const int   VISIBLE_RANKING_COUNT = 6;
 static const float DISMISS_DELAY         = 2.0f;
 
 NewRecordPopup* NewRecordPopup::create(int ranking, int score) {
@@ -81,17 +82,17 @@ void NewRecordPopup::initRankings() {
     if( record.ranking > VISIBLE_RANKING_COUNT ) {
         // (34*3) + (60*2)
         // (34*3) + ((60-34)*2)
-        rankingView->setPositionY(180);
+        rankingView->setPositionY(240);
     }
     
     // 신기록 Row 이름 하이라이트
     getRecordRow()->changeNameToHighlight();
     
     // 입력창
-    // RSP_popup_bg_new_record.png Vec2BC(0, 252) , Size(696, 464)
+    // RSP_popup_bg_new_record.png Vec2BC(0, 288) , Size(696, 536)
     recordBoard = NewRecordBoard::create(record.score);
     recordBoard->setAnchorPoint(ANCHOR_M);
-    recordBoard->setPosition(Vec2BC(0, 252));
+    recordBoard->setPosition(Vec2BC(0, 288));
     addChild(recordBoard, SBZOrder::BOTTOM);
     
     // 이름 변경
@@ -115,6 +116,10 @@ void NewRecordPopup::initRankings() {
 void NewRecordPopup::onRecordCompleted() {
     
     onRecordCompletedListener(record);
+    
+    // 이름 저장
+    UserDefault::getInstance()->setStringForKey(UserDefaultKey::LAST_RECORD_NAME, record.name);
+    UserDefault::getInstance()->flush();
     
     // row 하이라이트
     getRecordRow()->changeToHighlight();

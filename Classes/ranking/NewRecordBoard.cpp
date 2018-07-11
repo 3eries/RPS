@@ -8,6 +8,7 @@
 #include "NewRecordBoard.hpp"
 
 #include "RSP.h"
+#include "UserDefaultKey.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -78,6 +79,18 @@ void NewRecordBoard::setInitial(int nameIndex, int initialIndex) {
     if( onNameChangedListener ) {
         onNameChangedListener(getName());
     }
+}
+
+void NewRecordBoard::setInitial(int nameIndex, const string &initial) {
+    
+    for( int i = 0; i < INITIAL_LIST.size(); ++i ) {
+        if( INITIAL_LIST[i] == initial ) {
+            setInitial(nameIndex, i);
+            return;
+        }
+    }
+    
+    CCASSERT(false, "NewRecordBoard::setInitial(int, string) error");
 }
 
 void NewRecordBoard::initialUp(int nameIndex) {
@@ -169,7 +182,7 @@ void NewRecordBoard::runScoreAction() {
 void NewRecordBoard::initBg() {
     
     // bg
-    // RSP_popup_bg_new_record.png Vec2MC(0, 0) , Size(696, 464)
+    // RSP_popup_bg_new_record.png Vec2MC(0, 0) , Size(696, 536)
     auto bg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_new_record.png");
     bg->setAnchorPoint(Vec2::ZERO);
     bg->setPosition(Vec2::ZERO);
@@ -179,11 +192,11 @@ void NewRecordBoard::initBg() {
     setContentSize(bgSize);
     
     // image
-    // RSP_popup_title_new_record.png Vec2MC(-200, 130) , Size(184, 108)
+    // RSP_popup_title_new_record.png Vec2MC(-225, 188) , Size(166, 96)
     // RSP_popup_bg_name.png Vec2MC(-84, -70) , Size(440, 244)
     SBUIInfo infos[] = {
-        SBUIInfo(ANCHOR_M, Vec2MC(bgSize, -200, 130), "RSP_popup_title_new_record.png"),   // title
-        SBUIInfo(ANCHOR_M, Vec2MC(bgSize, -84, -70),  "RSP_popup_bg_name.png"),            // name bg
+        SBUIInfo(ANCHOR_M, Vec2MC(bgSize, -225, 188), "RSP_popup_title_new_record.png"),   // title
+        // SBUIInfo(ANCHOR_M, Vec2MC(bgSize, -84, -70),  "RSP_popup_bg_name.png"),            // name bg
     };
     
     for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
@@ -196,15 +209,18 @@ void NewRecordBoard::initBg() {
     
     // score
     // 186,0,0 sabo size:122 Vec2MC(106, 134) , Size(318, 90)
+    // 1234 Vec2MC(22, 191) , Size(267, 77)
     // 저 빨간 점수 1234는 그림자가 위, 아래로 들어가서 두께감을 주고 싶은데
     // 위쪽 그림자는 4px, 컬러는 99,0,0 이고,
     // 아래쪽 하얀 그림자는 4px, 컬러는 240, 243,243입니당
-    scoreLabel = Label::createWithTTF("", FONT_NEW_RECORD, 122,
+    //
+    // ranking2.psd 에서 레코드 팝업 폰트 사이즈는 노랑색 이니셜은 예전이랑 동일하고, 빨간 스코어 는 108포인트네용
+    scoreLabel = Label::createWithTTF("", FONT_NEW_RECORD, 108,
                                       Size(0, 0), TextHAlignment::CENTER, TextVAlignment::CENTER);
     scoreLabel->setColor(Color3B(186,0,0));
     scoreLabel->enableShadow(Color4B(240, 243, 243, 255), Size(4, -4), 10);
     scoreLabel->setAnchorPoint(ANCHOR_M);
-    scoreLabel->setPosition(Vec2MC(bgSize, 106, 134));
+    scoreLabel->setPosition(Vec2MC(bgSize, 22, 191));
     addChild(scoreLabel);
 }
 
@@ -216,57 +232,115 @@ void NewRecordBoard::initInitial() {
     const Size bgSize(getContentSize());
     
     const float POS_X[] = {
-        Vec2MC(bgSize, -228, 0).x,
-        Vec2MC(bgSize, -84, 0).x,
-        Vec2MC(bgSize, 61, 0).x,
+        Vec2MC(bgSize, -196, 0).x,
+        Vec2MC(bgSize, 0, 0).x,
+        Vec2MC(bgSize, 196, 0).x,
+    };
+    
+    // 화살표 버튼 배경
+    // RSP_btn_name_control.png Vec2MC(-196, -106) , Size(168, 228)
+    // RSP_btn_name_control.png Vec2MC(0, -106) , Size(168, 228)
+    // RSP_btn_name_control.png Vec2MC(196, -106) , Size(168, 228)
+    vector<Sprite*> arrowBtnBackgrounds;
+    
+    {
+        const float POS_Y = Vec2MC(bgSize, 0, -106).y;
+        
+        for( int i = 0; i < 3; ++i ) {
+            auto bg = Sprite::create(DIR_IMG_GAME + "RSP_btn_name_control.png");
+            bg->setAnchorPoint(ANCHOR_M);
+            bg->setPosition(Vec2(POS_X[i], POS_Y));
+            addChild(bg);
+            
+            arrowBtnBackgrounds.push_back(bg);
+        }
+    }
+    
+    // 화살표 버튼 생성
+    const Size ARROW_BTN_SIZE(196, 126);
+    
+    auto createArrowButton = [=](int i) -> Widget* {
+      
+        auto btn = Widget::create();
+        btn->setAnchorPoint(ANCHOR_M);
+        btn->setContentSize(ARROW_BTN_SIZE);
+        btn->setTouchEnabled(true);
+        
+        // btn->addChild(SBNodeUtils::createBackgroundNode(btn, Color4B(255,0,0,255*0.3f)));
+        
+        btn->addTouchEventListener([=](Ref*, Widget::TouchEventType eventType) {
+            
+            switch( eventType ) {
+                case Widget::TouchEventType::BEGAN: {
+                    arrowBtnBackgrounds[i]->setScale(1.04f);
+                } break;
+                    
+                case Widget::TouchEventType::ENDED:
+                case Widget::TouchEventType::CANCELED: {
+                    arrowBtnBackgrounds[i]->setScale(1.0f);
+                } break;
+                    
+                default: break;
+            }
+        });
+        
+        return btn;
     };
     
     // up 버튼
-    // RSP_btn_name_up.png Vec2MC(-228, 3) , Size(64, 36)
-    // RSP_btn_name_up.png Vec2MC(-84, 3) , Size(64, 36)
-    // RSP_btn_name_up.png Vec2MC(61, 3) , Size(64, 36)
+    // touch Vec2MC(-196, -42) , Size(196, 126)
+    // touch Vec2MC(0, -42) , Size(196, 126)
+    // touch Vec2MC(196, -42) , Size(196, 126)
     {
-        const float POS_Y = Vec2MC(bgSize, 0, 3).y;
+        const float POS_Y = Vec2MC(bgSize, 0, -42).y;
         
         for( int i = 0; i < 3; ++i ) {
-            auto btn = SBButton::create(DIR_IMG_GAME + "RSP_btn_name_up.png");
-            btn->setZoomScale(0.2f);
-            btn->setAnchorPoint(ANCHOR_M);
+            auto btn = createArrowButton(i);
             btn->setPosition(Vec2(POS_X[i], POS_Y));
             addChild(btn);
             
-            btn->setOnClickListener([=](Node*) {
+            btn->addClickEventListener([=](Ref*) {
                 this->initialUp(i);
             });
         }
     }
     
     // down 버튼
-    // RSP_btn_name_down.png Vec2MC(-228, -148) , Size(64, 36)
-    // RSP_btn_name_down.png Vec2MC(-84, -148) , Size(64, 36)
-    // RSP_btn_name_down.png Vec2MC(61, -148) , Size(64, 36)
+    // touch Vec2MC(-196, -168) , Size(196, 126)
+    // touch Vec2MC(0, -168) , Size(196, 126)
+    // touch Vec2MC(196, -168) , Size(196, 126)
     {
-        const float POS_Y = Vec2MC(bgSize, 0, -148).y;
+        const float POS_Y = Vec2MC(bgSize, 0, -168).y;
         
         for( int i = 0; i < 3; ++i ) {
-            auto btn = SBButton::create(DIR_IMG_GAME + "RSP_btn_name_down.png");
-            btn->setZoomScale(0.2f);
-            btn->setAnchorPoint(ANCHOR_M);
+            auto btn = createArrowButton(i);
             btn->setPosition(Vec2(POS_X[i], POS_Y));
             addChild(btn);
             
-            btn->setOnClickListener([=](Node*) {
+            btn->addClickEventListener([=](Ref*) {
                 this->initialDown(i);
             });
         }
     }
     
     // 이니셜
-    // 255,217,0 sabo size:105 Vec2MC(-228, -70) , Size(62, 71)
-    // 255,217,0 sabo size:105 Vec2MC(-84, -70) , Size(62, 71)
-    // 255,217,0 sabo size:105 Vec2MC(62, -70) , Size(70, 71)
+    // 최초 이니셜은 마지막으로 등록된 이름으로 설정
+    // S Vec2MC(-195, 67) , Size(63, 76)
+    // S Vec2MC(0, 66) , Size(63, 76)
+    // W Vec2MC(196, 66) , Size(71, 76)
+    string lastRecordName = UserDefault::getInstance()->getStringForKey(UserDefaultKey::LAST_RECORD_NAME, "");
+    vector<string> lastRecordNameChars;
+    
+    if( lastRecordName != "" ) {
+        lastRecordNameChars = SBStringUtils::toArray(lastRecordName);
+    } else {
+        for( int i = 0; i < 3; ++i ) {
+            lastRecordNameChars.push_back(INITIAL_LIST[0]);
+        }
+    }
+    
     {
-        const float POS_Y = Vec2MC(bgSize, 0, -70).y;
+        const float POS_Y = Vec2MC(bgSize, 0, 66).y;
         
         for( int i = 0; i < 3; ++i ) {
             auto label = Label::createWithTTF("", FONT_NEW_RECORD, 105);
@@ -279,16 +353,16 @@ void NewRecordBoard::initInitial() {
             nameInitial.label = label;
             nameInitials.push_back(nameInitial);
             
-            setInitial(i, 0);
+            setInitial(i, lastRecordNameChars[i]);
         }
     }
     
     // 엔터 버튼
-    // RSP_btn_name_enter.png Vec2MC(235, -70) , Size(144, 248)
+    // RSP_btn_name_enter.png Vec2MC(252, 190) , Size(136, 100)
     enterBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_name_enter.png");
-    enterBtn->setZoomScale(0.07f);
+    enterBtn->setZoomScale(0.05f);
     enterBtn->setAnchorPoint(ANCHOR_M);
-    enterBtn->setPosition(Vec2MC(bgSize, 235, -70));
+    enterBtn->setPosition(Vec2MC(bgSize, 252, 190));
     addChild(enterBtn);
     
     enterBtn->setOnClickListener([=](Node*) {
