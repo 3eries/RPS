@@ -21,6 +21,8 @@ using namespace std;
 static const int   VISIBLE_RANKING_COUNT = 6;
 static const float DISMISS_DELAY         = 2.0f;
 
+#define RECORD_BOARD_POS                 Vec2BC(0, 288)
+
 NewRecordPopup* NewRecordPopup::create(int ranking, int score) {
     
     auto popup = new NewRecordPopup(ranking, score);
@@ -78,21 +80,17 @@ void NewRecordPopup::initRankings() {
     
     RankingPopup::initRankings();
     
-    // 랭킹이 입력창에 가려질 경우 좌표 조정
-    if( record.ranking > VISIBLE_RANKING_COUNT ) {
-        // (34*3) + (60*2)
-        // (34*3) + ((60-34)*2)
-        rankingView->setPositionY(240);
-    }
-    
     // 신기록 Row 이름 하이라이트
-    getRecordRow()->changeNameToHighlight();
+    // getRecordRow()->changeNameToHighlight();
+    getRecordRow()->setNewRecord(true);
+    getRecordRow()->changeToHighlight();
     
     // 입력창
     // RSP_popup_bg_new_record.png Vec2BC(0, 288) , Size(696, 536)
     recordBoard = NewRecordBoard::create(record.score);
     recordBoard->setAnchorPoint(ANCHOR_M);
-    recordBoard->setPosition(Vec2BC(0, 288));
+    recordBoard->setPosition(RECORD_BOARD_POS);
+    recordBoard->setVisible(false);
     addChild(recordBoard, SBZOrder::BOTTOM);
     
     // 이름 변경
@@ -173,10 +171,30 @@ void NewRecordPopup::runEnterAction(SBCallback onFinished) {
     
     RankingPopup::runEnterAction(onFinished);
     
-    getRecordRow()->setRecordName(recordBoard->getName());
-    
-    // 보드 연출
-    recordBoard->runEnterAction(RankingPopup::SLIDE_IN_DURATION);
+    auto delay = DelayTime::create(5.0f);
+    auto callFunc = CallFunc::create([=]() {
+        
+        auto row = getRecordRow();
+        row->setNewRecord(false);
+        row->changeToNormal();
+        row->changeNameToHighlight();
+        row->setRecordName(recordBoard->getName());
+        
+        // 랭킹이 입력창에 가려질 경우, 랭킹 리스트 좌표 조정
+        const float DURATION = RankingPopup::SLIDE_IN_DURATION;
+        
+        if( record.ranking > VISIBLE_RANKING_COUNT ) {
+            // (34*3) + (60*2)
+            // (34*3) + ((60-34)*2)
+            // rankingView->setPositionY(240);
+            rankingView->runAction(MoveTo::create(DURATION, Vec2(0, 240)));
+        }
+        
+        // 보드 연출
+        recordBoard->setVisible(true);
+        recordBoard->runEnterAction(DURATION);
+    });
+    runAction(Sequence::create(delay, callFunc, nullptr));
 }
 
 /**

@@ -35,6 +35,8 @@ public:
     void setRecordName(const std::string &name);
     void setScore(int score);
     
+    void setNewRecord(bool enabled);
+    
     void changeToNormal();
     void changeToHighlight();
     
@@ -47,6 +49,8 @@ private:
     cocos2d::Label *rankingLabel;
     cocos2d::Label *nameLabel;
     cocos2d::Label *scoreLabel;
+    cocos2d::Label *hyphenLabel;
+    cocos2d::Label *newRecordLabel;
 };
 
 #endif /* RecordRowView_hpp */

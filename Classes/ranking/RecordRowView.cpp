@@ -88,11 +88,11 @@ bool RecordRowView::init() {
     addChild(nameLabel);
     
     // -
-    auto hyphen = Label::createWithTTF("-", FONT_RETRO, FONT_SIZE, Size::ZERO,
+    hyphenLabel = Label::createWithTTF("-", FONT_RETRO, FONT_SIZE, Size::ZERO,
                                        TextHAlignment::CENTER, TextVAlignment::CENTER);
-    hyphen->setAnchorPoint(ANCHOR_M);
-    hyphen->setPosition(Vec2MC(SIZE, 19, 0));
-    addChild(hyphen);
+    hyphenLabel->setAnchorPoint(ANCHOR_M);
+    hyphenLabel->setPosition(Vec2MC(SIZE, 19, 0));
+    addChild(hyphenLabel);
     
     // 점수
     scoreLabel = Label::createWithTTF("", FONT_RETRO, FONT_SIZE, Size::ZERO,
@@ -100,6 +100,14 @@ bool RecordRowView::init() {
     scoreLabel->setAnchorPoint(ANCHOR_M);
     scoreLabel->setPosition(Vec2MR(SIZE, -67, 0));
     addChild(scoreLabel);
+    
+    // new record
+    newRecordLabel = Label::createWithTTF("NEW RECORD", FONT_RETRO, FONT_SIZE, Size::ZERO,
+                                          TextHAlignment::LEFT, TextVAlignment::CENTER);
+    newRecordLabel->setAnchorPoint(ANCHOR_ML);
+    newRecordLabel->setPosition(Vec2ML(SIZE, 60, 0));
+    newRecordLabel->setVisible(false);
+    addChild(newRecordLabel);
     
     SBNodeUtils::recursiveCascadeColorEnabled(this, true);
     SBNodeUtils::recursiveCascadeOpacityEnabled(this, true);
@@ -137,6 +145,20 @@ void RecordRowView::setScore(int score) {
     record.score = score;
     
     scoreLabel->setString(TO_STRING(score));
+}
+
+/**
+ * new record 설정
+ */
+void RecordRowView::setNewRecord(bool enabled) {
+    
+    Node *normalNodes[] = { nameLabel, scoreLabel, hyphenLabel, };
+    
+    for( auto n : normalNodes ) {
+        n->setVisible(!enabled);
+    }
+    
+    newRecordLabel->setVisible(enabled);
 }
 
 /**
