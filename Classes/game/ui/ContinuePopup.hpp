@@ -35,6 +35,7 @@ private:
     
     void initBackgroundView() override;
     void initContentView() override;
+    void initMenu();
     
     void countdown();
     void timeOut();

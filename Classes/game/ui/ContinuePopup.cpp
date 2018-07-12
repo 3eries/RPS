@@ -49,8 +49,6 @@ bool ContinuePopup::init() {
 
 void ContinuePopup::onExit() {
     
-    getScheduler()->setTimeScale(1);
-    
     BasePopup::onExit();
 }
 
@@ -132,6 +130,9 @@ void ContinuePopup::initContentView() {
     countdownLabel->enableShadow(Color4B(138,125,164,255), Size(4,-4), 10);
     addChild(countdownLabel);
     */
+}
+
+void ContinuePopup::initMenu() {
     
     // 터치 영역
     auto touchNode = SBNodeUtils::createTouchNode();
@@ -147,19 +148,19 @@ void ContinuePopup::initContentView() {
     // 비디오 버튼
     // btn_continue.png Vec2BC(0, 392) , Size(520, 152)
     /*
-    auto videoBtn = SBButton::create(DIR_IMG_GAME + "btn_continue.png");
-    videoBtn->setTag(Tag::BTN_VIDEO);
-    videoBtn->setZoomScale(0.05f);
-    videoBtn->setAnchorPoint(ANCHOR_M);
-    videoBtn->setPosition(Vec2BC(0, 392));
-    addChild(videoBtn, 1);
-    
-    videoBtn->setOnClickListener([=](Node*) {
-        
-        onVideoListener();
-        this->dismiss();
-    });
-    */
+     auto videoBtn = SBButton::create(DIR_IMG_GAME + "btn_continue.png");
+     videoBtn->setTag(Tag::BTN_VIDEO);
+     videoBtn->setZoomScale(0.05f);
+     videoBtn->setAnchorPoint(ANCHOR_M);
+     videoBtn->setPosition(Vec2BC(0, 392));
+     addChild(videoBtn, 1);
+     
+     videoBtn->setOnClickListener([=](Node*) {
+     
+     onVideoListener();
+     this->dismiss();
+     });
+     */
     auto videoBtn = Widget::create();
     videoBtn->setAnchorPoint(ANCHOR_M);
     videoBtn->setPosition(Vec2BC(0, 392));
@@ -182,9 +183,6 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
 
     BasePopup::runEnterAction(onFinished);
     
-    // 터치 잠금
-    SBDirector::getInstance()->setScreenTouchLocked(true);
-    
     // 카운트 다운
     countdownAnim->setVisible(true);
     countdown();
@@ -206,8 +204,6 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
     // 콜백
     auto delay = DelayTime::create(ENTER_DURATION);
     auto callFunc = CallFunc::create([=]() {
-        
-        SBDirector::getInstance()->setScreenTouchLocked(false);
         
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
@@ -253,4 +249,6 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
 void ContinuePopup::onEnterActionFinished() {
     
     BasePopup::onEnterActionFinished();
+    
+    initMenu();
 }
