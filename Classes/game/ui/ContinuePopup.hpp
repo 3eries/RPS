@@ -19,8 +19,8 @@
 class ContinuePopup : public BasePopup {
 private:
     enum Tag {
-        IMG_TITLE = 100,
-        BTN_VIDEO,
+        // IMG_TITLE = 100,
+        // BTN_VIDEO,
     };
     
 public:
@@ -39,8 +39,6 @@ private:
     void countdown();
     void timeOut();
     
-    void updateCountdownImage();
-    
 public:
     void runEnterAction(SBCallback onFinished = nullptr) override;
     void runExitAction(SBCallback onFinished = nullptr) override;
@@ -51,11 +49,8 @@ private:
     CC_SYNTHESIZE(SBCallback, onVideoListener, OnVideoListener);
     CC_SYNTHESIZE(SBCallback, onTimeOutListener, OnTimeOutListener);
     
-    float elapsed;
-    cocos2d::Sprite *countdownImage;
-    cocos2d::Label *countdownLabel;
-    
     int count;
+    spine::SkeletonAnimation *countdownAnim;
 };
 
 #endif /* ContinuePopup_hpp */

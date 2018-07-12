@@ -55,6 +55,7 @@ static const std::string ANIM_FEVER_MODE_BG         = DIR_ANIM + "fevermode_bg" 
 static const std::string ANIM_FEVER_MODE_FIRE       = DIR_ANIM + "fevermode_fire" + ANIM_EXT;
 static const std::string ANIM_DRAW                  = DIR_ANIM + "character_draw" + ANIM_EXT;
 static const std::string ANIM_DIE                   = DIR_ANIM + "die" + ANIM_EXT;
+static const std::string ANIM_CONTINUE              = DIR_ANIM + "continue" + ANIM_EXT;
 
 static const std::string ANIM_NAME_RUN              = "run";
 static const std::string ANIM_NAME_CLEAR            = "clear";

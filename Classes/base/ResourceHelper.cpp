@@ -41,6 +41,7 @@ void ResourceHelper::preload() {
             ANIM_FEVER_MODE_FIRE,
             ANIM_DRAW,
             ANIM_DIE,
+            ANIM_CONTINUE,
         };
         
         for( string file : files ) {
@@ -52,6 +53,7 @@ void ResourceHelper::preload() {
             string files[] = {
                 ANIM_CLOUD_DARK,
                 ANIM_DIE,
+                ANIM_CONTINUE,
             };
             
             for( string file : files ) {

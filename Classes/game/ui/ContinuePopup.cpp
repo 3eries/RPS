@@ -12,10 +12,11 @@
 
 USING_NS_CC;
 using namespace cocos2d::ui;
+using namespace spine;
 using namespace std;
 
 static const string SCHEDULER_COUNTDOWN = "SCHEDULER_COUNTDOWN";
-static const int    COUNTDOWN           = 10;
+static const int    COUNTDOWN_START     = 10;
 
 static const float ENTER_DURATION       = 0.2f;
 static const float EXIT_DURATION        = 0.2f;
@@ -27,8 +28,7 @@ static const float EXIT_DURATION        = 0.2f;
 ContinuePopup::ContinuePopup() : BasePopup(Type::CONTINUE),
 onVideoListener(nullptr),
 onTimeOutListener(nullptr),
-elapsed(0),
-count(COUNTDOWN) {
+count(COUNTDOWN_START) {
     
 }
 
@@ -55,47 +55,12 @@ void ContinuePopup::onExit() {
 }
 
 /**
- * 카운트 다운 시작
+ * 카운트 다운
  */
 void ContinuePopup::countdown() {
     
-    auto updateCount = [=]() {
-        int i = COUNTDOWN - elapsed;
-        
-        if( i < 0 ) {
-            this->timeOut();
-        } else {
-            i = MAX(0, i);
-            i = MIN(COUNTDOWN-1, i);
-            
-            count = i;
-            this->updateCountdownImage();
-//            countdownLabel->setString(TO_STRING(i));
-        }
-    };
-    
-    updateCount();
-    
-    // 터치 영역 생성
-    auto touchNode = SBNodeUtils::createTouchNode();
-    addChild(touchNode);
-    
-    touchNode->addTouchEventListener([=](Ref*, Widget::TouchEventType eventType) {
-        
-        if( eventType == Widget::TouchEventType::BEGAN ) {
-            // 터치 시 1초 감소
-            elapsed += 1;
-            updateCount();
-        }
-    });
-    
-    // 스케줄러 실행
-    elapsed = 0;
-    
-    schedule([=](float dt) {
-        elapsed += dt;
-        updateCount();
-    }, SCHEDULER_COUNTDOWN);
+    countdownAnim->clearTracks();
+    countdownAnim->setAnimation(0, TO_STRING(count), false);
 }
 
 /**
@@ -107,12 +72,6 @@ void ContinuePopup::timeOut() {
     
     unscheduleAllCallbacks();
     dismiss();
-}
-
-void ContinuePopup::updateCountdownImage() {
-    
-    string file = DIR_IMG_GAME + STR_FORMAT("RSP_continue_%02d.png", count);
-    countdownImage->setTexture(file);
 }
 
 void ContinuePopup::initBackgroundView() {
@@ -129,18 +88,41 @@ void ContinuePopup::initContentView() {
     
     // 타이틀
     // text_continue.png Vec2TC(2, -222) , Size(580, 84)
+    /*
     auto title = Sprite::create(DIR_IMG_GAME + "text_continue.png");
     title->setTag(Tag::IMG_TITLE);
     title->setAnchorPoint(ANCHOR_M);
     title->setPosition(Vec2TC(0, -222));
     addChild(title);
+     */
     
     // 카운트 다운
-    // RSP_continue_10.png Vec2MC(0, 100) , Size(568, 416)
-    countdownImage = Sprite::create(DIR_IMG_GAME + "RSP_continue_10.png");
-    countdownImage->setAnchorPoint(ANCHOR_M);
-    countdownImage->setPosition(COUNTDOWN_POS_CENTER);
-    addChild(countdownImage);
+    countdownAnim = SkeletonAnimation::createWithJsonFile(ANIM_CONTINUE);
+    countdownAnim->setAnchorPoint(ANCHOR_M);
+    countdownAnim->setPosition(Vec2MC(0, 0));
+    countdownAnim->setVisible(false);
+    addChild(countdownAnim);
+    
+    // 애니메이션 시작 리스너
+    countdownAnim->setStartListener([=](spTrackEntry *entry) {
+        
+        CCLOG("countdown animation start: %s", entry->animation->name);
+        // countdownAnim->setVisible(true);
+        countdownAnim->setTimeScale(1);
+    });
+    
+    // 애니메이션 완료 리스너
+    countdownAnim->setCompleteListener([=](spTrackEntry *entry) {
+
+        CCLOG("countdown animation completed: %s", entry->animation->name);
+        
+        if( count > 0 ) {
+            count--;
+            this->countdown();
+        } else {
+            this->timeOut();
+        }
+    });
     
     /*
     countdownLabel = Label::createWithTTF("", FONT_RETRO, 300);
@@ -151,8 +133,20 @@ void ContinuePopup::initContentView() {
     addChild(countdownLabel);
     */
     
+    // 터치 영역
+    auto touchNode = SBNodeUtils::createTouchNode();
+    addChild(touchNode);
+    
+    touchNode->addTouchEventListener([=](Ref*, Widget::TouchEventType eventType) {
+        
+        if( eventType == Widget::TouchEventType::BEGAN ) {
+            countdownAnim->setTimeScale(5.0f);
+        }
+    });
+    
     // 비디오 버튼
     // btn_continue.png Vec2BC(0, 392) , Size(520, 152)
+    /*
     auto videoBtn = SBButton::create(DIR_IMG_GAME + "btn_continue.png");
     videoBtn->setTag(Tag::BTN_VIDEO);
     videoBtn->setZoomScale(0.05f);
@@ -165,7 +159,20 @@ void ContinuePopup::initContentView() {
         onVideoListener();
         this->dismiss();
     });
+    */
+    auto videoBtn = Widget::create();
+    videoBtn->setAnchorPoint(ANCHOR_M);
+    videoBtn->setPosition(Vec2BC(0, 392));
+    videoBtn->setContentSize(Size(520, 152));
+    videoBtn->setTouchEnabled(true);
+    addChild(videoBtn, 1);
     
+    // videoBtn->addChild(SBNodeUtils::createBackgroundNode(videoBtn, Color4B(255,0,0,255*0.5f)));
+    
+    videoBtn->addClickEventListener([=](Ref*) {
+        onVideoListener();
+        this->dismiss();
+    });
 }
 
 /**
@@ -175,10 +182,18 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
 
     BasePopup::runEnterAction(onFinished);
     
+    // 터치 잠금
+    SBDirector::getInstance()->setScreenTouchLocked(true);
+    
+    // 카운트 다운
+    countdownAnim->setVisible(true);
+    countdown();
+    
     // 배경
     runBackgroundFadeInAction(nullptr, 0.15f);
     
     // 타이틀
+    /*
     auto scale1 = ScaleTo::create(0.15f, 1.1f);
     auto scale2 = ScaleTo::create(0.05f, 1.0f);
     auto scaleSeq = Sequence::create(scale1, scale2, nullptr);
@@ -186,10 +201,13 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
     
     // 버튼
     getChildByTag(Tag::BTN_VIDEO)->runAction(scaleSeq->clone());
+     */
     
     // 콜백
     auto delay = DelayTime::create(ENTER_DURATION);
     auto callFunc = CallFunc::create([=]() {
+        
+        SBDirector::getInstance()->setScreenTouchLocked(false);
         
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
@@ -207,12 +225,14 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
     // 배경
     runBackgroundFadeOutAction(nullptr, 0.15f);
     
+    /*
     // 타이틀
     auto scale = ScaleTo::create(0.15f, 0);
     getChildByTag(Tag::IMG_TITLE)->runAction(scale->clone());
     
     // 버튼
     getChildByTag(Tag::BTN_VIDEO)->runAction(scale->clone());
+     */
     
     // 콜백
     SBDirector::getInstance()->setScreenTouchLocked(true);
@@ -233,6 +253,4 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
 void ContinuePopup::onEnterActionFinished() {
     
     BasePopup::onEnterActionFinished();
-    
-    countdown();
 }
