@@ -18,6 +18,7 @@ static const int            CONTINUE_CONDITION_SCORE     = 30;      // 이어하
 static const float          FEVER_END_ALERT_TIME         = 1.0f;    // 피버 모드 종료 알림 시간, n초 전
 
 static const float          DRAW_VIBRATE_DURATION        = 0.1f;    // 비겼을 시 진동 시간
+static const float          GAME_OVER_DELAY              = 1.0f;    // 게임 오버 연출 지연 시간
 
 static const int            BANNER_HEIGHT                = 100;     // 배너 크기, 하드코딩됨. 추후 제거할 수도 있음
 

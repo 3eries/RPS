@@ -28,6 +28,8 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
+static const string SCHEDULER_GAME_OVER_DELAY = "SCHEDULER_GAME_OVER_DELAY";
+
 GameScene::GameScene() :
 gameMgr(GameManager::getInstance()),
 gameView(nullptr) {
@@ -152,14 +154,18 @@ void GameScene::onPreGameOver() {
     touchLockNode->setVisible(true);
     getChildByTag(Tag::LAYER_MENU)->setVisible(false);
     
-    // 이어하기
-    if( gameMgr->getScore() >= CONTINUE_CONDITION_SCORE && gameMgr->getContinueCount() == 0 ) {
-        showContinuePopup();
-    }
-    // 게임 오버
-    else {
-        gameMgr->onGameOver();
-    }
+    // 다음 단계 지연
+    scheduleOnce([=](float dt) {
+        
+        // 이어하기
+        if( gameMgr->getScore() >= CONTINUE_CONDITION_SCORE && gameMgr->getContinueCount() == 0 ) {
+            showContinuePopup();
+        }
+        // 게임 오버
+        else {
+            gameMgr->onGameOver();
+        }
+    }, GAME_OVER_DELAY, SCHEDULER_GAME_OVER_DELAY);
 }
 
 /**
