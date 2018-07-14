@@ -50,6 +50,7 @@ bool BaseTestScene::init() {
     addChild(backBtn);
     
     backBtn->setOnClickListener([=](Node*) {
+        backBtn->setTouchEnabled(false);
         this->onBack();
     });
     

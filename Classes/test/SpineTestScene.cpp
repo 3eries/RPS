@@ -21,7 +21,7 @@ using namespace std;
 static const string ANIM_FILES[] = {
     ANIM_LOGO, ANIM_CLOUD, ANIM_CLOUD_DARK,
     ANIM_FEVER_MODE_BG, ANIM_FEVER_MODE_FIRE,
-    ANIM_DRAW, ANIM_DIE,
+    ANIM_DRAW, ANIM_DIE, ANIM_CONTINUE,
 };
 
 static const string ANIM_NAMES[] = {
@@ -308,6 +308,8 @@ string SpineTestScene::findAnimationFile(const string &findFile) {
 
 string SpineTestScene::findAnimationName(const string &findName) {
 
+    // return anim->findAnimation(findName) ? findName : "";
+    
     if( findName == "" ) {
         return "";
     }
@@ -318,7 +320,8 @@ string SpineTestScene::findAnimationName(const string &findName) {
         }
     }
     
-    return "";
+    return findName;
+    // return "";
 }
 
 void SpineTestScene::editBoxEditingDidBegin(cocos2d::ui::EditBox* editBox)
