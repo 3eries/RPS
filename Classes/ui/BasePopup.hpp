@@ -20,6 +20,7 @@ class BasePopup : public SBBasePopup {
 public:
     enum class Type {
         NONE,
+        EXIT_APP,
         CREDIT,
         SETTING,
         RANKING,

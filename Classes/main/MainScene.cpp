@@ -16,6 +16,7 @@
 #include "MainMenu.hpp"
 #include "CreditPopup.hpp"
 #include "RankingPopup.hpp"
+#include "ExitAlertPopup.hpp"
 
 #include "../test/TestMenuScene.hpp"
 
@@ -51,7 +52,25 @@ bool MainScene::init() {
                 return;
             }
             
-            SBSystemUtils::exitApp();
+            if( SceneManager::getInstance()->onBackKeyReleased() ) {
+                return;
+            }
+            
+            // 앱 종료 알림 팝업 처리
+            auto popup = PopupManager::getInstance()->getPopup(BasePopup::Type::EXIT_APP);
+            
+            // 팝업 제거
+            if( popup ) {
+                popup->dismissWithAction();
+            }
+            // 팝업 생성
+            else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+                auto popup = ExitAlertPopup::create();
+                popup->setOnExitAppListener([=]() {
+                    SBSystemUtils::exitApp();
+                });
+                this->addChild(popup, SBZOrder::TOP);
+            }
         };
         
         getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
