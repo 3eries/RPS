@@ -66,10 +66,28 @@ bool MainScene::init() {
             // 팝업 생성
             else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
                 auto popup = ExitAlertPopup::create();
+                
+                // 앱 종료
                 popup->setOnExitAppListener([=]() {
                     SBSystemUtils::exitApp();
                 });
-                this->addChild(popup, SBZOrder::TOP);
+                
+                // 팝업 등/퇴장에 따른 우상단 버튼 설정
+                popup->setOnPopupEventListener([=](Node *sender, PopupEventType eventType) {
+                    
+                    switch( eventType ) {
+                        case PopupEventType::ENTER_ACTION: {
+                            commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::BACK);
+                        } break;
+                            
+                        case PopupEventType::EXIT_ACTION: {
+                            commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING);
+                        } break;
+                            
+                        default: break;
+                    }
+                });
+                this->addChild(popup, POPUP_ZORDER);
             }
         };
         

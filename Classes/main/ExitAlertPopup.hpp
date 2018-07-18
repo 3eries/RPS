@@ -26,6 +26,8 @@ private:
     
     bool init() override;
     
+    void onEnter() override;
+    
     void initBackgroundView() override;
     void initContentView() override;
     

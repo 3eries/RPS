@@ -33,9 +33,14 @@ bool ExitAlertPopup::init() {
         return false;
     }
     
-    runEnterAction();
-    
     return true;
+}
+
+void ExitAlertPopup::onEnter() {
+    
+    BasePopup::onEnter();
+    
+    runEnterAction();
 }
 
 void ExitAlertPopup::initBackgroundView() {
@@ -49,8 +54,8 @@ void ExitAlertPopup::initContentView() {
     
     BasePopup::initContentView();
     
-    // RSP_popup_bg_quit.png Vec2MC(0, 0) , Size(552, 568)
-    stoneBg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_quit.png");
+    // RSP_popup_bg_give_up.png Vec2MC(0, 0) , Size(552, 568)
+    stoneBg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_give_up.png");
     stoneBg->setAnchorPoint(ANCHOR_M);
     stoneBg->setPosition(Vec2MC(0, 0));
     addContentChild(stoneBg);
@@ -58,26 +63,14 @@ void ExitAlertPopup::initContentView() {
     const Size SIZE(stoneBg->getContentSize());
     
     // title
-    // RSP_popup_title_quit.png Vec2MC(6, 206) , Size(236, 68)
-    auto title = Sprite::create(DIR_IMG_GAME + "RSP_popup_title_quit.png");
+    // RSP_popup_title_give_up.png Vec2MC(0, 210) , Size(392, 60)
+    auto title = Sprite::create(DIR_IMG_GAME + "RSP_popup_title_give_up.png");
     title->setAnchorPoint(ANCHOR_M);
-    title->setPosition(Vec2MC(SIZE, 0, 206));
+    title->setPosition(Vec2MC(SIZE, 0, 210));
     stoneBg->addChild(title);
     
-    // 닫기 버튼
-    // RSP_btn_close.png Vec2MC(237, 249) , Size(100, 90)
-    auto closeBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_close.png");
-    closeBtn->setZoomScale(0.07f);
-    closeBtn->setAnchorPoint(ANCHOR_M);
-    closeBtn->setPosition(Vec2MC(SIZE, 237, 249));
-    stoneBg->addChild(closeBtn);
-    
-    closeBtn->setOnClickListener([=](Node*) {
-        this->dismissWithAction();
-    });
-    
-    // My Hand
-    // RSP_icon_scissors.png Vec2MC(-4, 48) , Size(104, 88)
+    // god's hand
+    // RSP_icon_scissors.png Vec2MC(-3, 41) , Size(104, 88)
     const auto myHand = getRandomHand();
     
     {
@@ -93,11 +86,11 @@ void ExitAlertPopup::initContentView() {
         
         auto spr = Sprite::create(DIR_IMG_GAME + file);
         spr->setAnchorPoint(ANCHOR_M);
-        spr->setPosition(Vec2MC(SIZE, 0, 48));
+        spr->setPosition(Vec2MC(SIZE, 0, 41));
         stoneBg->addChild(spr);
     }
     
-    // You Choice
+    // my choice
     // RSP_btn_rock_quit.png Vec2MC(-128, -172) , Size(240, 152)
     // RSP_btn_paper_quit.png Vec2MC(128, -172) , Size(240, 152)
     {
@@ -134,18 +127,58 @@ void ExitAlertPopup::initContentView() {
         
         // Lose Hand
 //        auto loseHandSpr = SBEffectSprite::create(DIR_IMG_GAME + getFile(getLoseHand(myHand)));
-        auto loseHandBtn = SBButton::create(DIR_IMG_GAME + getFile(getLoseHand(myHand)));
-        loseHandBtn->setZoomScale(0);
+//        auto loseHandBtn = SBButton::create(DIR_IMG_GAME + getFile(getLoseHand(myHand)));
+        auto loseHandBtn = Widget::create();
+        loseHandBtn->setTouchEnabled(true);
         loseHandBtn->setAnchorPoint(ANCHOR_M);
         loseHandBtn->setPosition(POS[1]);
-//        loseHandSpr->setEffect(SBEffect::create("shaders/example_greyScale.fsh"));
         stoneBg->addChild(loseHandBtn);
         
-        // loseHandBtn->addChild(SBNodeUtils::createBackgroundNode(loseHandBtn, Color4B(0,0,0,255*0.5f)));
+        // sprite
+        {
+            auto spr = superbomb::EffectSprite::create(DIR_IMG_GAME + getFile(getLoseHand(myHand)));
+            spr->setAnchorPoint(ANCHOR_M);
+            spr->setPosition(Vec2MC(spr->getContentSize(), 0, 0));
+//            spr->setEffect(superbomb::Effect::create("shaders/example_GreyScale.fsh"));
+            loseHandBtn->addChild(spr);
+
+            loseHandBtn->setContentSize(spr->getContentSize());
+        }
         
-        loseHandBtn->setOnClickListener([=](Node*) {
+        // 일반 투명
+        /*
+        {
+            auto stencil = superbomb::EffectSprite::create(DIR_IMG_GAME + getFile(getLoseHand(myHand)));
+            stencil->setAnchorPoint(Vec2::ZERO);
+            stencil->setPosition(Vec2::ZERO);
+            
+            auto spr = superbomb::EffectSprite::create(DIR_IMG_GAME + getFile(getLoseHand(myHand)));
+            
+            loseHandBtn->setContentSize(spr->getContentSize());
+            
+            auto clippingNode = ClippingNode::create(stencil);
+            clippingNode->setAnchorPoint(ANCHOR_M);
+            clippingNode->setPosition(Vec2MC(spr->getContentSize(), 0, 0));
+            clippingNode->setContentSize(spr->getContentSize());
+            clippingNode->setAlphaThreshold(0);
+//            clippingNode->setInverted(true);
+            loseHandBtn->addChild(clippingNode);
+            
+            spr->setAnchorPoint(ANCHOR_M);
+            spr->setPosition(Vec2MC(spr->getContentSize(), 0, 0));
+            clippingNode->addChild(spr);
+
+            clippingNode->addChild(SBNodeUtils::createBackgroundNode(clippingNode, Color4B(0,0,0,255*0.5f)));
+        }
+        */
+        
+        loseHandBtn->addClickEventListener([=](Ref*) {
             this->dismissWithAction();
         });
+        
+//        loseHandBtn->setOnClickListener([=](Node*) {
+//            this->dismissWithAction();
+//        });
     }
 }
 
