@@ -61,50 +61,43 @@ filter: Linear,Linear
 repeat: none
 RSP_continue_05
   rotate: false
-  xy: 2, 574
+  xy: 2, 420
   size: 296, 416
   orig: 296, 416
   offset: 0, 0
   index: -1
 RSP_continue_06
   rotate: false
-  xy: 2, 156
+  xy: 2, 2
   size: 296, 416
   orig: 296, 416
   offset: 0, 0
   index: -1
 RSP_continue_07
   rotate: false
-  xy: 300, 574
+  xy: 300, 420
   size: 296, 416
   orig: 296, 416
   offset: 0, 0
   index: -1
 RSP_continue_08
   rotate: false
-  xy: 300, 156
+  xy: 300, 2
   size: 296, 416
   orig: 296, 416
   offset: 0, 0
   index: -1
 RSP_continue_09
   rotate: false
-  xy: 598, 574
+  xy: 598, 420
   size: 296, 416
   orig: 296, 416
   offset: 0, 0
   index: -1
 bg_black
   rotate: false
-  xy: 598, 252
+  xy: 598, 98
   size: 240, 320
   orig: 240, 320
-  offset: 0, 0
-  index: -1
-btn_continue
-  rotate: false
-  xy: 2, 2
-  size: 520, 152
-  orig: 520, 152
   offset: 0, 0
   index: -1
