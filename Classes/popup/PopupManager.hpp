@@ -15,30 +15,7 @@
 
 #include "BasePopup.hpp"
 
-#pragma mark- PopupListener
-
-enum class PopupEventType {
-    ENTER = 0,                  // 팝업 등장
-    EXIT,                       // 팝업 퇴장
-    ENTER_ACTION,               // 팝업 등장 연출 시작
-    EXIT_ACTION,                // 팝업 퇴장 연출 시작
-    ENTER_ACTION_FINISHED,      // 팝업 등장 연출 완료
-    EXIT_ACTION_FINISHED,       // 팝업 퇴장 연출 완료
-};
-
-class PopupListener : public cocos2d::Ref {
-public:
-    SB_REF_CREATE_FUNC(PopupListener);
-    
-    PopupListener() : target(nullptr), onEvent(nullptr) {}
-    
-    CC_SYNTHESIZE(cocos2d::Node*, target, Target);
-    std::function<void(BasePopup*, PopupEventType)> onEvent;
-};
-
-#pragma mark- PopupManager
-
-static const int POPUP_ZORDER = SBZOrder::MIDDLE;
+#include "PopupListener.hpp"
 
 class PopupManager {
 public:
@@ -55,6 +32,8 @@ public:
     
     BasePopup* getPopup(BasePopup::Type type);
     size_t     getPopupCount();
+    BasePopup* getFrontPopup();
+    
     bool       exists(BasePopup::Type type);
     
     void addListener(PopupListener *listener);
@@ -66,7 +45,7 @@ public:
     void dispatchEvent(BasePopup *popup, PopupEventType eventType);
     
 private:
-    cocos2d::Vector<BasePopup*> popups;
+    CC_SYNTHESIZE_READONLY(cocos2d::Vector<BasePopup*>, popups, Popups);
     cocos2d::Vector<PopupListener*> listeners;
 };
 

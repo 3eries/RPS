@@ -47,8 +47,6 @@ void PopupManager::addPopup(BasePopup *popup) {
     
     popups.pushBack(popup);
     
-    dispatchEvent(popup, PopupEventType::ENTER);
-    
     CCLOG("PopupManager::addPopup type: %d count: %d", (int)popup->getType(), (int)getPopupCount());
 }
 
@@ -60,8 +58,6 @@ void PopupManager::removePopup(BasePopup *popup) {
     CCASSERT(popup != nullptr, "PopupManager::removePopup error: popup must be not null");
     
     CCLOG("PopupManager::removePopup type: %d count: %d", (int)popup->getType(), (int)getPopupCount()-1);
-    
-    dispatchEvent(popup, PopupEventType::EXIT);
     
     if( popups.contains(popup) ) {
         popups.eraseObject(popup);
@@ -87,6 +83,14 @@ BasePopup* PopupManager::getPopup(BasePopup::Type type) {
  */
 size_t PopupManager::getPopupCount() {
     return popups.size();
+}
+
+/**
+ * 가장 앞에 나와 있는 팝업 반환
+ */
+BasePopup* PopupManager::getFrontPopup() {
+    
+    return popups.at(popups.size()-1);
 }
 
 /**
