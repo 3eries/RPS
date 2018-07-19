@@ -44,7 +44,7 @@ SplashScene::~SplashScene() {
 
 bool SplashScene::init() {
     
-    if( !Scene::init() ) {
+    if( !BaseScene::init() ) {
         return false;
     }
     
@@ -65,14 +65,14 @@ bool SplashScene::init() {
 
 void SplashScene::onEnter() {
     
-    Scene::onEnter();
+    BaseScene::onEnter();
 }
 
 void SplashScene::onExit() {
     
 //    AdsManager::getInstance()->getEventDispatcher()->removeListener(this);
     
-    Scene::onExit();
+    BaseScene::onExit();
 }
 
 /**

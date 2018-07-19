@@ -52,7 +52,7 @@ SceneManager::~SceneManager() {
 /**
  * Scene 생성
  */
-Scene* SceneManager::createScene(SceneType type) {
+BaseScene* SceneManager::createScene(SceneType type) {
     
     switch( type ) {
         case SceneType::SPLASH:          return SplashScene::create();
@@ -85,7 +85,7 @@ void SceneManager::createGameView() {
 /**
  * Scene 전환
  */
-void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
+void SceneManager::replace(SceneType type, function<BaseScene*()> createSceneFunc) {
     
     CCASSERT(type != SceneType::NONE, "SceneManager::replaceScene error: invalid scene type.");
     CCASSERT(createSceneFunc != nullptr, "SceneManager::replaceScene error: create scene function is null.");
@@ -94,15 +94,15 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
         return;
     }
     
-    auto prevSceneType = this->sceneType;
-    auto prevScene = this->scene;
+    auto prevSceneType = sceneType;
+    auto prevScene = scene;
     
     isRunningReplaceScene = true;
-    this->sceneType = type;
+    sceneType = type;
 
     // Scene 생성
-    auto scene = createSceneFunc();
-    this->scene = scene;
+    scene = createSceneFunc();
+    auto trans = (Scene*)scene;
     
     CCASSERT(scene != nullptr, "SceneManager::replaceScene error: invalid scene.");
     
@@ -121,25 +121,28 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
                 auto splashScene = dynamic_cast<SplashScene*>(prevScene);
                 
                 if( splashScene->isLogoMode() ) {
-                    scene = TransitionCrossFade::create(REPLACE_DURATION_SPLASH_TO_MAIN, scene);
+                    trans = TransitionCrossFade::create(REPLACE_DURATION_SPLASH_TO_MAIN, scene);
                 } else {
-                    scene = TransitionFade::create(REPLACE_DURATION_MAIN, scene);
+                    trans = TransitionFade::create(REPLACE_DURATION_MAIN, scene);
                 }
             }
             // XXX -> Main
             else {
-                scene = TransitionFade::create(REPLACE_DURATION_MAIN, scene);
+                trans = TransitionFade::create(REPLACE_DURATION_MAIN, scene);
             }
         } break;
         case SceneType::GAME: {
-            scene = TransitionFade::create(REPLACE_DURATION_GAME, scene);
+            trans = TransitionFade::create(REPLACE_DURATION_GAME, scene);
         } break;
             
         default: break;
     }
     
     // Scene 전환
-    Director::getInstance()->replaceScene(scene);
+    Director::getInstance()->replaceScene(trans);
+    
+    // 터치 잠금 강제 해제
+    SBDirector::getInstance()->setScreenTouchLocked(false);
     
     // Scene 전환 중복 방지
     Director::getInstance()->getScheduler()->schedule([=](float dt) {
@@ -149,7 +152,7 @@ void SceneManager::replace(SceneType type, function<Scene*()> createSceneFunc) {
 
 void SceneManager::replace(SceneType type) {
     
-    return replace(type, [=]() -> Scene* {
+    return replace(type, [=]() -> BaseScene* {
         return this->createScene(type);
     });
 }
@@ -179,8 +182,12 @@ SceneType SceneManager::getSceneType() {
     return instance->sceneType;
 }
 
-Scene* SceneManager::getScene() {
+BaseScene* SceneManager::getScene() {
     return instance->scene;
+}
+
+CommonMenu* SceneManager::getCommonMenu() {
+    return getScene()->getCommonMenu();
 }
 
 GameView* SceneManager::getGameView() {

@@ -13,7 +13,6 @@
 #include "PopupManager.hpp"
 #include "UIHelper.hpp"
 
-#include "MainMenu.hpp"
 #include "CreditPopup.hpp"
 #include "RankingPopup.hpp"
 #include "ExitAlertPopup.hpp"
@@ -39,7 +38,7 @@ MainScene::~MainScene() {
 
 bool MainScene::init() {
     
-    if( !Scene::init() ) {
+    if( !BaseScene::init() ) {
         return false;
     }
     
@@ -67,27 +66,12 @@ bool MainScene::init() {
             else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
                 auto popup = ExitAlertPopup::create();
                 
-                // 앱 종료
+                // 앱 종료 리스너
                 popup->setOnExitAppListener([=]() {
                     SBSystemUtils::exitApp();
                 });
                 
-                // 팝업 등/퇴장에 따른 우상단 버튼 설정
-                popup->setOnPopupEventListener([=](Node *sender, PopupEventType eventType) {
-                    
-                    switch( eventType ) {
-                        case PopupEventType::ENTER_ACTION: {
-                            commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::BACK);
-                        } break;
-                            
-                        case PopupEventType::EXIT_ACTION: {
-                            commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING);
-                        } break;
-                            
-                        default: break;
-                    }
-                });
-                this->addChild(popup, POPUP_ZORDER);
+                this->addChild(popup, PopupZOrder::MIDDLE);
             }
         };
         
@@ -109,13 +93,14 @@ bool MainScene::init() {
     
     initBg();
     initMenu();
+    initCommonMenu();
     
     return true;
 }
 
 void MainScene::onEnter() {
     
-    Scene::onEnter();
+    BaseScene::onEnter();
     
     addPopupListener();
     
@@ -127,14 +112,14 @@ void MainScene::onEnter() {
 
 void MainScene::onEnterTransitionDidFinish() {
     
-    Scene::onEnterTransitionDidFinish();
+    BaseScene::onEnterTransitionDidFinish();
 }
 
 void MainScene::onExit() {
     
     PopupManager::getInstance()->removeListener(this);
     
-    Scene::onExit();
+    BaseScene::onExit();
 }
 
 /**
@@ -154,7 +139,7 @@ void MainScene::onClick(Node *sender) {
         // 크레딧
         case Tag::BTN_TITLE: {
             auto popup = CreditPopup::create();
-            addChild(popup, SBZOrder::TOP);
+            addChild(popup, PopupZOrder::TOP);
         } break;
         
         // 광고 제거 아이템
@@ -217,22 +202,17 @@ void MainScene::initMenu() {
     if( User::isOwnRemoveAdsItem() ) {
         contentView->getChildByTag(Tag::BTN_REMOVE_ADS)->setVisible(false);
     }
-    
-    // 기본 메뉴
-    auto mainMenu = MainMenu::create();
-    addChild(mainMenu, POPUP_ZORDER+1);
-    
-    mainMenu->setOnClickListener([=](MainMenu::Tag tag) -> bool {
-        return false;
-    });
 }
 
 void MainScene::addPopupListener() {
     
     auto listener = PopupListener::create();
     listener->setTarget(this);
-    listener->onEvent = [=](BasePopup *popup, PopupEventType type) {
+    listener->onEvent = [=](Node *sender, PopupEventType type) {
         
+        auto popup = dynamic_cast<BasePopup*>(sender);
+        
+        // 랭킹 팝업 연출에 따른 메인화면 메뉴 처리
         if( popup->getType() != BasePopup::Type::RANKING ) {
             return;
         }
@@ -250,7 +230,7 @@ void MainScene::addPopupListener() {
             } break;
                 
             case PopupEventType::EXIT_ACTION: {
-                contentView->runAction(MoveTo::create(RankingPopup::SLIDE_OUT_DURATION*1.2f,
+                contentView->runAction(MoveTo::create(RankingPopup::SLIDE_OUT_DURATION,
                                                       Vec2(0, 0)));
                 man->setVisible(true);
             } break;

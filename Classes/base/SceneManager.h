@@ -12,6 +12,8 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
+#include "BaseScene.hpp"
+
 class GameView;
 
 enum class SceneType {
@@ -36,11 +38,11 @@ public:
 private:
     SceneManager();
     
-    cocos2d::Scene* createScene(SceneType type);
+    BaseScene* createScene(SceneType type);
     void createGameView();
     
 public:
-    void replace(SceneType type, std::function<cocos2d::Scene*()> createSceneFunc);
+    void replace(SceneType type, std::function<BaseScene*()> createSceneFunc);
     void replace(SceneType type);
     
     bool onBackKeyReleased();
@@ -48,7 +50,8 @@ public:
 // getter
 public:
     static SceneType getSceneType();
-    static cocos2d::Scene* getScene();
+    static BaseScene* getScene();
+    static CommonMenu* getCommonMenu();
     static GameView* getGameView();
     
     // 임시
@@ -56,7 +59,7 @@ public:
     
 private:
     SceneType sceneType;
-    cocos2d::Scene *scene;
+    BaseScene *scene;
     GameView *gameView;
     
     bool isRunningReplaceScene;

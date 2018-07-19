@@ -12,7 +12,9 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-class SplashScene : public cocos2d::Scene {
+#include "BaseScene.hpp"
+
+class SplashScene : public BaseScene {
 public:
     CREATE_FUNC(SplashScene);
     ~SplashScene();

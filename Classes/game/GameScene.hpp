@@ -13,24 +13,21 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
+
+#include "BaseScene.hpp"
 #include "RSP.h"
 
 #include "GameManager.hpp"
 
 class GameView;
-class MainMenu;
 
-class GameScene : public cocos2d::Scene, public SBNodeListener, public GameListener {
+class GameScene : public BaseScene, public GameListener {
 public:
     CREATE_FUNC(GameScene);
     ~GameScene();
     
 private:
     enum Tag {
-        LAYER_MENU               = 100,
-        
-        BTN_PAUSE                = 1000,
-        
         POPUP_PAUSE              = 10000,
         POPUP_CONTINUE,
         POPUP_GAME_OVER,
@@ -45,7 +42,7 @@ private:
     void onExit() override;
     
     void initBg();
-    void initMenu();
+    void initCommonMenu() override;
     
     void reset();
     
@@ -65,15 +62,15 @@ public:
     void showPausePopup();
     void showContinuePopup();
     void showNewRecordPopup(int ranking, int score);
-    void showGameOver();
+    void showGameOverPopup();
 
     void onClick(cocos2d::Node *sender) override;
+    bool onClickTopMenu(TopMenu::Tag tag);
+    bool onClickBottomMenu(BottomMenu::Tag tag);
     
 private:
     GameManager *gameMgr;
     CC_SYNTHESIZE(GameView*, gameView, GameView);
-    
-    MainMenu *mainMenu;
     
     cocos2d::Node *touchLockNode;   // 터치 방지 노드
     cocos2d::Sprite *banner; // 임시

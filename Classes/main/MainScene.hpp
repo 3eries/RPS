@@ -14,7 +14,9 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
-class MainScene : public cocos2d::Scene, public SBNodeListener {
+#include "BaseScene.hpp"
+
+class MainScene : public BaseScene {
 private:
     enum Tag {
         VIP_MARK,
@@ -47,7 +49,7 @@ private:
     void onClick(cocos2d::Node *sender) override;
     
 private:
-    cocos2d::Node *contentView;
+    cocos2d::Node *contentView; // 메인 Scene 컨텐트 뷰
 };
 
 #endif /* MainScene_hpp */
