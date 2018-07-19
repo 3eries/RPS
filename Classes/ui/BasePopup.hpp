@@ -14,6 +14,8 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
+#include "PopupListener.hpp"
+
 class PopupManager;
 
 class BasePopup : public SBBasePopup {
@@ -40,13 +42,15 @@ protected:
     virtual void onEnter() override;
     virtual void onExit() override;
     
+    virtual void onPopupEvent(PopupEventType eventType);
+    
     virtual void setBackgroundColor(const cocos2d::Color4B &color);
     
 public:
     virtual void dismissWithAction(SBCallback onFinished = nullptr);
     
-    virtual void runEnterAction(SBCallback onFinished);
-    virtual void runExitAction(SBCallback onFinished);
+    virtual void runEnterAction(SBCallback onFinished = nullptr);
+    virtual void runExitAction(SBCallback onFinished = nullptr);
 
     virtual void onEnterActionFinished();
     virtual void onExitActionFinished();
@@ -59,6 +63,7 @@ public:
 protected:
     PopupManager *popupMgr;
     CC_SYNTHESIZE_READONLY(Type, type, Type);
+    CC_SYNTHESIZE(OnPopupEvent, onPopupEventListener, OnPopupEventListener);
 };
 
 #endif /* BasePopup_hpp */

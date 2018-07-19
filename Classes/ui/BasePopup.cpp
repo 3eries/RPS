@@ -17,7 +17,8 @@ using namespace std;
 
 BasePopup::BasePopup(Type type) : SBBasePopup(),
 type(type),
-popupMgr(PopupManager::getInstance()) {
+popupMgr(PopupManager::getInstance()),
+onPopupEventListener(nullptr) {
     
 }
 
@@ -32,6 +33,7 @@ bool BasePopup::init() {
     }
     
     popupMgr->addPopup(this);
+    onPopupEvent(PopupEventType::ENTER);
     
     return true;
 }
@@ -43,9 +45,19 @@ void BasePopup::onEnter() {
 
 void BasePopup::onExit() {
     
+    onPopupEvent(PopupEventType::EXIT);
     popupMgr->removePopup(this);
     
     SBBasePopup::onExit();
+}
+
+void BasePopup::onPopupEvent(PopupEventType eventType) {
+    
+    popupMgr->dispatchEvent(this, eventType);
+    
+    if( onPopupEventListener ) {
+        onPopupEventListener(this, eventType);
+    }
 }
 
 void BasePopup::setBackgroundColor(const Color4B &color) {
@@ -76,7 +88,7 @@ void BasePopup::dismissWithAction(SBCallback onFinished) {
  */
 void BasePopup::runEnterAction(SBCallback onFinished) {
     
-    popupMgr->dispatchEvent(this, PopupEventType::ENTER_ACTION);
+    onPopupEvent(PopupEventType::ENTER_ACTION);
 }
 
 /**
@@ -84,15 +96,15 @@ void BasePopup::runEnterAction(SBCallback onFinished) {
  */
 void BasePopup::runExitAction(SBCallback onFinished) {
     
-    popupMgr->dispatchEvent(this, PopupEventType::EXIT_ACTION);
+    onPopupEvent(PopupEventType::EXIT_ACTION);
 }
 
 /**
  * 등장 연출 완료
  */
 void BasePopup::onEnterActionFinished() {
-    
-    popupMgr->dispatchEvent(this, PopupEventType::ENTER_ACTION_FINISHED);
+   
+    onPopupEvent(PopupEventType::ENTER_ACTION_FINISHED);
 }
 
 /**
@@ -100,7 +112,7 @@ void BasePopup::onEnterActionFinished() {
  */
 void BasePopup::onExitActionFinished() {
     
-    popupMgr->dispatchEvent(this, PopupEventType::EXIT_ACTION_FINISHED);
+    onPopupEvent(PopupEventType::EXIT_ACTION_FINISHED);
 }
 
 /**
