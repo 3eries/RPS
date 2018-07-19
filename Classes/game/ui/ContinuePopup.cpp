@@ -15,15 +15,10 @@ using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
 
-static const string SCHEDULER_COUNTDOWN = "SCHEDULER_COUNTDOWN";
-static const int    COUNTDOWN_START     = 10;
+static const int   COUNTDOWN_START     = 10;
 
 static const float ENTER_DURATION       = 0.2f;
 static const float EXIT_DURATION        = 0.2f;
-
-#define COUNTDOWN_POS_LEFT              Vec2MC(-800, 100)
-#define COUNTDOWN_POS_CENTER            Vec2MC(0, 100)
-#define COUNTDOWN_POS_RIGHT             Vec2MC(800, 100)
 
 ContinuePopup::ContinuePopup() : BasePopup(Type::CONTINUE),
 onVideoListener(nullptr),
@@ -42,9 +37,18 @@ bool ContinuePopup::init() {
         return false;
     }
     
-    runEnterAction();
+    initMenu();
+    
+    // getScheduler()->setTimeScale(0.1f);
     
     return true;
+}
+
+void ContinuePopup::onEnter() {
+    
+    BasePopup::onEnter();
+    
+    runEnterAction();
 }
 
 void ContinuePopup::onExit() {
@@ -59,6 +63,7 @@ void ContinuePopup::countdown() {
     
     countdownAnim->clearTracks();
     countdownAnim->setAnimation(0, TO_STRING(count), false);
+    countdownAnim->update(0);
 }
 
 /**
@@ -101,18 +106,28 @@ void ContinuePopup::initContentView() {
     countdownAnim->setVisible(false);
     addChild(countdownAnim);
     
+    // SBSpineHelper::clearAnimation(countdownAnim, ANIM_NAME_CLEAR);
+    
     // 애니메이션 시작 리스너
     countdownAnim->setStartListener([=](spTrackEntry *entry) {
         
         CCLOG("countdown animation start: %s", entry->animation->name);
         // countdownAnim->setVisible(true);
         countdownAnim->setTimeScale(1);
+        
+//        if( count == 0 ) {
+//            countdownAnim->setTimeScale(0.1f);
+//        }
     });
     
     // 애니메이션 완료 리스너
     countdownAnim->setCompleteListener([=](spTrackEntry *entry) {
 
         CCLOG("countdown animation completed: %s", entry->animation->name);
+
+        if( !SBStringUtils::isInteger(entry->animation->name) ) {
+            return;
+        }
         
         if( count > 0 ) {
             count--;
@@ -142,38 +157,49 @@ void ContinuePopup::initMenu() {
         
         if( eventType == Widget::TouchEventType::BEGAN ) {
             countdownAnim->setTimeScale(5.0f);
+            
+            /*
+            if( count > 0 ) {
+                count--;
+                SBSpineHelper::clearAnimation(countdownAnim, ANIM_NAME_CLEAR);
+                // countdownAnim->clearTracks();
+                this->countdown();
+            } else {
+                countdownAnim->setTimeScale(5.0f);
+            }
+            */
         }
     });
     
     // 비디오 버튼
     // btn_continue.png Vec2BC(0, 392) , Size(520, 152)
-    /*
-     auto videoBtn = SBButton::create(DIR_IMG_GAME + "btn_continue.png");
-     videoBtn->setTag(Tag::BTN_VIDEO);
-     videoBtn->setZoomScale(0.05f);
-     videoBtn->setAnchorPoint(ANCHOR_M);
-     videoBtn->setPosition(Vec2BC(0, 392));
-     addChild(videoBtn, 1);
-     
-     videoBtn->setOnClickListener([=](Node*) {
-     
-     onVideoListener();
-     this->dismiss();
-     });
-     */
-    auto videoBtn = Widget::create();
+    auto videoBtn = SBButton::create(DIR_IMG_GAME + "btn_continue.png");
+    videoBtn->setTag(Tag::BTN_VIDEO);
+    videoBtn->setZoomScale(0.05f);
     videoBtn->setAnchorPoint(ANCHOR_M);
     videoBtn->setPosition(Vec2BC(0, 392));
-    videoBtn->setContentSize(Size(520, 152));
-    videoBtn->setTouchEnabled(true);
     addChild(videoBtn, 1);
     
-    // videoBtn->addChild(SBNodeUtils::createBackgroundNode(videoBtn, Color4B(255,0,0,255*0.5f)));
-    
-    videoBtn->addClickEventListener([=](Ref*) {
+    videoBtn->setOnClickListener([=](Node*) {
         onVideoListener();
         this->dismiss();
+        
     });
+    
+    // 투명 영역 버튼
+//    auto videoBtn = Widget::create();
+//    videoBtn->setAnchorPoint(ANCHOR_M);
+//    videoBtn->setPosition(Vec2BC(0, 392));
+//    videoBtn->setContentSize(Size(520, 152));
+//    videoBtn->setTouchEnabled(true);
+//    addChild(videoBtn, 1);
+//
+//    // videoBtn->addChild(SBNodeUtils::createBackgroundNode(videoBtn, Color4B(255,0,0,255*0.5f)));
+//
+//    videoBtn->addClickEventListener([=](Ref*) {
+//        onVideoListener();
+//        this->dismiss();
+//    });
 }
 
 /**
@@ -183,27 +209,32 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
 
     BasePopup::runEnterAction(onFinished);
     
+    // 터치 잠금
+    SBDirector::getInstance()->setScreenTouchLocked(true);
+    
     // 카운트 다운
     countdownAnim->setVisible(true);
     countdown();
     
     // 배경
-    runBackgroundFadeInAction(nullptr, 0.15f);
+    // runBackgroundFadeInAction(nullptr, ENTER_DURATION * 0.85f);
     
     // 타이틀
-    /*
     auto scale1 = ScaleTo::create(0.15f, 1.1f);
     auto scale2 = ScaleTo::create(0.05f, 1.0f);
     auto scaleSeq = Sequence::create(scale1, scale2, nullptr);
-    getChildByTag(Tag::IMG_TITLE)->runAction(scaleSeq->clone());
+    // getChildByTag(Tag::IMG_TITLE)->runAction(scaleSeq->clone());
     
     // 버튼
+    getChildByTag(Tag::BTN_VIDEO)->setScale(0);
     getChildByTag(Tag::BTN_VIDEO)->runAction(scaleSeq->clone());
-     */
     
     // 콜백
     auto delay = DelayTime::create(ENTER_DURATION);
     auto callFunc = CallFunc::create([=]() {
+        
+        // 터치 잠금 해제
+        SBDirector::getInstance()->setScreenTouchLocked(false);
         
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
@@ -219,7 +250,7 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
     BasePopup::runExitAction(onFinished);
     
     // 배경
-    runBackgroundFadeOutAction(nullptr, 0.15f);
+    // runBackgroundFadeOutAction(nullptr, 0.15f);
     
     /*
     // 타이틀
@@ -237,6 +268,7 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
     auto callFunc = CallFunc::create([=]() {
         
         SBDirector::getInstance()->setScreenTouchLocked(false);
+        
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     });
@@ -249,6 +281,4 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
 void ContinuePopup::onEnterActionFinished() {
     
     BasePopup::onEnterActionFinished();
-    
-    initMenu();
 }

@@ -20,7 +20,7 @@ class ContinuePopup : public BasePopup {
 private:
     enum Tag {
         // IMG_TITLE = 100,
-        // BTN_VIDEO,
+        BTN_VIDEO = 100,
     };
     
 public:
@@ -31,6 +31,7 @@ private:
     ContinuePopup();
     
     bool init() override;
+    void onEnter() override;
     void onExit() override;
     
     void initBackgroundView() override;
