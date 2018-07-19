@@ -26,9 +26,10 @@ struct Member {
 
 // ART PROGRAMMING DESIGN
 static const vector<Member> MEMBERS = {
-    Member("", "MW9", "PROGRAMMING"),
-    Member("", "W0N", "DESIGN"),
-    Member("", "B3O", "ART"),
+    Member("RSP_icon_character_mw9.png", "MW9", "PROGRAMMING"),
+    Member("RSP_icon_character_w0n.png", "W0N", "DESIGN"),
+    Member("RSP_icon_character_b30.png", "B3O", "ART"),
+    Member("RSP_icon_character_sjb.png", "SJB", "SOUND"),
 };
 
 static const std::string FONT_NORMAL = "fonts/BorisBlackBloxx.ttf";
@@ -104,42 +105,54 @@ void CreditPopup::initBackgroundView() {
 
 void CreditPopup::initCredit() {
     
+    // logo_3eries.png Vec2TC(-2, -114) , Size(516, 124)
     // Title
-    auto title = Label::createWithTTF("3ERIES", FONT_RETRO, 80);
-    title->setAnchorPoint(ANCHOR_MT);
-    title->setPosition(Vec2TC(0, -100));
+    auto title = Sprite::create(DIR_IMG_GAME + "logo_3eries.png");
+    title->setAnchorPoint(ANCHOR_M);
+    title->setPosition(Vec2TC(0, -114));
     addChild(title);
     
     // Member
     auto members = MEMBERS;
     random_shuffle(members.begin(), members.end());
     
-    float posY = Vec2MC(0, 200).y;
+    // RSP_icon_character_b30.png Vec2MC(0, 377) , Size(152, 116)
+    const float PADDING_Y = 267;
+    const float ORIGIN_Y = Vec2MC(0, 377).y;
     
-    for( int i = 0; i < 3; ++i ) {
+    for( int i = 0; i < MEMBERS.size(); ++i ) {
+        float posY = ORIGIN_Y - (PADDING_Y*i);
+        
         auto member = members[i];
         
-        auto job = Label::createWithTTF(member.job, FONT_NORMAL, 40,
+        auto icon = Sprite::create(DIR_IMG_GAME + member.image);
+        icon->setAnchorPoint(ANCHOR_M);
+        icon->setPosition(Vec2(SB_WIN_SIZE.width*0.5f, posY));
+        addChild(icon);
+        
+        posY -= 89;
+        
+        auto job = Label::createWithTTF(member.job, FONT_RETRO, 50,
                                         Size::ZERO,
                                         TextHAlignment::CENTER,
-                                        TextVAlignment::TOP);
-        job->setAnchorPoint(ANCHOR_MT);
-        job->setPosition(Vec2(Vec2MC(0, 0).x, posY));
+                                        TextVAlignment::CENTER);
+        job->setColor(Color3B(255,211,0));
+        job->enableOutline(Color4B(0,0,0,255), 4);
+        job->setAnchorPoint(ANCHOR_M);
+        job->setPosition(Vec2(SB_WIN_SIZE.width*0.5f, posY));
         addChild(job);
         
-        posY -= job->getContentSize().height;
-        posY -= 20;
+        posY -= 52;
         
-        auto name = Label::createWithTTF(member.name, FONT_RETRO, 40,
+        auto name = Label::createWithTTF(member.name, FONT_RETRO, 50,
                                          Size::ZERO,
                                          TextHAlignment::CENTER,
-                                         TextVAlignment::TOP);
-        name->setAnchorPoint(ANCHOR_MT);
-        name->setPosition(Vec2(Vec2MC(0, 0).x, posY));
+                                         TextVAlignment::CENTER);
+        name->setColor(Color3B(255,255,255));
+        name->enableOutline(Color4B(0,0,0,255), 4);
+        name->setAnchorPoint(ANCHOR_M);
+        name->setPosition(Vec2(SB_WIN_SIZE.width*0.5f, posY));
         addChild(name);
-        
-        posY -= name->getContentSize().height;
-        posY -= 50;
     }
 }
 
