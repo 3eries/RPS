@@ -17,13 +17,22 @@ USING_NS_CC;
 using namespace spine;
 using namespace std;
 
-#define TIME_RATIO_SCALE           0.5f
-#define OPACITY_RATIO_SCALE        0.6f
+// 타임 게이지 스케일 값
+#define TIME_RATIO_SCALE                     0.5f
+
+// 먹구름 불투명도 스케일 값
+// 먹구름 게이지 100 ~ 60% -> 불투명도 0 ~ 100%
+#define OPACITY_RATIO_SCALE                  0.6f
+
+// 데드라인 불투명도, 먹구름 기준의 비율 값
+// 먹구름 50 ~ 30% -> 불투명도 0 ~ 100%
+#define DEAD_LINE_OPACITY_RATIO_MAX          0.5f   // 시작 (0%)
+#define DEAD_LINE_OPACITY_RATIO_MIN          0.3f   // 종료 (100%)
+#define DEAD_LINE_OPACITY_RATIO_RANGE        (DEAD_LINE_OPACITY_RATIO_MAX - DEAD_LINE_OPACITY_RATIO_MIN)
 
 //#define DARK_CLOUD_POS_TOP         Vec2MC(0, 1100 * TIME_RATIO_SCALE)
-//#define DARK_CLOUD_POS_BOTTOM      Vec2MC(0, 0)
 #define DARK_CLOUD_POS_TOP         Vec2MC(0, 1100)
-#define DARK_CLOUD_POS_BOTTOM      Vec2MC(0, 320)
+#define DARK_CLOUD_POS_BOTTOM      Vec2MC(0, 293)
 #define DARK_CLOUD_MOVE_RANGE      (DARK_CLOUD_POS_TOP.y - DARK_CLOUD_POS_BOTTOM.y)
 
 #define DEBUG_DRAW                 0
@@ -54,6 +63,7 @@ bool DarkCloud::init() {
     setPosition(Vec2::ZERO);
     setContentSize(SB_WIN_SIZE);
     
+    // animation
     anim = SkeletonAnimation::createWithJsonFile(ANIM_CLOUD_DARK);
     anim->setAnchorPoint(Vec2::ZERO);
     anim->setPosition(DARK_CLOUD_POS_TOP);
@@ -61,6 +71,14 @@ bool DarkCloud::init() {
     anim->setVisible(false);
     addChild(anim);
     
+    // dead line
+    deadLine = Sprite::create(DIR_IMG_GAME + "RSP_line_die.png");
+    deadLine->setAnchorPoint(ANCHOR_M);
+    deadLine->setPosition(Vec2MC(0, -138));
+    deadLine->setVisible(false);
+    addChild(deadLine);
+    
+    // listener
     gameMgr->addListener(this);
     
 #if (DEBUG_DRAW)
@@ -116,6 +134,9 @@ void DarkCloud::reset() {
     anim->stopAllActions();
     anim->setOpacity(0);
     anim->setVisible(false);
+    
+    deadLine->setOpacity(0);
+    deadLine->setVisible(false);
     
     isPositionLocked = false;
     isOpacityLocked = false;
@@ -175,6 +196,9 @@ void DarkCloud::onStartTimer() {
     anim->stopAllActions();
     anim->setOpacity(0);
     anim->setVisible(true);
+    
+    // deadLine->setOpacity(0);
+    deadLine->setVisible(true);
     
     scheduleUpdate();
     
@@ -395,6 +419,10 @@ void DarkCloud::update(float dt) {
  */
 void DarkCloud::updateCloud(float timeRatio, bool forceUpdate) {
     
+    // 데드라인 업데이트
+    updateDeadLine(timeRatio);
+    
+    // 좌표, 투명도에 적용할 시간 비율 조정
     timeRatio *= (1 / TIME_RATIO_SCALE);
     timeRatio = MIN(1, timeRatio);
     this->timeRatio = timeRatio;
@@ -433,6 +461,42 @@ void DarkCloud::updateCloudOpacity(float timeRatio) {
     anim->setOpacity(getCloudOpacity(timeRatio));
 }
 
+/**
+ * 데드라인 업데이트
+ */
+void DarkCloud::updateDeadLine(float timeRatio) {
+
+    if( deadLine->getActionByTag(DEAD_LINE_ACTION_TAG) ) {
+        // 이미 액션중
+        return;
+    }
+    
+    // show
+    if( timeRatio < 0.5f ) {
+        if( deadLine->getOpacity() != 255 ) {
+            auto fadeIn = FadeIn::create(0.5f);
+            auto delay = DelayTime::create(0.5f);
+            
+            auto seq = Sequence::create(fadeIn, delay, nullptr);
+            seq->setTag(DEAD_LINE_ACTION_TAG);
+            deadLine->runAction(seq);
+        }
+    }
+    // hide
+    else if( timeRatio > 0.55f ) {
+        if( deadLine->getOpacity() != 0 ) {
+            auto fadeOut = FadeOut::create(0.5f);
+            auto delay = DelayTime::create(0.5f);
+            
+            auto seq = Sequence::create(fadeOut, delay, nullptr);
+            seq->setTag(DEAD_LINE_ACTION_TAG);
+            deadLine->runAction(seq);
+        }
+    }
+    
+    // deadLine->setOpacity(getDeadLineOpacity(timeRatio));
+}
+
 float DarkCloud::getCloudPosition(float timeRatio) {
     
     return DARK_CLOUD_POS_BOTTOM.y + (DARK_CLOUD_MOVE_RANGE * timeRatio);
@@ -440,7 +504,8 @@ float DarkCloud::getCloudPosition(float timeRatio) {
 
 float DarkCloud::getCloudOpacity(float timeRatio) {
     
-    timeRatio = (timeRatio-OPACITY_RATIO_SCALE) / (1-OPACITY_RATIO_SCALE);
+    timeRatio = (timeRatio - OPACITY_RATIO_SCALE) / (1 - OPACITY_RATIO_SCALE);
+    timeRatio = MIN(1, timeRatio);
     timeRatio = MAX(0, timeRatio);
     
     float f = 1 - timeRatio;
@@ -449,4 +514,18 @@ float DarkCloud::getCloudOpacity(float timeRatio) {
     
     return opacity;
 }
+
+float DarkCloud::getDeadLineOpacity(float timeRatio) {
+    
+    // (0.25 - 0.2) / (0.4 - 0.2)
+    timeRatio = (timeRatio - DEAD_LINE_OPACITY_RATIO_MIN) / DEAD_LINE_OPACITY_RATIO_RANGE;
+    timeRatio = MIN(1, timeRatio);
+    timeRatio = MAX(0, timeRatio);
+    
+    float f = 1 - timeRatio;
+    float opacity = 255 * (f*f);
+    
+    return opacity;
+}
+
 

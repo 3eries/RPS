@@ -52,9 +52,11 @@ public:
     void updateCloud(float timeRatio, bool forceUpdate = false);
     void updateCloudPosition(float timeRatio, bool forceMove = false);
     void updateCloudOpacity(float timeRatio);
+    void updateDeadLine(float timeRatio);
     
     float getCloudPosition(float timeRatio);
     float getCloudOpacity(float timeRatio);
+    float getDeadLineOpacity(float timeRatio);
     
 private:
     GameManager *gameMgr;
@@ -67,6 +69,10 @@ private:
     float targetPosition;       // 목표 좌표
     
     spine::SkeletonAnimation *anim;
+    
+    // 데드라인
+    static const int DEAD_LINE_ACTION_TAG = 1000;
+    cocos2d::Sprite *deadLine;
 };
 
 #endif /* DarkCloud_hpp */
