@@ -189,9 +189,9 @@ void RecordRowView::changeToHighlight() {
         
 //        auto fadeIn = FadeIn::create(0.7f);
 //        auto fadeOut = FadeOut::create(0.1f);
-        auto fadeIn = FadeIn::create(1.0f);
-        auto fadeOut = FadeOut::create(0.5f);
-        auto delay = DelayTime::create(0.5f);
+        auto fadeIn = FadeIn::create(0.7f);
+        auto fadeOut = FadeOut::create(0.2f);
+        auto delay = DelayTime::create(0.3f);
         
         auto seq = Sequence::create(fadeIn, delay, fadeOut, nullptr);
         sender->runAction(RepeatForever::create(seq));
@@ -226,9 +226,9 @@ void RecordRowView::changeNameToHighlight() {
         
         //        auto fadeIn = FadeIn::create(0.7f);
         //        auto fadeOut = FadeOut::create(0.1f);
-        auto fadeIn = FadeIn::create(1.0f);
-        auto fadeOut = FadeOut::create(0.5f);
-        auto delay = DelayTime::create(0.5f);
+        auto fadeIn = FadeIn::create(0.7f);
+        auto fadeOut = FadeOut::create(0.2f);
+        auto delay = DelayTime::create(0.3f);
         
         auto seq = Sequence::create(fadeIn, delay, fadeOut, nullptr);
         sender->runAction(RepeatForever::create(seq));
@@ -237,68 +237,3 @@ void RecordRowView::changeNameToHighlight() {
     nameLabel->runAction(Sequence::create(fadeOut, callFuncN, nullptr));
 }
 
-/*
-Node* UIHelper::createRecord(RankingRecord record) {
-    
-    const Size size(376, 34);
-    const int  fontSize = 42;
-    
-    auto layer = Node::create();
-    layer->setAnchorPoint(ANCHOR_M);
-    layer->setContentSize(size);
-    
-    // 순위
-    auto ranking = Label::createWithTTF(STR_FORMAT("%d", record.ranking), FONT_RETRO, fontSize, Size::ZERO,
-                                        TextHAlignment::RIGHT, TextVAlignment::CENTER);
-    ranking->setColor(Color3B::WHITE);
-    ranking->setAnchorPoint(ANCHOR_MR);
-    ranking->setPosition(Vec2ML(size, 32, 0));
-    layer->addChild(ranking);
-    
-    // .
-    auto dot = Label::createWithTTF(".", FONT_RETRO, fontSize, Size::ZERO,
-                                    TextHAlignment::CENTER, TextVAlignment::CENTER);
-    dot->setColor(Color3B::WHITE);
-    dot->setAnchorPoint(ANCHOR_M);
-    dot->setPosition(Vec2ML(size, 44, 0));
-    layer->addChild(dot);
-    
-    // no record
-    if( record.name == "" ) {
-        auto noRecord = Label::createWithTTF("NO RECORD", FONT_RETRO, fontSize, Size::ZERO,
-                                             TextHAlignment::LEFT, TextVAlignment::CENTER);
-        noRecord->setColor(Color3B::WHITE);
-        noRecord->setAnchorPoint(ANCHOR_ML);
-        noRecord->setPosition(Vec2ML(size, 60 + 14, 0));
-        layer->addChild(noRecord);
-        
-        return layer;
-    }
-    
-    // 이름
-    auto name = Label::createWithTTF(record.name, FONT_RETRO, fontSize, Size::ZERO,
-                                     TextHAlignment::LEFT, TextVAlignment::CENTER);
-    name->setColor(Color3B::WHITE);
-    name->setAnchorPoint(ANCHOR_ML);
-    name->setPosition(Vec2ML(size, 60, 0));
-    layer->addChild(name);
-    
-    // -
-    auto hyphen = Label::createWithTTF("-", FONT_RETRO, fontSize, Size::ZERO,
-                                       TextHAlignment::CENTER, TextVAlignment::CENTER);
-    hyphen->setColor(Color3B::WHITE);
-    hyphen->setAnchorPoint(ANCHOR_M);
-    hyphen->setPosition(Vec2MC(size, 19, 0));
-    layer->addChild(hyphen);
-    
-    // 점수
-    auto score = Label::createWithTTF(TO_STRING(record.score), FONT_RETRO, fontSize, Size::ZERO,
-                                      TextHAlignment::CENTER, TextVAlignment::CENTER);
-    score->setColor(Color3B::WHITE);
-    score->setAnchorPoint(ANCHOR_M);
-    score->setPosition(Vec2MR(size, -67, 0));
-    layer->addChild(score);
-    
-    return layer;
-}
-*/
