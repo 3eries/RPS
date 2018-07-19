@@ -29,6 +29,7 @@
 
 #define SB_WIN_SIZE                             cocos2d::Director::getInstance()->getWinSize()
 #define SB_RUNNING_SCENE                        cocos2d::Director::getInstance()->getRunningScene()
+#define SB_BOUNDING_BOX_IN_WORLD(__node__)      SBNodeUtils::getBoundingBoxInWorld(__node__)
 
 #define SB_REF_CREATE_FUNC(__TYPE__) \
 static __TYPE__* create() \

@@ -19,6 +19,8 @@
 
 // effect
 #include "effect/SBAction.hpp"
+#include "effect/SBActionHelper.hpp"
+#include "effect/SBEffect.h"
 
 // jsoncpp
 #include "jsoncpp/SBJSON.h"
