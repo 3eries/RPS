@@ -19,13 +19,12 @@
 class SettingPopup : public BasePopup {
 public:
     enum Tag {
-        CLOSE = 100,
-        WORLD_RANKING,
-        RESTORE_PURCHASE,
-        REMOVE_ADS,
+        WORLD_RANKING       = 100,  // 월드 랭킹
+        RESTORE_PURCHASE,           // 구매 아이템 복원
+        REMOVE_ADS,                 // 광고 제거 아이템 구매
         
         // private
-        VIP_MARK,
+        VIP_MARK,                   // VIP 마크
     };
     
 public:
@@ -36,6 +35,7 @@ private:
     SettingPopup();
     
     bool init() override;
+    void onEnter() override;
     
     void initBackgroundView() override;
     void initContentView() override;

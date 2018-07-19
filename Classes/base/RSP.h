@@ -21,6 +21,9 @@ static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GA
 
 static const std::string INTERNAL_GAME_CONFIG_FILE_VERSION      = "1.0.0";
 
+// 배너 크기, 하드코딩됨. 추후 제거할 수도 있음
+static const int BANNER_HEIGHT = 100;
+
 // 가위바위보 타입
 enum class RSPType {
     NONE = -1,
@@ -98,6 +101,22 @@ namespace Color {
     static const cocos2d::Color4B POPUP_BG          = cocos2d::Color4B(0,0,0,255*0.75f);
 }
 
+// Popup
+namespace PopupZOrder {
+    static const int BOTTOM = SBZOrder::MIDDLE;
+    static const int MIDDLE = BOTTOM + 1;
+    static const int TOP    = BOTTOM + 2;
+}
+
+// 연출 시간
+namespace EffectDuration {
+    static const float POPUP_SLIDE_SLOW        = 0.4f;
+    static const float POPUP_SLIDE_NORMAL      = 0.3f;
+    static const float POPUP_SLIDE_FAST        = 0.25f;
+    
+    static const float MENU_SLIDE_NORMAL       = 0.3f;
+    static const float MENU_SLIDE_FAST         = 0.25f;
+}
 
 ////////////
 // 공통 함수
@@ -114,6 +133,26 @@ static RSPType getWinHand(RSPType hand) {
     }
     
     return RSPType::NONE;
+}
+
+static RSPType getLoseHand(RSPType hand) {
+    
+    switch( hand ) {
+        case RSPType::ROCK:            return RSPType::SCISSORS;
+        case RSPType::SCISSORS:        return RSPType::PAPER;
+        case RSPType::PAPER:           return RSPType::ROCK;
+        default:
+            CCASSERT(false, "getLoseHand error: invalid hand type.");
+            break;
+    }
+    
+    return RSPType::NONE;
+}
+
+static RSPType getRandomHand() {
+    
+    int ran = arc4random() % 3;
+    return (RSPType)(ran + (int)RSPType::ROCK);
 }
 
 static RSPResult getResult(RSPType myHand, RSPType oppHand) {

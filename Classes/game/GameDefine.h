@@ -20,8 +20,6 @@ static const float          FEVER_END_ALERT_TIME         = 1.0f;    // 피버 �
 static const float          DRAW_VIBRATE_DURATION        = 0.1f;    // 비겼을 시 진동 시간
 static const float          GAME_OVER_DELAY              = 1.0f;    // 게임 오버 연출 지연 시간
 
-static const int            BANNER_HEIGHT                = 100;     // 배너 크기, 하드코딩됨. 추후 제거할 수도 있음
-
 static const size_t         BLOCK_COUNT                  = 11;
 static const size_t         BLOCK_DISPLAY_COUNT          = 8;
 static const float          BLOCK_WIDTH                  = 180;
@@ -38,7 +36,8 @@ static const float          BLOCK_DISPLAY_HEIGHT         = 950; // (BLOCK_HEIGHT
 static const float          BLOCK_MOVE_DURATION          = 0.1f;
 
 // 상단 메뉴 y좌표
-#define                     TOP_MENU_MARGIN_Y            -61
+// RSP_gage_timer_bg.png Vec2TC(-2, -62) , Size(444, 92)
+#define                     TOP_MENU_MARGIN_Y            -62
 #define                     TOP_MENU_MARGIN_Y_BANNER     (TOP_MENU_MARGIN_Y-BANNER_HEIGHT)
 
 // 캐릭터 좌표

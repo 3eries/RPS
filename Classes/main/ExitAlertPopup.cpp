@@ -8,16 +8,15 @@
 #include "ExitAlertPopup.hpp"
 
 #include "RSP.h"
-#include "User.hpp"
+#include "SceneManager.h"
 #include "UIHelper.hpp"
-#include "UserDefaultKey.h"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
 static const float FADE_DURATION    = 0.15f;
-static const float SLIDE_DURATION   = 0.2f;
+static const float SLIDE_DURATION   = EffectDuration::POPUP_SLIDE_FAST;
 
 ExitAlertPopup::ExitAlertPopup() : BasePopup(Type::EXIT_APP),
 onExitAppListener(nullptr) {
@@ -189,13 +188,19 @@ void ExitAlertPopup::runEnterAction(SBCallback onFinished) {
     
     BasePopup::runEnterAction(onFinished);
     
-    runBackgroundFadeInAction(nullptr, FADE_DURATION);      // 배경 fade in
-    runSlideInAction([=]() {                                // 컨텐츠 slide in
+    // 배경 fade in
+    runBackgroundFadeInAction(nullptr, FADE_DURATION);
+    
+    // 컨텐츠 slide in
+    runSlideInAction([=]() {
         
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
     }, SLIDE_DURATION);
+    
+    // 닫기 버튼으로 전환
+    SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, SLIDE_DURATION);
 }
 
 /**
@@ -205,13 +210,19 @@ void ExitAlertPopup::runExitAction(SBCallback onFinished) {
     
     BasePopup::runExitAction(onFinished);
     
-    runBackgroundFadeOutAction(nullptr, FADE_DURATION);     // 배경 fade out
-    runSlideOutAction([=]() {                               // 컨텐츠 slide out
+    // 배경 fade out
+    runBackgroundFadeOutAction(nullptr, FADE_DURATION);
+    
+    // 컨텐츠 slide out
+    runSlideOutAction([=]() {
         
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
     }, SLIDE_DURATION);
+    
+    // 설정 버튼으로 전환
+    SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, SLIDE_DURATION);
 }
 
 /**

@@ -14,10 +14,11 @@
 #include "RankingManager.hpp"
 #include "RecordRowView.hpp"
 
-const float GameOverPopup::SLIDE_IN_DURATION               = 0.2f;
-const float GameOverPopup::SLIDE_OUT_DURATION              = 0.2f;
-const float GameOverPopup::FADE_IN_DURATION                = 0.5f;
-const float GameOverPopup::FADE_OUT_DURATION               = 0.2f;
+const float GameOverPopup::SLIDE_IN_DURATION               = EffectDuration::POPUP_SLIDE_NORMAL;
+const float GameOverPopup::SLIDE_OUT_DURATION              = EffectDuration::POPUP_SLIDE_NORMAL;
+
+#define                    SLIDE_IN_POSITION               Vec2(0, 0)
+#define                    SLIDE_OUT_POSITION              Vec2TL(0, -stone->getBoundingBox().getMinY())
 
 USING_NS_CC;
 using namespace cocos2d::ui;
@@ -51,9 +52,14 @@ bool GameOverPopup::init() {
         return false;
     }
     
-    runEnterAction();
-    
     return true;
+}
+
+void GameOverPopup::onEnter() {
+    
+    BasePopup::onEnter();
+    
+    runEnterAction();
 }
 
 void GameOverPopup::initBackgroundView() {
@@ -64,6 +70,8 @@ void GameOverPopup::initBackgroundView() {
 void GameOverPopup::initContentView() {
     
     BasePopup::initContentView();
+    
+    // addContentChild(SBNodeUtils::createBackgroundNode(getContentView(), Color4B(255,0,0,255*0.3f)), -1);
     
     // RSP_popup_bg_big.png Vec2MC(0, 46) , Size(696, 956)
     stone = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_big.png");
@@ -89,8 +97,6 @@ void GameOverPopup::initContentView() {
             info.apply(spr);
             addContentChild(spr);
             
-            fadeNodes.push_back(spr);
-            
             /**
             if( i > 0 ) {
                 spr->setScale(0.7f);
@@ -106,8 +112,6 @@ void GameOverPopup::initContentView() {
         scoreBg->setAnchorPoint(ANCHOR_M);
         scoreBg->setPosition(Vec2MC(-2, 66));
         addContentChild(scoreBg);
-        
-        fadeNodes.push_back(scoreBg);
         
         scoreLabel = Label::createWithTTF(TO_STRING(score), FONT_RETRO, 85);
         scoreLabel->setAnchorPoint(ANCHOR_M);
@@ -136,8 +140,6 @@ void GameOverPopup::initContentView() {
             rowView->setPosition(Vec2MC(0, posY[i]));
             addContentChild(rowView);
             
-            fadeNodes.push_back(rowView);
-            
             // 달성 기록 하이라이트
             if( record.score == score ) {
                 rowView->changeToHighlight();
@@ -153,17 +155,14 @@ void GameOverPopup::runEnterAction(SBCallback onFinished) {
     
     BasePopup::runEnterAction(onFinished);
     
-    const bool existOtherPopup = PopupManager::getInstance()->exists(BasePopup::Type::NEW_RECORD);
+    CCLOG("GameOverPopup::runEnterAction");
     
-    // 터치 잠금
-    SBDirector::getInstance()->setScreenTouchLocked(true);
+    // const bool existOtherPopup = PopupManager::getInstance()->exists(BasePopup::Type::NEW_RECORD);
+    const bool existOtherPopup = false;
     
     // 액션 완료
     auto onActionFinished = [=]() {
         CCLOG("GameOverPopup::runEnterAction onActionFinished");
-        
-        // 터치 잠금 해제
-        SBDirector::getInstance()->setScreenTouchLocked(false);
         
         // 배경음
         if( !existOtherPopup ) {
@@ -180,35 +179,12 @@ void GameOverPopup::runEnterAction(SBCallback onFinished) {
     if( existOtherPopup ) {
         // 연출 없음
         onActionFinished();
-        
-        // fade in
-        /*
-        for( auto n : fadeNodes ) {
-            SBNodeUtils::recursiveCascadeOpacityEnabled(n, true);
-            
-            n->setOpacity(0);
-            n->runAction(FadeIn::create(FADE_IN_DURATION));
-        }
-        
-        auto delay = DelayTime::create(FADE_IN_DURATION * 1.05);
-        auto callFunc = CallFunc::create(onActionFinished);
-        runAction(Sequence::create(delay, callFunc, nullptr));
-         */
     }
     // 다른 팝업 없음, slide in
     else {
-        runSlideInAction(onActionFinished, SLIDE_IN_DURATION);
-        
-        /*
-        runSlideInAction([=]() {
-            
-            SBDirector::getInstance()->setScreenTouchLocked(false);
-            this->onEnterActionFinished();
-            
-            SB_SAFE_PERFORM_LISTENER(this, onFinished);
-            
-        }, SLIDE_IN_DURATION);
-        */
+        runSlideAction(onActionFinished,
+                       SLIDE_IN_DURATION,
+                       SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
     }
 }
 
@@ -219,39 +195,14 @@ void GameOverPopup::runExitAction(SBCallback onFinished) {
     
     BasePopup::runExitAction(onFinished);
     
-    /*
-    SBDirector::getInstance()->setScreenTouchLocked(true);
+    CCLOG("GameOverPopup::runExitAction");
     
-    runSlideOutAction([=]() {
+    // slide out
+    runSlideAction([=]() {
+        CCLOG("GameOverPopup::runExitAction onActionFinished");
         
-        SBDirector::getInstance()->setScreenTouchLocked(false);
         this->onExitActionFinished();
-        
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
-    }, SLIDE_OUT_DURATION);
-    */
-    
-    // fade out
-    SBNodeUtils::recursiveCascadeOpacityEnabled(this, true);
-    // SBDirector::getInstance()->setScreenTouchLocked(true);
-    
-    auto fade = FadeOut::create(FADE_OUT_DURATION);
-    auto callFunc = CallFunc::create([=]() {
-        
-        CCLOG("GameOverPopup::runExitAction finished");
-        
-        // SBDirector::getInstance()->setScreenTouchLocked(false);
-        this->onExitActionFinished();
-        
-        SB_SAFE_PERFORM_LISTENER(this, onFinished);
-    });
-    runAction(Sequence::create(fade, callFunc, nullptr));
+    }, SLIDE_OUT_DURATION, SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
 }
-
-/**
- * 등장 연출 완료
- */
-void GameOverPopup::onEnterActionFinished() {
-}
-

@@ -20,8 +20,6 @@ class GameOverPopup : public BasePopup {
 public:
     static const float SLIDE_IN_DURATION;
     static const float SLIDE_OUT_DURATION;
-    static const float FADE_IN_DURATION;
-    static const float FADE_OUT_DURATION;
     
 public:
     static GameOverPopup* create(int score);
@@ -31,22 +29,20 @@ private:
     GameOverPopup(int score);
     
     bool init() override;
+    void onEnter() override;
     
     void initBackgroundView() override;
     void initContentView() override;
     
+public:
     void runEnterAction(SBCallback onFinished = nullptr) override;
     void runExitAction(SBCallback onFinished = nullptr) override;
-    
-    void onEnterActionFinished() override;
     
 private:
     int score;
     
     cocos2d::Node *stone;       // 배경 비석
     cocos2d::Label *scoreLabel; // 스코어 라벨
-    
-    std::vector<cocos2d::Node*> fadeNodes;
 };
 
 #endif /* GameOverPopup_hpp */

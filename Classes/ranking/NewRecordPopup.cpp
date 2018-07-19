@@ -37,8 +37,7 @@ NewRecordPopup* NewRecordPopup::create(int ranking, int score) {
 }
 
 NewRecordPopup::NewRecordPopup(int ranking, int score) : RankingPopup(Type::NEW_RECORD),
-onRecordCompletedListener(nullptr),
-onExitActionListener(nullptr) {
+onRecordCompletedListener(nullptr) {
     
     record.ranking = ranking;
     record.score = score;
@@ -56,14 +55,14 @@ bool NewRecordPopup::init() {
     
     CCLOG("NewRecordPopup ranking: %d score: %d", record.ranking, record.score);
     
-    setCloseButtonEnabled(false);
-    
     return true;
 }
 
 void NewRecordPopup::onEnter() {
     
     RankingPopup::onEnter();
+    
+    runEnterAction();
 }
 
 void NewRecordPopup::initBackgroundView() {
@@ -79,11 +78,6 @@ void NewRecordPopup::initContentView() {
 void NewRecordPopup::initRankings() {
     
     RankingPopup::initRankings();
-    
-    // 신기록 Row 이름 하이라이트
-    // getRecordRow()->changeNameToHighlight();
-    getRecordRow()->setNewRecord(true);
-    getRecordRow()->changeToHighlight();
     
     // 입력창
     // RSP_popup_bg_new_record.png Vec2BC(0, 288) , Size(696, 536)
@@ -135,10 +129,6 @@ void NewRecordPopup::onRecordCompleted() {
     // n초 후 팝업 종료
     auto delay = DelayTime::create(DISMISS_DELAY);
     auto callFunc = CallFunc::create([=]() {
-        if( onExitActionListener ) {
-            onExitActionListener();
-        }
-        
         this->dismissWithAction();
     });
     runAction(Sequence::create(delay, callFunc, nullptr));
@@ -171,10 +161,17 @@ void NewRecordPopup::runEnterAction(SBCallback onFinished) {
     
     RankingPopup::runEnterAction(onFinished);
     
-    auto delay = DelayTime::create(5.0f);
+    // 신기록 달성 연출
+    auto row = getRecordRow();
+    // row->changeNameToHighlight();
+    row->setNewRecord(true);
+    row->changeToHighlight();
+    
+    // idle 상태 후 입력창 등장
+    auto delay = DelayTime::create(2.5f);
     auto callFunc = CallFunc::create([=]() {
         
-        auto row = getRecordRow();
+        // 신기록 Row 연출 변경
         row->setNewRecord(false);
         row->changeToNormal();
         row->changeNameToHighlight();
@@ -184,8 +181,6 @@ void NewRecordPopup::runEnterAction(SBCallback onFinished) {
         const float DURATION = RankingPopup::SLIDE_IN_DURATION;
         
         if( record.ranking > VISIBLE_RANKING_COUNT ) {
-            // (34*3) + (60*2)
-            // (34*3) + ((60-34)*2)
             // rankingView->setPositionY(240);
             rankingView->runAction(MoveTo::create(DURATION, Vec2(0, 240)));
         }

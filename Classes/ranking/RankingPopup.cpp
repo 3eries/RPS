@@ -10,22 +10,17 @@
 #include "RSP.h"
 #include "UIHelper.hpp"
 #include "SceneManager.h"
-
 #include "PopupManager.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-const float RankingPopup::SLIDE_IN_DURATION               = 0.2f;
-const float RankingPopup::SLIDE_OUT_DURATION              = 0.2f;
-const float RankingPopup::FADE_IN_DURATION                = 0.5f;
-const float RankingPopup::FADE_OUT_DURATION               = 0.5f;
+const float RankingPopup::SLIDE_IN_DURATION               = EffectDuration::POPUP_SLIDE_NORMAL;
+const float RankingPopup::SLIDE_OUT_DURATION              = EffectDuration::POPUP_SLIDE_NORMAL;
 
-const float RankingPopup::CLOSE_BUTTON_SLIDE_DURATION     = 0.2f;
-
-#define CLOSE_BUTTON_POS_X                       Vec2TC(303, -51)
-#define CLOSE_BUTTON_POS_X_BANNER                Vec2TC(303, -153)
+#define                   SLIDE_IN_POSITION               Vec2(0, 0)
+#define                   SLIDE_OUT_POSITION              Vec2TL(0, -stone->getBoundingBox().getMinY())
 
 RankingPopup::RankingPopup(Type type) : BasePopup(type) {
     
@@ -60,6 +55,8 @@ void RankingPopup::initContentView() {
     
     BasePopup::initContentView();
     
+    // addContentChild(SBNodeUtils::createBackgroundNode(getContentView(), Color4B(0,0,255,255*0.3f)), -1);
+    
     // stone bg
     // RSP_popup_bg_big.png Vec2MC(0, 46) , Size(696, 956)
     stone = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_big.png");
@@ -80,29 +77,8 @@ void RankingPopup::initContentView() {
             auto spr = Sprite::create(DIR_IMG_GAME + info.file);
             info.apply(spr);
             contentView->addChild(spr);
-            
-            fadeNodes.push_back(spr);
         }
     }
-    
-    // 닫기 버튼
-    // RSP_btn_go_back.png Vec2TC(303, -153) , Size(100, 90) // 배너 좌표 고려?
-    // RSP_btn_go_back.png Vec2TC(303, -51) , Size(100, 90)
-    // RSP_btn_option.png Vec2TC(298, -158) , Size(92, 92)   // 배너 좌표 고려?
-    // RSP_btn_option.png Vec2TC(298, -56) , Size(92, 92)
-    // SBUIInfo(Tag::SETTING,       ANCHOR_TR,   Vec2TR(-10, -10),  "RSP_btn_option.png"),
-    // 720-10-92*0.5   = 664
-    // 1280-10-92*0.5  = 1224
-    closeBtn = SBButton::create(DIR_IMG_GAME + "RSP_btn_go_back.png");
-    closeBtn->setAnchorPoint(ANCHOR_M);
-    closeBtn->setPosition(SceneManager::isBannerVisible() ? CLOSE_BUTTON_POS_X_BANNER : CLOSE_BUTTON_POS_X);
-    contentView->addChild(closeBtn);
-    
-    closeBtn->setOnClickListener([=](Node*) {
-        this->dismissWithAction();
-    });
-    
-    fadeNodes.push_back(closeBtn);
 }
 
 void RankingPopup::initRankings() {
@@ -124,8 +100,6 @@ void RankingPopup::initRankings() {
     // 랭킹 리스트
     rankingView = SBNodeUtils::createZeroSizeNode();
     clippingNode->addChild(rankingView);
-    
-    fadeNodes.push_back(rankingView);
     
     const float paddingY = 60;
     float posY = 243;
@@ -159,49 +133,30 @@ void RankingPopup::runEnterAction(SBCallback onFinished) {
     
     BasePopup::runEnterAction(onFinished);
     
-    // 터치 잠금
-    SBDirector::getInstance()->setScreenTouchLocked(true);
+    CCLOG("RankingPopup::runEnterAction");
     
     // 액션 완료
     auto onActionFinished = [=]() {
-        SBDirector::getInstance()->setScreenTouchLocked(false);
+        CCLOG("RankingPopup::runEnterAction onActionFinished");
         
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
     
     // 다른 팝업 있음, 연출 없음
-    if( PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
+    if( false ) {
+    // if( PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
          onActionFinished();
     }
     // 다른 팝업 없음, slide in
     else {
-        runSlideInAction(onActionFinished, SLIDE_IN_DURATION);
-        
-        /*
-        runSlideInAction([=]() {
-            
-            SBDirector::getInstance()->setScreenTouchLocked(false);
-            this->onEnterActionFinished();
-            
-            SB_SAFE_PERFORM_LISTENER(this, onFinished);
-            
-        }, SLIDE_IN_DURATION);
-        */
-        
-        // 닫기 버튼 <--> 연출
-        if( closeBtn->isVisible() ) {
-    //        closeBtn->setPosition(SceneManager::isBannerVisible() ? CLOSE_BUTTON_POS_X_BANNER : CLOSE_BUTTON_POS_X);
-            /*
-            float originX = closeBtn->getPositionX();
-            float posX = SB_WIN_SIZE.width + (closeBtn->getContentSize().width*0.5f);
-            closeBtn->setPosition(Vec2(posX, closeBtn->getPositionY()));
-            
-            auto delay = DelayTime::create(0.2f);
-            auto move = MoveTo::create(CLOSE_BUTTON_SLIDE_DURATION, Vec2(originX, closeBtn->getPositionY()));
-            closeBtn->runAction(Sequence::create(delay, move, nullptr));
-            */
-        }
+        runSlideAction(onActionFinished, SLIDE_IN_DURATION,
+                       SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
+    }
+    
+    // 닫기 버튼으로 전환
+    if( type == Type::RANKING ) {
+        SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, SLIDE_IN_DURATION);
     }
 }
 
@@ -212,57 +167,31 @@ void RankingPopup::runExitAction(SBCallback onFinished) {
     
     BasePopup::runExitAction(onFinished);
     
-    // 터치 잠금
-    SBDirector::getInstance()->setScreenTouchLocked(true);
+    CCLOG("RankingPopup::runExitAction");
     
     // 액션 완료
     auto onActionFinished = [=]() {
-        SBDirector::getInstance()->setScreenTouchLocked(false);
+        CCLOG("RankingPopup::runExitAction onActionFinished");
         
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
     
     // 다른 팝업 있음, fade out
-    if( PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
+    if( false ) {
+    // if( PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
         // 연출 없음
         onActionFinished();
-        
-        // fade out
-        /*
-        stone->setVisible(false);
-        
-        for( auto n : fadeNodes ) {
-            SBNodeUtils::recursiveCascadeOpacityEnabled(n, true);
-            
-            n->setOpacity(255);
-            n->runAction(FadeOut::create(FADE_OUT_DURATION));
-        }
-        
-        auto delay = DelayTime::create(FADE_OUT_DURATION * 1.05);
-        auto callFunc = CallFunc::create(onActionFinished);
-        runAction(Sequence::create(delay, callFunc, nullptr));
-         */
     }
     // 다른 팝업 없음, slide out
     else {
-        runSlideOutAction(onActionFinished, SLIDE_OUT_DURATION);
-        
-        /*
-        runSlideOutAction([=]() {
-            
-            SBDirector::getInstance()->setScreenTouchLocked(false);
-            this->onExitActionFinished();
-            
-            SB_SAFE_PERFORM_LISTENER(this, onFinished);
-            
-        }, SLIDE_OUT_DURATION);
-         */
+        runSlideAction(onActionFinished, SLIDE_OUT_DURATION,
+                       SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
     }
-}
-
-void RankingPopup::setCloseButtonEnabled(bool enabled) {
     
-    closeBtn->setVisible(enabled);
+    // 설정 버튼으로 전환
+    if( type == Type::RANKING ) {
+        SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, SLIDE_OUT_DURATION);
+    }
 }
 

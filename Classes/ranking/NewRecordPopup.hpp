@@ -45,7 +45,6 @@ public:
 protected:
     CC_SYNTHESIZE(std::function<void(RankingRecord)>, onRecordCompletedListener,
                   OnRecordCompletedListener);
-    CC_SYNTHESIZE(SBCallback, onExitActionListener, OnExitActionListener);
     
     RankingRecord record;
     NewRecordBoard *recordBoard;

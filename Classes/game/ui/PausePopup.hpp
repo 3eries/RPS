@@ -34,10 +34,12 @@ private:
     PausePopup();
     
     bool init() override;
+    void onEnter() override;
     
     void initBackgroundView() override;
     void initContentView() override;
 
+public:
     void performListener(Tag tag);
     
     void runEnterAction(SBCallback onFinished = nullptr) override;

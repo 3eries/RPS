@@ -8,15 +8,17 @@
 
 #include "RSP.h"
 #include "User.hpp"
-#include "UIHelper.hpp"
 #include "UserDefaultKey.h"
+
+#include "SceneManager.h"
+#include "UIHelper.hpp"
 
 USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
 static const float FADE_DURATION    = 0.15f;
-static const float SLIDE_DURATION   = 0.2f;
+static const float SLIDE_DURATION   = EffectDuration::POPUP_SLIDE_FAST;
 
 PausePopup::PausePopup() : BasePopup(Type::PAUSE),
 onClickMenuListener(nullptr) {
@@ -47,9 +49,14 @@ bool PausePopup::init() {
         superbomb::IAPHelper::getInstance()->addListener(this, listener);
     }
     
-    runEnterAction();
-    
     return true;
+}
+
+void PausePopup::onEnter() {
+    
+    BasePopup::onEnter();
+    
+    runEnterAction();
 }
 
 void PausePopup::initBackgroundView() {
@@ -115,11 +122,9 @@ void PausePopup::initContentView() {
     
     // 기타 메뉴
     {
-        // RSP_btn_close.png Vec2MC(236, 175) , Size(100, 90)
         // RSP_btn_home.png Vec2MC(172, 10) , Size(160, 152)
         // RSP_btn_remove_ads.png Vec2MC(2, -130) , Size(316, 80)
         SBUIInfo infos[] = {
-            SBUIInfo(Tag::RESUME,        ANCHOR_M,   Vec2MC(236, 175),   "RSP_btn_close.png"),
             SBUIInfo(Tag::MAIN,          ANCHOR_M,   Vec2MC(172, 10),    "RSP_btn_home.png"),
             SBUIInfo(Tag::REMOVE_ADS,    ANCHOR_M,   Vec2MC(0, -130),    "RSP_btn_remove_ads.png"),
         };
@@ -162,13 +167,19 @@ void PausePopup::runEnterAction(SBCallback onFinished) {
     
     BasePopup::runEnterAction(onFinished);
     
-    runBackgroundFadeInAction(nullptr, FADE_DURATION);      // 배경 fade in
-    runSlideInAction([=]() {                                // 컨텐츠 slide in
+    // 배경 fade in
+    runBackgroundFadeInAction(nullptr, FADE_DURATION);
+    
+    // 컨텐츠 slide in
+    runSlideInAction([=]() {
         
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
     }, SLIDE_DURATION);
+    
+    // 닫기 버튼으로 전환
+    SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, SLIDE_DURATION);
 }
 
 /**
@@ -178,13 +189,19 @@ void PausePopup::runExitAction(SBCallback onFinished) {
     
     BasePopup::runExitAction(onFinished);
     
-    runBackgroundFadeOutAction(nullptr, FADE_DURATION);     // 배경 fade out
-    runSlideOutAction([=]() {                               // 컨텐츠 slide out
+     // 배경 fade out
+    runBackgroundFadeOutAction(nullptr, FADE_DURATION);
+    
+    // 컨텐츠 slide out
+    runSlideOutAction([=]() {
         
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
     }, SLIDE_DURATION);
+    
+    // 설정 버튼으로 전환
+    SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::PAUSE, SLIDE_DURATION);
 }
 
 /**
