@@ -11,10 +11,7 @@
 		1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2d iOS.a */; };
 		1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245120EE018D00037AB1 /* NewRecordBoard.cpp */; };
 		1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245520EE10E000037AB1 /* BasePopup.cpp */; };
-		1D06245A20EEA25800037AB1 /* PopupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245820EEA25800037AB1 /* PopupManager.cpp */; };
-		1D12BCCE20C59ED700343634 /* anims in Resources */ = {isa = PBXBuildFile; fileRef = 1D12BCCC20C59ED600343634 /* anims */; };
 		1D1F3C8320AC9F5E0035A36C /* SBAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */; };
-		1D1F3C8720ACCF330035A36C /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8620ACCF300035A36C /* sounds */; };
 		1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8820ACD12A0035A36C /* SBDirector.cpp */; };
 		1D1F3C8D20ACD36F0035A36C /* ResourceHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8B20ACD36F0035A36C /* ResourceHelper.cpp */; };
 		1D1F3C9420AD4A3D0035A36C /* GameView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C9220AD4A3C0035A36C /* GameView.cpp */; };
@@ -23,7 +20,6 @@
 		1D1F3C9D20AD74240035A36C /* PausePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C9B20AD74210035A36C /* PausePopup.cpp */; };
 		1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D720E9F9E900D059C6 /* RankingPopup.cpp */; };
 		1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D920E9F9E900D059C6 /* RankingManager.cpp */; };
-		1D439E1E20C4363500B35C65 /* config in Resources */ = {isa = PBXBuildFile; fileRef = 1D439E1C20C4363400B35C65 /* config */; };
 		1D45C44820A8A787007E63AD /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C44620A8A787007E63AD /* SceneManager.cpp */; };
 		1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C44E20A8A7B8007E63AD /* SBUIInfo.cpp */; };
 		1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C45320A8A7B8007E63AD /* SBAnimationSprite.cpp */; };
@@ -47,8 +43,11 @@
 		1D45C49420A8A7C8007E63AD /* GameScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49220A8A7C8007E63AD /* GameScene.cpp */; };
 		1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49520A8A7D2007E63AD /* MainScene.cpp */; };
 		1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49920A8A9E2007E63AD /* UIHelper.cpp */; };
-		1D45E0F220EB4ACF0065CB3D /* MainMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45E0F020EB4ACF0065CB3D /* MainMenu.cpp */; };
 		1D45E0F820ED164C0065CB3D /* SBAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45E0F620ED164C0065CB3D /* SBAction.cpp */; };
+		1D4C659A20FF94AD005A43D8 /* SettingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */; };
+		1D4C659D21008BB8005A43D8 /* BaseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4C659B21008BB8005A43D8 /* BaseScene.cpp */; };
+		1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D59F3D320FA69D200649A99 /* PopupManager.cpp */; };
+		1D59F3D820FA69F100649A99 /* PopupListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D59F3D620FA69F100649A99 /* PopupListener.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */; };
 		1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D8F54A220D2A8C4009E2201 /* LogoView.cpp */; };
@@ -70,9 +69,21 @@
 		1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BD320B47EEE006BC169 /* BaseTestScene.cpp */; };
 		1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DBC68E220E490D300CA85F0 /* DarkCloud.cpp */; };
 		1DBC68E820E49B9300CA85F0 /* CreditPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DBC68E620E49B9300CA85F0 /* CreditPopup.cpp */; };
-		1DF00B1120A48B6B000B4316 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 1DF00B1020A48B6A000B4316 /* images */; };
+		1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B4C20FC92DD00811604 /* TopMenu.cpp */; };
+		1DD38B5120FC92E600811604 /* BottomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B4F20FC92E600811604 /* BottomMenu.cpp */; };
+		1DD38B5420FC92F100811604 /* CommonMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B5220FC92F100811604 /* CommonMenu.cpp */; };
+		1DD38B5720FC93D200811604 /* SBActionHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B5520FC93D200811604 /* SBActionHelper.cpp */; };
+		1DE1DC1120F693EF00BB3238 /* anims in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0C20F693EE00BB3238 /* anims */; };
+		1DE1DC1220F693EF00BB3238 /* config in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0D20F693EE00BB3238 /* config */; };
+		1DE1DC1320F693EF00BB3238 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0E20F693EE00BB3238 /* fonts */; };
+		1DE1DC1420F693EF00BB3238 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0F20F693EE00BB3238 /* sounds */; };
+		1DE1DC1520F693EF00BB3238 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC1020F693EF00BB3238 /* images */; };
+		1DE1DC1B20F6AAF800BB3238 /* IAPHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC1920F6AAF800BB3238 /* IAPHelper.cpp */; };
+		1DE1DC1E20F6AB8E00BB3238 /* IAPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC1C20F6AB8E00BB3238 /* IAPListener.cpp */; };
+		1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */; };
+		1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2520F759C800BB3238 /* SBEffect.cpp */; };
+		1DE1DC2820F75A3100BB3238 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2720F75A3100BB3238 /* shaders */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		1DF7736220EEE03700BB3261 /* SettingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7736020EEE03700BB3261 /* SettingPopup.cpp */; };
 		1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */; };
 		1DFA25B220F08E1C003F63B4 /* NewRecordPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DFA25B020F08E1C003F63B4 /* NewRecordPopup.cpp */; };
 		1DFA25B620F0A4A4003F63B4 /* RecordRowView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DFA25B420F0A4A4003F63B4 /* RecordRowView.cpp */; };
@@ -114,8 +125,6 @@
 		50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 50EF62A117ECD613001EB2F8 /* Icon-50.png */; };
 		521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6219F0C34300D177D7 /* Default-667h@2x.png */; };
 		521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6319F0C34300D177D7 /* Default-736h@3x.png */; };
-		521A8EA919F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
-		521A8EAA19F11F5000D177D7 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 521A8EA819F11F5000D177D7 /* fonts */; };
 		52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52B47A461A53D09B004E4C60 /* Security.framework */; };
 		8262943E1AAF051F00CB7CF7 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8262943D1AAF051F00CB7CF7 /* Security.framework */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
@@ -174,13 +183,9 @@
 		1D06245220EE018D00037AB1 /* NewRecordBoard.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NewRecordBoard.hpp; sourceTree = "<group>"; };
 		1D06245520EE10E000037AB1 /* BasePopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BasePopup.cpp; sourceTree = "<group>"; };
 		1D06245620EE10E000037AB1 /* BasePopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BasePopup.hpp; sourceTree = "<group>"; };
-		1D06245820EEA25800037AB1 /* PopupManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PopupManager.cpp; sourceTree = "<group>"; };
-		1D06245920EEA25800037AB1 /* PopupManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PopupManager.hpp; sourceTree = "<group>"; };
-		1D12BCCC20C59ED600343634 /* anims */ = {isa = PBXFileReference; lastKnownFileType = folder; path = anims; sourceTree = "<group>"; };
 		1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBAudioEngine.cpp; sourceTree = "<group>"; };
 		1D1F3C8220AC9F5E0035A36C /* SBAudioEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SBAudioEngine.hpp; sourceTree = "<group>"; };
 		1D1F3C8420AC9FD30035A36C /* SBUserDefaultKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBUserDefaultKey.h; sourceTree = "<group>"; };
-		1D1F3C8620ACCF300035A36C /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		1D1F3C8820ACD12A0035A36C /* SBDirector.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBDirector.cpp; sourceTree = "<group>"; };
 		1D1F3C8920ACD12B0035A36C /* SBDirector.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBDirector.hpp; sourceTree = "<group>"; };
 		1D1F3C8B20ACD36F0035A36C /* ResourceHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceHelper.cpp; sourceTree = "<group>"; };
@@ -199,7 +204,6 @@
 		1D3120D820E9F9E900D059C6 /* RankingManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingManager.hpp; sourceTree = "<group>"; };
 		1D3120D920E9F9E900D059C6 /* RankingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankingManager.cpp; sourceTree = "<group>"; };
 		1D3120DA20E9F9E900D059C6 /* RankingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingPopup.hpp; sourceTree = "<group>"; };
-		1D439E1C20C4363400B35C65 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		1D45C44520A8A787007E63AD /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		1D45C44620A8A787007E63AD /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
 		1D45C44720A8A787007E63AD /* UserDefaultKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultKey.h; sourceTree = "<group>"; };
@@ -253,10 +257,16 @@
 		1D45C49620A8A7D2007E63AD /* MainScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainScene.hpp; sourceTree = "<group>"; };
 		1D45C49920A8A9E2007E63AD /* UIHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UIHelper.cpp; sourceTree = "<group>"; };
 		1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIHelper.hpp; sourceTree = "<group>"; };
-		1D45E0F020EB4ACF0065CB3D /* MainMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MainMenu.cpp; sourceTree = "<group>"; };
-		1D45E0F120EB4ACF0065CB3D /* MainMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MainMenu.hpp; sourceTree = "<group>"; };
 		1D45E0F620ED164C0065CB3D /* SBAction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBAction.cpp; sourceTree = "<group>"; };
 		1D45E0F720ED164C0065CB3D /* SBAction.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBAction.hpp; sourceTree = "<group>"; };
+		1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingPopup.cpp; sourceTree = "<group>"; };
+		1D4C659920FF94AB005A43D8 /* SettingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SettingPopup.hpp; sourceTree = "<group>"; };
+		1D4C659B21008BB8005A43D8 /* BaseScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseScene.cpp; sourceTree = "<group>"; };
+		1D4C659C21008BB8005A43D8 /* BaseScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BaseScene.hpp; sourceTree = "<group>"; };
+		1D59F3D320FA69D200649A99 /* PopupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PopupManager.cpp; sourceTree = "<group>"; };
+		1D59F3D420FA69D200649A99 /* PopupManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PopupManager.hpp; sourceTree = "<group>"; };
+		1D59F3D620FA69F100649A99 /* PopupListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PopupListener.cpp; sourceTree = "<group>"; };
+		1D59F3D720FA69F100649A99 /* PopupListener.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PopupListener.hpp; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* God of RPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "God of RPS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContinuePopup.cpp; sourceTree = "<group>"; };
 		1D773ACE20D394D200EB4B99 /* ContinuePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ContinuePopup.hpp; sourceTree = "<group>"; };
@@ -298,10 +308,30 @@
 		1DBC68E320E490D300CA85F0 /* DarkCloud.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DarkCloud.hpp; sourceTree = "<group>"; };
 		1DBC68E620E49B9300CA85F0 /* CreditPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CreditPopup.cpp; sourceTree = "<group>"; };
 		1DBC68E720E49B9300CA85F0 /* CreditPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CreditPopup.hpp; sourceTree = "<group>"; };
-		1DF00B1020A48B6A000B4316 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		1DD38B4C20FC92DD00811604 /* TopMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TopMenu.cpp; sourceTree = "<group>"; };
+		1DD38B4D20FC92DD00811604 /* TopMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TopMenu.hpp; sourceTree = "<group>"; };
+		1DD38B4F20FC92E600811604 /* BottomMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BottomMenu.cpp; sourceTree = "<group>"; };
+		1DD38B5020FC92E600811604 /* BottomMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BottomMenu.hpp; sourceTree = "<group>"; };
+		1DD38B5220FC92F100811604 /* CommonMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CommonMenu.cpp; sourceTree = "<group>"; };
+		1DD38B5320FC92F100811604 /* CommonMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CommonMenu.hpp; sourceTree = "<group>"; };
+		1DD38B5520FC93D200811604 /* SBActionHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBActionHelper.cpp; sourceTree = "<group>"; };
+		1DD38B5620FC93D200811604 /* SBActionHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBActionHelper.hpp; sourceTree = "<group>"; };
+		1DE1DC0C20F693EE00BB3238 /* anims */ = {isa = PBXFileReference; lastKnownFileType = folder; path = anims; sourceTree = "<group>"; };
+		1DE1DC0D20F693EE00BB3238 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		1DE1DC0E20F693EE00BB3238 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
+		1DE1DC0F20F693EE00BB3238 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		1DE1DC1020F693EF00BB3238 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
+		1DE1DC1920F6AAF800BB3238 /* IAPHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IAPHelper.cpp; sourceTree = "<group>"; };
+		1DE1DC1A20F6AAF800BB3238 /* IAPHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IAPHelper.hpp; sourceTree = "<group>"; };
+		1DE1DC1C20F6AB8E00BB3238 /* IAPListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IAPListener.cpp; sourceTree = "<group>"; };
+		1DE1DC1D20F6AB8E00BB3238 /* IAPListener.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IAPListener.hpp; sourceTree = "<group>"; };
+		1DE1DC2020F6ADF500BB3238 /* IAPDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAPDefine.h; sourceTree = "<group>"; };
+		1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExitAlertPopup.cpp; sourceTree = "<group>"; };
+		1DE1DC2220F7479D00BB3238 /* ExitAlertPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExitAlertPopup.hpp; sourceTree = "<group>"; };
+		1DE1DC2420F759C800BB3238 /* SBEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBEffect.h; sourceTree = "<group>"; };
+		1DE1DC2520F759C800BB3238 /* SBEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBEffect.cpp; sourceTree = "<group>"; };
+		1DE1DC2720F75A3100BB3238 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		1DF7736020EEE03700BB3261 /* SettingPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SettingPopup.cpp; sourceTree = "<group>"; };
-		1DF7736120EEE03700BB3261 /* SettingPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SettingPopup.hpp; sourceTree = "<group>"; };
 		1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FunnyHelper.cpp; sourceTree = "<group>"; };
 		1DF7736C20EEF7F000BB3261 /* FunnyHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunnyHelper.hpp; sourceTree = "<group>"; };
 		1DFA25B020F08E1C003F63B4 /* NewRecordPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NewRecordPopup.cpp; sourceTree = "<group>"; };
@@ -349,7 +379,6 @@
 		50EF62A117ECD613001EB2F8 /* Icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-50.png"; sourceTree = "<group>"; };
 		521A8E6219F0C34300D177D7 /* Default-667h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-667h@2x.png"; sourceTree = "<group>"; };
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
-		521A8EA819F11F5000D177D7 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -470,14 +499,14 @@
 		1D45C44420A8A787007E63AD /* base */ = {
 			isa = PBXGroup;
 			children = (
+				1D4C659B21008BB8005A43D8 /* BaseScene.cpp */,
+				1D4C659C21008BB8005A43D8 /* BaseScene.hpp */,
 				1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */,
 				1DF7736C20EEF7F000BB3261 /* FunnyHelper.hpp */,
 				1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */,
 				1D9ED20120C421D8006DE988 /* GameConfiguration.hpp */,
 				1D97ED8E20C7348D0027C319 /* PatchManager.cpp */,
 				1D97ED8F20C7348D0027C319 /* PatchManager.hpp */,
-				1D06245820EEA25800037AB1 /* PopupManager.cpp */,
-				1D06245920EEA25800037AB1 /* PopupManager.hpp */,
 				1D1F3C8B20ACD36F0035A36C /* ResourceHelper.cpp */,
 				1D1F3C8C20ACD36F0035A36C /* ResourceHelper.hpp */,
 				1D45C44920A8A795007E63AD /* RSP.h */,
@@ -511,12 +540,10 @@
 			children = (
 				1DBC68E620E49B9300CA85F0 /* CreditPopup.cpp */,
 				1DBC68E720E49B9300CA85F0 /* CreditPopup.hpp */,
-				1D45E0F020EB4ACF0065CB3D /* MainMenu.cpp */,
-				1D45E0F120EB4ACF0065CB3D /* MainMenu.hpp */,
+				1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */,
+				1DE1DC2220F7479D00BB3238 /* ExitAlertPopup.hpp */,
 				1D45C49520A8A7D2007E63AD /* MainScene.cpp */,
 				1D45C49620A8A7D2007E63AD /* MainScene.hpp */,
-				1DF7736020EEE03700BB3261 /* SettingPopup.cpp */,
-				1DF7736120EEE03700BB3261 /* SettingPopup.hpp */,
 			);
 			path = main;
 			sourceTree = "<group>";
@@ -530,6 +557,7 @@
 				1D45E0F520ED163F0065CB3D /* effect */,
 				1D45C45720A8A7B8007E63AD /* jsoncpp */,
 				1D45C46B20A8A7B8007E63AD /* network */,
+				1DE1DC1720F6AAAE00BB3238 /* plugins */,
 				1D45C47720A8A7B8007E63AD /* superbomb.h */,
 				1D45C44D20A8A7B8007E63AD /* ui */,
 				1D45C46E20A8A7B8007E63AD /* utils */,
@@ -641,6 +669,8 @@
 				1D06245620EE10E000037AB1 /* BasePopup.hpp */,
 				1D8F54A220D2A8C4009E2201 /* LogoView.cpp */,
 				1D8F54A320D2A8C4009E2201 /* LogoView.hpp */,
+				1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */,
+				1D4C659920FF94AB005A43D8 /* SettingPopup.hpp */,
 				1D45C49920A8A9E2007E63AD /* UIHelper.cpp */,
 				1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */,
 			);
@@ -652,8 +682,23 @@
 			children = (
 				1D45E0F620ED164C0065CB3D /* SBAction.cpp */,
 				1D45E0F720ED164C0065CB3D /* SBAction.hpp */,
+				1DD38B5520FC93D200811604 /* SBActionHelper.cpp */,
+				1DD38B5620FC93D200811604 /* SBActionHelper.hpp */,
+				1DE1DC2520F759C800BB3238 /* SBEffect.cpp */,
+				1DE1DC2420F759C800BB3238 /* SBEffect.h */,
 			);
 			path = effect;
+			sourceTree = "<group>";
+		};
+		1D59F3D220FA69D200649A99 /* popup */ = {
+			isa = PBXGroup;
+			children = (
+				1D59F3D620FA69F100649A99 /* PopupListener.cpp */,
+				1D59F3D720FA69F100649A99 /* PopupListener.hpp */,
+				1D59F3D320FA69D200649A99 /* PopupManager.cpp */,
+				1D59F3D420FA69D200649A99 /* PopupManager.hpp */,
+			);
+			path = popup;
 			sourceTree = "<group>";
 		};
 		1D8F54AD20D2D107009E2201 /* editor-support */ = {
@@ -713,6 +758,39 @@
 			path = test;
 			sourceTree = "<group>";
 		};
+		1DD38B4A20FC92CA00811604 /* menu */ = {
+			isa = PBXGroup;
+			children = (
+				1DD38B4F20FC92E600811604 /* BottomMenu.cpp */,
+				1DD38B5020FC92E600811604 /* BottomMenu.hpp */,
+				1DD38B5220FC92F100811604 /* CommonMenu.cpp */,
+				1DD38B5320FC92F100811604 /* CommonMenu.hpp */,
+				1DD38B4C20FC92DD00811604 /* TopMenu.cpp */,
+				1DD38B4D20FC92DD00811604 /* TopMenu.hpp */,
+			);
+			path = menu;
+			sourceTree = "<group>";
+		};
+		1DE1DC1720F6AAAE00BB3238 /* plugins */ = {
+			isa = PBXGroup;
+			children = (
+				1DE1DC1820F6AAAE00BB3238 /* iap */,
+			);
+			path = plugins;
+			sourceTree = "<group>";
+		};
+		1DE1DC1820F6AAAE00BB3238 /* iap */ = {
+			isa = PBXGroup;
+			children = (
+				1DE1DC2020F6ADF500BB3238 /* IAPDefine.h */,
+				1DE1DC1920F6AAF800BB3238 /* IAPHelper.cpp */,
+				1DE1DC1A20F6AAF800BB3238 /* IAPHelper.hpp */,
+				1DE1DC1C20F6AB8E00BB3238 /* IAPListener.cpp */,
+				1DE1DC1D20F6AB8E00BB3238 /* IAPListener.hpp */,
+			);
+			path = iap;
+			sourceTree = "<group>";
+		};
 		1DEB466120A9EF28004B8F87 /* ui */ = {
 			isa = PBXGroup;
 			children = (
@@ -770,12 +848,13 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				1D12BCCC20C59ED600343634 /* anims */,
-				1D439E1C20C4363400B35C65 /* config */,
-				521A8EA819F11F5000D177D7 /* fonts */,
-				1DF00B1020A48B6A000B4316 /* images */,
+				1DE1DC0C20F693EE00BB3238 /* anims */,
+				1DE1DC0D20F693EE00BB3238 /* config */,
+				1DE1DC0E20F693EE00BB3238 /* fonts */,
+				1DE1DC1020F693EF00BB3238 /* images */,
 				1DFDEB1120C10C07001BC81D /* Images.xcassets */,
-				1D1F3C8620ACCF300035A36C /* sounds */,
+				1DE1DC2720F75A3100BB3238 /* shaders */,
+				1DE1DC0F20F693EE00BB3238 /* sounds */,
 			);
 			name = Resources;
 			path = ../Resources;
@@ -789,6 +868,8 @@
 				1D45C44420A8A787007E63AD /* base */,
 				1D45C44A20A8A7AC007E63AD /* game */,
 				1D45C44B20A8A7B3007E63AD /* main */,
+				1DD38B4A20FC92CA00811604 /* menu */,
+				1D59F3D220FA69D200649A99 /* popup */,
 				1D3120D620E9F9E900D059C6 /* ranking */,
 				1D45C44C20A8A7B8007E63AD /* sb */,
 				1D45C48E20A8A7BC007E63AD /* splash */,
@@ -954,24 +1035,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DE1DC1220F693EF00BB3238 /* config in Resources */,
+				1DE1DC1320F693EF00BB3238 /* fonts in Resources */,
 				1D45C48720A8A7B8007E63AD /* json_internalarray.inl in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
 				5087E78617EB970100C73F5D /* Icon-76.png in Resources */,
 				1DFDEB1220C10C07001BC81D /* Images.xcassets in Resources */,
-				1D439E1E20C4363500B35C65 /* config in Resources */,
-				1D12BCCE20C59ED700343634 /* anims in Resources */,
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
-				1D1F3C8720ACCF330035A36C /* sounds in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				1D45C48420A8A7B8007E63AD /* sconscript in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
+				1DE1DC1520F693EF00BB3238 /* images in Resources */,
 				521A8E6519F0C34300D177D7 /* Default-736h@3x.png in Resources */,
-				521A8EA919F11F5000D177D7 /* fonts in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
+				1DE1DC1420F693EF00BB3238 /* sounds in Resources */,
 				1D45C48620A8A7B8007E63AD /* json_valueiterator.inl in Resources */,
-				1DF00B1120A48B6B000B4316 /* images in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
@@ -979,7 +1059,9 @@
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				1D45C48120A8A7B8007E63AD /* json_internalmap.inl in Resources */,
+				1DE1DC2820F75A3100BB3238 /* shaders in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
+				1DE1DC1120F693EF00BB3238 /* anims in Resources */,
 				521A8E6419F0C34300D177D7 /* Default-667h@2x.png in Resources */,
 				50EF629717ECD46A001EB2F8 /* Icon-58.png in Resources */,
 			);
@@ -990,7 +1072,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */,
-				521A8EAA19F11F5000D177D7 /* fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1001,18 +1082,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D06245A20EEA25800037AB1 /* PopupManager.cpp in Sources */,
+				1D4C659A20FF94AD005A43D8 /* SettingPopup.cpp in Sources */,
 				1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */,
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
+				1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */,
 				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
 				1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */,
 				1D1F3C9A20AD6D040035A36C /* SBBasePopup.cpp in Sources */,
 				1D45C48820A8A7B8007E63AD /* SBHttp.cpp in Sources */,
+				1DD38B5420FC92F100811604 /* CommonMenu.cpp in Sources */,
 				1D1F3C9420AD4A3D0035A36C /* GameView.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
+				1DD38B5720FC93D200811604 /* SBActionHelper.cpp in Sources */,
 				1D45C48B20A8A7B8007E63AD /* SBNodeUtils.cpp in Sources */,
+				1D4C659D21008BB8005A43D8 /* BaseScene.cpp in Sources */,
 				1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */,
 				1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */,
 				1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */,
@@ -1025,15 +1110,18 @@
 				1D45C49120A8A7BD007E63AD /* SplashScene.cpp in Sources */,
 				1DA98BCF20B47D4E006BC169 /* TouchTestScene.cpp in Sources */,
 				1D45C49420A8A7C8007E63AD /* GameScene.cpp in Sources */,
+				1DD38B5120FC92E600811604 /* BottomMenu.cpp in Sources */,
 				1D1F3C8320AC9F5E0035A36C /* SBAudioEngine.cpp in Sources */,
 				1D45C48C20A8A7B8007E63AD /* SBCollection.cpp in Sources */,
 				1D45C47E20A8A7B8007E63AD /* SBButton.cpp in Sources */,
 				1D45C48220A8A7B8007E63AD /* json_reader.cpp in Sources */,
-				1DF7736220EEE03700BB3261 /* SettingPopup.cpp in Sources */,
 				1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */,
 				1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */,
 				1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */,
+				1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */,
+				1DE1DC1E20F6AB8E00BB3238 /* IAPListener.cpp in Sources */,
 				1DA98BC820B46F64006BC169 /* GameManager.cpp in Sources */,
+				1DE1DC1B20F6AAF800BB3238 /* IAPHelper.cpp in Sources */,
 				1DBC68E820E49B9300CA85F0 /* CreditPopup.cpp in Sources */,
 				1D45C44820A8A787007E63AD /* SceneManager.cpp in Sources */,
 				1D1F3C8D20ACD36F0035A36C /* ResourceHelper.cpp in Sources */,
@@ -1041,15 +1129,17 @@
 				1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */,
 				1DFA25B220F08E1C003F63B4 /* NewRecordPopup.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				1D59F3D820FA69F100649A99 /* PopupListener.cpp in Sources */,
 				1DFA25B620F0A4A4003F63B4 /* RecordRowView.cpp in Sources */,
-				1D45E0F220EB4ACF0065CB3D /* MainMenu.cpp in Sources */,
 				1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */,
 				1D45C48320A8A7B8007E63AD /* SBJSON.cpp in Sources */,
+				1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */,
 				1D45C48A20A8A7B8007E63AD /* SBStringUtils.cpp in Sources */,
 				1D1F3C9720AD4CCB0035A36C /* GameOverPopup.cpp in Sources */,
 				1DA98BD220B47E66006BC169 /* User.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				1D45E0F820ED164C0065CB3D /* SBAction.cpp in Sources */,
+				1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */,
 				1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */,
 				1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */,
 				1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */,
