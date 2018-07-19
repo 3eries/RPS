@@ -6,6 +6,8 @@
 
 #include "GameManager.hpp"
 
+#include "RankingManager.hpp"
+
 #include "GameDefine.h"
 #include "GameView.hpp"
 
@@ -59,6 +61,7 @@ void GameManager::reset() {
     feverModeCount = 0;
     levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
     score = 0;
+    ranking = INVALID_RANKING;
 }
 
 /**
@@ -116,6 +119,11 @@ void GameManager::setScore(int score) {
 void GameManager::addScore(int score) {
     
     setScore(this->score + score);
+}
+
+bool GameManager::isNewRecord() {
+    
+    return ranking != INVALID_RANKING;
 }
 
 GameView* GameManager::getView() {
@@ -239,6 +247,12 @@ void GameManager::onGameOver() {
     preGameOver = false;
     updateLocked = true;
     
+    // 순위 선정
+    if( score > 0 ) {
+        ranking = RankingManager::getNewRanking(score);
+    }
+    
+    // 리스너 실행
     for( auto listener : listeners ) {
         listener->onGameOver();
     }

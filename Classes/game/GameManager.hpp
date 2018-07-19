@@ -63,6 +63,8 @@ public:
     void setScore(int score);
     void addScore(int score);
     
+    bool isNewRecord();
+    
 private:
     void reset();
     
@@ -84,6 +86,7 @@ private:
     CC_SYNTHESIZE_READONLY(int, feverModeCount, FeverModeCount);  // 피버 모드한 횟수
     CC_SYNTHESIZE(LevelInfo, levelInfo, LevelInfo);               // 현재 레벨 정보
     CC_SYNTHESIZE_READONLY(int, score, Score);                    // 현재 스코어
+    CC_SYNTHESIZE_READONLY(int, ranking, Ranking);                // 최종 스코어에 해당하는 순위
     
 // GameListener
 public:

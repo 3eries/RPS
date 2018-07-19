@@ -181,16 +181,15 @@ void GameScene::onContinue() {
  */
 void GameScene::onGameOver() {
     
-    const int score = gameMgr->getScore();
-    const int ranking = RankingManager::getNewRanking(score);
+    const int ranking = gameMgr->getRanking();
     
     // 신기록 달성
-    if( score > 0 && ranking != INVALID_RANKING ) {
-        showNewRecordPopup(ranking, score);
+    if( ranking != INVALID_RANKING ) {
+        showNewRecordPopup(ranking, gameMgr->getScore());
     }
     // 게임 오버
     else {
-        showGameOver();
+        showGameOverPopup();
     }
 }
 
