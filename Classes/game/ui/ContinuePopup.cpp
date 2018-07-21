@@ -17,7 +17,7 @@ using namespace std;
 
 static const int   COUNTDOWN_START     = 10;
 
-static const float ENTER_DURATION       = 0.2f;
+static const float ENTER_DURATION       = 0.3f;
 static const float EXIT_DURATION        = 0.2f;
 
 ContinuePopup::ContinuePopup() : BasePopup(Type::CONTINUE),
@@ -61,9 +61,9 @@ void ContinuePopup::onExit() {
  */
 void ContinuePopup::countdown() {
     
-    countdownAnim->clearTracks();
-    countdownAnim->setAnimation(0, TO_STRING(count), false);
-    countdownAnim->update(0);
+    anim->clearTracks();
+    anim->setAnimation(0, TO_STRING(count), false);
+    anim->update(0);
 }
 
 /**
@@ -71,10 +71,11 @@ void ContinuePopup::countdown() {
  */
 void ContinuePopup::timeOut() {
     
-    onTimeOutListener();
-    
     unscheduleAllCallbacks();
-    dismiss();
+    
+    dismissWithAction([=]() {
+        onTimeOutListener();
+    });
 }
 
 void ContinuePopup::initBackgroundView() {
@@ -82,7 +83,7 @@ void ContinuePopup::initBackgroundView() {
     BasePopup::initBackgroundView();
     
     // setBackgroundColor(Color::POPUP_BG);
-    setBackgroundColor(Color4B(0,0,0,255*0.5f));
+    // setBackgroundColor(Color4B(0,0,0,255*0.5f));
 }
 
 void ContinuePopup::initContentView() {
@@ -100,28 +101,24 @@ void ContinuePopup::initContentView() {
      */
     
     // 카운트 다운
-    countdownAnim = SkeletonAnimation::createWithJsonFile(ANIM_CONTINUE);
-    countdownAnim->setAnchorPoint(ANCHOR_M);
-    countdownAnim->setPosition(Vec2MC(0, 0));
-    countdownAnim->setVisible(false);
-    addChild(countdownAnim);
+    anim = SkeletonAnimation::createWithJsonFile(ANIM_CONTINUE);
+    anim->setAnchorPoint(ANCHOR_M);
+    anim->setPosition(Vec2MC(0, 0));
+    anim->setVisible(false);
+    addChild(anim);
     
-    // SBSpineHelper::clearAnimation(countdownAnim, ANIM_NAME_CLEAR);
+    SBSpineHelper::clearAnimation(anim, ANIM_NAME_CLEAR);
     
     // 애니메이션 시작 리스너
-    countdownAnim->setStartListener([=](spTrackEntry *entry) {
+    anim->setStartListener([=](spTrackEntry *entry) {
         
         CCLOG("countdown animation start: %s", entry->animation->name);
-        // countdownAnim->setVisible(true);
-        countdownAnim->setTimeScale(1);
-        
-//        if( count == 0 ) {
-//            countdownAnim->setTimeScale(0.1f);
-//        }
+
+        anim->setTimeScale(1);
     });
     
     // 애니메이션 완료 리스너
-    countdownAnim->setCompleteListener([=](spTrackEntry *entry) {
+    anim->setCompleteListener([=](spTrackEntry *entry) {
 
         CCLOG("countdown animation completed: %s", entry->animation->name);
 
@@ -156,18 +153,14 @@ void ContinuePopup::initMenu() {
     touchNode->addTouchEventListener([=](Ref*, Widget::TouchEventType eventType) {
         
         if( eventType == Widget::TouchEventType::BEGAN ) {
-            countdownAnim->setTimeScale(5.0f);
+            // anim->setTimeScale(5.0f);
             
-            /*
             if( count > 0 ) {
                 count--;
-                SBSpineHelper::clearAnimation(countdownAnim, ANIM_NAME_CLEAR);
-                // countdownAnim->clearTracks();
                 this->countdown();
             } else {
-                countdownAnim->setTimeScale(5.0f);
+                anim->setTimeScale(5.0f);
             }
-            */
         }
     });
     
@@ -212,25 +205,23 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
     // 터치 잠금
     SBDirector::getInstance()->setScreenTouchLocked(true);
     
-    // 카운트 다운
-    countdownAnim->setVisible(true);
-    countdown();
+    // 등장 애니메이션 재생
+    anim->setVisible(true);
+    anim->setAnimation(0, ANIM_NAME_ENTER, false);
+    anim->update(0);
     
-    // 배경
-    // runBackgroundFadeInAction(nullptr, ENTER_DURATION * 0.85f);
-    
-    // 타이틀
+    // 버튼
     auto scale1 = ScaleTo::create(0.15f, 1.1f);
     auto scale2 = ScaleTo::create(0.05f, 1.0f);
     auto scaleSeq = Sequence::create(scale1, scale2, nullptr);
-    // getChildByTag(Tag::IMG_TITLE)->runAction(scaleSeq->clone());
     
-    // 버튼
     getChildByTag(Tag::BTN_VIDEO)->setScale(0);
-    getChildByTag(Tag::BTN_VIDEO)->runAction(scaleSeq->clone());
+    getChildByTag(Tag::BTN_VIDEO)->runAction(scaleSeq);
     
     // 콜백
-    auto delay = DelayTime::create(ENTER_DURATION);
+    const float duration = MAX(ENTER_DURATION, anim->getAnimationDuration(ANIM_NAME_ENTER));
+    
+    auto delay = DelayTime::create(duration);
     auto callFunc = CallFunc::create([=]() {
         
         // 터치 잠금 해제
@@ -248,25 +239,24 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
 void ContinuePopup::runExitAction(SBCallback onFinished) {
     
     BasePopup::runExitAction(onFinished);
-    
-    // 배경
-    // runBackgroundFadeOutAction(nullptr, 0.15f);
-    
-    /*
-    // 타이틀
-    auto scale = ScaleTo::create(0.15f, 0);
-    getChildByTag(Tag::IMG_TITLE)->runAction(scale->clone());
-    
-    // 버튼
-    getChildByTag(Tag::BTN_VIDEO)->runAction(scale->clone());
-     */
-    
-    // 콜백
+
+    // 터치 잠금
     SBDirector::getInstance()->setScreenTouchLocked(true);
     
-    auto delay = DelayTime::create(EXIT_DURATION);
+    // 퇴장 애니메이션 재생
+    anim->setAnimation(0, ANIM_NAME_EXIT, false);
+    
+    // 버튼
+    auto scale = ScaleTo::create(0.15f, 0);
+    getChildByTag(Tag::BTN_VIDEO)->runAction(scale);
+    
+    // 콜백
+    const float duration = MAX(EXIT_DURATION, anim->getAnimationDuration(ANIM_NAME_EXIT));
+    
+    auto delay = DelayTime::create(duration);
     auto callFunc = CallFunc::create([=]() {
         
+        // 터치 잠금 해제
         SBDirector::getInstance()->setScreenTouchLocked(false);
         
         this->onExitActionFinished();
@@ -281,4 +271,7 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
 void ContinuePopup::onEnterActionFinished() {
     
     BasePopup::onEnterActionFinished();
+    
+    // 카운트 다운 시작
+    countdown();
 }

@@ -62,6 +62,8 @@ static const std::string ANIM_CONTINUE              = DIR_ANIM + "continue" + AN
 
 static const std::string ANIM_NAME_RUN              = "run";
 static const std::string ANIM_NAME_CLEAR            = "clear";
+static const std::string ANIM_NAME_ENTER            = "enter";
+static const std::string ANIM_NAME_EXIT             = "exit";
 static const std::string ANIM_NAME_DIE_LEFT         = "die_left";
 static const std::string ANIM_NAME_DIE_RIGHT        = "die_right";
 

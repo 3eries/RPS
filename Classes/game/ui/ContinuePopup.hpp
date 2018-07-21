@@ -52,7 +52,7 @@ private:
     CC_SYNTHESIZE(SBCallback, onTimeOutListener, OnTimeOutListener);
     
     int count;
-    spine::SkeletonAnimation *countdownAnim;
+    spine::SkeletonAnimation *anim;
 };
 
 #endif /* ContinuePopup_hpp */
