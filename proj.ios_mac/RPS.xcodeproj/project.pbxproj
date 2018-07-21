@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1AC6FB30180E99EB004C840B /* libcocos2d iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AC6FB07180E9839004C840B /* libcocos2d iOS.a */; };
+		1B35D7112CCBBD694F2DD3D2 /* libPods-RPS-mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 177D5B58D4AC09FC066FEF19 /* libPods-RPS-mobile.a */; };
 		1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245120EE018D00037AB1 /* NewRecordBoard.cpp */; };
 		1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245520EE10E000037AB1 /* BasePopup.cpp */; };
 		1D1F3C8320AC9F5E0035A36C /* SBAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */; };
@@ -57,6 +58,14 @@
 		1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9520C82A220027C319 /* ConfigTestScene.cpp */; };
 		1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D97ED9720C8E2AA0027C319 /* RSPBlockLayer.cpp */; };
 		1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */; };
+		1DA0408721034661001980BA /* PluginManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0407921034660001980BA /* PluginManager.cpp */; };
+		1DA0408821034661001980BA /* FirebaseManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0407E21034660001980BA /* FirebaseManager.cpp */; };
+		1DA0408921034661001980BA /* Analytics-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0407F21034660001980BA /* Analytics-android.cpp */; };
+		1DA0408A21034661001980BA /* FirebaseManager-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0408221034660001980BA /* FirebaseManager-ios.mm */; };
+		1DA0408B21034661001980BA /* FirebaseManager-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0408321034660001980BA /* FirebaseManager-android.cpp */; };
+		1DA0408D210346B4001980BA /* Analytics-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0408C210346B4001980BA /* Analytics-ios.mm */; };
+		1DA0409421034A6B001980BA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA0409121034A6A001980BA /* MediaPlayer.framework */; };
+		1DA0409821034B10001980BA /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA0409721034B10001980BA /* GameController.framework */; };
 		1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBB20B4675A006BC169 /* RSPButton.cpp */; };
 		1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBC20B4675A006BC169 /* RSPBlock.cpp */; };
 		1DA98BC120B4676A006BC169 /* Man.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBF20B4676A006BC169 /* Man.cpp */; };
@@ -156,6 +165,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		177D5B58D4AC09FC066FEF19 /* libPods-RPS-mobile.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-RPS-mobile.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
 		1D06245120EE018D00037AB1 /* NewRecordBoard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NewRecordBoard.cpp; sourceTree = "<group>"; };
@@ -265,6 +275,20 @@
 		1D97ED9820C8E2AA0027C319 /* RSPBlockLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPBlockLayer.hpp; sourceTree = "<group>"; };
 		1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameConfiguration.cpp; sourceTree = "<group>"; };
 		1D9ED20120C421D8006DE988 /* GameConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameConfiguration.hpp; sourceTree = "<group>"; };
+		1DA0407921034660001980BA /* PluginManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PluginManager.cpp; sourceTree = "<group>"; };
+		1DA0407C21034660001980BA /* PluginManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PluginManager.hpp; sourceTree = "<group>"; };
+		1DA0407E21034660001980BA /* FirebaseManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FirebaseManager.cpp; sourceTree = "<group>"; };
+		1DA0407F21034660001980BA /* Analytics-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "Analytics-android.cpp"; sourceTree = "<group>"; };
+		1DA0408021034660001980BA /* FirebaseManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FirebaseManager.hpp; sourceTree = "<group>"; };
+		1DA0408121034660001980BA /* Analytics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Analytics.hpp; sourceTree = "<group>"; };
+		1DA0408221034660001980BA /* FirebaseManager-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "FirebaseManager-ios.mm"; sourceTree = "<group>"; };
+		1DA0408321034660001980BA /* FirebaseManager-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "FirebaseManager-android.cpp"; sourceTree = "<group>"; };
+		1DA0408421034661001980BA /* plugins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = plugins.h; sourceTree = "<group>"; };
+		1DA0408C210346B4001980BA /* Analytics-ios.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "Analytics-ios.mm"; sourceTree = "<group>"; };
+		1DA0409121034A6A001980BA /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
+		1DA0409521034A92001980BA /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
+		1DA0409721034B10001980BA /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
+		1DA0409A21034F29001980BA /* SBPlatformMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBPlatformMacros.h; sourceTree = "<group>"; };
 		1DA98BB920B4675A006BC169 /* RSPButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPButton.hpp; sourceTree = "<group>"; };
 		1DA98BBA20B4675A006BC169 /* RSPBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPBlock.hpp; sourceTree = "<group>"; };
 		1DA98BBB20B4675A006BC169 /* RSPButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButton.cpp; sourceTree = "<group>"; };
@@ -321,6 +345,7 @@
 		1DFDEB1120C10C07001BC81D /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "RPS-mobile/Images.xcassets"; sourceTree = SOURCE_ROOT; };
 		1DFDEB1420C11B53001BC81D /* TestHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TestHelper.cpp; sourceTree = "<group>"; };
 		1DFDEB1520C11B53001BC81D /* TestHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestHelper.hpp; sourceTree = "<group>"; };
+		1FC40E238CE508C8D1F89826 /* Pods-RPS-mobile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RPS-mobile.release.xcconfig"; path = "Pods/Target Support Files/Pods-RPS-mobile/Pods-RPS-mobile.release.xcconfig"; sourceTree = "<group>"; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		294D0D631D0D56D500F7F5D4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
@@ -360,6 +385,7 @@
 		521A8E6319F0C34300D177D7 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
 		52B47A461A53D09B004E4C60 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		8262943D1AAF051F00CB7CF7 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B4C6C17602489112EC158FF3 /* Pods-RPS-mobile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RPS-mobile.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RPS-mobile/Pods-RPS-mobile.debug.xcconfig"; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		BF1C47EA1293683800B63C5D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -376,6 +402,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DA0409821034B10001980BA /* GameController.framework in Frameworks */,
+				1DA0409421034A6B001980BA /* MediaPlayer.framework in Frameworks */,
 				294D0D641D0D56D500F7F5D4 /* CoreText.framework in Frameworks */,
 				ED545A7C1B68A1F400C3958E /* libiconv.dylib in Frameworks */,
 				52B47A471A53D09C004E4C60 /* Security.framework in Frameworks */,
@@ -390,6 +418,7 @@
 				D44C620C132DFF330009C878 /* OpenAL.framework in Frameworks */,
 				D44C620E132DFF430009C878 /* AVFoundation.framework in Frameworks */,
 				D44C6210132DFF4E0009C878 /* AudioToolbox.framework in Frameworks */,
+				1B35D7112CCBBD694F2DD3D2 /* libPods-RPS-mobile.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +546,7 @@
 				1D45E0F520ED163F0065CB3D /* effect */,
 				1D45C45720A8A7B8007E63AD /* jsoncpp */,
 				1D45C46B20A8A7B8007E63AD /* network */,
+				1DA0409921034F16001980BA /* platform */,
 				1DE1DC1720F6AAAE00BB3238 /* plugins */,
 				1D45C47720A8A7B8007E63AD /* superbomb.h */,
 				1D45C44D20A8A7B8007E63AD /* ui */,
@@ -678,6 +708,42 @@
 			path = spine;
 			sourceTree = "<group>";
 		};
+		1DA0407D21034660001980BA /* firebase */ = {
+			isa = PBXGroup;
+			children = (
+				1DA0407F21034660001980BA /* Analytics-android.cpp */,
+				1DA0408C210346B4001980BA /* Analytics-ios.mm */,
+				1DA0408121034660001980BA /* Analytics.hpp */,
+				1DA0408321034660001980BA /* FirebaseManager-android.cpp */,
+				1DA0408221034660001980BA /* FirebaseManager-ios.mm */,
+				1DA0407E21034660001980BA /* FirebaseManager.cpp */,
+				1DA0408021034660001980BA /* FirebaseManager.hpp */,
+			);
+			path = firebase;
+			sourceTree = "<group>";
+		};
+		1DA0408521034661001980BA /* play */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = play;
+			sourceTree = "<group>";
+		};
+		1DA0408621034661001980BA /* ads */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ads;
+			sourceTree = "<group>";
+		};
+		1DA0409921034F16001980BA /* platform */ = {
+			isa = PBXGroup;
+			children = (
+				1DA0409A21034F29001980BA /* SBPlatformMacros.h */,
+			);
+			path = platform;
+			sourceTree = "<group>";
+		};
 		1DA98BB820B4675A006BC169 /* object */ = {
 			isa = PBXGroup;
 			children = (
@@ -734,7 +800,13 @@
 		1DE1DC1720F6AAAE00BB3238 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
+				1DA0408621034661001980BA /* ads */,
+				1DA0407D21034660001980BA /* firebase */,
 				1DE1DC1820F6AAAE00BB3238 /* iap */,
+				1DA0408521034661001980BA /* play */,
+				1DA0407921034660001980BA /* PluginManager.cpp */,
+				1DA0407C21034660001980BA /* PluginManager.hpp */,
+				1DA0408421034661001980BA /* plugins.h */,
 			);
 			path = plugins;
 			sourceTree = "<group>";
@@ -774,6 +846,7 @@
 				503AE10617EB990700D1A890 /* mac */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				46880B7519C43A67006E1F66 /* Resources */,
+				6CC962AB3E3E14DD22C2BA60 /* Pods */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -781,6 +854,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1DA0409721034B10001980BA /* GameController.framework */,
+				1DA0409521034A92001980BA /* CoreText.framework */,
+				1DA0409121034A6A001980BA /* MediaPlayer.framework */,
 				294D0D631D0D56D500F7F5D4 /* CoreText.framework */,
 				ED545A7D1B68A1FA00C3958E /* libiconv.dylib */,
 				ED545A7B1B68A1F400C3958E /* libiconv.dylib */,
@@ -801,6 +877,7 @@
 				BF170DB012928DE900B8313A /* OpenGLES.framework */,
 				BF1C47EA1293683800B63C5D /* QuartzCore.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				177D5B58D4AC09FC066FEF19 /* libPods-RPS-mobile.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -887,6 +964,15 @@
 			path = ios;
 			sourceTree = SOURCE_ROOT;
 		};
+		6CC962AB3E3E14DD22C2BA60 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B4C6C17602489112EC158FF3 /* Pods-RPS-mobile.debug.xcconfig */,
+				1FC40E238CE508C8D1F89826 /* Pods-RPS-mobile.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -894,6 +980,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "RPS-mobile" */;
 			buildPhases = (
+				00A71E2E4A6786E40C17D25A /* [CP] Check Pods Manifest.lock */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
@@ -933,6 +1020,7 @@
 				German,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
@@ -1011,6 +1099,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		00A71E2E4A6786E40C17D25A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RPS-mobile-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1020,6 +1129,7 @@
 				1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */,
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
+				1DA0408A21034661001980BA /* FirebaseManager-ios.mm in Sources */,
 				1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */,
 				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
@@ -1036,6 +1146,7 @@
 				1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */,
 				1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */,
 				1D97ED9020C7348D0027C319 /* PatchManager.cpp in Sources */,
+				1DA0408721034661001980BA /* PluginManager.cpp in Sources */,
 				1D1F3C9D20AD74240035A36C /* PausePopup.cpp in Sources */,
 				1D45C48520A8A7B8007E63AD /* json_value.cpp in Sources */,
 				1DA98BC120B4676A006BC169 /* Man.cpp in Sources */,
@@ -1051,6 +1162,8 @@
 				1D45C48220A8A7B8007E63AD /* json_reader.cpp in Sources */,
 				1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */,
 				1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */,
+				1DA0408D210346B4001980BA /* Analytics-ios.mm in Sources */,
+				1DA0408821034661001980BA /* FirebaseManager.cpp in Sources */,
 				1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */,
 				1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */,
 				1DE1DC1E20F6AB8E00BB3238 /* IAPListener.cpp in Sources */,
@@ -1058,6 +1171,7 @@
 				1DE1DC1B20F6AAF800BB3238 /* IAPHelper.cpp in Sources */,
 				1DBC68E820E49B9300CA85F0 /* CreditPopup.cpp in Sources */,
 				1D45C44820A8A787007E63AD /* SceneManager.cpp in Sources */,
+				1DA0408921034661001980BA /* Analytics-android.cpp in Sources */,
 				1D1F3C8D20ACD36F0035A36C /* ResourceHelper.cpp in Sources */,
 				1DA98BCC20B47D45006BC169 /* TestMenuScene.cpp in Sources */,
 				1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */,
@@ -1078,6 +1192,7 @@
 				1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */,
 				1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */,
 				1D45C48920A8A7B8007E63AD /* SBSystemUtils.cpp in Sources */,
+				1DA0408B21034661001980BA /* FirebaseManager-android.cpp in Sources */,
 				1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */,
 				1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */,
 				1DA98BC420B46776006BC169 /* TimeBar.cpp in Sources */,
@@ -1103,6 +1218,7 @@
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4C6C17602489112EC158FF3 /* Pods-RPS-mobile.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1120,15 +1236,17 @@
 					USE_FILE32API,
 					"COCOS2D_DEBUG=1",
 					"CC_ENABLE_CHIPMUNK_INTEGRATION=1",
+					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
+					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.superbomb.series.rps;
 				PRODUCT_NAME = "God of RPS";
@@ -1144,6 +1262,7 @@
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1FC40E238CE508C8D1F89826 /* Pods-RPS-mobile.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1160,15 +1279,17 @@
 					USE_FILE32API,
 					"CC_ENABLE_CHIPMUNK_INTEGRATION=1",
 					NDEBUG,
+					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ios/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(_COCOS_LIB_IOS_BEGIN)",
 					"$(_COCOS_LIB_IOS_END)",
+					"$(inherited)",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.superbomb.series.rps;
 				PRODUCT_NAME = "God of RPS";
