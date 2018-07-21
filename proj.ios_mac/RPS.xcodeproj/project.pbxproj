@@ -83,6 +83,7 @@
 		1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */; };
 		1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2520F759C800BB3238 /* SBEffect.cpp */; };
 		1DE1DC2820F75A3100BB3238 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2720F75A3100BB3238 /* shaders */; };
+		1DE204E62103352300ABE5EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DE204E52103352200ABE5EB /* GoogleService-Info.plist */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */; };
 		1DFA25B220F08E1C003F63B4 /* NewRecordPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DFA25B020F08E1C003F63B4 /* NewRecordPopup.cpp */; };
@@ -331,6 +332,7 @@
 		1DE1DC2420F759C800BB3238 /* SBEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBEffect.h; sourceTree = "<group>"; };
 		1DE1DC2520F759C800BB3238 /* SBEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBEffect.cpp; sourceTree = "<group>"; };
 		1DE1DC2720F75A3100BB3238 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
+		1DE204E52103352200ABE5EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ios/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FunnyHelper.cpp; sourceTree = "<group>"; };
 		1DF7736C20EEF7F000BB3261 /* FunnyHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunnyHelper.hpp; sourceTree = "<group>"; };
@@ -439,9 +441,10 @@
 		080E96DDFE201D6D7F000001 /* ios */ = {
 			isa = PBXGroup;
 			children = (
-				5087E77117EB970100C73F5D /* Icons */,
 				503AE0FA17EB989F00D1A890 /* AppController.h */,
 				503AE0FB17EB989F00D1A890 /* AppController.mm */,
+				1DE204E52103352200ABE5EB /* GoogleService-Info.plist */,
+				5087E77117EB970100C73F5D /* Icons */,
 				503AE0FC17EB989F00D1A890 /* main.m */,
 				503AE0FD17EB989F00D1A890 /* Prefix.pch */,
 				503AE0FE17EB989F00D1A890 /* RootViewController.h */,
@@ -1052,6 +1055,7 @@
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				1DE1DC1420F693EF00BB3238 /* sounds in Resources */,
 				1D45C48620A8A7B8007E63AD /* json_valueiterator.inl in Resources */,
+				1DE204E62103352300ABE5EB /* GoogleService-Info.plist in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				50EF62A217ECD613001EB2F8 /* Icon-29.png in Resources */,
 				50EF629617ECD46A001EB2F8 /* Icon-40.png in Resources */,
