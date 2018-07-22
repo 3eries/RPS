@@ -472,9 +472,9 @@ void DarkCloud::updateDeadLine(float timeRatio) {
     }
     
     // show
-    if( timeRatio < 0.5f ) {
+    if( timeRatio < 0.35f ) {
         if( deadLine->getOpacity() != 255 ) {
-            auto fadeIn = FadeIn::create(0.5f);
+            auto fadeIn = FadeIn::create(0.4f);
             auto delay = DelayTime::create(0.5f);
             
             auto seq = Sequence::create(fadeIn, delay, nullptr);
@@ -483,9 +483,9 @@ void DarkCloud::updateDeadLine(float timeRatio) {
         }
     }
     // hide
-    else if( timeRatio > 0.55f ) {
+    else if( timeRatio > 0.4f ) {
         if( deadLine->getOpacity() != 0 ) {
-            auto fadeOut = FadeOut::create(0.5f);
+            auto fadeOut = FadeOut::create(0.4f);
             auto delay = DelayTime::create(0.5f);
             
             auto seq = Sequence::create(fadeOut, delay, nullptr);
