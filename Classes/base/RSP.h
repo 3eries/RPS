@@ -21,6 +21,13 @@ static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GA
 
 static const std::string INTERNAL_GAME_CONFIG_FILE_VERSION      = "1.0.0";
 
+// Firebase Analytics
+static const std::string FA_SCREEN_SPLASH                       = "splash";
+static const std::string FA_SCREEN_MAIN                         = "main";
+static const std::string FA_SCREEN_GAME                         = "game";
+static const std::string FA_EVENT_CREDIT                        = "credit";
+static const std::string FA_EVENT_SHOP_COMING_SOON              = "shop_coming_soon";
+
 // 배너 크기, 하드코딩됨. 추후 제거할 수도 있음
 static const int BANNER_HEIGHT = 100;
 

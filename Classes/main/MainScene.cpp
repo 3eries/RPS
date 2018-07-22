@@ -138,6 +138,8 @@ void MainScene::onClick(Node *sender) {
     switch( sender->getTag() ) {
         // 크레딧
         case Tag::BTN_TITLE: {
+            superbomb::firebase::Analytics::logEvent(FA_EVENT_CREDIT);
+            
             auto popup = CreditPopup::create();
             addChild(popup, PopupZOrder::TOP);
         } break;

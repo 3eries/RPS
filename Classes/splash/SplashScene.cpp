@@ -66,6 +66,8 @@ bool SplashScene::init() {
 void SplashScene::onEnter() {
     
     BaseScene::onEnter();
+    
+    superbomb::firebase::Analytics::setScreenName(FA_SCREEN_SPLASH);
 }
 
 void SplashScene::onExit() {

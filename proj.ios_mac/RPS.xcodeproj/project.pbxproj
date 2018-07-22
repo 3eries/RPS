@@ -66,6 +66,7 @@
 		1DA0408D210346B4001980BA /* Analytics-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0408C210346B4001980BA /* Analytics-ios.mm */; };
 		1DA0409421034A6B001980BA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA0409121034A6A001980BA /* MediaPlayer.framework */; };
 		1DA0409821034B10001980BA /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA0409721034B10001980BA /* GameController.framework */; };
+		1DA0409E21037F6B001980BA /* SBJniHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0409C21037F6B001980BA /* SBJniHelper.cpp */; };
 		1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBB20B4675A006BC169 /* RSPButton.cpp */; };
 		1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBC20B4675A006BC169 /* RSPBlock.cpp */; };
 		1DA98BC120B4676A006BC169 /* Man.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBF20B4676A006BC169 /* Man.cpp */; };
@@ -289,6 +290,8 @@
 		1DA0409521034A92001980BA /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/CoreText.framework; sourceTree = DEVELOPER_DIR; };
 		1DA0409721034B10001980BA /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		1DA0409A21034F29001980BA /* SBPlatformMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBPlatformMacros.h; sourceTree = "<group>"; };
+		1DA0409C21037F6B001980BA /* SBJniHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBJniHelper.cpp; sourceTree = "<group>"; };
+		1DA0409D21037F6B001980BA /* SBJniHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBJniHelper.hpp; sourceTree = "<group>"; };
 		1DA98BB920B4675A006BC169 /* RSPButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPButton.hpp; sourceTree = "<group>"; };
 		1DA98BBA20B4675A006BC169 /* RSPBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPBlock.hpp; sourceTree = "<group>"; };
 		1DA98BBB20B4675A006BC169 /* RSPButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButton.cpp; sourceTree = "<group>"; };
@@ -739,9 +742,19 @@
 		1DA0409921034F16001980BA /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				1DA0409B21037F60001980BA /* android */,
 				1DA0409A21034F29001980BA /* SBPlatformMacros.h */,
 			);
 			path = platform;
+			sourceTree = "<group>";
+		};
+		1DA0409B21037F60001980BA /* android */ = {
+			isa = PBXGroup;
+			children = (
+				1DA0409C21037F6B001980BA /* SBJniHelper.cpp */,
+				1DA0409D21037F6B001980BA /* SBJniHelper.hpp */,
+			);
+			path = android;
 			sourceTree = "<group>";
 		};
 		1DA98BB820B4675A006BC169 /* object */ = {
@@ -1195,6 +1208,7 @@
 				1DA0408B21034661001980BA /* FirebaseManager-android.cpp in Sources */,
 				1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */,
 				1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */,
+				1DA0409E21037F6B001980BA /* SBJniHelper.cpp in Sources */,
 				1DA98BC420B46776006BC169 /* TimeBar.cpp in Sources */,
 				1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */,
 				1D45C47F20A8A7B8007E63AD /* SBToggleButton.cpp in Sources */,

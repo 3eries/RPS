@@ -200,7 +200,8 @@ void BottomMenu::initMenu() {
     // Shop 버튼 커밍순
     {
         auto btn = getChildByTag<SBButton*>(Tag::SHOP);
-        btn->setTouchEnabled(false);
+        // btn->setTouchEnabled(false);
+        btn->setZoomScale(0);
         
         // auto btnBox = SBNodeUtils::getBoundingBoxInWorld(btn);
         // comingSoon->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()));

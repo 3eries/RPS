@@ -306,6 +306,7 @@ void CommonMenu::onClickBottomMenu(BottomMenu::Tag tag) {
             
         // 상점
         case BottomMenu::Tag::SHOP: {
+            superbomb::firebase::Analytics::logEvent(FA_EVENT_SHOP_COMING_SOON);
         } break;
             
         default:

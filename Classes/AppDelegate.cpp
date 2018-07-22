@@ -69,10 +69,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     // 초기화
     SBDirector::init();
+    superbomb::PluginManager::getInstance()->init();
     PatchManager::getInstance()->init();
     RankingManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();
-
+    
     // run
     SceneManager::getInstance()->replace(SceneType::SPLASH);
 

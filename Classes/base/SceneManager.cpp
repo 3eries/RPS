@@ -6,6 +6,8 @@
 
 #include "SceneManager.h"
 
+#include "RSP.h"
+
 //
 #include "User.hpp"
 //
@@ -17,6 +19,34 @@
 
 USING_NS_CC;
 using namespace std;
+
+/**
+ * Firebase Analytics 스크린 설정
+ */
+static void setScreenName(SceneType type) {
+    
+    string screen = "";
+    
+    switch( type ) {
+        case SceneType::SPLASH:     screen = FA_SCREEN_SPLASH;     break;
+        case SceneType::MAIN:       screen = FA_SCREEN_MAIN;       break;
+        case SceneType::GAME:       screen = FA_SCREEN_GAME;       break;
+        default:
+            break;
+    }
+    
+    if( screen != "" ) {
+        // splash 화면은 Firebase 모듈이 초기화 되기 전에 실행되기 때문에 스케줄링
+        if( type == SceneType::SPLASH ) {
+            Director::getInstance()->getScheduler()->schedule([=](float dt) {
+                superbomb::firebase::Analytics::setScreenName(screen);
+            }, SceneManager::getInstance(), 0, 0, 0.1f, false, "SCREEN_NAME");
+            
+        } else {
+            superbomb::firebase::Analytics::setScreenName(screen);
+        }
+    }
+}
 
 const float SceneManager::REPLACE_DURATION_SPLASH_TO_MAIN = 1.5f;
 const float SceneManager::REPLACE_DURATION_MAIN = 0.3f;
@@ -100,6 +130,8 @@ void SceneManager::replace(SceneType type, function<BaseScene*()> createSceneFun
     isRunningReplaceScene = true;
     sceneType = type;
 
+    setScreenName(sceneType);
+    
     // Scene 생성
     scene = createSceneFunc();
     auto trans = (Scene*)scene;
