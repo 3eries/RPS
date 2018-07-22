@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1059719456644",
+    "firebase_url": "https://god-of-rps.firebaseio.com",
+    "project_id": "god-of-rps",
+    "storage_bucket": "god-of-rps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059719456644:android:c4265c332752c2c3",
+        "android_client_info": {
+          "package_name": "com.superbomb.series.rps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059719456644-7t87pqg0hrc4bn018sfn4lvdkpb05gkc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMeAS9hPRItWLRl3XeRIKqoR5fhK9JQPg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

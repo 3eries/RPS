@@ -24,6 +24,9 @@ THE SOFTWARE.
 package org.cocos2dx.cpp;
 
 import android.os.Bundle;
+
+import com.superbomb.plugins.firebase.Analytics;
+
 import org.cocos2dx.lib.Cocos2dxActivity;
 
 public class AppActivity extends Cocos2dxActivity {
@@ -40,8 +43,8 @@ public class AppActivity extends Cocos2dxActivity {
             // Don't need to finish it again since it's finished in super.onCreate .
             return;
         }
-        // DO OTHER INITIALIZATION BELOW
-        
-    }
 
+        // DO OTHER INITIALIZATION BELOW
+        Analytics.getInstance().init(this);
+    }
 }
