@@ -1,6 +1,5 @@
 //
 //  IAPHelper.hpp
-//  RPS-mobile
 //
 //  Created by seongmin hwang on 2018. 7. 12..
 //

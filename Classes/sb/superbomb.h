@@ -44,7 +44,16 @@
 // editor-support
 #include "editor-support/spine/SBSpineHelper.hpp"
 
+// platform
+#include "platform/SBPlatformMacros.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
+#include "platform/android/SBJniHelper.hpp"
+
+#endif
+
 // plugins
-#include "plugins/iap/IAPHelper.hpp"
+#include "plugins/plugins.h"
 
 #endif /* superbomb_h */
