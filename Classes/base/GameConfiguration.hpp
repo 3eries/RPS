@@ -71,6 +71,7 @@ public:
     LevelInfo getMaxLevelInfo();
     
 private:
+    CC_SYNTHESIZE_READONLY(int, maxScore, MaxScore);
     int continuation;
     CC_SYNTHESIZE(TimeInfo, timeInfo, TimeInfo);
     CC_SYNTHESIZE(FeverInfo, feverInfo, FeverInfo);

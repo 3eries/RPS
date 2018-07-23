@@ -94,6 +94,7 @@ void GameManager::onExitGame() {
  */
 void GameManager::setScore(int score) {
     
+    score = MIN(config->getMaxScore(), score);
     this->score = score;
     
     // 스코어에 해당하는 레벨 설정

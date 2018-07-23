@@ -128,6 +128,7 @@ void GameConfiguration::parse(const string &json) {
     rapidjson::Document doc;
     doc.Parse(json.c_str());
     
+    maxScore = doc["max_score"].GetInt();
     continuation = doc["continuation"].GetInt();
     
     // time
