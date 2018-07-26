@@ -22,6 +22,7 @@ class BasePopup : public SBBasePopup {
 public:
     enum class Type {
         NONE,
+        LOADING_BAR,
         EXIT_APP,
         CREDIT,
         SETTING,
