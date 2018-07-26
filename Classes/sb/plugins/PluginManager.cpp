@@ -8,6 +8,7 @@
 
 #include "firebase/FirebaseManager.hpp"
 #include "iap/IAPHelper.hpp"
+#include "play/PluginPlay.hpp"
 
 USING_NS_CC;
 using namespace std;
@@ -36,7 +37,10 @@ PluginManager::~PluginManager() {
 }
 
 void PluginManager::init() {
+    
+    CCLOG("PluginManager::init");
  
+    PluginPlay::getInstance()->init();
     FirebaseManager::getInstance()->init();
 }
 

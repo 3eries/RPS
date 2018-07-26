@@ -248,9 +248,12 @@ void GameManager::onGameOver() {
     preGameOver = false;
     updateLocked = true;
     
-    // 순위 선정
     if( score > 0 ) {
+        // 순위 선정
         ranking = RankingManager::getNewRanking(score);
+        
+        // 리더보드 등록
+        superbomb::PluginPlay::submitScore(LEADER_BOARD_HIGH_SCORE, score);
     }
     
     // 리스너 실행

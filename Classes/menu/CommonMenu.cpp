@@ -202,7 +202,7 @@ void CommonMenu::showSettingPopup() {
         switch( tag ) {
             // world ranking
             case SettingPopup::Tag::WORLD_RANKING: {
-                // TODO:
+                showLeaderboards();
                 // popup->dismissWithAction();
             } break;
                 
@@ -222,6 +222,18 @@ void CommonMenu::showSettingPopup() {
         }
     });
     SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+}
+
+/**
+ * 리더보트 노출
+ */
+void CommonMenu::showLeaderboards() {
+    
+    if( superbomb::PluginPlay::isSignedIn() ) {
+        superbomb::PluginPlay::showAllLeaderboards();
+    } else {
+        superbomb::PluginPlay::signIn();
+    }
 }
 
 /**
@@ -302,6 +314,7 @@ void CommonMenu::onClickBottomMenu(BottomMenu::Tag tag) {
             
         // 월드 랭킹
         case BottomMenu::Tag::RANKING_WORLD: {
+            showLeaderboards();
         } break;
             
         // 상점

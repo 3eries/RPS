@@ -21,6 +21,10 @@
 		1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D720E9F9E900D059C6 /* RankingPopup.cpp */; };
 		1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D920E9F9E900D059C6 /* RankingManager.cpp */; };
 		1D3DF50321045BEC0055B66E /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3DF50221045BEC0055B66E /* GameKit.framework */; };
+		1D3DF5082104664C0055B66E /* PluginPlay-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DF5042104664B0055B66E /* PluginPlay-android.cpp */; };
+		1D3DF5092104664C0055B66E /* PluginPlay-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DF5052104664B0055B66E /* PluginPlay-ios.mm */; };
+		1D3DF50C2104665C0055B66E /* GameCenterHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DF50B2104665C0055B66E /* GameCenterHelper.mm */; };
+		1D3DF50E210466EE0055B66E /* PluginPlay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DF50D210466EE0055B66E /* PluginPlay.cpp */; };
 		1D45C44820A8A787007E63AD /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C44620A8A787007E63AD /* SceneManager.cpp */; };
 		1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C44E20A8A7B8007E63AD /* SBUIInfo.cpp */; };
 		1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C45320A8A7B8007E63AD /* SBAnimationSprite.cpp */; };
@@ -94,6 +98,7 @@
 		1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2520F759C800BB3238 /* SBEffect.cpp */; };
 		1DE1DC2820F75A3100BB3238 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2720F75A3100BB3238 /* shaders */; };
 		1DE204E62103352300ABE5EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DE204E52103352200ABE5EB /* GoogleService-Info.plist */; };
+		1DECFE8C2105C01C00F47252 /* SBPlatformHelper-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */; };
 		1DFA25B220F08E1C003F63B4 /* NewRecordPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DFA25B020F08E1C003F63B4 /* NewRecordPopup.cpp */; };
@@ -196,6 +201,12 @@
 		1D3120D920E9F9E900D059C6 /* RankingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankingManager.cpp; sourceTree = "<group>"; };
 		1D3120DA20E9F9E900D059C6 /* RankingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingPopup.hpp; sourceTree = "<group>"; };
 		1D3DF50221045BEC0055B66E /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
+		1D3DF5042104664B0055B66E /* PluginPlay-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "PluginPlay-android.cpp"; sourceTree = "<group>"; };
+		1D3DF5052104664B0055B66E /* PluginPlay-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "PluginPlay-ios.mm"; sourceTree = "<group>"; };
+		1D3DF5072104664B0055B66E /* PluginPlay.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PluginPlay.hpp; sourceTree = "<group>"; };
+		1D3DF50A2104665C0055B66E /* GameCenterHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameCenterHelper.h; sourceTree = "<group>"; };
+		1D3DF50B2104665C0055B66E /* GameCenterHelper.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenterHelper.mm; sourceTree = "<group>"; };
+		1D3DF50D210466EE0055B66E /* PluginPlay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PluginPlay.cpp; sourceTree = "<group>"; };
 		1D45C44520A8A787007E63AD /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		1D45C44620A8A787007E63AD /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
 		1D45C44720A8A787007E63AD /* UserDefaultKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultKey.h; sourceTree = "<group>"; };
@@ -340,6 +351,8 @@
 		1DE1DC2520F759C800BB3238 /* SBEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBEffect.cpp; sourceTree = "<group>"; };
 		1DE1DC2720F75A3100BB3238 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		1DE204E52103352200ABE5EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ios/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SBPlatformHelper-ios.mm"; sourceTree = "<group>"; };
+		1DECFE942105E9AF00F47252 /* SBPlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBPlatformHelper.h; sourceTree = "<group>"; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FunnyHelper.cpp; sourceTree = "<group>"; };
 		1DF7736C20EEF7F000BB3261 /* FunnyHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FunnyHelper.hpp; sourceTree = "<group>"; };
@@ -489,6 +502,15 @@
 				1DFA25B520F0A4A4003F63B4 /* RecordRowView.hpp */,
 			);
 			path = ranking;
+			sourceTree = "<group>";
+		};
+		1D3DF5062104664B0055B66E /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				1D3DF50A2104665C0055B66E /* GameCenterHelper.h */,
+				1D3DF50B2104665C0055B66E /* GameCenterHelper.mm */,
+			);
+			path = ios;
 			sourceTree = "<group>";
 		};
 		1D45C44420A8A787007E63AD /* base */ = {
@@ -731,6 +753,11 @@
 		1DA0408521034661001980BA /* play */ = {
 			isa = PBXGroup;
 			children = (
+				1D3DF5062104664B0055B66E /* ios */,
+				1D3DF5042104664B0055B66E /* PluginPlay-android.cpp */,
+				1D3DF5052104664B0055B66E /* PluginPlay-ios.mm */,
+				1D3DF50D210466EE0055B66E /* PluginPlay.cpp */,
+				1D3DF5072104664B0055B66E /* PluginPlay.hpp */,
 			);
 			path = play;
 			sourceTree = "<group>";
@@ -746,6 +773,8 @@
 			isa = PBXGroup;
 			children = (
 				1DA0409B21037F60001980BA /* android */,
+				1DECFE872105A2D800F47252 /* ios */,
+				1DECFE942105E9AF00F47252 /* SBPlatformHelper.h */,
 				1DA0409A21034F29001980BA /* SBPlatformMacros.h */,
 			);
 			path = platform;
@@ -850,6 +879,14 @@
 				1D1F3C9C20AD74220035A36C /* PausePopup.hpp */,
 			);
 			path = ui;
+			sourceTree = "<group>";
+		};
+		1DECFE872105A2D800F47252 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */,
+			);
+			path = ios;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
@@ -1149,6 +1186,7 @@
 			files = (
 				1D4C659A20FF94AD005A43D8 /* SettingPopup.cpp in Sources */,
 				1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */,
+				1D3DF50C2104665C0055B66E /* GameCenterHelper.mm in Sources */,
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
 				1DA0408A21034661001980BA /* FirebaseManager-ios.mm in Sources */,
@@ -1164,6 +1202,7 @@
 				1DD38B5720FC93D200811604 /* SBActionHelper.cpp in Sources */,
 				1D45C48B20A8A7B8007E63AD /* SBNodeUtils.cpp in Sources */,
 				1D4C659D21008BB8005A43D8 /* BaseScene.cpp in Sources */,
+				1DECFE8C2105C01C00F47252 /* SBPlatformHelper-ios.mm in Sources */,
 				1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */,
 				1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */,
 				1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */,
@@ -1172,6 +1211,7 @@
 				1D1F3C9D20AD74240035A36C /* PausePopup.cpp in Sources */,
 				1D45C48520A8A7B8007E63AD /* json_value.cpp in Sources */,
 				1DA98BC120B4676A006BC169 /* Man.cpp in Sources */,
+				1D3DF5082104664C0055B66E /* PluginPlay-android.cpp in Sources */,
 				1D45C48D20A8A7B8007E63AD /* SBTypes.cpp in Sources */,
 				1D8F54A720D2B413009E2201 /* SpineTestScene.cpp in Sources */,
 				1D45C49120A8A7BD007E63AD /* SplashScene.cpp in Sources */,
@@ -1216,10 +1256,12 @@
 				1D45C48920A8A7B8007E63AD /* SBSystemUtils.cpp in Sources */,
 				1DA0408B21034661001980BA /* FirebaseManager-android.cpp in Sources */,
 				1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */,
+				1D3DF5092104664C0055B66E /* PluginPlay-ios.mm in Sources */,
 				1D8F54A420D2A8C4009E2201 /* LogoView.cpp in Sources */,
 				1DA0409E21037F6B001980BA /* SBJniHelper.cpp in Sources */,
 				1DA98BC420B46776006BC169 /* TimeBar.cpp in Sources */,
 				1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */,
+				1D3DF50E210466EE0055B66E /* PluginPlay.cpp in Sources */,
 				1D45C47F20A8A7B8007E63AD /* SBToggleButton.cpp in Sources */,
 				1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */,
 				1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */,

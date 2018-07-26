@@ -23,8 +23,10 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.superbomb.plugins.PluginManager;
 import com.superbomb.plugins.firebase.Analytics;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
@@ -33,8 +35,12 @@ public class AppActivity extends Cocos2dxActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.setEnableVirtualButton(false);
         super.onCreate(savedInstanceState);
+
+        PluginManager.init(this);
+
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
         if (!isTaskRoot()) {
             // Android launched another instance of the root activity into an existing task
@@ -45,6 +51,13 @@ public class AppActivity extends Cocos2dxActivity {
         }
 
         // DO OTHER INITIALIZATION BELOW
-        Analytics.getInstance().init(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        PluginManager.onActivityResult(requestCode, resultCode, data);
     }
 }

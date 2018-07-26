@@ -14,4 +14,6 @@
 
 #include "iap/IAPHelper.hpp"
 
+#include "play/PluginPlay.hpp"
+
 #endif /* plugins_h */

@@ -45,6 +45,7 @@
 #include "editor-support/spine/SBSpineHelper.hpp"
 
 // platform
+#include "platform/SBPlatformHelper.h"
 #include "platform/SBPlatformMacros.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)

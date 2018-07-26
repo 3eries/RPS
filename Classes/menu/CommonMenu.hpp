@@ -51,6 +51,8 @@ public:
     void showRankingPopup(OnPopupEvent onEventListener = nullptr);
     void showSettingPopup();
     
+    void showLeaderboards();
+    
     void openMenu();
     void closeMenu();
     

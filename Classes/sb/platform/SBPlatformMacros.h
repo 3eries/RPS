@@ -13,6 +13,9 @@
 
 #define NS_STRING(__str__)      [NSString stringWithUTF8String:__str__]
 
+#define ROOT_VIEW_CONTROLLER \
+(((AppController *)[UIApplication sharedApplication].delegate).viewController)
+
 #endif
 
 #endif /* SBPlatformMacros_h */

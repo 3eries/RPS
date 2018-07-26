@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- app_id -->
+    <string name="app_id" translatable="false">1059719456644</string>
+    <!-- package_name -->
+    <string name="package_name" translatable="false">com.superbomb.series.rps</string>
+    <!-- leaderboard World -->
+    <string name="leaderboard_world" translatable="false">CgkIhM_O4eseEAIQAQ</string>
+</resources>
