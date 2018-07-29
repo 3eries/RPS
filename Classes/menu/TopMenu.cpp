@@ -25,7 +25,7 @@ static const Vec2    MENU_IN_POSITION          = Vec2(0, 0);
 static const Vec2    MENU_OUT_POSITION         = Vec2(110, 0);
 
 #define              MENU_BUTTON_POSITION \
-(Vec2TC(295, -62) + (SceneManager::isBannerVisible() ? Vec2(0, -BANNER_HEIGHT) : Vec2(0, 0)))
+(Vec2TC(295, -62) + (superbomb::AdsHelper::isBannerVisible() ? Vec2(0, -BANNER_HEIGHT) : Vec2(0, 0)))
 
 TopMenu::TopMenu() :
 onClickListener(nullptr),

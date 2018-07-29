@@ -54,9 +54,6 @@ public:
     static CommonMenu* getCommonMenu();
     static GameView* getGameView();
     
-    // 임시
-    static bool isBannerVisible();
-    
 private:
     SceneType sceneType;
     BaseScene *scene;

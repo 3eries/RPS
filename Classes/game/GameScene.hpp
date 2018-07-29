@@ -73,7 +73,6 @@ private:
     CC_SYNTHESIZE(GameView*, gameView, GameView);
     
     cocos2d::Node *touchLockNode;   // 터치 방지 노드
-    cocos2d::Sprite *banner; // 임시
 };
 
 #endif /* GameScene_hpp */

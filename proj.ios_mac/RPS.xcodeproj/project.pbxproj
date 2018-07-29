@@ -72,6 +72,7 @@
 		1DA0409421034A6B001980BA /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA0409121034A6A001980BA /* MediaPlayer.framework */; };
 		1DA0409821034B10001980BA /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DA0409721034B10001980BA /* GameController.framework */; };
 		1DA0409E21037F6B001980BA /* SBJniHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA0409C21037F6B001980BA /* SBJniHelper.cpp */; };
+		1DA723EC2109FEAE002B7ADE /* CommonLoadingBar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA723E82109FEAE002B7ADE /* CommonLoadingBar.cpp */; };
 		1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBB20B4675A006BC169 /* RSPButton.cpp */; };
 		1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBC20B4675A006BC169 /* RSPBlock.cpp */; };
 		1DA98BC120B4676A006BC169 /* Man.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BBF20B4676A006BC169 /* Man.cpp */; };
@@ -98,6 +99,12 @@
 		1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2520F759C800BB3238 /* SBEffect.cpp */; };
 		1DE1DC2820F75A3100BB3238 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2720F75A3100BB3238 /* shaders */; };
 		1DE204E62103352300ABE5EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DE204E52103352200ABE5EB /* GoogleService-Info.plist */; };
+		1DEA58132109A5B400CF6F98 /* AdsEventDispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA58072109A5B000CF6F98 /* AdsEventDispatcher.cpp */; };
+		1DEA58142109A5B400CF6F98 /* AdListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA58092109A5B200CF6F98 /* AdListener.cpp */; };
+		1DEA58152109A5B400CF6F98 /* AdsHelper-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA580B2109A5B200CF6F98 /* AdsHelper-ios.mm */; };
+		1DEA58162109A5B400CF6F98 /* AdsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA580E2109A5B300CF6F98 /* AdsManager.mm */; };
+		1DEA58172109A5B400CF6F98 /* AdsHelper-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA58102109A5B400CF6F98 /* AdsHelper-android.cpp */; };
+		1DEA58182109A5B400CF6F98 /* AdsHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA58122109A5B400CF6F98 /* AdsHelper.cpp */; };
 		1DECFE8C2105C01C00F47252 /* SBPlatformHelper-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */; };
@@ -305,6 +312,8 @@
 		1DA0409A21034F29001980BA /* SBPlatformMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBPlatformMacros.h; sourceTree = "<group>"; };
 		1DA0409C21037F6B001980BA /* SBJniHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBJniHelper.cpp; sourceTree = "<group>"; };
 		1DA0409D21037F6B001980BA /* SBJniHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBJniHelper.hpp; sourceTree = "<group>"; };
+		1DA723E82109FEAE002B7ADE /* CommonLoadingBar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommonLoadingBar.cpp; sourceTree = "<group>"; };
+		1DA723EB2109FEAE002B7ADE /* CommonLoadingBar.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CommonLoadingBar.hpp; sourceTree = "<group>"; };
 		1DA98BB920B4675A006BC169 /* RSPButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPButton.hpp; sourceTree = "<group>"; };
 		1DA98BBA20B4675A006BC169 /* RSPBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RSPBlock.hpp; sourceTree = "<group>"; };
 		1DA98BBB20B4675A006BC169 /* RSPButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RSPButton.cpp; sourceTree = "<group>"; };
@@ -351,6 +360,17 @@
 		1DE1DC2520F759C800BB3238 /* SBEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBEffect.cpp; sourceTree = "<group>"; };
 		1DE1DC2720F75A3100BB3238 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
 		1DE204E52103352200ABE5EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "ios/GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		1DEA58072109A5B000CF6F98 /* AdsEventDispatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdsEventDispatcher.cpp; sourceTree = "<group>"; };
+		1DEA58082109A5B100CF6F98 /* AdListener.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AdListener.hpp; sourceTree = "<group>"; };
+		1DEA58092109A5B200CF6F98 /* AdListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdListener.cpp; sourceTree = "<group>"; };
+		1DEA580A2109A5B200CF6F98 /* AdsEventDispatcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AdsEventDispatcher.hpp; sourceTree = "<group>"; };
+		1DEA580B2109A5B200CF6F98 /* AdsHelper-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "AdsHelper-ios.mm"; sourceTree = "<group>"; };
+		1DEA580C2109A5B300CF6F98 /* AdsHelper.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = AdsHelper.hpp; sourceTree = "<group>"; };
+		1DEA580E2109A5B300CF6F98 /* AdsManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdsManager.mm; sourceTree = "<group>"; };
+		1DEA580F2109A5B300CF6F98 /* AdsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdsManager.h; sourceTree = "<group>"; };
+		1DEA58102109A5B400CF6F98 /* AdsHelper-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "AdsHelper-android.cpp"; sourceTree = "<group>"; };
+		1DEA58112109A5B400CF6F98 /* AdsDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdsDefine.h; sourceTree = "<group>"; };
+		1DEA58122109A5B400CF6F98 /* AdsHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdsHelper.cpp; sourceTree = "<group>"; };
 		1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SBPlatformHelper-ios.mm"; sourceTree = "<group>"; };
 		1DECFE942105E9AF00F47252 /* SBPlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBPlatformHelper.h; sourceTree = "<group>"; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -685,6 +705,8 @@
 			children = (
 				1D06245520EE10E000037AB1 /* BasePopup.cpp */,
 				1D06245620EE10E000037AB1 /* BasePopup.hpp */,
+				1DA723E82109FEAE002B7ADE /* CommonLoadingBar.cpp */,
+				1DA723EB2109FEAE002B7ADE /* CommonLoadingBar.hpp */,
 				1D8F54A220D2A8C4009E2201 /* LogoView.cpp */,
 				1D8F54A320D2A8C4009E2201 /* LogoView.hpp */,
 				1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */,
@@ -765,6 +787,16 @@
 		1DA0408621034661001980BA /* ads */ = {
 			isa = PBXGroup;
 			children = (
+				1DEA58092109A5B200CF6F98 /* AdListener.cpp */,
+				1DEA58082109A5B100CF6F98 /* AdListener.hpp */,
+				1DEA58112109A5B400CF6F98 /* AdsDefine.h */,
+				1DEA58072109A5B000CF6F98 /* AdsEventDispatcher.cpp */,
+				1DEA580A2109A5B200CF6F98 /* AdsEventDispatcher.hpp */,
+				1DEA58102109A5B400CF6F98 /* AdsHelper-android.cpp */,
+				1DEA580B2109A5B200CF6F98 /* AdsHelper-ios.mm */,
+				1DEA58122109A5B400CF6F98 /* AdsHelper.cpp */,
+				1DEA580C2109A5B300CF6F98 /* AdsHelper.hpp */,
+				1DEA580D2109A5B300CF6F98 /* ios */,
 			);
 			path = ads;
 			sourceTree = "<group>";
@@ -866,6 +898,15 @@
 				1DE1DC1D20F6AB8E00BB3238 /* IAPListener.hpp */,
 			);
 			path = iap;
+			sourceTree = "<group>";
+		};
+		1DEA580D2109A5B300CF6F98 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				1DEA580F2109A5B300CF6F98 /* AdsManager.h */,
+				1DEA580E2109A5B300CF6F98 /* AdsManager.mm */,
+			);
+			path = ios;
 			sourceTree = "<group>";
 		};
 		1DEB466120A9EF28004B8F87 /* ui */ = {
@@ -1191,6 +1232,7 @@
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
 				1DA0408A21034661001980BA /* FirebaseManager-ios.mm in Sources */,
 				1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */,
+				1DA723EC2109FEAE002B7ADE /* CommonLoadingBar.cpp in Sources */,
 				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
 				1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */,
@@ -1204,10 +1246,13 @@
 				1D4C659D21008BB8005A43D8 /* BaseScene.cpp in Sources */,
 				1DECFE8C2105C01C00F47252 /* SBPlatformHelper-ios.mm in Sources */,
 				1D9542D520C6D27500EDC8BA /* RSPButtonLayer.cpp in Sources */,
+				1DEA58132109A5B400CF6F98 /* AdsEventDispatcher.cpp in Sources */,
 				1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */,
+				1DEA58152109A5B400CF6F98 /* AdsHelper-ios.mm in Sources */,
 				1DA98BBD20B4675A006BC169 /* RSPButton.cpp in Sources */,
 				1D97ED9020C7348D0027C319 /* PatchManager.cpp in Sources */,
 				1DA0408721034661001980BA /* PluginManager.cpp in Sources */,
+				1DEA58142109A5B400CF6F98 /* AdListener.cpp in Sources */,
 				1D1F3C9D20AD74240035A36C /* PausePopup.cpp in Sources */,
 				1D45C48520A8A7B8007E63AD /* json_value.cpp in Sources */,
 				1DA98BC120B4676A006BC169 /* Man.cpp in Sources */,
@@ -1223,10 +1268,12 @@
 				1D45C47E20A8A7B8007E63AD /* SBButton.cpp in Sources */,
 				1D45C48220A8A7B8007E63AD /* json_reader.cpp in Sources */,
 				1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */,
+				1DEA58182109A5B400CF6F98 /* AdsHelper.cpp in Sources */,
 				1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */,
 				1DA0408D210346B4001980BA /* Analytics-ios.mm in Sources */,
 				1DA0408821034661001980BA /* FirebaseManager.cpp in Sources */,
 				1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */,
+				1DEA58162109A5B400CF6F98 /* AdsManager.mm in Sources */,
 				1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */,
 				1DE1DC1E20F6AB8E00BB3238 /* IAPListener.cpp in Sources */,
 				1DA98BC820B46F64006BC169 /* GameManager.cpp in Sources */,
@@ -1240,6 +1287,7 @@
 				1DFA25B220F08E1C003F63B4 /* NewRecordPopup.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				1D59F3D820FA69F100649A99 /* PopupListener.cpp in Sources */,
+				1DEA58172109A5B400CF6F98 /* AdsHelper-android.cpp in Sources */,
 				1DFA25B620F0A4A4003F63B4 /* RecordRowView.cpp in Sources */,
 				1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */,
 				1D45C48320A8A7B8007E63AD /* SBJSON.cpp in Sources */,

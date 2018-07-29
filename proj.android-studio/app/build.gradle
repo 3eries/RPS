@@ -97,11 +97,12 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':libcocos2dx')
     compile 'com.android.support:multidex:1.0.3'
-    implementation 'com.google.firebase:firebase-core:16.0.0'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'
-    implementation 'com.google.android.gms:play-services-games:15.0.1'
+    implementation "com.google.firebase:firebase-core:${firebase_library_version}"
+    implementation "com.google.firebase:firebase-ads:15.0.1"
+    implementation "com.android.support:appcompat-v7:27.1.1"
+    implementation "com.android.support:support-v4:27.1.1"
+    implementation "com.google.android.gms:play-services-auth:${gms_library_version}"
+    implementation "com.google.android.gms:play-services-games:${gms_library_version}"
 }
 
 apply plugin: 'com.google.gms.google-services'

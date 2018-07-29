@@ -477,13 +477,16 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:viewmodel-1.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-base-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/seongminhwang/Desktop/99.works/2018/2.RSP/3.dev/RPS/cocos2d/cocos/platform/android/java/libs/httpclient-4.4.1.1.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-base-15.0.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-lite-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-vector-drawable-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-media-compat-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:multidex-1.0.3" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-ui-27.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-27.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-gass-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-measurement-base-15.0.4" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-identifier-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/seongminhwang/Desktop/99.works/2018/2.RSP/3.dev/RPS/cocos2d/cocos/platform/android/java/libs/EngineDataManager.jar:unspecified@jar" level="project" />
@@ -492,6 +495,7 @@
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/seongminhwang/Desktop/99.works/2018/2.RSP/3.dev/RPS/cocos2d/cocos/platform/android/java/libs/com.android.vending.expansion.zipfile.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-games-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:appcompat-v7-27.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-ads-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-stats-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-iid-16.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-measurement-connector-impl-16.0.0" level="project" />
@@ -502,7 +506,10 @@
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-common-16.0.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:common:1.1.0@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:customtabs-26.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.billingclient:billing-1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-analytics-impl-16.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.firebase:firebase-ads-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: __local_aars__:/Users/seongminhwang/Desktop/99.works/2018/2.RSP/3.dev/RPS/cocos2d/cocos/platform/android/java/libs/android-async-http-1.4.9.jar:unspecified@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime-1.1.0" level="project" />
     <orderEntry type="module" module-name="libcocos2dx" />

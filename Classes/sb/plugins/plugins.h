@@ -9,6 +9,8 @@
 
 #include "PluginManager.hpp"
 
+#include "ads/AdsHelper.hpp"
+
 #include "firebase/FirebaseManager.hpp"
 #include "firebase/Analytics.hpp"
 

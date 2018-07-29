@@ -132,6 +132,13 @@ void SceneManager::replace(SceneType type, function<BaseScene*()> createSceneFun
 
     setScreenName(sceneType);
     
+    // 배너
+    if( type == SceneType::GAME ) {
+        superbomb::AdsHelper::showBanner();
+    } else {
+        superbomb::AdsHelper::hideBanner();
+    }
+    
     // Scene 생성
     scene = createSceneFunc();
     auto trans = (Scene*)scene;
@@ -226,11 +233,3 @@ GameView* SceneManager::getGameView() {
     return instance->gameView;
 }
 
-bool SceneManager::isBannerVisible() {
-    
-    if( getSceneType() == SceneType::GAME ) {
-        return !User::isOwnRemoveAdsItem();
-    }
-    
-    return false;
-}

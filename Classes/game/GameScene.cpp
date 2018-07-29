@@ -21,8 +21,10 @@
 
 #include "RankingManager.hpp"
 #include "NewRecordPopup.hpp"
+#include "CommonLoadingBar.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace std;
 
@@ -105,6 +107,8 @@ void GameScene::onExit() {
     
     gameMgr->removeListener(this);
     
+    AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
+    
     BaseScene::onExit();
 }
 
@@ -155,8 +159,14 @@ void GameScene::onPreGameOver() {
     // 다음 단계 지연
     scheduleOnce([=](float dt) {
         
+        bool adsLoaded = (AdsHelper::getInstance()->isInterstitialLoaded() ||
+                          AdsHelper::getInstance()->isRewardedVideoLoaded());
+        
         // 이어하기
-        if( gameMgr->getScore() >= CONTINUE_CONDITION_SCORE && gameMgr->getContinueCount() == 0 ) {
+        if( adsLoaded &&
+            gameMgr->getScore() >= CONTINUE_CONDITION_SCORE &&
+            gameMgr->getContinueCount() == 0 ) {
+            
             showContinuePopup();
         }
         // 게임 오버
@@ -266,7 +276,50 @@ void GameScene::showContinuePopup() {
     // 비디오 클릭
     popup->setOnVideoListener([=]() {
         
+        auto loadingBar = CommonLoadingBar::create();
+//        loadingBar->setUIDelay(0.1f);
+        loadingBar->show();
+        
+        // 비디오 광고
+        auto adsHelper = AdsHelper::getInstance();
+        
+        if( adsHelper->isRewardedVideoLoaded() ) {
+            CCLOG("Continue showRewardedVideo");
+
+            auto listener = RewardedVideoAdListener::create();
+            listener->setTarget(this);
+            listener->onRewarded = [=](string type, int amount) {
+                // continue
+                gameMgr->onContinue();
+            };
+            listener->onAdClosed = [=]() {
+                // 보상 받지 않음, game over
+                if( !listener->isRewarded() ) {
+                    gameMgr->onGameOver();
+                }
+                
+                loadingBar->dismissWithDelay(0);
+            };
+
+            AdsHelper::getInstance()->showRewardedVideo(listener);
+        }
+        // 전면 광고
+        else if( adsHelper->isInterstitialLoaded() ) {
+            CCLOG("Continue showInterstitial");
+            
+            auto listener = AdListener::create(AdType::INTERSTITIAL);
+            listener->setTarget(this);
+            listener->onAdClosed = [=]() {
+                // continue
+                gameMgr->onContinue();
+                loadingBar->dismissWithDelay(0);
+            };
+            
+            AdsHelper::getInstance()->showInterstitial(listener);
+        }
+        
         // TODO: ADS
+        /*
         auto bg = SBNodeUtils::createTouchNode(Color4B::BLACK);
         SceneManager::getScene()->addChild(bg, SBZOrder::TOP);
         
@@ -283,6 +336,7 @@ void GameScene::showContinuePopup() {
         });
         auto remove = RemoveSelf::create();
         bg->runAction(Sequence::create(delay, callFunc, remove, nullptr));
+         */
     });
     
     // 타임 오버
@@ -443,13 +497,6 @@ void GameScene::initBg() {
     touchLockNode = SBNodeUtils::createTouchNode();
     touchLockNode->setVisible(false);
     addChild(touchLockNode, SBZOrder::MIDDLE);
-    
-    // 임시 배너 이미지
-    banner = Sprite::create(DIR_IMG_GAME + "RSP_ad_top.png");
-    banner->setVisible(!User::isOwnRemoveAdsItem());
-    banner->setAnchorPoint(ANCHOR_MT);
-    banner->setPosition(Vec2TC(0, 0));
-    addChild(banner, SBZOrder::TOP);
 }
 
 /**

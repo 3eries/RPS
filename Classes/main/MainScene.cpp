@@ -65,13 +65,20 @@ bool MainScene::init() {
             // 팝업 생성
             else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
                 auto popup = ExitAlertPopup::create();
-                
-                // 앱 종료 리스너
                 popup->setOnExitAppListener([=]() {
                     SBSystemUtils::exitApp();
                 });
                 
                 this->addChild(popup, PopupZOrder::MIDDLE);
+                
+                // 배너 노출
+                superbomb::AdsHelper::showBanner();
+                
+                // 팝업 삭제 리스너
+                popup->setOnDismissListener([=](Node*) {
+                    // 배너 숨김
+                    superbomb::AdsHelper::hideBanner();
+                });
             }
         };
         

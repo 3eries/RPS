@@ -117,7 +117,7 @@ void GameView::onGameStart() {
     SBAudioEngine::playBGM(SOUND_BGM_GAME);
     
     // 배너 광고 아래에 위치
-    if( !User::isOwnRemoveAdsItem() ) {
+    if( superbomb::AdsHelper::isBannerVisible() ) {
         timeBar->setPositionY(Vec2TC(0, TOP_MENU_MARGIN_Y_BANNER).y);
     }
     

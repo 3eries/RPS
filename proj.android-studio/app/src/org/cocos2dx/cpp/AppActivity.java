@@ -39,8 +39,6 @@ public class AppActivity extends Cocos2dxActivity {
         super.setEnableVirtualButton(false);
         super.onCreate(savedInstanceState);
 
-        PluginManager.init(this);
-
         // Workaround in https://stackoverflow.com/questions/16283079/re-launch-of-activity-on-home-button-but-only-the-first-time/16447508
         if (!isTaskRoot()) {
             // Android launched another instance of the root activity into an existing task
@@ -51,13 +49,49 @@ public class AppActivity extends Cocos2dxActivity {
         }
 
         // DO OTHER INITIALIZATION BELOW
+        PluginManager.init(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        PluginManager.onStart();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        PluginManager.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PluginManager.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PluginManager.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        PluginManager.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if( !PluginManager.onBackPressed() ) {
+            super.onBackPressed();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        PluginManager.onActivityResult(requestCode, resultCode, data);
+        if( !PluginManager.onActivityResult(requestCode, resultCode, data) ) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

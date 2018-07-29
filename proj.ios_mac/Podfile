@@ -10,5 +10,6 @@ target 'RPS-mobile' do
   # Pods for RPS-mobile
 
 pod 'Firebase/Core'
+pod 'Firebase/AdMob'
 
 end

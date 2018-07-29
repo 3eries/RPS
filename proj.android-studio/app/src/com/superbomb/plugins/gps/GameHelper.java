@@ -21,9 +21,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.superbomb.plugins.PluginListener;
 import com.superbomb.series.rps.R;
 
-public class GameHelper {
+public class GameHelper implements PluginListener {
 
     private static final String TAG = "GPS_GAME";
 
@@ -45,12 +46,6 @@ public class GameHelper {
 
     private GameHelper() {
 
-    }
-
-    public void init(Activity context) {
-
-        this.context = context;
-        this.signInClient = GoogleSignIn.getClient(context,  GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
     }
 
     public static Activity getContext() {
@@ -77,33 +72,40 @@ public class GameHelper {
         return Games.getPlayersClient(getContext(), GoogleSignIn.getLastSignedInAccount(getContext()));
     }
 
-    /**
-     * 구글 게임 클라이언트 연결
-     */
-    private void onConnected(GoogleSignInAccount googleSignInAccount) {
+    @Override
+    public void init(Activity context) {
 
-        Log.d(TAG, "onConnected(): connected to Google APIs");
-
-//        achievementsClient = Games.getAchievementsClient(context, googleSignInAccount);
-//        leaderboardsClient = Games.getLeaderboardsClient(context, googleSignInAccount);
-//        eventsClient = Games.getEventsClient(context, googleSignInAccount);
-//        playersClient = Games.getPlayersClient(context, googleSignInAccount);
+        this.context = context;
+        this.signInClient = GoogleSignIn.getClient(context,  GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
     }
 
-    /**
-     * 구글 게임 클라이언트 연결 해제
-     */
-    private void onDisconnected() {
-
-        Log.d(TAG, "onDisconnected()");
-
-//        achievementsClient = null;
-//        leaderboardsClient = null;
-//        eventsClient = null;
-//        playersClient = null;
+    @Override
+    public void onStart() {
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onStop() {
+    }
+
+    @Override
+    public void onResume() {
+    }
+
+    @Override
+    public void onPause() {
+    }
+
+    @Override
+    public void onDestroy() {
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
+
+    @Override
+    public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if( requestCode == RC_SIGN_IN ) {
 //            Task<GoogleSignInAccount> task =  GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -146,6 +148,34 @@ public class GameHelper {
                         .setNeutralButton(android.R.string.ok, null).show();
             }
         }
+
+        return false;
+    }
+
+    /**
+     * 구글 게임 클라이언트 연결
+     */
+    private void onConnected(GoogleSignInAccount googleSignInAccount) {
+
+        Log.d(TAG, "onConnected(): connected to Google APIs");
+
+//        achievementsClient = Games.getAchievementsClient(context, googleSignInAccount);
+//        leaderboardsClient = Games.getLeaderboardsClient(context, googleSignInAccount);
+//        eventsClient = Games.getEventsClient(context, googleSignInAccount);
+//        playersClient = Games.getPlayersClient(context, googleSignInAccount);
+    }
+
+    /**
+     * 구글 게임 클라이언트 연결 해제
+     */
+    private void onDisconnected() {
+
+        Log.d(TAG, "onDisconnected()");
+
+//        achievementsClient = null;
+//        leaderboardsClient = null;
+//        eventsClient = null;
+//        playersClient = null;
     }
 
     private static void handleException(Exception e, String details) {
