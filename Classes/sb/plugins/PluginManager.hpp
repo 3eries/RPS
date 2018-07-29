@@ -13,6 +13,8 @@
 #include "../base/SBMacros.h"
 #include "../base/SBTypes.hpp"
 
+#include "json/document-wrapper.h"
+
 NS_SB_BEGIN;
 
 class PluginManager {
@@ -24,6 +26,7 @@ class PluginManager {
 private:
     PluginManager();
     
+    void initAds(const rapidjson::Value &obj);
 public:
     void init(const std::string &jsonFile);
 };
