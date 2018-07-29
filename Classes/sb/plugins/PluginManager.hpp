@@ -25,7 +25,7 @@ private:
     PluginManager();
     
 public:
-    void init();
+    void init(const std::string &jsonFile);
 };
 
 NS_SB_END;

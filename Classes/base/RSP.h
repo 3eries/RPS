@@ -21,6 +21,9 @@ static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GA
 
 static const std::string INTERNAL_GAME_CONFIG_FILE_VERSION      = "1.0.0";
 
+// Plugin
+static const std::string PLUGIN_CONFIG_FILE                     = "config/plugin_config.json";
+
 // Firebase Analytics
 static const std::string FA_SCREEN_SPLASH                       = "splash";
 static const std::string FA_SCREEN_MAIN                         = "main";
