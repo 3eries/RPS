@@ -230,6 +230,8 @@ void ExitAlertPopup::runExitAction(SBCallback onFinished) {
  */
 void ExitAlertPopup::onEnterActionFinished() {
     
+    BasePopup::onEnterActionFinished();
+    
     // 비석 바깥 영역 터치 시 팝업 종료
     auto touchNode = SBNodeUtils::createTouchNode();
     addChild(touchNode);
