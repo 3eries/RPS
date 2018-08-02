@@ -11,6 +11,7 @@
 
 #include "cocos2d.h"
 #include "SBMacros.h"
+#include "SBTypes.hpp"
 
 class SBDirector {
 public:
@@ -24,6 +25,9 @@ private:
 public:
     static void init();
     static void end();
+    
+    static void postDelayed(cocos2d::Node *handler, SBCallback runnable,
+                            float delay, bool isScreenTouchLocked = false);
     
 private:
     cocos2d::EventListenerTouchOneByOne *touchListener;

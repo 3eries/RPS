@@ -60,3 +60,27 @@ void SBDirector::end() {
     destroyInstance();
 }
 
+/**
+ * handler 노드에 액션을 적용하여 동작을 지연 시킨다
+ */
+void SBDirector::postDelayed(Node *handler, SBCallback runnable,
+                             float delay, bool isScreenTouchLocked) {
+    
+    CCASSERT(handler != nullptr, "SBDirector::postDelayed error: handler must be not null");
+    CCASSERT(runnable != nullptr, "SBDirector::postDelayed error: runnable must be not null");
+    
+    if( isScreenTouchLocked ) {
+        getInstance()->setScreenTouchLocked(true);
+    }
+    
+    auto delayAction = DelayTime::create(delay);
+    auto callFunc = CallFunc::create([=]() {
+        
+        if( isScreenTouchLocked ) {
+            getInstance()->setScreenTouchLocked(false);
+        }
+        
+        runnable();
+    });
+    handler->runAction(Sequence::create(delayAction, callFunc, nullptr));
+}
