@@ -29,8 +29,8 @@ private:
     void initBackgroundView() override;
     void initContentView() override;
     
-    void runEnterAction(SBCallback onFinished = nullptr) override;
-    void runExitAction(SBCallback onFinished = nullptr) override;
+    void runEnterAction(float duratoin = 0, SBCallback onFinished = nullptr) override;
+    void runExitAction(float duratoin = 0, SBCallback onFinished = nullptr) override;
     
 public:
     CommonLoadingBar* show(cocos2d::Node *parent = nullptr, int zOrder = INT_MAX);

@@ -184,9 +184,9 @@ void ExitAlertPopup::initContentView() {
 /**
  * 등장 연출
  */
-void ExitAlertPopup::runEnterAction(SBCallback onFinished) {
+void ExitAlertPopup::runEnterAction(float duration, SBCallback onFinished) {
     
-    BasePopup::runEnterAction(onFinished);
+    BasePopup::runEnterAction(duration, onFinished);
     
     // 배경 fade in
     runBackgroundFadeInAction(nullptr, FADE_DURATION);
@@ -197,18 +197,23 @@ void ExitAlertPopup::runEnterAction(SBCallback onFinished) {
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
-    }, SLIDE_DURATION);
+    }, duration);
     
     // 닫기 버튼으로 전환
     SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, SLIDE_DURATION);
 }
 
+void ExitAlertPopup::runEnterAction(SBCallback onFinished) {
+    
+    runEnterAction(SLIDE_DURATION, onFinished);
+}
+
 /**
  * 퇴장 연출
  */
-void ExitAlertPopup::runExitAction(SBCallback onFinished) {
+void ExitAlertPopup::runExitAction(float duration, SBCallback onFinished) {
     
-    BasePopup::runExitAction(onFinished);
+    BasePopup::runExitAction(duration, onFinished);
     
     // 배경 fade out
     runBackgroundFadeOutAction(nullptr, FADE_DURATION);
@@ -219,10 +224,15 @@ void ExitAlertPopup::runExitAction(SBCallback onFinished) {
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
-    }, SLIDE_DURATION);
+    }, duration);
     
     // 설정 버튼으로 전환
     SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, SLIDE_DURATION);
+}
+
+void ExitAlertPopup::runExitAction(SBCallback onFinished) {
+    
+    runExitAction(SLIDE_DURATION, onFinished);
 }
 
 /**

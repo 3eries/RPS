@@ -187,7 +187,7 @@ void SettingPopup::performListener(Tag tag) {
  */
 void SettingPopup::runEnterAction(SBCallback onFinished) {
     
-    BasePopup::runEnterAction(onFinished);
+    BasePopup::runEnterAction(SLIDE_DURATION, onFinished);
     
     // 배경 fade in
     runBackgroundFadeInAction(nullptr, FADE_DURATION);
@@ -209,7 +209,7 @@ void SettingPopup::runEnterAction(SBCallback onFinished) {
  */
 void SettingPopup::runExitAction(SBCallback onFinished) {
     
-    BasePopup::runExitAction(onFinished);
+    BasePopup::runExitAction(SLIDE_DURATION, onFinished);
     
     // 배경 fade out
     runBackgroundFadeOutAction(nullptr, FADE_DURATION);

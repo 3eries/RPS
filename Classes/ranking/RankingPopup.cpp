@@ -129,9 +129,9 @@ RankingRecords RankingPopup::getRecords() {
 /**
  * 등장 연출
  */
-void RankingPopup::runEnterAction(SBCallback onFinished) {
+void RankingPopup::runEnterAction(float duration, SBCallback onFinished) {
     
-    BasePopup::runEnterAction(onFinished);
+    BasePopup::runEnterAction(duration, onFinished);
     
     CCLOG("RankingPopup::runEnterAction");
     
@@ -150,7 +150,7 @@ void RankingPopup::runEnterAction(SBCallback onFinished) {
     }
     // 다른 팝업 없음, slide in
     else {
-        runSlideAction(onActionFinished, SLIDE_IN_DURATION,
+        runSlideAction(onActionFinished, duration,
                        SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
     }
     
@@ -160,12 +160,17 @@ void RankingPopup::runEnterAction(SBCallback onFinished) {
     }
 }
 
+void RankingPopup::runEnterAction(SBCallback onFinished) {
+    
+    runEnterAction(SLIDE_IN_DURATION, onFinished);
+}
+
 /**
  * 퇴장 연출
  */
-void RankingPopup::runExitAction(SBCallback onFinished) {
+void RankingPopup::runExitAction(float duration, SBCallback onFinished) {
     
-    BasePopup::runExitAction(onFinished);
+    BasePopup::runExitAction(duration, onFinished);
     
     CCLOG("RankingPopup::runExitAction");
     
@@ -185,7 +190,7 @@ void RankingPopup::runExitAction(SBCallback onFinished) {
     }
     // 다른 팝업 없음, slide out
     else {
-        runSlideAction(onActionFinished, SLIDE_OUT_DURATION,
+        runSlideAction(onActionFinished, duration,
                        SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
     }
     
@@ -193,5 +198,10 @@ void RankingPopup::runExitAction(SBCallback onFinished) {
     if( type == Type::RANKING ) {
         SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, SLIDE_OUT_DURATION);
     }
+}
+
+void RankingPopup::runExitAction(SBCallback onFinished) {
+    
+    runExitAction(SLIDE_OUT_DURATION, onFinished);
 }
 

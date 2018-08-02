@@ -151,9 +151,9 @@ void GameOverPopup::initContentView() {
 /**
  * 등장 연출
  */
-void GameOverPopup::runEnterAction(SBCallback onFinished) {
+void GameOverPopup::runEnterAction(float duration, SBCallback onFinished) {
     
-    BasePopup::runEnterAction(onFinished);
+    BasePopup::runEnterAction(duration, onFinished);
     
     CCLOG("GameOverPopup::runEnterAction");
     
@@ -182,18 +182,21 @@ void GameOverPopup::runEnterAction(SBCallback onFinished) {
     }
     // 다른 팝업 없음, slide in
     else {
-        runSlideAction(onActionFinished,
-                       SLIDE_IN_DURATION,
-                       SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
+        runSlideAction(onActionFinished, duration, SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
     }
+}
+
+void GameOverPopup::runEnterAction(SBCallback onFinished) {
+    
+    runEnterAction(SLIDE_IN_DURATION, onFinished);
 }
 
 /**
  * 퇴장 연출
  */
-void GameOverPopup::runExitAction(SBCallback onFinished) {
+void GameOverPopup::runExitAction(float duration, SBCallback onFinished) {
     
-    BasePopup::runExitAction(onFinished);
+    BasePopup::runExitAction(duration, onFinished);
     
     CCLOG("GameOverPopup::runExitAction");
     
@@ -204,5 +207,10 @@ void GameOverPopup::runExitAction(SBCallback onFinished) {
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
-    }, SLIDE_OUT_DURATION, SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
+    }, duration, SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
+}
+
+void GameOverPopup::runExitAction(SBCallback onFinished) {
+    
+    runExitAction(SLIDE_OUT_DURATION, onFinished);
 }

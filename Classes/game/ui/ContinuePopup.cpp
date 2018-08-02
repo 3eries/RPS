@@ -200,7 +200,9 @@ void ContinuePopup::initMenu() {
  */
 void ContinuePopup::runEnterAction(SBCallback onFinished) {
 
-    BasePopup::runEnterAction(onFinished);
+    const float DURATION = MAX(ENTER_DURATION, anim->getAnimationDuration(ANIM_NAME_ENTER));
+    
+    BasePopup::runEnterAction(DURATION, onFinished);
     
     // 터치 잠금
     SBDirector::getInstance()->setScreenTouchLocked(true);
@@ -219,9 +221,7 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
     getChildByTag(Tag::BTN_VIDEO)->runAction(scaleSeq);
     
     // 콜백
-    const float duration = MAX(ENTER_DURATION, anim->getAnimationDuration(ANIM_NAME_ENTER));
-    
-    auto delay = DelayTime::create(duration);
+    auto delay = DelayTime::create(DURATION);
     auto callFunc = CallFunc::create([=]() {
         
         // 터치 잠금 해제
@@ -238,7 +238,9 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
  */
 void ContinuePopup::runExitAction(SBCallback onFinished) {
     
-    BasePopup::runExitAction(onFinished);
+    const float DURATION = MAX(EXIT_DURATION, anim->getAnimationDuration(ANIM_NAME_EXIT));
+    
+    BasePopup::runExitAction(DURATION, onFinished);
 
     // 터치 잠금
     SBDirector::getInstance()->setScreenTouchLocked(true);
@@ -251,9 +253,7 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
     getChildByTag(Tag::BTN_VIDEO)->runAction(scale);
     
     // 콜백
-    const float duration = MAX(EXIT_DURATION, anim->getAnimationDuration(ANIM_NAME_EXIT));
-    
-    auto delay = DelayTime::create(duration);
+    auto delay = DelayTime::create(DURATION);
     auto callFunc = CallFunc::create([=]() {
         
         // 터치 잠금 해제

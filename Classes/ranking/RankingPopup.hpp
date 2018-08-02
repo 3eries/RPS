@@ -41,7 +41,10 @@ protected:
     virtual RankingRecords getRecords();
     
 public:
+    virtual void runEnterAction(float duration, SBCallback onFinished) override;
     virtual void runEnterAction(SBCallback onFinished = nullptr) override;
+    
+    virtual void runExitAction(float duration, SBCallback onFinished) override;
     virtual void runExitAction(SBCallback onFinished = nullptr) override;
     
 protected:

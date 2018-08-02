@@ -86,17 +86,27 @@ void BasePopup::dismissWithAction(SBCallback onFinished) {
 /**
  * 등장 연출 시작
  */
-void BasePopup::runEnterAction(SBCallback onFinished) {
+void BasePopup::runEnterAction(float duration, SBCallback onFinished) {
     
     onPopupEvent(PopupEventType::ENTER_ACTION);
+}
+
+void BasePopup::runEnterAction(SBCallback onFinished) {
+
+    runEnterAction(0, onFinished);
 }
 
 /**
  * 퇴장 연출 시작
  */
-void BasePopup::runExitAction(SBCallback onFinished) {
+void BasePopup::runExitAction(float duration, SBCallback onFinished) {
     
     onPopupEvent(PopupEventType::EXIT_ACTION);
+}
+
+void BasePopup::runExitAction(SBCallback onFinished) {
+    
+    runExitAction(0, onFinished);
 }
 
 /**

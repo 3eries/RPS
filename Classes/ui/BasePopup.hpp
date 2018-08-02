@@ -49,8 +49,11 @@ protected:
     
 public:
     virtual void dismissWithAction(SBCallback onFinished = nullptr);
-    
+
+    virtual void runEnterAction(float duration, SBCallback onFinished = nullptr);
     virtual void runEnterAction(SBCallback onFinished = nullptr);
+    
+    virtual void runExitAction(float duration, SBCallback onFinished = nullptr);
     virtual void runExitAction(SBCallback onFinished = nullptr);
 
     virtual void onEnterActionFinished();

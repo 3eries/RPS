@@ -25,6 +25,7 @@ private:
     CreditPopup();
     
     bool init() override;
+    void onEnter() override;
     
     void initBackgroundView() override;
     void initCredit();

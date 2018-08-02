@@ -48,9 +48,14 @@ bool CreditPopup::init() {
     
     initCredit();
     
-    runEnterAction();
-    
     return true;
+}
+
+void CreditPopup::onEnter() {
+    
+    BasePopup::onEnter();
+    
+    runEnterAction();
 }
 
 /**
@@ -58,14 +63,16 @@ bool CreditPopup::init() {
  */
 void CreditPopup::runEnterAction(SBCallback onFinished) {
     
-    BasePopup::runEnterAction(onFinished);
+    const float DURATION = 0.3f;
+    
+    BasePopup::runEnterAction(DURATION, onFinished);
     
     SBNodeUtils::recursiveCascadeOpacityEnabled(this, true);
     
     // fade in
     setOpacity(0);
     
-    auto fadeIn = FadeIn::create(0.3f);
+    auto fadeIn = FadeIn::create(DURATION);
     auto callFunc = CallFunc::create([=]() {
         
         this->retain();

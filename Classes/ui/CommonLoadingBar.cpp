@@ -19,8 +19,6 @@ using namespace std;
 static const string SCHEDULER_SHOW_DELAY     = "SCHEDULER_SHOW_DELAY";
 static const string SCHEDULER_DISMISS_DELAY  = "SCHEDULER_DISMISS_DELAY";
 
-static const float  FADE_DURATION            = 0.15f;
-
 CommonLoadingBar::CommonLoadingBar() : BasePopup(Type::LOADING_BAR),
 isShowing(false),
 uiDelay(0),
@@ -89,9 +87,9 @@ void CommonLoadingBar::initContentView() {
 /**
  * 등장 연출
  */
-void CommonLoadingBar::runEnterAction(SBCallback onFinished) {
+void CommonLoadingBar::runEnterAction(float duratoin, SBCallback onFinished) {
     
-    BasePopup::runEnterAction(onFinished);
+    BasePopup::runEnterAction(duratoin, onFinished);
     
     // 배경 fade in
 //    runBackgroundFadeInAction(nullptr, FADE_DURATION);
@@ -108,9 +106,9 @@ void CommonLoadingBar::runEnterAction(SBCallback onFinished) {
 /**
  * 퇴장 연출
  */
-void CommonLoadingBar::runExitAction(SBCallback onFinished) {
+void CommonLoadingBar::runExitAction(float duratoin, SBCallback onFinished) {
     
-    BasePopup::runExitAction(onFinished);
+    BasePopup::runExitAction(duratoin, onFinished);
     
     onExitActionFinished();
     SB_SAFE_PERFORM_LISTENER(this, onFinished);
