@@ -62,6 +62,7 @@ void GameManager::reset() {
     levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
     score = 0;
     ranking = INVALID_RANKING;
+    interstitialAdOpened = false;
 }
 
 /**

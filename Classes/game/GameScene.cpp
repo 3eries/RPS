@@ -83,6 +83,7 @@ bool GameScene::init() {
     initCommonMenu();
     
     gameMgr->addListener(this);
+    addPopupListener();
     
     return true;
 }
@@ -107,6 +108,7 @@ void GameScene::onExit() {
     
     gameMgr->removeListener(this);
     
+    PopupManager::getInstance()->removeListener(this);
     AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
     
     BaseScene::onExit();
@@ -510,4 +512,38 @@ void GameScene::initCommonMenu() {
     commonMenu->setOnClickBottomMenuListener(CC_CALLBACK_1(GameScene::onClickBottomMenu, this));
 }
 
-
+void GameScene::addPopupListener() {
+    
+    auto listener = PopupListener::create();
+    listener->setTarget(this);
+    listener->onEvent = [=](Node *sender, PopupEventType eventType) {
+        
+        auto popup = dynamic_cast<BasePopup*>(sender);
+        
+        // 게임 오버 등장 연출 완료 후, 전면 광고 노출
+        if( popup->getType() == BasePopup::Type::GAME_OVER &&
+            eventType == PopupEventType::ENTER_ACTION_FINISHED ) {
+            
+            CCLOG("User::isOwnRemoveAdsItem: %d AdsHelper::isInterstitialLoaded: %d", User::isOwnRemoveAdsItem(), AdsHelper::isInterstitialLoaded());
+            
+            // 1초 후 전면 광고 노출
+            if( !User::isOwnRemoveAdsItem() && !gameMgr->isInterstitialAdOpened() && AdsHelper::isInterstitialLoaded() ) {
+                
+                SBDirector::postDelayed(this, [=]() {
+                    auto listener = AdListener::create(AdType::INTERSTITIAL);
+                    listener->setTarget(this);
+                    listener->onAdOpened = [=]() {
+                        gameMgr->setInterstitialAdOpened(true);
+                    };
+                    listener->onAdClosed = [=]() {
+                    };
+                    AdsHelper::getInstance()->showInterstitial(listener);
+                }, 1.0f, true);
+                
+                popup->setOnPopupEventListener(nullptr);
+            }
+        }
+    };
+    
+    PopupManager::getInstance()->addListener(listener);
+}

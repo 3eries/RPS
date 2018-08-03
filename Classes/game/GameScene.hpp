@@ -44,6 +44,8 @@ private:
     void initBg();
     void initCommonMenu() override;
     
+    void addPopupListener();
+    
     void reset();
     
 // GameListener
