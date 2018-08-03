@@ -13,8 +13,6 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-static const int            CONTINUE_CONDITION_SCORE     = 30;      // 이어하기 노출 조건
-
 static const float          FEVER_END_ALERT_TIME         = 1.0f;    // 피버 모드 종료 알림 시간, n초 전
 
 static const float          DRAW_VIBRATE_DURATION        = 0.1f;    // 비겼을 시 진동 시간

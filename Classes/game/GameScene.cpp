@@ -163,10 +163,7 @@ void GameScene::onPreGameOver() {
                           AdsHelper::getInstance()->isRewardedVideoLoaded());
         
         // 이어하기
-        if( adsLoaded &&
-            gameMgr->getScore() >= CONTINUE_CONDITION_SCORE &&
-            gameMgr->getContinueCount() == 0 ) {
-            
+        if( adsLoaded && gameMgr->isContinuable() ) {
             showContinuePopup();
         }
         // 게임 오버

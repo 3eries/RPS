@@ -122,6 +122,11 @@ void GameManager::addScore(int score) {
     setScore(this->score + score);
 }
 
+bool GameManager::isContinuable() {
+    
+    return getScore() >= config->getContinueCondition() && getContinueCount() == 0;
+}
+
 bool GameManager::isNewRecord() {
     
     return ranking != INVALID_RANKING;

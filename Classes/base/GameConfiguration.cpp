@@ -129,6 +129,7 @@ void GameConfiguration::parse(const string &json) {
     doc.Parse(json.c_str());
     
     maxScore = doc["max_score"].GetInt();
+    continueCondition = doc["continue_condition"].GetInt();
     continuation = doc["continuation"].GetInt();
     
     // time

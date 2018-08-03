@@ -63,6 +63,7 @@ public:
     void setScore(int score);
     void addScore(int score);
     
+    bool isContinuable();
     bool isNewRecord();
     
 private:

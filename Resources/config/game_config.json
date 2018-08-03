@@ -1,5 +1,6 @@
 {
     "max_score": 9999,
+    "continue_condition": 20,
     "continuation": 44,
     "time": {
         "max_point": 1000,

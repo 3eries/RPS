@@ -71,7 +71,12 @@ public:
     LevelInfo getMaxLevelInfo();
     
 private:
+    // 최대 스코어 제한
     CC_SYNTHESIZE_READONLY(int, maxScore, MaxScore);
+    
+    // 이어하기 스코어 조건
+    CC_SYNTHESIZE_READONLY(int, continueCondition, ContinueCondition);
+    
     int continuation;
     CC_SYNTHESIZE(TimeInfo, timeInfo, TimeInfo);
     CC_SYNTHESIZE(FeverInfo, feverInfo, FeverInfo);
