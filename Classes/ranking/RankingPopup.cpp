@@ -131,6 +131,7 @@ RankingRecords RankingPopup::getRecords() {
  */
 void RankingPopup::runEnterAction(float duration, SBCallback onFinished) {
     
+    duration *= enterTimeScale;
     BasePopup::runEnterAction(duration, onFinished);
     
     CCLOG("RankingPopup::runEnterAction");
@@ -143,20 +144,12 @@ void RankingPopup::runEnterAction(float duration, SBCallback onFinished) {
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
     
-    // 다른 팝업 있음, 연출 없음
-    if( false ) {
-    // if( PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
-         onActionFinished();
-    }
-    // 다른 팝업 없음, slide in
-    else {
-        runSlideAction(onActionFinished, duration,
-                       SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
-    }
+    // slide
+    runSlideAction(onActionFinished, duration, SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
     
     // 닫기 버튼으로 전환
     if( type == Type::RANKING ) {
-        SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, SLIDE_IN_DURATION);
+        SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, duration);
     }
 }
 
@@ -170,6 +163,7 @@ void RankingPopup::runEnterAction(SBCallback onFinished) {
  */
 void RankingPopup::runExitAction(float duration, SBCallback onFinished) {
     
+    duration *= exitTimeScale;
     BasePopup::runExitAction(duration, onFinished);
     
     CCLOG("RankingPopup::runExitAction");
@@ -182,21 +176,12 @@ void RankingPopup::runExitAction(float duration, SBCallback onFinished) {
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
     
-    // 다른 팝업 있음, fade out
-    if( false ) {
-    // if( PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
-        // 연출 없음
-        onActionFinished();
-    }
-    // 다른 팝업 없음, slide out
-    else {
-        runSlideAction(onActionFinished, duration,
-                       SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
-    }
+    // slide
+    runSlideAction(onActionFinished, duration, SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
     
     // 설정 버튼으로 전환
     if( type == Type::RANKING ) {
-        SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, SLIDE_OUT_DURATION);
+        SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, duration);
     }
 }
 

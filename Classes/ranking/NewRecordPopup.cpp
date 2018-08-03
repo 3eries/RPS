@@ -198,5 +198,6 @@ void NewRecordPopup::runEnterAction(SBCallback onFinished) {
 void NewRecordPopup::runExitAction(SBCallback onFinished) {
     
     RankingPopup::runExitAction(onFinished);
+    // RankingPopup::runExitAction(SLIDE_OUT_DURATION * 0.7f, onFinished);
 }
 

@@ -153,12 +153,12 @@ void GameOverPopup::initContentView() {
  */
 void GameOverPopup::runEnterAction(float duration, SBCallback onFinished) {
     
+    duration *= enterTimeScale;
     BasePopup::runEnterAction(duration, onFinished);
     
     CCLOG("GameOverPopup::runEnterAction");
     
-    // const bool existOtherPopup = PopupManager::getInstance()->exists(BasePopup::Type::NEW_RECORD);
-    const bool existOtherPopup = false;
+    const bool existOtherPopup = PopupManager::getInstance()->exists(BasePopup::Type::NEW_RECORD);
     
     // 액션 완료
     auto onActionFinished = [=]() {
@@ -175,15 +175,7 @@ void GameOverPopup::runEnterAction(float duration, SBCallback onFinished) {
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
     
-    // 다른 팝업 있음, fade in
-    if( existOtherPopup ) {
-        // 연출 없음
-        onActionFinished();
-    }
-    // 다른 팝업 없음, slide in
-    else {
-        runSlideAction(onActionFinished, duration, SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
-    }
+    runSlideAction(onActionFinished, duration, SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
 }
 
 void GameOverPopup::runEnterAction(SBCallback onFinished) {
@@ -196,6 +188,7 @@ void GameOverPopup::runEnterAction(SBCallback onFinished) {
  */
 void GameOverPopup::runExitAction(float duration, SBCallback onFinished) {
     
+    duration *= exitTimeScale;
     BasePopup::runExitAction(duration, onFinished);
     
     CCLOG("GameOverPopup::runExitAction");

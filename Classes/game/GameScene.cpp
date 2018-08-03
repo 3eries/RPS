@@ -363,7 +363,13 @@ void GameScene::showNewRecordPopup(int ranking, int score) {
 
         // 팝업 퇴장 연출 종료 후 게임 오버 팝업 등장
         if( eventType == PopupEventType::EXIT_ACTION_FINISHED ) {
-            this->showGameOverPopup();
+            this->showGameOverPopup([=](Node *sender, PopupEventType eventType) {
+                
+                if( eventType == PopupEventType::ENTER ) {
+                    auto gameOverPopup = (GameOverPopup*)sender;
+                    // gameOverPopup->setEnterTimeScale(0.7f);
+                }
+            });
         }
     });
     
@@ -373,7 +379,7 @@ void GameScene::showNewRecordPopup(int ranking, int score) {
 /**
  * 게임 오버 노출
  */
-void GameScene::showGameOverPopup() {
+void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
  
     // 공통 메뉴
     commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, false);
@@ -382,6 +388,24 @@ void GameScene::showGameOverPopup() {
     // 게임 오버 팝업
     auto popup = GameOverPopup::create(gameMgr->getScore());
     popup->setTag(Tag::POPUP_GAME_OVER);
+    popup->setOnPopupEventListener([=](Node *sender, PopupEventType eventType) {
+        
+        switch( eventType ) {
+            case PopupEventType::ENTER_ACTION_FINISHED: {
+                popup->setEnterTimeScale(1);
+            } break;
+                
+            case PopupEventType::EXIT_ACTION_FINISHED: {
+                popup->setExitTimeScale(1);
+            } break;
+                
+            default: break;
+        }
+        
+        if( onEventListener ) {
+            onEventListener(sender, eventType);
+        }
+    });
     SceneManager::getScene()->addChild(popup, PopupZOrder::BOTTOM);
 }
 
@@ -453,8 +477,11 @@ bool GameScene::onClickBottomMenu(BottomMenu::Tag tag) {
             
         // 랭킹
         case BottomMenu::Tag::RANKING_LOCAL: {
+            const float POPUP_EFFECT_TIME_SCALE = 0.7f;
+            
             // Step 1. 게임 오버 팝업 퇴장
             auto gameOverPopup = PopupManager::getInstance()->getPopup(BasePopup::Type::GAME_OVER);
+            gameOverPopup->setExitTimeScale(POPUP_EFFECT_TIME_SCALE);
             gameOverPopup->runExitAction([=]() {
                 
                 // Step 2. 랭킹 팝업 등장
@@ -463,16 +490,32 @@ bool GameScene::onClickBottomMenu(BottomMenu::Tag tag) {
                 
                 commonMenu->showRankingPopup([=](Node *sender, PopupEventType eventType) {
                     
-                    // 랭킹 팝업 퇴장 시작
-                    if( eventType == PopupEventType::EXIT_ACTION ) {
-//                        commonMenu->getTopMenu()->closeMenu(RankingPopup::SLIDE_OUT_DURATION);
-                    }
-                    // 랭킹 퇴장 후 게임 오버 재등장
-                    else if( eventType == PopupEventType::EXIT_ACTION_FINISHED ) {
-//                        commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, 0);
-//                        commonMenu->getTopMenu()->openMenu(GameOverPopup::SLIDE_IN_DURATION);
-                        
-                        gameOverPopup->runEnterAction();
+                    auto rankingPopup = (RankingPopup*)sender;
+                    
+                    switch( eventType ) {
+                        // 랭킹 등장
+                        case PopupEventType::ENTER: {
+                            rankingPopup->setEnterTimeScale(POPUP_EFFECT_TIME_SCALE);
+                            rankingPopup->setExitTimeScale(POPUP_EFFECT_TIME_SCALE);
+                        } break;
+                    
+                        // 랭킹 퇴장 연출 시작
+                        case PopupEventType::EXIT_ACTION: {
+                            // commonMenu->getTopMenu()->closeMenu(RankingPopup::SLIDE_OUT_DURATION);
+                        } break;
+                    
+                        // 랭킹 퇴장 완료
+                        case PopupEventType::EXIT_ACTION_FINISHED: {
+                             // 게임 오버 재등장
+                            // commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, 0);
+                            // commonMenu->getTopMenu()->openMenu(GameOverPopup::SLIDE_IN_DURATION);
+                            
+                            gameOverPopup->setEnterTimeScale(POPUP_EFFECT_TIME_SCALE);
+                            gameOverPopup->runEnterAction();
+                            
+                        } break;
+                            
+                        default: break;
                     }
                 });
             });
