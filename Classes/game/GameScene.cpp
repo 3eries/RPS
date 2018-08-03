@@ -276,7 +276,7 @@ void GameScene::showContinuePopup() {
     popup->setOnVideoListener([=]() {
         
         auto loadingBar = CommonLoadingBar::create();
-//        loadingBar->setUIDelay(0.1f);
+        loadingBar->setUIDelay(0.1f);
         loadingBar->show();
         
         // 비디오 광고
