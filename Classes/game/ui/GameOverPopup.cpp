@@ -132,6 +132,7 @@ void GameOverPopup::initContentView() {
         float posY[] = { -138, -194, -255 };
         
         auto records = RankingManager::getTopRecords(3);
+        bool isHighlighted = false;
         
         for( int i = 0; i < records.size(); ++i ) {
             auto record = records[i];
@@ -141,7 +142,8 @@ void GameOverPopup::initContentView() {
             addContentChild(rowView);
             
             // 달성 기록 하이라이트
-            if( record.score == score ) {
+            if( !isHighlighted && record.score == score ) {
+                isHighlighted = true;
                 rowView->changeToHighlight();
             }
         }
