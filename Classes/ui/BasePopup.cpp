@@ -18,8 +18,8 @@ using namespace std;
 BasePopup::BasePopup(Type type) : SBBasePopup(),
 type(type),
 popupMgr(PopupManager::getInstance()),
-onPopupEventListener(nullptr) {
-    
+onPopupEventListener(nullptr),
+enterTimeScale(1), exitTimeScale(1) {
 }
 
 BasePopup::~BasePopup() {
@@ -33,7 +33,6 @@ bool BasePopup::init() {
     }
     
     popupMgr->addPopup(this);
-    onPopupEvent(PopupEventType::ENTER);
     
     return true;
 }
@@ -41,6 +40,8 @@ bool BasePopup::init() {
 void BasePopup::onEnter() {
     
     SBBasePopup::onEnter();
+    
+    onPopupEvent(PopupEventType::ENTER);
 }
 
 void BasePopup::onExit() {

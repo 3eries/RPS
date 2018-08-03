@@ -68,6 +68,9 @@ protected:
     PopupManager *popupMgr;
     CC_SYNTHESIZE_READONLY(Type, type, Type);
     CC_SYNTHESIZE(OnPopupEvent, onPopupEventListener, OnPopupEventListener);
+    
+    CC_SYNTHESIZE(float, enterTimeScale, EnterTimeScale);   // 등장 연출 타임 스케일
+    CC_SYNTHESIZE(float, exitTimeScale,  ExitTimeScale);    // 퇴장 연출 타임 스케일
 };
 
 #endif /* BasePopup_hpp */
