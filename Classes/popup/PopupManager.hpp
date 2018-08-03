@@ -31,8 +31,9 @@ public:
     void removePopup(BasePopup *popup);
     
     BasePopup* getPopup(BasePopup::Type type);
-    size_t     getPopupCount();
     BasePopup* getFrontPopup();
+    size_t     getPopupCount();
+    size_t     getLargePopupCount();
     
     bool       exists(BasePopup::Type type);
     

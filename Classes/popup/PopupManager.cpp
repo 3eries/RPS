@@ -79,6 +79,14 @@ BasePopup* PopupManager::getPopup(BasePopup::Type type) {
 }
 
 /**
+ * 가장 앞에 나와 있는 팝업 반환
+ */
+BasePopup* PopupManager::getFrontPopup() {
+    
+    return popups.at(popups.size()-1);
+}
+
+/**
  * 팝업 갯수 반환
  */
 size_t PopupManager::getPopupCount() {
@@ -86,11 +94,22 @@ size_t PopupManager::getPopupCount() {
 }
 
 /**
- * 가장 앞에 나와 있는 팝업 반환
+ * 큰 팝업 갯수 반환
+ * ex) 랭킹, 게임 오버
  */
-BasePopup* PopupManager::getFrontPopup() {
+size_t PopupManager::getLargePopupCount() {
     
-    return popups.at(popups.size()-1);
+    size_t cnt = 0;
+    
+    for( auto popup : popups ) {
+        if( popup->getType() == BasePopup::Type::RANKING ||
+            popup->getType() == BasePopup::Type::NEW_RECORD ||
+            popup->getType() == BasePopup::Type::GAME_OVER ) {
+            cnt++;
+        }
+    }
+    
+    return cnt;
 }
 
 /**
