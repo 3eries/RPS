@@ -161,11 +161,8 @@ void GameScene::onPreGameOver() {
     // 다음 단계 지연
     scheduleOnce([=](float dt) {
         
-        bool adsLoaded = (AdsHelper::getInstance()->isInterstitialLoaded() ||
-                          AdsHelper::getInstance()->isRewardedVideoLoaded());
-        
         // 이어하기
-        if( adsLoaded && gameMgr->isContinuable() ) {
+        if( gameMgr->isContinuable() ) {
             showContinuePopup();
         }
         // 게임 오버
@@ -263,7 +260,11 @@ void GameScene::showPausePopup() {
  */
 void GameScene::showContinuePopup() {
     
-    auto popup = ContinuePopup::create();
+    bool isAdsLoaded = (AdsHelper::getInstance()->isInterstitialLoaded() ||
+                        AdsHelper::getInstance()->isRewardedVideoLoaded());
+    // bool isAdsLoaded = false;
+    
+    auto popup = ContinuePopup::create(isAdsLoaded);
     popup->setTag(Tag::POPUP_CONTINUE);
     SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
     
@@ -272,70 +273,100 @@ void GameScene::showContinuePopup() {
         
     });
     
-    // 비디오 클릭
-    popup->setOnVideoListener([=]() {
+    // 이어하기
+    popup->setOnContinueListener([=]() {
         
-        auto loadingBar = CommonLoadingBar::create();
-        loadingBar->setUIDelay(0.1f);
-        loadingBar->show();
+        auto darkLayer = LayerColor::create(Color4B::BLACK);
+        this->addChild(darkLayer, SBZOrder::TOP);
         
-        // 비디오 광고
-        auto adsHelper = AdsHelper::getInstance();
-        
-        if( adsHelper->isRewardedVideoLoaded() ) {
-            CCLOG("Continue showRewardedVideo");
-
-            auto listener = RewardedVideoAdListener::create();
-            listener->setTarget(this);
-            listener->onRewarded = [=](string type, int amount) {
-                // continue
+        auto continueWithAction = [=](FiniteTimeAction *firstAction) {
+            
+            SBDirector::getInstance()->setScreenTouchLocked(true);
+            
+            Vector<FiniteTimeAction*> actions;
+            
+            if( firstAction ) {
+                actions.pushBack(firstAction);
+            }
+            
+            actions.pushBack(CallFunc::create([=]() {
                 gameMgr->onContinue();
-            };
-            listener->onAdClosed = [=]() {
-                // 보상 받지 않음, game over
-                if( !listener->isRewarded() ) {
-                    gameMgr->onGameOver();
-                }
+            }));
+            actions.pushBack(DelayTime::create(0.1f));
+            actions.pushBack(FadeOut::create(0.4f));
+            actions.pushBack(CallFunc::create([=]() {
+                SBDirector::getInstance()->setScreenTouchLocked(false);
+            }));
+            actions.pushBack(RemoveSelf::create());
+            
+            darkLayer->runAction(Sequence::create(actions));
+        };
+
+        // 광고 없음, 무료 이어하기
+        if( !isAdsLoaded ) {
+            darkLayer->setOpacity(0);
+            
+            auto fadeIn = FadeIn::create(0.4f);
+            auto callFunc = CallFunc::create([=]() {
+                popup->dismiss();
+            });
+            auto firstAction = Sequence::create(fadeIn, callFunc, nullptr);
+            continueWithAction(firstAction);
+            
+            return;
+        }
+        
+        // 광고 있음, 팝업 퇴장 연출 후 광고 재생
+        popup->dismissWithAction([=]() {
+            
+            auto loadingBar = CommonLoadingBar::create();
+            loadingBar->setUIDelay(0.1f);
+            loadingBar->show();
+            
+            // 동영상 광고
+            auto adsHelper = AdsHelper::getInstance();
+            
+            if( adsHelper->isRewardedVideoLoaded() ) {
+                CCLOG("Continue showRewardedVideo");
                 
-                loadingBar->dismissWithDelay(0);
-            };
-
-            AdsHelper::getInstance()->showRewardedVideo(listener);
-        }
-        // 전면 광고
-        else if( adsHelper->isInterstitialLoaded() ) {
-            CCLOG("Continue showInterstitial");
-            
-            auto listener = AdListener::create(AdType::INTERSTITIAL);
-            listener->setTarget(this);
-            listener->onAdClosed = [=]() {
-                // continue
-                gameMgr->onContinue();
-                loadingBar->dismissWithDelay(0);
-            };
-            
-            AdsHelper::getInstance()->showInterstitial(listener);
-        }
-        
-        // TODO: ADS
-        /*
-        auto bg = SBNodeUtils::createTouchNode(Color4B::BLACK);
-        SceneManager::getScene()->addChild(bg, SBZOrder::TOP);
-        
-        auto label = Label::createWithTTF("Video...", FONT_RETRO, 90);
-        label->setAnchorPoint(ANCHOR_M);
-        label->setPosition(Vec2MC(0, 0));
-        label->setColor(Color3B::WHITE);
-        bg->addChild(label);
-        
-        auto delay = DelayTime::create(3);
-        auto callFunc = CallFunc::create([=]() {
-            // continue
-            gameMgr->onContinue();
+                auto listener = RewardedVideoAdListener::create();
+                listener->setTarget(this);
+                listener->onRewarded = [=](string type, int amount) {
+                };
+                listener->onAdOpened = [=]() {
+                    loadingBar->dismissWithDelay(0);
+                };
+                listener->onAdClosed = [=]() {
+                    
+                    if( listener->isRewarded() ) {
+                        continueWithAction(nullptr);
+                        // gameMgr->onContinue();
+                    } else {
+                        darkLayer->removeFromParent();
+                        gameMgr->onGameOver();
+                    }
+                };
+                
+                AdsHelper::getInstance()->showRewardedVideo(listener);
+            }
+            // 전면 광고
+            else if( adsHelper->isInterstitialLoaded() ) {
+                CCLOG("Continue showInterstitial");
+                
+                auto listener = AdListener::create(AdType::INTERSTITIAL);
+                listener->setTarget(this);
+                listener->onAdOpened = [=]() {
+                    loadingBar->dismissWithDelay(0);
+                };
+                listener->onAdClosed = [=]() {
+                    
+                    // gameMgr->onContinue();
+                    continueWithAction(nullptr);
+                };
+                
+                AdsHelper::getInstance()->showInterstitial(listener);
+            }
         });
-        auto remove = RemoveSelf::create();
-        bg->runAction(Sequence::create(delay, callFunc, remove, nullptr));
-         */
     });
     
     // 타임 오버

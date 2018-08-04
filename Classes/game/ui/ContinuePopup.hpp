@@ -19,24 +19,23 @@
 class ContinuePopup : public BasePopup {
 private:
     enum Tag {
-        // IMG_TITLE = 100,
-        BTN_VIDEO = 100,
+        BTN_CONTINUE = 100,
     };
     
 public:
-    CREATE_FUNC(ContinuePopup);
+    static ContinuePopup* create(bool isAdsLoaded);
     ~ContinuePopup();
     
 private:
     ContinuePopup();
     
-    bool init() override;
+    bool init(bool isAdsLoaded);
     void onEnter() override;
     void onExit() override;
     
     void initBackgroundView() override;
     void initContentView() override;
-    void initMenu();
+    void initMenu(bool isAdsLoaded);
     
     void countdown();
     void timeOut();
@@ -48,7 +47,9 @@ public:
     void onEnterActionFinished() override;
     
 private:
-    CC_SYNTHESIZE(SBCallback, onVideoListener, OnVideoListener);
+    bool isAdsLoaded;
+    
+    CC_SYNTHESIZE(SBCallback, onContinueListener, OnContinueListener);
     CC_SYNTHESIZE(SBCallback, onTimeOutListener, OnTimeOutListener);
     
     int count;

@@ -20,8 +20,21 @@ static const int   COUNTDOWN_START     = 10;
 static const float ENTER_DURATION       = 0.3f;
 static const float EXIT_DURATION        = 0.2f;
 
+ContinuePopup* ContinuePopup::create(bool isAdsLoaded) {
+    
+    auto popup = new ContinuePopup();
+    
+    if( popup && popup->init(isAdsLoaded) ) {
+        popup->autorelease();
+        return popup;
+    }
+    
+    delete popup;
+    return nullptr;
+}
+
 ContinuePopup::ContinuePopup() : BasePopup(Type::CONTINUE),
-onVideoListener(nullptr),
+onContinueListener(nullptr),
 onTimeOutListener(nullptr),
 count(COUNTDOWN_START) {
     
@@ -31,15 +44,13 @@ ContinuePopup::~ContinuePopup() {
     
 }
 
-bool ContinuePopup::init() {
+bool ContinuePopup::init(bool isAdsLoaded) {
     
     if( !BasePopup::init() ) {
         return false;
     }
     
-    initMenu();
-    
-    // getScheduler()->setTimeScale(0.1f);
+    initMenu(isAdsLoaded);
     
     return true;
 }
@@ -90,16 +101,6 @@ void ContinuePopup::initContentView() {
     
     BasePopup::initContentView();
     
-    // 타이틀
-    // text_continue.png Vec2TC(2, -222) , Size(580, 84)
-    /*
-    auto title = Sprite::create(DIR_IMG_GAME + "text_continue.png");
-    title->setTag(Tag::IMG_TITLE);
-    title->setAnchorPoint(ANCHOR_M);
-    title->setPosition(Vec2TC(0, -222));
-    addChild(title);
-     */
-    
     // 카운트 다운
     anim = SkeletonAnimation::createWithJsonFile(ANIM_CONTINUE);
     anim->setAnchorPoint(ANCHOR_M);
@@ -133,18 +134,9 @@ void ContinuePopup::initContentView() {
             this->timeOut();
         }
     });
-    
-    /*
-    countdownLabel = Label::createWithTTF("", FONT_RETRO, 300);
-    countdownLabel->setAnchorPoint(ANCHOR_M);
-    countdownLabel->setPosition(Vec2MC(0, 100));
-    countdownLabel->setColor(Color3B::WHITE);
-    countdownLabel->enableShadow(Color4B(138,125,164,255), Size(4,-4), 10);
-    addChild(countdownLabel);
-    */
 }
 
-void ContinuePopup::initMenu() {
+void ContinuePopup::initMenu(bool isAdsLoaded) {
     
     // 터치 영역
     auto touchNode = SBNodeUtils::createTouchNode();
@@ -164,35 +156,21 @@ void ContinuePopup::initMenu() {
         }
     });
     
-    // 비디오 버튼
+    // 이어하기 버튼
     // btn_continue.png Vec2BC(0, 392) , Size(520, 152)
-    auto videoBtn = SBButton::create(DIR_IMG_GAME + "btn_continue.png");
-    videoBtn->setTag(Tag::BTN_VIDEO);
-    videoBtn->setZoomScale(0.05f);
-    videoBtn->setAnchorPoint(ANCHOR_M);
-    videoBtn->setPosition(Vec2BC(0, 392));
-    addChild(videoBtn, 1);
+    string file = isAdsLoaded ? "btn_continue.png" : "btn_continue_free.png";
     
-    videoBtn->setOnClickListener([=](Node*) {
-        onVideoListener();
-        this->dismiss();
-        
-    });
+    auto continueBtn = SBButton::create(DIR_IMG_GAME + file);
+    continueBtn->setTag(Tag::BTN_CONTINUE);
+    continueBtn->setZoomScale(0.05f);
+    continueBtn->setAnchorPoint(ANCHOR_M);
+    continueBtn->setPosition(Vec2BC(0, 392));
+    addChild(continueBtn, 1);
     
-    // 투명 영역 버튼
-//    auto videoBtn = Widget::create();
-//    videoBtn->setAnchorPoint(ANCHOR_M);
-//    videoBtn->setPosition(Vec2BC(0, 392));
-//    videoBtn->setContentSize(Size(520, 152));
-//    videoBtn->setTouchEnabled(true);
-//    addChild(videoBtn, 1);
-//
-//    // videoBtn->addChild(SBNodeUtils::createBackgroundNode(videoBtn, Color4B(255,0,0,255*0.5f)));
-//
-//    videoBtn->addClickEventListener([=](Ref*) {
-//        onVideoListener();
+    continueBtn->setOnClickListener([=](Node*) {
+        onContinueListener();
 //        this->dismiss();
-//    });
+    });
 }
 
 /**
@@ -217,8 +195,8 @@ void ContinuePopup::runEnterAction(SBCallback onFinished) {
     auto scale2 = ScaleTo::create(0.05f, 1.0f);
     auto scaleSeq = Sequence::create(scale1, scale2, nullptr);
     
-    getChildByTag(Tag::BTN_VIDEO)->setScale(0);
-    getChildByTag(Tag::BTN_VIDEO)->runAction(scaleSeq);
+    getChildByTag(Tag::BTN_CONTINUE)->setScale(0);
+    getChildByTag(Tag::BTN_CONTINUE)->runAction(scaleSeq);
     
     // 콜백
     auto delay = DelayTime::create(DURATION);
@@ -250,7 +228,7 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
     
     // 버튼
     auto scale = ScaleTo::create(0.15f, 0);
-    getChildByTag(Tag::BTN_VIDEO)->runAction(scale);
+    getChildByTag(Tag::BTN_CONTINUE)->runAction(scale);
     
     // 콜백
     auto delay = DelayTime::create(DURATION);
