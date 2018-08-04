@@ -570,7 +570,10 @@ void GameScene::addPopupListener() {
             CCLOG("User::isOwnRemoveAdsItem: %d AdsHelper::isInterstitialLoaded: %d", User::isOwnRemoveAdsItem(), AdsHelper::isInterstitialLoaded());
             
             // 1초 후 전면 광고 노출
-            if( !User::isOwnRemoveAdsItem() && !gameMgr->isInterstitialAdOpened() && AdsHelper::isInterstitialLoaded() ) {
+            if( !User::isOwnRemoveAdsItem() &&          // 광고 제거 아이템 없음
+                AdsHelper::isInterstitialLoaded() &&    // 광고 로드됨
+                gameMgr->getFeverModeCount() > 0 &&     // 피버 모드 횟수
+               !gameMgr->isInterstitialAdOpened() ) {
                 
                 SBDirector::postDelayed(this, [=]() {
                     auto listener = AdListener::create(AdType::INTERSTITIAL);
