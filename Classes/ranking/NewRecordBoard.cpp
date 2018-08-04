@@ -14,7 +14,7 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-const float NewRecordBoard::EXIT_DURATION = 0.1f;
+const float NewRecordBoard::EXIT_DURATION = 0.2f;
 
 static const vector<string> INITIAL_LIST = {
     "A", "B", "C", "D", "E", "F", "G", "H",
