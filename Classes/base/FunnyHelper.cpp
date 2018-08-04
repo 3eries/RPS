@@ -17,6 +17,7 @@ static const vector<FamousSaying> FAMOUS_SAYING_LIST = {
     FamousSaying("To be, or not to be,\nthat is the question.", "William Shakespeare"),
     FamousSaying("Simplicity is\nthe ultimate sophistication.", "Leonardo da Vinci"),
     FamousSaying("Float like a butterfly,\nsting like a bee.", "Muhammad Ali"),
+    FamousSaying("I think, therefore I am.", "Rene Descartes"),
 };
 
 FamousSaying FunnyHelper::getRandomFamousSaying() {
