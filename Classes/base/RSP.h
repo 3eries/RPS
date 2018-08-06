@@ -135,9 +135,9 @@ namespace EffectDuration {
     static const float MENU_SLIDE_FAST         = 0.25f;
 }
 
-////////////
+/////////////////////
 // 공통 함수
-////////////
+/////////////////////
 static RSPType getWinHand(RSPType hand) {
 
     switch( hand ) {

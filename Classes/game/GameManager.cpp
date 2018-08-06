@@ -322,7 +322,7 @@ void GameManager::onNormalMode() {
 }
 
 /**
- * 노말 모드로 전환
+ * 피버 모드로 전환
  */
 void GameManager::onFeverMode() {
     

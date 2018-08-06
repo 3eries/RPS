@@ -66,6 +66,15 @@ bool GameView::init() {
         initRSPButton();
         initTimeBar();
         initLabels();
+        
+        // drop 연출
+        /*
+        const float POS_Y = blockLayer->getPositionY();
+        blockLayer->setPositionY(POS_Y + blockLayer->getContentSize().height);
+        
+        auto move = MoveTo::create(0.5f, Vec2(blockLayer->getPositionX(), POS_Y));
+        blockLayer->runAction(move);
+         */
     }
     
     return true;
@@ -74,15 +83,6 @@ bool GameView::init() {
 void GameView::onEnter() {
     
     Node::onEnter();
-    
-    // drop 연출
-    /*
-    const float POS_Y = blockLayer->getPositionY();
-    blockLayer->setPositionY(POS_Y + blockLayer->getContentSize().height);
-    
-    auto move = MoveTo::create(0.3f, Vec2(blockLayer->getPositionX(), POS_Y));
-    blockLayer->runAction(move);
-    */
 }
 
 void GameView::onEnterTransitionDidFinish() {
