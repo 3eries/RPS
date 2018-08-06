@@ -217,10 +217,10 @@ void NewRecordBoard::initBg() {
     // ranking2.psd 에서 레코드 팝업 폰트 사이즈는 노랑색 이니셜은 예전이랑 동일하고, 빨간 스코어 는 108포인트네용
     scoreLabel = Label::createWithTTF("", FONT_NEW_RECORD, 108,
                                       Size(0, 0), TextHAlignment::CENTER, TextVAlignment::CENTER);
-    scoreLabel->setColor(Color3B(186,0,0));
-    scoreLabel->enableShadow(Color4B(240, 243, 243, 255), Size(4, -4), 10);
+    scoreLabel->setTextColor(Color4B(186,0,0,255));
+    scoreLabel->enableShadow(Color4B(240, 243, 243, 255*0.8f), Size(0, -4));
     scoreLabel->setAnchorPoint(ANCHOR_M);
-    scoreLabel->setPosition(Vec2MC(bgSize, 22, 191));
+    scoreLabel->setPosition(Vec2MC(bgSize, 22, 191 + 5));
     addChild(scoreLabel);
 }
 
@@ -238,9 +238,6 @@ void NewRecordBoard::initInitial() {
     };
     
     // 화살표 버튼 배경
-    // RSP_btn_name_control.png Vec2MC(-196, -106) , Size(168, 228)
-    // RSP_btn_name_control.png Vec2MC(0, -106) , Size(168, 228)
-    // RSP_btn_name_control.png Vec2MC(196, -106) , Size(168, 228)
     vector<Sprite*> arrowBtnBackgrounds;
     
     {
@@ -344,7 +341,8 @@ void NewRecordBoard::initInitial() {
         
         for( int i = 0; i < 3; ++i ) {
             auto label = Label::createWithTTF("", FONT_NEW_RECORD, 105);
-            label->setColor(Color3B(255,217,0));
+            label->setTextColor(Color4B(255,217,0,255));
+            label->enableShadow(Color4B(83,61,41,255), Size(0, -4));
             label->setAnchorPoint(ANCHOR_M);
             label->setPosition(Vec2(POS_X[i], POS_Y));
             addChild(label);
