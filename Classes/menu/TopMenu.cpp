@@ -25,7 +25,7 @@ static const Vec2    MENU_IN_POSITION          = Vec2(0, 0);
 static const Vec2    MENU_OUT_POSITION         = Vec2(110, 0);
 
 #define              MENU_BUTTON_POSITION \
-(Vec2TC(295, -62) + (superbomb::AdsHelper::isBannerVisible() ? Vec2(0, -BANNER_HEIGHT) : Vec2(0, 0)))
+(Vec2TR(-66 + (100*0.5f), -62) + (superbomb::AdsHelper::isBannerVisible() ? Vec2(0, -BANNER_HEIGHT) : Vec2(0, 0)))
 
 TopMenu::TopMenu() :
 onClickListener(nullptr),
@@ -160,7 +160,7 @@ void TopMenu::setRightMenu(Tag tag, float actionDuration) {
         actionDuration *= 0.5f;
         
         const Vec2 IN_POS = MENU_BUTTON_POSITION;
-        const Vec2 OUT_POS = Vec2(SB_WIN_SIZE.width + selectedMenu->getContentSize().width*0.5f,
+        const Vec2 OUT_POS = Vec2(SB_WIN_SIZE.width + selectedMenu->getAnchorPointInPoints().x,
                                   MENU_BUTTON_POSITION.y);
         
         // Step 1. 기존 메뉴 퇴장
@@ -219,24 +219,16 @@ void TopMenu::initBg() {
  */
 void TopMenu::initMenu() {
     
-    // RSP_btn_go_back.png Vec2TC(295, -62) , Size(100, 92)
-    // RSP_btn_close.png Vec2TC(295, -62) , Size(100, 92)
-    // RSP_btn_option.png Vec2TC(295, -62) , Size(100, 92)
     SBUIInfo infos[] = {
-        SBUIInfo(Tag::SETTING,    ANCHOR_M,   MENU_BUTTON_POSITION,     "RSP_btn_option.png"),
-        SBUIInfo(Tag::BACK,       ANCHOR_M,   MENU_BUTTON_POSITION,     "RSP_btn_go_back.png"),
-        SBUIInfo(Tag::CLOSE,      ANCHOR_M,   MENU_BUTTON_POSITION,     "RSP_btn_close.png"),
-        SBUIInfo(Tag::PAUSE,      ANCHOR_M,   MENU_BUTTON_POSITION,     "RSP_btn_pause.png"),
+        SBUIInfo(Tag::SETTING,    ANCHOR_MR,   MENU_BUTTON_POSITION,     "RSP_btn_option.png"),
+        SBUIInfo(Tag::BACK,       ANCHOR_MR,   MENU_BUTTON_POSITION,     "RSP_btn_go_back.png"),
+        SBUIInfo(Tag::CLOSE,      ANCHOR_MR,   MENU_BUTTON_POSITION,     "RSP_btn_close.png"),
+        SBUIInfo(Tag::PAUSE,      ANCHOR_MR,   MENU_BUTTON_POSITION,     "RSP_btn_pause.png"),
     };
     
     for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
         auto info = infos[i];
      
-        // 배너 유무에 따른 좌표 설정
-//        if( SceneManager::isBannerVisible() ) {
-//            info.pos.y -= BANNER_HEIGHT;
-//        }
-        
         auto btn = SBButton::create(DIR_IMG_GAME + info.file);
         info.apply(btn);
         btn->setZoomScale(0.05f);

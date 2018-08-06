@@ -16,21 +16,6 @@ const Size ButtonSize::SMALL              = Size(200, 80);
 const Size ButtonSize::MEDIUM             = Size(250, 80);
 const Size ButtonSize::LARGE              = Size(300, 80);
 
-string UIHelper::getButtonImageFile(RSPType type) {
-    
-    switch( type ) {
-        case RSPType::ROCK:          return DIR_IMG_GAME + "RSP_btn_rock.png";
-        case RSPType::SCISSORS:      return DIR_IMG_GAME + "RSP_btn_scissors.png";
-        case RSPType::PAPER:         return DIR_IMG_GAME + "RSP_btn_paper.png";
-        case RSPType::ROCK_N_ROLL:   return DIR_IMG_GAME + "RSP_btn_fever.png";
-        default:
-            CCASSERT(false, "UIHelper::getButtonImageFile error: invalid rsp type.");
-            break;
-    }
-    
-    return "";
-}
-
 /**
  * 기본 버튼 생성
  */

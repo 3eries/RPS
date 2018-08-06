@@ -179,17 +179,27 @@ void BottomMenu::initBg() {
  */
 void BottomMenu::initMenu() {
     
-    SBUIInfo infos[] = {
-        SBUIInfo(Tag::START,                  ANCHOR_M,   Vec2BC(0,    100),     "RSP_btn_start.png"),
-        SBUIInfo(Tag::RANKING_LOCAL,          ANCHOR_M,   Vec2BC(-268, 100),     "RSP_btn_ranking.png"),
-        SBUIInfo(Tag::RANKING_WORLD,          ANCHOR_M,   Vec2BC(-268, 100),     "RSP_btn_ranking_world.png"),
-        SBUIInfo(Tag::SHOP,                   ANCHOR_M,   Vec2BC(268,  100),     "RSP_btn_shop.png"),
-    };
+    vector<SBUIInfo> infos({
+        SBUIInfo(Tag::START,            ANCHOR_M,    Vec2BC(0,                 100),    "RSP_btn_start.png"),
+        SBUIInfo(Tag::RANKING_LOCAL,    ANCHOR_ML,   Vec2BL(120 -  (216*0.5f), 100),    "RSP_btn_ranking.png"),
+        SBUIInfo(Tag::RANKING_WORLD,    ANCHOR_ML,   Vec2BL(120 -  (216*0.5f), 100),    "RSP_btn_ranking_world.png"),
+        SBUIInfo(Tag::SHOP,             ANCHOR_MR,   Vec2BR(-120 + (216*0.5f), 100),    "RSP_btn_shop.png"),
+    });
     
-    for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
+    if( IS_IPAD ) {
+        auto &worldRankingInfo = infos[2];
+        worldRankingInfo.file = "RSP_btn_ranking_world_bottom.png";
+    }
+    
+    for( int i = 0; i < infos.size(); ++i ) {
         auto info = infos[i];
+        string file = DIR_IMG_GAME + info.file;
         
-        auto btn = SBButton::create(DIR_IMG_GAME + info.file);
+        if( IS_IPAD ) {
+            file = SBStringUtils::replaceAll(file, DIR_IMG_GAME, DIR_IMG_GAME_IPAD);
+        }
+        
+        auto btn = SBButton::create(file);
         btn->setZoomScale(0.05f);
         info.apply(btn);
         addChild(btn);

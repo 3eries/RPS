@@ -13,6 +13,29 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
+string RSPButton::getButtonImageFile(RSPType type) {
+    
+    string file = "";
+    
+    switch( type ) {
+        case RSPType::ROCK:          file = "RSP_btn_rock.png";         break;
+        case RSPType::SCISSORS:      file = "RSP_btn_scissors.png";     break;
+        case RSPType::PAPER:         file = "RSP_btn_paper.png";        break;
+        case RSPType::ROCK_N_ROLL:   file = "RSP_btn_fever.png";        break;
+        default:
+            CCASSERT(false, "RSPButton::getButtonImageFile error: invalid rsp type.");
+            break;
+    }
+    
+    if( IS_IPAD ) {
+        file = DIR_IMG_GAME_IPAD + file;
+    } else {
+        file = DIR_IMG_GAME + file;
+    }
+    
+    return file;
+}
+
 RSPButton* RSPButton::create(RSPType type) {
     
     auto btn = new RSPButton(type);
@@ -50,7 +73,7 @@ bool RSPButton::init() {
 
 void RSPButton::initImage() {
     
-    img = Sprite::create(UIHelper::getButtonImageFile(type));
+    img = Sprite::create(getButtonImageFile(type));
     img->setAnchorPoint(ANCHOR_M);
     img->setPosition(Vec2MC(img->getContentSize(), 0, 0));
 //    img->setColor(UIHelper::getColor(type));

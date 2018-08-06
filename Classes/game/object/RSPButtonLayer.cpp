@@ -171,6 +171,10 @@ void RSPButtonLayer::showTapHint(std::vector<RSPButton*> buttons) {
             break;
     }
     
+    if( IS_IPAD ) {
+        animName += "_ipad";
+    }
+    
     tapHint->setVisible(true);
     tapHint->setAnimation(0, animName, true);
 }
@@ -267,18 +271,17 @@ void RSPButtonLayer::initNormalButtons() {
     
     buttonLayers[GameMode::NORMAL] = layer;
     
-    const float POS_Y = 5;
-    
     RSPType types[] = {
         RSPType::ROCK,
         RSPType::PAPER,
         RSPType::SCISSORS,
     };
+    const float POS_Y = 100;
     
     SBUIInfo uiInfos[] = {
-        SBUIInfo(ANCHOR_BL, Vec2BL(10,   POS_Y),    ""),
-        SBUIInfo(ANCHOR_MB, Vec2BC(0,    POS_Y),    ""),
-        SBUIInfo(ANCHOR_BR, Vec2BR(-10,  POS_Y),    ""),
+        SBUIInfo(ANCHOR_ML, Vec2BL(164 -  (304*0.5f), POS_Y),    ""),
+        SBUIInfo(ANCHOR_M,  Vec2BC(0,                 POS_Y),    ""),
+        SBUIInfo(ANCHOR_MR, Vec2BR(-164 + (304*0.5f), POS_Y),    ""),
     };
     
     for( int i = 0; i < sizeof(types) / sizeof(RSPType); ++i ) {
@@ -306,12 +309,12 @@ void RSPButtonLayer::initFeverButtons() {
     
     buttonLayers[GameMode::FEVER] = layer;
     
-    const float POS_Y = 5;
     const RSPType type = RSPType::ROCK_N_ROLL;
-    
+    const float POS_Y = 100;
+
     SBUIInfo uiInfos[] = {
-        SBUIInfo(ANCHOR_BR, Vec2BC(-5,   POS_Y),    ""),
-        SBUIInfo(ANCHOR_BL, Vec2BC(5,    POS_Y),    ""),
+        SBUIInfo(ANCHOR_ML, Vec2BL(243 -  (466*0.5f), POS_Y),    ""),
+        SBUIInfo(ANCHOR_MR, Vec2BR(-243 + (466*0.5f), POS_Y),    ""),
     };
     
     for( int i = 0; i < sizeof(uiInfos) / sizeof(SBUIInfo); ++i ) {

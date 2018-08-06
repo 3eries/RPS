@@ -18,6 +18,9 @@
 
 class RSPButton : public cocos2d::ui::Widget {
 public:
+    static std::string getButtonImageFile(RSPType type);
+    
+public:
     static RSPButton* create(RSPType type);
     ~RSPButton();
     

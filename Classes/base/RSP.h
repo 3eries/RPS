@@ -58,6 +58,7 @@ static const std::string DIR_IMG                    = "images/";
 static const std::string DIR_IMG_COMMON             = DIR_ADD(DIR_IMG, "common");
 static const std::string DIR_IMG_SPLASH             = DIR_ADD(DIR_IMG, "splash");
 static const std::string DIR_IMG_GAME               = DIR_ADD(DIR_IMG, "game");
+static const std::string DIR_IMG_GAME_IPAD          = DIR_ADD(DIR_IMG_GAME, "ipad");
 static const std::string DIR_IMG_MAIN               = DIR_ADD(DIR_IMG, "main");
 
 // 애니메이션 경로

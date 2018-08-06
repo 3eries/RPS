@@ -12,7 +12,8 @@
 
 USING_NS_CC;
 
-static cocos2d::Size designResolutionSize = cocos2d::Size(720, 1280);
+static cocos2d::Size designResolutionSize       = cocos2d::Size(720, 1280);
+static cocos2d::Size designResolutionSizeIPad   = cocos2d::Size(960, 1280);
 
 AppDelegate::AppDelegate()
 {
@@ -62,8 +63,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height,
-                                    ResolutionPolicy::EXACT_FIT);
+    if( IS_IPAD ) {
+        glview->setDesignResolutionSize(designResolutionSizeIPad.width, designResolutionSizeIPad.height,
+                                        ResolutionPolicy::EXACT_FIT);
+    } else {
+        glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height,
+                                        ResolutionPolicy::EXACT_FIT);
+    }
 
     register_all_packages();
     
