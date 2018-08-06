@@ -115,7 +115,7 @@ void GameOverPopup::initContentView() {
         
         scoreLabel = Label::createWithTTF(TO_STRING(score), FONT_RETRO, 85);
         scoreLabel->setAnchorPoint(ANCHOR_M);
-        scoreLabel->setPosition(Vec2MC(scoreBg->getContentSize(), 0, 0));
+        scoreLabel->setPosition(Vec2MC(scoreBg->getContentSize(), 0, 5));
         scoreLabel->setColor(Color3B(255,255,0));
         scoreBg->addChild(scoreLabel);
     }
