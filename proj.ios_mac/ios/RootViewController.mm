@@ -42,20 +42,20 @@
 
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView {
-    // Initialize the CCEAGLView
-    CCEAGLView *eaglView = [CCEAGLView viewWithFrame: [UIScreen mainScreen].bounds
-                                         pixelFormat: (__bridge NSString *)cocos2d::GLViewImpl::_pixelFormat
-                                         depthFormat: cocos2d::GLViewImpl::_depthFormat
-                                  preserveBackbuffer: NO
-                                          sharegroup: nil
-                                       multiSampling: NO
-                                     numberOfSamples: 0 ];
-    
-    // Enable or disable multiple touches
-    [eaglView setMultipleTouchEnabled:YES];
-    
-    // Set EAGLView as view of RootViewController
-    self.view = eaglView;
+//    // Initialize the CCEAGLView
+//    CCEAGLView *eaglView = [CCEAGLView viewWithFrame: [UIScreen mainScreen].bounds
+//                                         pixelFormat: (__bridge NSString *)cocos2d::GLViewImpl::_pixelFormat
+//                                         depthFormat: cocos2d::GLViewImpl::_depthFormat
+//                                  preserveBackbuffer: NO
+//                                          sharegroup: nil
+//                                       multiSampling: NO
+//                                     numberOfSamples: 0 ];
+//    
+//    // Enable or disable multiple touches
+//    [eaglView setMultipleTouchEnabled:YES];
+//    
+//    // Set EAGLView as view of RootViewController
+//    self.view = eaglView;
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.

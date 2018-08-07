@@ -24,6 +24,7 @@
  ****************************************************************************/
 
 #import "AppController.h"
+#import "platform/ios/CCEAGLView-ios.h"
 #import "cocos2d.h"
 #import "AppDelegate.h"
 #import "RootViewController.h"
@@ -50,12 +51,18 @@ static AppDelegate s_sharedApplication;
 
     // Add the view controller's view to the window and display.
     window = [[UIWindow alloc] initWithFrame: [[UIScreen mainScreen] bounds]];
-
+    
     // Use RootViewController to manage CCEAGLView
     _viewController = [[RootViewController alloc]init];
     _viewController.wantsFullScreenLayout = YES;
     
-
+    // Initialize the root view
+    UIView *rootView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    [rootView setBackgroundColor:[UIColor blackColor]];
+    // [rootView setBackgroundColor:[UIColor redColor]];
+    
+    _viewController.view = rootView;
+    
     // Set RootViewController to window
     if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0)
     {
@@ -67,13 +74,33 @@ static AppDelegate s_sharedApplication;
         // use this method on ios6
         [window setRootViewController:_viewController];
     }
-
+    
     [window makeKeyAndVisible];
 
     [[UIApplication sharedApplication] setStatusBarHidden:true];
     
+    // Initialize the CCEAGLView
+    CGRect safeArea = [UIScreen mainScreen].bounds;
+    
+    if( @available(iOS 11.0, *) ) {
+        safeArea = window.safeAreaLayoutGuide.layoutFrame;
+    }
+    
+    CCEAGLView *eaglView = [CCEAGLView viewWithFrame: safeArea
+                                         pixelFormat: (__bridge NSString *)cocos2d::GLViewImpl::_pixelFormat
+                                         depthFormat: cocos2d::GLViewImpl::_depthFormat
+                                  preserveBackbuffer: NO
+                                          sharegroup: nil
+                                       multiSampling: NO
+                                     numberOfSamples: 0 ];
+    
+    // Enable or disable multiple touches
+    [eaglView setMultipleTouchEnabled:YES];
+    
+    [rootView addSubview:eaglView];
+    
     // IMPORTANT: Setting the GLView should be done after creating the RootViewController
-    cocos2d::GLView *glview = cocos2d::GLViewImpl::createWithEAGLView((__bridge void *)_viewController.view);
+    cocos2d::GLView *glview = cocos2d::GLViewImpl::createWithEAGLView(eaglView);
     cocos2d::Director::getInstance()->setOpenGLView(glview);
     
     //run the cocos2d-x game scene
