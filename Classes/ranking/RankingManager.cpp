@@ -17,26 +17,16 @@ USING_NS_CC;
 using namespace std;
 
 static const vector<RankingRecord> DEFAULT_RECORDS({
-//    RankingRecord(1, 1056, "B3O"),
-//    RankingRecord(2, 999,  "W0N"),
-//    RankingRecord(3, 800,  "MW9"),
-//    RankingRecord(4, 700,  "W0N"),
-//    RankingRecord(5, 500,  "W0N"),
-//    RankingRecord(6, 419,  "MW9"),
-//    RankingRecord(7, 300,  "B3O"),
-//    RankingRecord(8, 200,  "B3O"),
-//    RankingRecord(9, 100,  "MW9"),
-//    RankingRecord(10, 50,  "MW9"),
-    RankingRecord(1, 100, "B3O"),
-    RankingRecord(2, 50,  "W0N"),
-    RankingRecord(3, 30,  "MW9"),
-    RankingRecord(4, 30,  "W0N"),
-    RankingRecord(5, 30,  "W0N"),
-    RankingRecord(6, 20,  "MW9"),
-    RankingRecord(7, 20,  "B3O"),
-    RankingRecord(8, 10,  "B3O"),
-    RankingRecord(9, 5,  "MW9"),
-    RankingRecord(10, 1,  "MW9"),
+    RankingRecord(1,  1004, "KSL"),
+    RankingRecord(2,  999,  "AAA"),
+    RankingRecord(3,  820,  "SRJ"),
+    RankingRecord(4,  777,  "LUK"),
+    RankingRecord(5,  611,  "GMA"),
+    RankingRecord(6,  500,  "VTA"),
+    RankingRecord(7,  430,  "3ES"),
+    RankingRecord(8,  419,  "SOL"),
+    RankingRecord(9,  309,  "KHK"),
+    RankingRecord(10, 118,  "FRE"),
 });
 
 static RankingManager *instance = nullptr;
