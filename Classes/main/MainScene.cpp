@@ -17,12 +17,14 @@
 #include "RankingPopup.hpp"
 #include "ExitAlertPopup.hpp"
 
+#include "../test/TestHelper.hpp"
 #include "../test/TestMenuScene.hpp"
 
 #include "../game/GameView.hpp"
 #include "../game/object/Man.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
@@ -189,7 +191,9 @@ void MainScene::initMenu() {
     // 메인 화면 전용 메뉴
     SBUIInfo infos[] = {
         SBUIInfo(Tag::BTN_REMOVE_ADS,   ANCHOR_M,    Vec2MC(0, 25),     "RSP_btn_remove_ads.png"),
+#if ENABLE_TEST_MENU
         SBUIInfo(Tag::BTN_TEST,         ANCHOR_TL,   Vec2TL(10, -10),   "RSP_btn_test.png"),
+#endif
     };
     
     for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
