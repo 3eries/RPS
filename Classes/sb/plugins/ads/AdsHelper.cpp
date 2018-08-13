@@ -40,10 +40,30 @@ rewardedVideo(Ad(AdType::REWARDED_VIDEO)) {
 
 AdsHelper::~AdsHelper() {
     
+    Director::getInstance()->getScheduler()->unscheduleAllForTarget(this);
+    
     CC_SAFE_RELEASE(banner.listener);
     CC_SAFE_RELEASE(interstitial.listener);
     CC_SAFE_RELEASE(rewardedVideo.listener);
     CC_SAFE_DELETE(eventDispatcher);
+}
+
+/**
+ * 광고 모듈 초기화
+ */
+void AdsHelper::init(const AdsConfig &config) {
+    
+    if( isInitialized ) {
+        return;
+    }
+    
+    isInitialized = true;
+    this->config = config;
+    
+    initListeners();
+    initImpl(config);
+    
+    setAutoLoad(config.autoLoadInterval);
 }
 
 void AdsHelper::initListeners() {

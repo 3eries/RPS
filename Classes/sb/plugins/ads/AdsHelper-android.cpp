@@ -20,16 +20,7 @@ NS_SB_BEGIN;
 /**
  * 광고 모듈 초기화
  */
-void AdsHelper::init(const AdsConfig &config) {
-    
-    if( isInitialized ) {
-        return;
-    }
-    
-    isInitialized = true;
-    this->config = config;
-    
-    initListeners();
+void AdsHelper::initImpl(const AdsConfig &config) {
     
     // 매니저 초기화
     cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "initAd",
@@ -38,7 +29,6 @@ void AdsHelper::init(const AdsConfig &config) {
                                              config.interstitialUnitId,
                                              config.rewardedVideoUnitId);
 }
-
 
 /**
  * 배너 광고 로드

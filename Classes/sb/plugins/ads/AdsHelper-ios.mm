@@ -20,16 +20,7 @@ NS_SB_BEGIN;
 /**
  * 광고 모듈 초기화
  */
-void AdsHelper::init(const AdsConfig &config) {
-    
-    if( isInitialized ) {
-        return;
-    }
-    
-    isInitialized = true;
-    this->config = config;
-    
-    initListeners();
+void AdsHelper::initImpl(const AdsConfig &config) {
     
     // 매니저 초기화
     AdsManager *mgr = [AdsManager getInstance];

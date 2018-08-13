@@ -32,6 +32,7 @@ private:
     
 public:
     void init(const AdsConfig &config);
+    void initImpl(const AdsConfig &config);
     
     void setActiveBanner(bool active);
     void setActiveInterstitial(bool active);

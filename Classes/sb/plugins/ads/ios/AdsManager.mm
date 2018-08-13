@@ -155,8 +155,7 @@ using namespace std;
     */
     
     // example
-    if( @available(ios 11.0, *) ) {
-//    if( [[[UIDevice currentDevice] systemVersion] floatValue] >= 11.0f ) {
+    if( @available(iOS 11.0, *) ) {
         // In iOS 11, we need to constrain the view to the safe area.
         // Position the banner. Stick it to the bottom of the Safe Area.
         // Make it constrained to the edges of the safe area.
@@ -395,6 +394,7 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
 - (void) rewardBasedVideoAdDidOpen:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
     
     Application::getInstance()->applicationDidEnterBackground();
+    // SBAudioEngine::pauseAll();
     
     self.onRewardedVideoListener->onAdOpened();
 }
