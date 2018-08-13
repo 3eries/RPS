@@ -185,12 +185,14 @@ void AdsHelper::setAutoLoad(float interval) {
         }
         
         // 전면 광고 로드
-        if( interstitial.active && !this->isInterstitialLoaded() ) {
+        if( interstitial.active && !interstitial.listener->isOpened() &&
+           !this->isInterstitialLoaded() ) {
             this->loadInterstitial();
         }
         
         // 보상형 비디오 광고 로드
-        if( rewardedVideo.active && !this->isRewardedVideoLoaded() ) {
+        if( rewardedVideo.active && !rewardedVideo.listener->isOpened() &&
+           !this->isRewardedVideoLoaded() ) {
             this->loadRewardedVideo();
         }
         
