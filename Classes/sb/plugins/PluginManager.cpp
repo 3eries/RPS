@@ -6,6 +6,9 @@
 
 #include "PluginManager.hpp"
 
+#include "json/stringbuffer.h"
+#include "json/prettywriter.h"
+
 #include "../utils/SBStringUtils.h"
 
 #include "ads/AdsHelper.hpp"
@@ -58,8 +61,12 @@ void PluginManager::init(const string &jsonFile) {
     FirebaseManager::getInstance()->init();
     
     initAds(obj["ads"]);
+    initIAP(obj["iap"]);
 }
 
+/**
+ * 광고 모듈 초기화
+ */
 void PluginManager::initAds(const rapidjson::Value &obj) {
     
     AdsConfig adsConfig;
@@ -142,6 +149,51 @@ void PluginManager::initAds(const rapidjson::Value &obj) {
     }
     
     AdsHelper::getInstance()->init(adsConfig);
+}
+
+/**
+ * IAP 모듈 초기화
+ */
+void PluginManager::initIAP(const rapidjson::Value &obj) {
+    
+    iap::Config config;
+    
+    // items
+    auto items = obj["items"].GetObject();
+    
+    for( auto it = items.MemberBegin(); it != items.MemberEnd(); ++it ) {
+        auto itemObj = it->value.GetObject();
+        
+        iap::Item item;
+        item.name = it->name.GetString();
+        item.itemId = itemObj["id"].GetString();
+        item.amount = itemObj["amount"].GetInt();
+        item.price  = itemObj["price"].GetString();
+        
+        if( itemObj.HasMember("type") ) {
+            string type = itemObj["type"].GetString();
+            
+            if( type == "consumable" )          item.type = iap::ItemType::CONSUMABLE;
+            else if( type == "non_consumable" ) item.type = iap::ItemType::NON_CONSUMABLE;
+            else if( type == "remove_ads" )     item.type = iap::ItemType::REMOVE_ADS;
+        }
+        
+        config.items.push_back(item);
+    }
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    rapidjson::StringBuffer strbuf;
+    strbuf.Clear();
+    
+    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
+    obj.Accept(writer);
+    
+    string json = strbuf.GetString();
+    iap::IAPHelper::getInstance()->init(config, json);
+    
+#else
+    iap::IAPHelper::getInstance()->init(config);
+#endif
 }
 
 NS_SB_END;

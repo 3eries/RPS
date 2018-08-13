@@ -27,6 +27,8 @@ private:
     PluginManager();
     
     void initAds(const rapidjson::Value &obj);
+    void initIAP(const rapidjson::Value &obj);
+    
 public:
     void init(const std::string &jsonFile);
 };

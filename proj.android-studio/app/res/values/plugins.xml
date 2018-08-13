@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- iap -->
+    <string name="iap_base64">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2LYxV7C5qq1rAVr/QIJVcquhD0Oq+TGJimvfuSDyxBcKx51wTzLaFv1UZ4SPpnPxlQ3vNofj8p4eA1YxbCgcxXWzgoFWOb3wYrNL89Z7kt9AsHzVaZkkTymbmFJkJRqHAr7gEJ0o0LAqlEfcBQEJGPni1bunEahQEiquUkxL7CwTVCT/xu2h5QU/9OaozEWXfZawpPJHwL9diwn8VAwPkA2wN9EUkIGEHfYBMYZjuT3zL0AKwu0ETK6xyMtRSssgKJ55HuCG+ScvLYC3W3KprTfs6BNSKxqs9LMYazM0xuXCCUUwMGO0hnEkUoR86Mui4mfj1dMBHalWpYvu0HG79wIDAQAB</string>
+</resources>

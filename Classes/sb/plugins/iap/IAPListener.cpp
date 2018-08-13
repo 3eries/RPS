@@ -7,18 +7,42 @@
 
 #include "IAPListener.hpp"
 
+USING_NS_CC;
+using namespace std;
+
 NS_SB_BEGIN;
+NS_IAP_BEGIN;
 
-IAPListener::IAPListener() :
-target(nullptr),
-onPurchased(nullptr), onFailure(nullptr), onCanceled(nullptr),
-onRemoveAdsPurchased(nullptr),
-onRestored(nullptr), onRestoreFinished(nullptr) {
+#pragma mark- Listener
+
+Listener::Listener() :
+target(nullptr), forever(false),
+onPurchased(nullptr), onError(nullptr), onCanceled(nullptr), onFinished(nullptr), onRemoveAds(nullptr) {
+
+}
+
+Listener::~Listener() {
+}
+
+#pragma mark- PurchaseListener
+
+PurchaseListener::PurchaseListener() {
     
 }
 
-IAPListener::~IAPListener() {
+PurchaseListener::~PurchaseListener() {
     
 }
 
+#pragma mark- RestoreListener
+
+RestoreListener::RestoreListener() {
+    
+}
+
+RestoreListener::~RestoreListener() {
+    
+}
+
+NS_IAP_END;
 NS_SB_END;

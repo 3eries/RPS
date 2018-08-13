@@ -27,13 +27,8 @@
                     "amount": 0,
                     "price": ""
                 },
-                "coin_1": {
+                "test_item": {
                     "type": "consumable",
-                    "id": "",
-                    "amount": 0,
-                    "price": ""
-                },
-                "coin_2": {
                     "id": "",
                     "amount": 0,
                     "price": ""
@@ -58,14 +53,23 @@
         },
         "iap": {
             "items": {
-                "gem_28": {
-                    "id": "com.isac.snowbrosrunner_28gem"
+                "remove_ads": {
+                    "type": "remove_ads",
+                    "id": "remove_ads",
+                    "amount": 0,
+                    "price": ""
                 },
-                "gem_60": {
-                    "id": "com.isac.snowbrosrunner_60gem"
+                "theme": {
+                    "type": "non_consumable",
+                    "id": "",
+                    "amount": 0,
+                    "price": ""
                 },
-                "gem_10": {
-                    "id": "com.isac.snowbrosrunner_10gem"
+                "test_item": {
+                    "type": "consumable",
+                    "id": "",
+                    "amount": 0,
+                    "price": ""
                 }
             }
         }

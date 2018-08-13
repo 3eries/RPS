@@ -17,27 +17,57 @@
 #include "IAPDefine.h"
 
 NS_SB_BEGIN;
+NS_IAP_BEGIN;
 
-class IAPListener : public cocos2d::Ref {
+#pragma mark- Listener
+
+class Listener : public cocos2d::Ref {
 public:
-    SB_REF_CREATE_FUNC(IAPListener);
-    virtual ~IAPListener();
+    Listener();
+    virtual ~Listener();
     
-    std::function<void(const Product &prod)> onPurchased;               // 구매 성공
-    std::function<void(const Product &prod)> onFailure;                 // 구매 실패
-    std::function<void(const Product &prod)> onCanceled;                // 구매 취소
+    std::function<void(const Item&)>             onPurchased;      // 요청 성공
+    std::function<void(std::string/*errorMsg*/)> onError;          // 요청 실패
+    std::function<void()>                        onCanceled;       // 요청 취소
+    std::function<void(bool)>                    onFinished;       // 요청 종료
     
-    std::function<void(const Product &prod)> onRemoveAdsPurchased;      // 광고 제거 아이템 구매 성공
+    // 광고 제거 아이템 구매 or 복원 성공
+    std::function<void()> onRemoveAds;
     
-    std::function<void(const Product &prod)> onRestored;                // 아이템 복원 성공
-    std::function<void(bool/*result*/)> onRestoreFinished;              // 아이템 복원 종료
-    
-private:
-    IAPListener();
-    
-    CC_SYNTHESIZE(cocos2d::Node*, target, Target);
+protected:
+    CC_SYNTHESIZE(cocos2d::Ref*, target, Target);
+    SB_SYNTHESIZE_BOOL(forever, Forever);
 };
 
+#pragma mark- PurchaseListener
+
+/** @class PurchaseListener
+ * @brief 결제 리스너
+ */
+class PurchaseListener : public Listener {
+public:
+    SB_REF_CREATE_FUNC(PurchaseListener);
+    virtual ~PurchaseListener();
+    
+private:
+    PurchaseListener();
+};
+
+#pragma mark- RestoreListener
+
+/** @class RestoreListener
+ * @brief 아이템 복원 리스너
+ */
+class RestoreListener : public Listener {
+public:
+    SB_REF_CREATE_FUNC(RestoreListener);
+    virtual ~RestoreListener();
+    
+private:
+    RestoreListener();
+};
+
+NS_IAP_END;
 NS_SB_END;
 
 #endif /* IAPListener_hpp */

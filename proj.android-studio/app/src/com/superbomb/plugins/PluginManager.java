@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.superbomb.plugins.ads.AdsManager;
 import com.superbomb.plugins.firebase.Analytics;
 import com.superbomb.plugins.gps.GameHelper;
+import com.superbomb.plugins.iap.IAPHelper;
 
 import java.util.ArrayList;
 
@@ -34,6 +35,7 @@ public class PluginManager {
         mgr.listeners.add(Analytics.getInstance());
         mgr.listeners.add(GameHelper.getInstance());
         mgr.listeners.add(AdsManager.getInstance());
+        mgr.listeners.add(IAPHelper.getInstance());
 
         for( PluginListener listener : mgr.listeners ) {
             listener.init(context);
