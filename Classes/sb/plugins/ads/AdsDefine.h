@@ -37,13 +37,19 @@ enum class AdType {
 };
 
 struct AdsConfig {
+    // 테스트 모드
     bool testMode;
     std::vector<std::string> testDevices;
-    std::string appId;
+    
+    float autoLoadInterval;             // 광고 자동 로드 시간 간격 (단위 : 초)
+    
+    std::string appId;                  // 애드몹 앱 아이디
     std::string bannerUnitId;
     std::string interstitialUnitId;
     std::string rewardedVideoUnitId;
     std::map<AdPlatform, std::vector<std::string>> placements;
+    
+    AdsConfig() : testMode(false), autoLoadInterval(0), appId("") {}
 };
 
 NS_SB_END;

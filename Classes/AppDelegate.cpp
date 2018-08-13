@@ -76,7 +76,6 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // 초기화
     SBDirector::init();
     superbomb::PluginManager::getInstance()->init(PLUGIN_CONFIG_FILE);
-    superbomb::AdsHelper::getInstance()->setAutoLoad(10);
     PatchManager::getInstance()->init();
     RankingManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();

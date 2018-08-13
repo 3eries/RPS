@@ -75,6 +75,11 @@ void PluginManager::initAds(const rapidjson::Value &obj) {
         }
     }
     
+    // auto load interval
+    if( obj.HasMember("auto_load_interval") ) {
+        adsConfig.autoLoadInterval = obj["auto_load_interval"].GetFloat();
+    }
+    
     // app id
     adsConfig.appId = obj["app_id"].GetString();
     
