@@ -137,6 +137,21 @@ public:
 
         removeDatas.clear();
     }
+    
+    /**
+     * convert
+     */
+    template <class T, class C>
+    static std::vector<C> convert(std::vector<T> datas) {
+        
+        std::vector<C> convertDatas;
+        
+        for( auto data : datas ) {
+            convertDatas.push_back(data);
+        }
+        
+        return convertDatas;
+    }
 };
 
 #endif /* SBCollection_hpp */
