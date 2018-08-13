@@ -145,13 +145,16 @@ void ContinuePopup::initMenu(bool isAdsLoaded) {
     touchNode->addTouchEventListener([=](Ref*, Widget::TouchEventType eventType) {
         
         if( eventType == Widget::TouchEventType::BEGAN ) {
+            // 연출 5배속
             // anim->setTimeScale(5.0f);
+            //
             
+            // 다음 애니메이션으로 skip
             if( count > 0 ) {
                 count--;
                 this->countdown();
             } else {
-                anim->setTimeScale(5.0f);
+                // anim->setTimeScale(5.0f);
             }
         }
     });
