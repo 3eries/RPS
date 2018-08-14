@@ -66,12 +66,12 @@ public:
     bool isContinuable();
     bool isNewRecord();
     
+    static int getPlayCount();
+    
+    static GameView* getView();
+    
 private:
     void reset();
-    
-// getter
-public:
-    static GameView* getView();
     
 private:
     CC_SYNTHESIZE_READONLY(GameConfiguration*, config, Config);

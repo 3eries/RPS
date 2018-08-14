@@ -6,6 +6,7 @@
 
 #include "GameManager.hpp"
 
+#include "UserDefaultKey.h"
 #include "RankingManager.hpp"
 
 #include "GameDefine.h"
@@ -48,6 +49,14 @@ GameManager::~GameManager() {
 void GameManager::init() {
     
     reset();
+    
+    // log
+    {
+        string log;
+        log += "\t" + STR_FORMAT("play count: %d", getPlayCount()) + "\n";
+        
+        CCLOG("GameManager::init\n{\n%s}", log.c_str());
+    }
 }
 
 void GameManager::reset() {
@@ -133,7 +142,13 @@ bool GameManager::isNewRecord() {
     return ranking != INVALID_RANKING;
 }
 
+int GameManager::getPlayCount() {
+    
+    return UserDefault::getInstance()->getIntegerForKey(UserDefaultKey::PLAY_COUNT, 0);
+}
+
 GameView* GameManager::getView() {
+    
     return instance->view;
 }
 
@@ -143,6 +158,9 @@ GameView* GameManager::getView() {
  * 게임 시작
  */
 void GameManager::onGameStart() {
+    
+    UserDefault::getInstance()->setIntegerForKey(UserDefaultKey::PLAY_COUNT, getPlayCount()+1);
+    UserDefault::getInstance()->flush();
     
     updateLocked = false;
     gamePaused = false;
