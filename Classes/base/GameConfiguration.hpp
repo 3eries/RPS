@@ -71,6 +71,8 @@ public:
     LevelInfo getMaxLevelInfo();
     
 private:
+    CC_SYNTHESIZE_READONLY(std::string, storeUrl, StoreUrl);
+    
     // 최대 스코어 제한
     CC_SYNTHESIZE_READONLY(int, maxScore, MaxScore);
     

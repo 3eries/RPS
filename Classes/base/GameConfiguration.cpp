@@ -128,6 +128,16 @@ void GameConfiguration::parse(const string &json) {
     rapidjson::Document doc;
     doc.Parse(json.c_str());
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    auto platformObj = doc["ios"].GetObject();
+#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    auto platformObj = doc["android"].GetObject();
+#endif
+    
+    // store
+    storeUrl = platformObj["store"].GetString();
+    
+    // game value
     maxScore = doc["max_score"].GetInt();
     continueCondition = doc["continue_condition"].GetInt();
     continuation = doc["continuation"].GetInt();

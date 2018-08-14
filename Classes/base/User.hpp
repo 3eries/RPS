@@ -29,6 +29,8 @@ public:
     static bool isOwnRemoveAdsItem();
     static void setOwnRemoveAdsItem(bool owned);
     static void removeAds();
+    
+    static bool checkReview(float popupDelay = 0);
 };
 
 #endif /* User_hpp */

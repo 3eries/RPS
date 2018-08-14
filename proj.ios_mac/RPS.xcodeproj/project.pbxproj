@@ -19,6 +19,7 @@
 		1D1F3C9720AD4CCB0035A36C /* GameOverPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C9520AD4CCB0035A36C /* GameOverPopup.cpp */; };
 		1D1F3C9A20AD6D040035A36C /* SBBasePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C9820AD6D040035A36C /* SBBasePopup.cpp */; };
 		1D1F3C9D20AD74240035A36C /* PausePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C9B20AD74210035A36C /* PausePopup.cpp */; };
+		1D24F6EB21218A56002461A7 /* ReviewHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D24F6E921218A56002461A7 /* ReviewHelper.cpp */; };
 		1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D720E9F9E900D059C6 /* RankingPopup.cpp */; };
 		1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D920E9F9E900D059C6 /* RankingManager.cpp */; };
 		1D3DF50321045BEC0055B66E /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3DF50221045BEC0055B66E /* GameKit.framework */; };
@@ -208,6 +209,8 @@
 		1D1F3C9920AD6D040035A36C /* SBBasePopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBBasePopup.hpp; sourceTree = "<group>"; };
 		1D1F3C9B20AD74210035A36C /* PausePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PausePopup.cpp; sourceTree = "<group>"; };
 		1D1F3C9C20AD74220035A36C /* PausePopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PausePopup.hpp; sourceTree = "<group>"; };
+		1D24F6E921218A56002461A7 /* ReviewHelper.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp.preprocessed; path = ReviewHelper.cpp; sourceTree = "<group>"; };
+		1D24F6EA21218A56002461A7 /* ReviewHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ReviewHelper.hpp; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3120D720E9F9E900D059C6 /* RankingPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankingPopup.cpp; sourceTree = "<group>"; };
 		1D3120D820E9F9E900D059C6 /* RankingManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingManager.hpp; sourceTree = "<group>"; };
@@ -334,7 +337,7 @@
 		1DA98BCB20B47D45006BC169 /* TestMenuScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TestMenuScene.hpp; sourceTree = "<group>"; };
 		1DA98BCD20B47D4E006BC169 /* TouchTestScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TouchTestScene.cpp; sourceTree = "<group>"; };
 		1DA98BCE20B47D4E006BC169 /* TouchTestScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TouchTestScene.hpp; sourceTree = "<group>"; };
-		1DA98BD020B47E66006BC169 /* User.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp.preprocessed; path = User.cpp; sourceTree = "<group>"; };
+		1DA98BD020B47E66006BC169 /* User.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = User.cpp; sourceTree = "<group>"; };
 		1DA98BD120B47E66006BC169 /* User.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = User.hpp; sourceTree = "<group>"; };
 		1DA98BD320B47EEE006BC169 /* BaseTestScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseTestScene.cpp; sourceTree = "<group>"; };
 		1DA98BD420B47EEE006BC169 /* BaseTestScene.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BaseTestScene.hpp; sourceTree = "<group>"; };
@@ -679,6 +682,8 @@
 		1D45C46E20A8A7B8007E63AD /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				1D24F6E921218A56002461A7 /* ReviewHelper.cpp */,
+				1D24F6EA21218A56002461A7 /* ReviewHelper.hpp */,
 				1D45C47620A8A7B8007E63AD /* SBCollection.cpp */,
 				1D45C46F20A8A7B8007E63AD /* SBCollection.hpp */,
 				1D45C47420A8A7B8007E63AD /* SBNodeUtils.cpp */,
@@ -1316,6 +1321,7 @@
 				1DBC68E820E49B9300CA85F0 /* CreditPopup.cpp in Sources */,
 				1D45C44820A8A787007E63AD /* SceneManager.cpp in Sources */,
 				1DA0408921034661001980BA /* Analytics-android.cpp in Sources */,
+				1D24F6EB21218A56002461A7 /* ReviewHelper.cpp in Sources */,
 				1D1F3C8D20ACD36F0035A36C /* ResourceHelper.cpp in Sources */,
 				1DA98BCC20B47D45006BC169 /* TestMenuScene.cpp in Sources */,
 				1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */,

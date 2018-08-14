@@ -40,6 +40,7 @@
 #include "utils/SBNodeUtils.hpp"
 #include "utils/SBStringUtils.h"
 #include "utils/SBSystemUtils.h"
+#include "utils/ReviewHelper.hpp"
 
 // editor-support
 #include "editor-support/spine/SBSpineHelper.hpp"

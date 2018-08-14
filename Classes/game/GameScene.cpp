@@ -185,11 +185,9 @@ void GameScene::onContinue() {
  */
 void GameScene::onGameOver() {
     
-    const int ranking = gameMgr->getRanking();
-    
     // 신기록 달성
-    if( ranking != INVALID_RANKING ) {
-        showNewRecordPopup(ranking, gameMgr->getScore());
+    if( gameMgr->isNewRecord() ) {
+        showNewRecordPopup(gameMgr->getRanking(), gameMgr->getScore());
     }
     // 게임 오버
     else {
@@ -441,6 +439,20 @@ void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
 }
 
 /**
+ * 리뷰 체크
+ * 조건 충족 시 리뷰 작성 알림 팝업 노출
+ */
+void GameScene::checkReview() {
+    
+    if( gameMgr->isNewRecord()  ||          // 신기록
+        gameMgr->getScore() >= 400 ||       // 스코어
+        gameMgr->getPlayCount() >= 15 ) {   // 플레이 횟수
+        
+        User::checkReview(0.5f);
+    }
+}
+
+/**
  * 버튼 클릭
  */
 void GameScene::onClick(Node *sender) {
@@ -600,7 +612,7 @@ void GameScene::addPopupListener() {
             
             CCLOG("User::isOwnRemoveAdsItem: %d AdsHelper::isInterstitialLoaded: %d", User::isOwnRemoveAdsItem(), AdsHelper::isInterstitialLoaded());
             
-            // 1초 후 전면 광고 노출
+            // 전면 광고 O, 1초 후 노출
             if( !User::isOwnRemoveAdsItem() &&          // 광고 제거 아이템 없음
                 AdsHelper::isInterstitialLoaded() &&    // 광고 로드됨
                 gameMgr->getFeverModeCount() > 0 &&     // 피버 모드 횟수
@@ -613,11 +625,14 @@ void GameScene::addPopupListener() {
                         gameMgr->setInterstitialAdOpened(true);
                     };
                     listener->onAdClosed = [=]() {
+                        this->checkReview();
                     };
                     AdsHelper::getInstance()->showInterstitial(listener);
                 }, 1.0f, true);
-                
-                popup->setOnPopupEventListener(nullptr);
+            }
+            // 전면 광고 X
+            else {
+                this->checkReview();
             }
         }
     };

@@ -66,6 +66,8 @@ public:
     void showNewRecordPopup(int ranking, int score);
     void showGameOverPopup(OnPopupEvent onEventListener = nullptr);
 
+    void checkReview();
+    
     void onClick(cocos2d::Node *sender) override;
     bool onClickTopMenu(TopMenu::Tag tag);
     bool onClickBottomMenu(BottomMenu::Tag tag);

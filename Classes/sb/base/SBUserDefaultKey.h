@@ -24,6 +24,9 @@ namespace SBUserDefaultKey {
     static const char* EFFECT_MUTE                   = "SUPERBOMB_EFFECT_MUTE";                      // 효과음 음소거 여부
     static const char* BGM_MUTE                      = "SUPERBOMB_BGM_MUTE";                         // 배경음 음소거 여부
     
+    static const char* REVIEW_WRITE                  = "SUPERBOMB_REVIEW_WRITE";                     // 리뷰 작성 여부
+    static const char* REVIEW_ALERT_ENABLED          = "SUPERBOMB_REVIEW_ALERT_ENABLED";             // 리뷰 알림 활성화 여부
+    static const char* REVIEW_ALERT_TIME             = "SUPERBOMB_REVIEW_ALERT_TIME";                // 리뷰 알림 노출 시간
 }
 
 #endif /* SBUserDefaultKey_h */

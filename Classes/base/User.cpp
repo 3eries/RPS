@@ -7,9 +7,14 @@
 
 #include "User.hpp"
 
+#include "SceneManager.h"
+#include "GameConfiguration.hpp"
 #include "UserDefaultKey.h"
 
+#include "ReviewPopup.hpp"
+
 USING_NS_CC;
+USING_NS_SB;
 using namespace std;
 
 static User *instance = nullptr;
@@ -64,4 +69,36 @@ void User::removeAds() {
 
 //    AdsManager::getInstance()->setActiveBanner(false);
 //    AdsManager::getInstance()->setActiveInterstitial(false);
+/**
+ * 리뷰 체크
+ */
+bool User::checkReview(float popupDelay) {
+    
+    if( !ReviewHelper::isReviewAlertEnabled() ) {
+        return false;
+    }
+    
+    auto showPopup = [=]() {
+        ReviewHelper::showReviewPopup([=]() {
+            
+            // 커스텀 팝업
+            auto popup = ReviewPopup::create();
+            popup->setOnGoListener([=]() {
+                
+                ReviewHelper::setReviewWrite(true);
+                Application::getInstance()->openURL(GameConfiguration::getInstance()->getStoreUrl());
+                
+                popup->dismissWithAction();
+            });
+            SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+        });
+    };
+    
+    if( popupDelay == 0 ) {
+        showPopup();
+    } else {
+        SBDirector::postDelayed(SceneManager::getScene(), showPopup, popupDelay, true);
+    }
+    
+    return true;
 }

@@ -23,6 +23,21 @@ void SBSystemUtils::exitApp() {
 #endif
 }
 
+string SBSystemUtils::timeToString(const struct tm *tm, const string &format) {
+    
+    const int LEN = 80;
+    char buffer[LEN];
+    
+    strftime(buffer, LEN, format.c_str(), tm);
+    
+    return string(buffer);
+}
+
+string SBSystemUtils::timeToString(time_t time, const string &format) {
+    
+    return timeToString(localtime(&time), format);
+}
+
 /**
  * 현재 시스템 시간 정보를 반환한다.
  */
@@ -32,16 +47,6 @@ struct tm* SBSystemUtils::getCurrentTime() {
     time(&rawTime);
     
     return localtime(&rawTime);
-}
-
-string SBSystemUtils::getCurrentTimeString(const string &format) {
-    
-    const int LEN = 80;
-    char buffer[LEN];
-    
-    strftime(buffer, LEN, format.c_str(), getCurrentTime());
-    
-    return string(buffer);
 }
 
 /**
@@ -65,4 +70,9 @@ double SBSystemUtils::getCurrentTimeMillis() {
 double SBSystemUtils::getCurrentTimeSeconds() {
     
     return getCurrentTimeMillis() / 1000.0f;
+}
+
+string SBSystemUtils::getCurrentTimeString(const string &format) {
+    
+    return timeToString(getCurrentTime(), format);
 }

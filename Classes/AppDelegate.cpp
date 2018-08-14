@@ -73,9 +73,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
     
-    // 초기화
+    // 라이브러리 초기화
     SBDirector::init();
     superbomb::PluginManager::getInstance()->init(PLUGIN_CONFIG_FILE);
+    superbomb::ReviewHelper::getInstance()->setFirstLockedDay(1);
+    superbomb::ReviewHelper::getInstance()->setLockedDay(1);
+    
+    // 게임 모듈 초기화
+    User::getInstance()->init();
     PatchManager::getInstance()->init();
     RankingManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();

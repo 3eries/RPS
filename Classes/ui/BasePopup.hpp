@@ -24,6 +24,7 @@ public:
         NONE,
         LOADING_BAR,
         EXIT_APP,
+        REVIEW,
         CREDIT,
         SETTING,
         RANKING,
