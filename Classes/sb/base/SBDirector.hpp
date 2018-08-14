@@ -26,6 +26,11 @@ public:
     static void init();
     static void end();
     
+    static int getRunCount();
+    static bool isFirstRun();
+    static time_t getFirstRunTime();
+    static time_t getLastRunTime();
+    
     static void postDelayed(cocos2d::Node *handler, SBCallback runnable,
                             float delay, bool isScreenTouchLocked = false);
     
