@@ -157,3 +157,36 @@ void SBDirector::postDelayed(Node *handler, SBCallback runnable,
     });
     handler->runAction(Sequence::create(delayAction, callFunc, nullptr));
 }
+
+#define PHONE_SCREEN_SIZE         Size(1280, 720)
+#define PAD_SCREEN_SIZE           Size(1280, 960)
+
+#define PHONE_SCREEN_RATIO        (PHONE_SCREEN_SIZE.width / PHONE_SCREEN_SIZE.height)
+#define PAD_SCREEN_RATIO          (PAD_SCREEN_SIZE.width / PAD_SCREEN_SIZE.height)
+
+bool SBDirector::isPhoneResolution() {
+    
+    const float ratio = getScreenRatio();
+    return fabsf(ratio - PHONE_SCREEN_RATIO) < fabsf(ratio - PAD_SCREEN_RATIO);
+}
+
+bool SBDirector::isPadResolution() {
+    
+    const float ratio = getScreenRatio();
+    return fabsf(ratio - PAD_SCREEN_RATIO) < fabsf(ratio - PHONE_SCREEN_RATIO);
+}
+
+bool SBDirector::isIPad() {
+    
+    return Application::getInstance()->getTargetPlatform() == Application::Platform::OS_IPAD;
+}
+
+float SBDirector::getScreenRatio() {
+    
+    auto frameSize = Director::getInstance()->getOpenGLView()->getFrameSize();
+    
+    float screenWidth  = MAX(frameSize.width, frameSize.height);
+    float screenHeight = MIN(frameSize.width, frameSize.height);
+    
+    return screenWidth / screenHeight;
+}

@@ -171,7 +171,7 @@ void RSPButtonLayer::showTapHint(std::vector<RSPButton*> buttons) {
             break;
     }
     
-    if( IS_IPAD ) {
+    if( SBDirector::isPadResolution() ) {
         animName += "_ipad";
     }
     

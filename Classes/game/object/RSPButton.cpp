@@ -27,7 +27,7 @@ string RSPButton::getButtonImageFile(RSPType type) {
             break;
     }
     
-    if( IS_IPAD ) {
+    if( SBDirector::isPadResolution() ) {
         file = DIR_IMG_GAME_IPAD + file;
     } else {
         file = DIR_IMG_GAME + file;

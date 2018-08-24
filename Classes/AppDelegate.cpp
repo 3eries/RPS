@@ -63,7 +63,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    if( IS_IPAD ) {
+    if( SBDirector::isPadResolution() ) {
         glview->setDesignResolutionSize(designResolutionSizeIPad.width, designResolutionSizeIPad.height,
                                         ResolutionPolicy::EXACT_FIT);
     } else {

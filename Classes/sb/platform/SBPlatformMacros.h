@@ -9,9 +9,6 @@
 
 #include "cocos2d.h"
 
-#define IS_IPAD \
-(Application::getInstance()->getTargetPlatform() == Application::Platform::OS_IPAD)
-
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
 
 #define NS_STRING(__str__)      [NSString stringWithUTF8String:__str__]

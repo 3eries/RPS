@@ -34,6 +34,13 @@ public:
     static void postDelayed(cocos2d::Node *handler, SBCallback runnable,
                             float delay, bool isScreenTouchLocked = false);
     
+public:
+    static bool  isPhoneResolution();
+    static bool  isPadResolution();
+    static bool  isIPad();
+    
+    static float getScreenRatio();
+    
 private:
     cocos2d::EventListenerTouchOneByOne *touchListener;
     SB_SYNTHESIZE_BOOL(screenTouchLocked, ScreenTouchLocked);   // 화면 터치 잠금 여부

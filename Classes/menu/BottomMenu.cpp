@@ -186,7 +186,7 @@ void BottomMenu::initMenu() {
         SBUIInfo(Tag::SHOP,             ANCHOR_MR,   Vec2BR(-120 + (216*0.5f), 100),    "RSP_btn_shop.png"),
     });
     
-    if( IS_IPAD ) {
+    if( SBDirector::isPadResolution() ) {
         auto &worldRankingInfo = infos[2];
         worldRankingInfo.file = "RSP_btn_ranking_world_bottom.png";
     }
@@ -195,7 +195,7 @@ void BottomMenu::initMenu() {
         auto info = infos[i];
         string file = DIR_IMG_GAME + info.file;
         
-        if( IS_IPAD ) {
+        if( SBDirector::isPadResolution() ) {
             file = SBStringUtils::replaceAll(file, DIR_IMG_GAME, DIR_IMG_GAME_IPAD);
         }
         
