@@ -17,6 +17,9 @@ PODS:
   - FirebaseInstanceID (3.1.1):
     - FirebaseCore (~> 5.0)
   - Google-Mobile-Ads-SDK (7.31.0)
+  - GoogleMobileAdsMediationUnity (2.3.0.0):
+    - Google-Mobile-Ads-SDK (>= 7.10.1)
+    - UnityAds (= 2.3.0)
   - GoogleToolboxForMac/Defines (2.1.4)
   - "GoogleToolboxForMac/NSData+zlib (2.1.4)":
     - GoogleToolboxForMac/Defines (= 2.1.4)
@@ -25,10 +28,12 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - UnityAds (2.3.0)
 
 DEPENDENCIES:
   - Firebase/AdMob
   - Firebase/Core
+  - GoogleMobileAdsMediationUnity
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -37,8 +42,10 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseInstanceID
     - Google-Mobile-Ads-SDK
+    - GoogleMobileAdsMediationUnity
     - GoogleToolboxForMac
     - nanopb
+    - UnityAds
 
 SPEC CHECKSUMS:
   Firebase: 355bd535bfdacaa82a7fe8d9784115edefd6fc03
@@ -46,9 +53,11 @@ SPEC CHECKSUMS:
   FirebaseCore: 4c28e3b9708ba48a765e76515f913a71596eb5dd
   FirebaseInstanceID: f3f0657372592ecdfdfe2cac604a5a75758376a6
   Google-Mobile-Ads-SDK: 6e529e748b45507a2ca904e0b5a52669ba3920c4
+  GoogleMobileAdsMediationUnity: 00451854f6caaf1775569bad87879267c8cdbbf5
   GoogleToolboxForMac: 91c824d21e85b31c2aae9bb011c5027c9b4e738f
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  UnityAds: 6c502763383f8c8983a12118cc213193a0af744f
 
-PODFILE CHECKSUM: b3fa787c415ef7853b823d473b5ab68c4ba06508
+PODFILE CHECKSUM: 3ca30d22b32f3af65f4a74c1c40e07b527e30a2a
 
 COCOAPODS: 1.5.0

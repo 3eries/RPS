@@ -1,0 +1,1 @@
+../../../../GoogleMobileAdsMediationUnity/UnityAdapter-2.3.0.0/UnityAdapter.framework/Versions/A/Headers/UnityAdapter.h
