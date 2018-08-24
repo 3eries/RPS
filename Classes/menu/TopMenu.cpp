@@ -8,6 +8,7 @@
 #include "TopMenu.hpp"
 
 #include "RSP.h"
+#include "User.hpp"
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 
@@ -24,8 +25,7 @@ static const float   RIGHT_MENU_SLIDE_DURATION = EffectDuration::MENU_SLIDE_FAST
 static const Vec2    MENU_IN_POSITION          = Vec2(0, 0);
 static const Vec2    MENU_OUT_POSITION         = Vec2(110, 0);
 
-#define              MENU_BUTTON_POSITION \
-(Vec2TR(-66 + (100*0.5f), -62) + (superbomb::AdsHelper::isBannerVisible() ? Vec2(0, -BANNER_HEIGHT) : Vec2(0, 0)))
+#define              MENU_BUTTON_POSITION      Vec2TR(-66 + (100*0.5f), TOP_MENU_MARGIN_Y)
 
 TopMenu::TopMenu() :
 onClickListener(nullptr),

@@ -16,6 +16,9 @@
 #define ROOT_VIEW_CONTROLLER \
 (((AppController *)[UIApplication sharedApplication].delegate).viewController)
 
+#define pxToPt(__x__)           (__x__ / [UIScreen mainScreen].scale)
+#define ptToPx(__x__)           (__x__ * [UIScreen mainScreen].scale)
+
 #endif
 
 #endif /* SBPlatformMacros_h */

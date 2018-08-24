@@ -55,6 +55,9 @@
 - (BOOL) isInterstitialLoaded;
 - (BOOL) isRewardedVideoLoaded;
 
+- (float) getBannerWidth;
+- (float) getBannerHeight;
+
 // GADBannerViewDelegate
 - (void) adViewDidReceiveAd:(GADBannerView *)bannerView;
 - (void) adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error;

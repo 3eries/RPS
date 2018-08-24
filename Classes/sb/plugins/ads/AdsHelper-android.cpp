@@ -129,6 +129,22 @@ bool AdsHelper::isRewardedVideoLoaded() {
     return cocos2d::JniHelper::callStaticBooleanMethod(JNI_CLASS_NAME, "isRewardedVideoLoaded");
 }
 
+float AdsHelper::getBannerWidth() {
+    
+    float w = cocos2d::JniHelper::callStaticFloatMethod(JNI_CLASS_NAME, "getBannerWidth");
+    w /= Director::getInstance()->getOpenGLView()->getScaleX();
+    
+    return w;
+}
+
+float AdsHelper::getBannerHeight() {
+    
+    float h = cocos2d::JniHelper::callStaticFloatMethod(JNI_CLASS_NAME, "getBannerHeight");
+    h /= Director::getInstance()->getOpenGLView()->getScaleY();
+    
+    return h;
+}
+
 extern "C" {
 
     /**

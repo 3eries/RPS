@@ -32,11 +32,8 @@ static const std::string FA_EVENT_CREDIT                        = "credit";
 static const std::string FA_EVENT_SHOP_COMING_SOON              = "shop_coming_soon";
 
 // Leaderboard
-// 현재는 아이디를 사용하지만, 추후 plugin json 정의 시 이름을 사용
+// 현재는 아이디를 사용하지만, 추후 plugin_config.json에 이름과 아이디를 정의하여 사용
 static const std::string LEADER_BOARD_HIGH_SCORE                = "CgkIhM_O4eseEAIQAQ";
-
-// 배너 크기, 하드코딩됨. 추후 제거할 수도 있음
-static const int BANNER_HEIGHT = 100;
 
 // 가위바위보 타입
 enum class RSPType {
@@ -112,6 +109,9 @@ static const std::string SOUND_BGM_FEVER            = DIR_SOUND + "bgm_fever.mp3
 static const std::string SOUND_PUNCH                = DIR_SOUND + "punch.mp3";
 static const std::string SOUND_GAME_OVER            = DIR_SOUND + "game_over.mp3";
 static const std::string SOUND_THUNDER              = DIR_SOUND + "thunder.mp3";
+
+// 좌표
+#define TOP_MENU_MARGIN_Y       (-62 + ((!SceneManager::isGameScene() || User::isOwnRemoveAdsItem()) ? 0 : -superbomb::AdsHelper::getBannerHeight()))
 
 // Color
 namespace Color {

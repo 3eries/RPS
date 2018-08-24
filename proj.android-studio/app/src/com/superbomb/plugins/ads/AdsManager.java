@@ -20,6 +20,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.superbomb.math.Size;
 import com.superbomb.plugins.PluginListener;
 
 import org.cocos2dx.lib.Cocos2dxHelper;
@@ -43,6 +44,8 @@ public class AdsManager implements PluginListener {
     private Activity context;
 
     private AdView bannerView;
+    private Size bannerSizeInPixels;
+
     private InterstitialAd interstitialAd;
     private RewardedVideoAd rewardedVideoAd;
 
@@ -168,6 +171,10 @@ public class AdsManager implements PluginListener {
         bannerView.setAdUnitId(unitId);
         bannerView.setAdSize(BANNER_SIZE);
         bannerView.setVisibility(View.GONE);
+
+        bannerSizeInPixels = new Size();
+        bannerSizeInPixels.setWidth(BANNER_SIZE.getWidthInPixels(context));
+        bannerSizeInPixels.setHeight(BANNER_SIZE.getHeightInPixels(context));
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -642,6 +649,14 @@ public class AdsManager implements PluginListener {
     public static boolean isRewardedVideoLoaded() {
 //        return instance.rewardedVideoAd.isLoaded();
         return instance.isRewardedVideoLoaded;
+    }
+
+    public static float getBannerWidth() {
+        return instance.bannerSizeInPixels.getWidth();
+    }
+
+    public static float getBannerHeight() {
+        return instance.bannerSizeInPixels.getHeight();
     }
 
     public static void runOnUiThread(Runnable r) {

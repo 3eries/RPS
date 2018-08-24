@@ -116,11 +116,6 @@ void GameView::onGameStart() {
     // bgm
     SBAudioEngine::playBGM(SOUND_BGM_GAME);
     
-    // 배너 광고 아래에 위치
-    if( superbomb::AdsHelper::isBannerVisible() ) {
-        timeBar->setPositionY(Vec2TC(0, TOP_MENU_MARGIN_Y_BANNER).y);
-    }
-    
     // 카운트 초기화
     hitCount = 0;
     getChildByTag<Label*>(Tag::LABEL_LEVEL)->setString("");

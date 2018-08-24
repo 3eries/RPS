@@ -136,6 +136,22 @@ bool AdsHelper::isRewardedVideoLoaded() {
     return [[AdsManager getInstance] isRewardedVideoLoaded];
 }
 
+float AdsHelper::getBannerWidth() {
+    
+    float w = ptToPx([[AdsManager getInstance] getBannerWidth]);
+    w /= Director::getInstance()->getOpenGLView()->getScaleX();
+    
+    return w;
+}
+
+float AdsHelper::getBannerHeight() {
+
+    float h = ptToPx([[AdsManager getInstance] getBannerHeight]);
+    h /= Director::getInstance()->getOpenGLView()->getScaleY();
+    
+    return h;
+}
+
 NS_SB_END;
 
 #endif // CC_PLATFORM_IOS

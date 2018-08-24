@@ -56,6 +56,9 @@ public:
     static bool isInterstitialLoaded();
     static bool isRewardedVideoLoaded();
     
+    static float getBannerWidth();
+    static float getBannerHeight();
+    
 private:
     CC_SYNTHESIZE_READONLY(AdsConfig, config, Config);
     

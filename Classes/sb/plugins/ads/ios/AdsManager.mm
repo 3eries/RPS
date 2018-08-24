@@ -574,4 +574,12 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
     return rewardedVideoAd.isReady;
 }
 
+- (float) getBannerWidth {
+    return bannerView.frame.size.width;
+}
+
+- (float) getBannerHeight {
+    return bannerView.frame.size.height;
+}
+
 @end

@@ -33,11 +33,6 @@ static const float          BLOCK_DISPLAY_HEIGHT         = 950; // (BLOCK_HEIGHT
 // 블럭 내려오는 시간
 static const float          BLOCK_MOVE_DURATION          = 0.1f;
 
-// 상단 메뉴 y좌표
-// RSP_gage_timer_bg.png Vec2TC(-2, -62) , Size(444, 92)
-#define                     TOP_MENU_MARGIN_Y            -62
-#define                     TOP_MENU_MARGIN_Y_BANNER     (TOP_MENU_MARGIN_Y-BANNER_HEIGHT)
-
 // 캐릭터 좌표
 #define                     MAN_POS_LEFT                 Vec2BC(-212, 210)
 #define                     MAN_POS_RIGHT                Vec2BC(212,  210)
