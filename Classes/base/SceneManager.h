@@ -49,10 +49,11 @@ public:
     
 // getter
 public:
-    static SceneType getSceneType();
-    static BaseScene* getScene();
-    static CommonMenu* getCommonMenu();
-    static GameView* getGameView();
+    static SceneType     getSceneType();
+    static bool          isGameScene();
+    static BaseScene*    getScene();
+    static CommonMenu*   getCommonMenu();
+    static GameView*     getGameView();
     
 private:
     SceneType sceneType;

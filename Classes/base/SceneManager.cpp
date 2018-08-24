@@ -221,6 +221,10 @@ SceneType SceneManager::getSceneType() {
     return instance->sceneType;
 }
 
+bool SceneManager::isGameScene() {
+    return getSceneType() == SceneType::GAME;
+}
+
 BaseScene* SceneManager::getScene() {
     return instance->scene;
 }
