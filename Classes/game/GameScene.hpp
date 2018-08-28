@@ -28,6 +28,8 @@ public:
     
 private:
     enum Tag {
+        BANNER_LOADING           = 100,
+        
         POPUP_PAUSE              = 10000,
         POPUP_CONTINUE,
         POPUP_GAME_OVER,
@@ -43,6 +45,7 @@ private:
     
     void initBg();
     void initCommonMenu() override;
+    void initBanner();
     
     void addPopupListener();
     

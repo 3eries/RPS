@@ -81,6 +81,7 @@ bool GameScene::init() {
     
     initBg();
     initCommonMenu();
+    initBanner();
     
     gameMgr->addListener(this);
     addPopupListener();
@@ -199,6 +200,8 @@ void GameScene::onGameOver() {
  * 메인 화면으로 이동
  */
 void GameScene::replaceMain() {
+    
+    removeChildByTag(Tag::BANNER_LOADING);
     
     gameMgr->onExitGame();
     SceneManager::getInstance()->replace(SceneType::MAIN);
@@ -582,6 +585,41 @@ void GameScene::initBg() {
     touchLockNode = SBNodeUtils::createTouchNode();
     touchLockNode->setVisible(false);
     addChild(touchLockNode, SBZOrder::MIDDLE);
+}
+
+/**
+ * 배너 초기화
+ */
+void GameScene::initBanner() {
+    
+    // 배너 로딩중 이미지
+    // 로딩된 배너 광고의 ZOrder가 높기 때문에 로딩중 이미지를 따로 제거하지 않는다.
+    if( User::isOwnRemoveAdsItem() ) {
+        return;
+    }
+    
+    const Size bannerSize(SB_WIN_SIZE.width, AdsHelper::getBannerHeight());
+    
+    auto bannerLayer = Node::create();
+    bannerLayer->setTag(Tag::BANNER_LOADING);
+    bannerLayer->setAnchorPoint(ANCHOR_MT);
+    bannerLayer->setPosition(Vec2TC(0, 0));
+    bannerLayer->setContentSize(bannerSize);
+    addChild(bannerLayer, INT_MAX);
+    
+    {
+        auto bg = Sprite::create(DIR_IMG_GAME + "RSP_ad_top_bg.png");
+        bg->setAnchorPoint(ANCHOR_M);
+        bg->setPosition(Vec2MC(bannerSize, 0, 0));
+        bg->setScaleX(bannerSize.width / bg->getContentSize().width);
+        bg->setScaleY(bannerSize.height / bg->getContentSize().height);
+        bannerLayer->addChild(bg);
+        
+        auto text = Sprite::create(DIR_IMG_GAME + "RSP_ad_top_text.png");
+        text->setAnchorPoint(ANCHOR_M);
+        text->setPosition(Vec2MC(bannerSize, 0, 0));
+        bannerLayer->addChild(text);
+    }
 }
 
 /**
