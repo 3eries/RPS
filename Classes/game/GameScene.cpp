@@ -261,9 +261,8 @@ void GameScene::showPausePopup() {
  */
 void GameScene::showContinuePopup() {
     
-    bool isAdsLoaded = (AdsHelper::getInstance()->isInterstitialLoaded() ||
-                        AdsHelper::getInstance()->isRewardedVideoLoaded());
-    // bool isAdsLoaded = false;
+    bool isAdsLoaded = AdsHelper::getInstance()->isRewardedVideoLoaded();
+//    bool isAdsLoaded = false;
     
     auto popup = ContinuePopup::create(isAdsLoaded);
     popup->setTag(Tag::POPUP_CONTINUE);
@@ -325,48 +324,27 @@ void GameScene::showContinuePopup() {
             loadingBar->show();
             
             // 동영상 광고
-            auto adsHelper = AdsHelper::getInstance();
+            CCLOG("Continue showRewardedVideo");
             
-            if( adsHelper->isRewardedVideoLoaded() ) {
-                CCLOG("Continue showRewardedVideo");
+            auto listener = RewardedVideoAdListener::create();
+            listener->setTarget(this);
+            listener->onRewarded = [=](string type, int amount) {
+            };
+            listener->onAdOpened = [=]() {
+                loadingBar->dismissWithDelay(0);
+            };
+            listener->onAdClosed = [=]() {
                 
-                auto listener = RewardedVideoAdListener::create();
-                listener->setTarget(this);
-                listener->onRewarded = [=](string type, int amount) {
-                };
-                listener->onAdOpened = [=]() {
-                    loadingBar->dismissWithDelay(0);
-                };
-                listener->onAdClosed = [=]() {
-                    
-                    if( listener->isRewarded() ) {
-                        continueWithAction(nullptr);
-                        // gameMgr->onContinue();
-                    } else {
-                        darkLayer->removeFromParent();
-                        gameMgr->onGameOver();
-                    }
-                };
-                
-                AdsHelper::getInstance()->showRewardedVideo(listener);
-            }
-            // 전면 광고
-            else if( adsHelper->isInterstitialLoaded() ) {
-                CCLOG("Continue showInterstitial");
-                
-                auto listener = AdListener::create(AdType::INTERSTITIAL);
-                listener->setTarget(this);
-                listener->onAdOpened = [=]() {
-                    loadingBar->dismissWithDelay(0);
-                };
-                listener->onAdClosed = [=]() {
-                    
-                    // gameMgr->onContinue();
+                if( listener->isRewarded() ) {
                     continueWithAction(nullptr);
-                };
-                
-                AdsHelper::getInstance()->showInterstitial(listener);
-            }
+                    // gameMgr->onContinue();
+                } else {
+                    darkLayer->removeFromParent();
+                    gameMgr->onGameOver();
+                }
+            };
+            
+            AdsHelper::getInstance()->showRewardedVideo(listener);
         });
     });
     
