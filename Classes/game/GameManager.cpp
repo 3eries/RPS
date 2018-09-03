@@ -13,6 +13,7 @@
 #include "GameView.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace std;
 
 static const string SCHEDULER_FEVER_END       = "GM_SCHEDULER_FEVER_END";           // 피버 모드 종료
@@ -158,6 +159,8 @@ GameView* GameManager::getView() {
  * 게임 시작
  */
 void GameManager::onGameStart() {
+    
+    firebase::Analytics::logEvent(FA_EVENT_GAME_PLAY);
     
     UserDefault::getInstance()->setIntegerForKey(UserDefaultKey::PLAY_COUNT, getPlayCount()+1);
     UserDefault::getInstance()->flush();
@@ -343,6 +346,12 @@ void GameManager::onNormalMode() {
  * 피버 모드로 전환
  */
 void GameManager::onFeverMode() {
+    
+    firebase::Analytics::logEvent(FA_EVENT_FEVER);
+    
+    if( feverModeCount == 0 ) {
+        firebase::Analytics::logEvent(FA_EVENT_FIRST_FEVER);
+    }
     
     ++feverModeCount;
     onGameModeChanged(GameMode::FEVER);
