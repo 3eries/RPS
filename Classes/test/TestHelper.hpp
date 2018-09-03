@@ -13,7 +13,7 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-#define ENABLE_TEST_MENU        1
+#define ENABLE_TEST_MENU        0
 
 class TestHelper : public cocos2d::Ref {
 public:
