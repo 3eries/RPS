@@ -151,6 +151,8 @@ void ContinuePopup::initMenu(bool isAdsLoaded) {
             
             // 다음 애니메이션으로 skip
             if( count > 0 ) {
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+                
                 count--;
                 this->countdown();
             } else {
@@ -252,6 +254,8 @@ void ContinuePopup::runExitAction(SBCallback onFinished) {
 void ContinuePopup::onEnterActionFinished() {
     
     BasePopup::onEnterActionFinished();
+    
+    SBAudioEngine::playBGM(SOUND_BGM_CONTINUE);
     
     // 카운트 다운 시작
     countdown();

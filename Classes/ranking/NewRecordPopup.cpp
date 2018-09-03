@@ -201,3 +201,11 @@ void NewRecordPopup::runExitAction(SBCallback onFinished) {
     // RankingPopup::runExitAction(SLIDE_OUT_DURATION * 0.7f, onFinished);
 }
 
+/**
+ * 등장 연출 완료
+ */
+void NewRecordPopup::onEnterActionFinished() {
+    
+    RankingPopup::onEnterActionFinished();
+}
+

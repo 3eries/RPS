@@ -161,6 +161,8 @@ void GameView::onPreGameOver() {
  */
 void GameView::onContinue() {
     
+    SBAudioEngine::playBGM(SOUND_BGM_GAME);
+    
     updateScore();
     
     blockLayer->updateBlocks();

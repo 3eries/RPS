@@ -14,6 +14,7 @@
 #include "UIHelper.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace std;
 
@@ -97,6 +98,7 @@ void PausePopup::initContentView() {
     soundBtn->setSelected(!audioEngine->isEffectMute() || !audioEngine->isBGMMute());
     soundBtn->setOnSelectedListener([=](bool isSelected) -> bool {
       
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         audioEngine->setMute(!isSelected);
         
         return false;
@@ -113,6 +115,8 @@ void PausePopup::initContentView() {
     
     vibrateBtn->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::VIBRATE, true));
     vibrateBtn->setOnSelectedListener([=](bool isSelected) -> bool {
+        
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         
         UserDefault::getInstance()->setBoolForKey(UserDefaultKey::VIBRATE, isSelected);
         UserDefault::getInstance()->flush();
@@ -138,6 +142,8 @@ void PausePopup::initContentView() {
             addContentChild(btn, info.zOrder, info.tag);
             
             btn->setOnClickListener([=](Node*) {
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
                 this->performListener((Tag)info.tag);
             });
         }

@@ -161,6 +161,7 @@ void NewRecordBoard::runScoreAction() {
      */
     
     auto rolling = SBRollingNumber::create([=](string number) {
+        SBAudioEngine::playEffect(SOUND_SCORE_ROLLING);
         scoreLabel->setString(number);
     }, score, 0.15f);
     
@@ -297,6 +298,8 @@ void NewRecordBoard::initInitial() {
             addChild(btn);
             
             btn->addClickEventListener([=](Ref*) {
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
                 this->initialUp(i);
             });
         }
@@ -315,6 +318,8 @@ void NewRecordBoard::initInitial() {
             addChild(btn);
             
             btn->addClickEventListener([=](Ref*) {
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
                 this->initialDown(i);
             });
         }
@@ -364,6 +369,8 @@ void NewRecordBoard::initInitial() {
     addChild(enterBtn);
     
     enterBtn->setOnClickListener([=](Node*) {
+        
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         
         this->retain();
         onInputCompletedListener(this->getName());

@@ -63,6 +63,8 @@ bool MainScene::init() {
             // 팝업 제거
             if( popup ) {
                 popup->dismissWithAction();
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             }
             // 팝업 생성
             else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
@@ -73,6 +75,9 @@ bool MainScene::init() {
                 
                 this->addChild(popup, PopupZOrder::MIDDLE);
                 
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+                
+                /*
                 // 배너 노출
                 superbomb::AdsHelper::showBanner();
                 
@@ -81,6 +86,7 @@ bool MainScene::init() {
                     // 배너 숨김
                     superbomb::AdsHelper::hideBanner();
                 });
+                 */
             }
         };
         
@@ -144,10 +150,12 @@ void MainScene::replaceGame() {
  */
 void MainScene::onClick(Node *sender) {
     
+    SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+    
     switch( sender->getTag() ) {
         // 크레딧
-        case Tag::BTN_TITLE: {
-            superbomb::firebase::Analytics::logEvent(FA_EVENT_CREDIT);
+        case Tag::BTN_TITLE: {        
+            firebase::Analytics::logEvent(FA_EVENT_CREDIT);
             
             auto popup = CreditPopup::create();
             addChild(popup, PopupZOrder::TOP);

@@ -47,6 +47,9 @@ public:
     virtual void runExitAction(float duration, SBCallback onFinished) override;
     virtual void runExitAction(SBCallback onFinished = nullptr) override;
     
+    virtual void onEnterActionFinished() override;
+    virtual void onExitActionFinished() override;
+    
 protected:
     cocos2d::Node *stone;       // 배경 비석
     

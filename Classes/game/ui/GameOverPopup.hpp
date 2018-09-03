@@ -41,7 +41,11 @@ public:
     void runExitAction(float duration, SBCallback onFinished) override;
     void runExitAction(SBCallback onFinished = nullptr) override;
     
+    void onEnterActionFinished() override;
+    
 private:
+    bool isFirstEnterAction;
+    
     int score;
     
     cocos2d::Node *stone;       // 배경 비석

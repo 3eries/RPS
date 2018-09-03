@@ -42,6 +42,8 @@ public:
     virtual void runEnterAction(SBCallback onFinished = nullptr) override;
     virtual void runExitAction(SBCallback onFinished = nullptr) override;
     
+    void onEnterActionFinished() override;
+    
 protected:
     CC_SYNTHESIZE(std::function<void(RankingRecord)>, onRecordCompletedListener,
                   OnRecordCompletedListener);

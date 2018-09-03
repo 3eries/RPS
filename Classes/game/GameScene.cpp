@@ -68,11 +68,14 @@ bool GameScene::init() {
             if( pausePopup ) {
                 gameMgr->onGameResume();
                 pausePopup->dismissWithAction();
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             }
             // 팝업 생성
             else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
-                // TODO: 효과음 ?
                 this->showPausePopup();
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             }
         };
         

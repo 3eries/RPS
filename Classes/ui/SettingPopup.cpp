@@ -15,6 +15,7 @@
 #include "UIHelper.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace std;
 
@@ -100,6 +101,7 @@ void SettingPopup::initContentView() {
     effectBtn->setSelected(!audioEngine->isEffectMute());
     effectBtn->setOnSelectedListener([=](bool isSelected) -> bool {
         
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         audioEngine->setEffectMute(!isSelected);
         
         return false;
@@ -117,6 +119,7 @@ void SettingPopup::initContentView() {
     bgmBtn->setSelected(!audioEngine->isBGMMute());
     bgmBtn->setOnSelectedListener([=](bool isSelected) -> bool {
         
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         audioEngine->setBGMMute(!isSelected);
         
         return false;
@@ -133,6 +136,8 @@ void SettingPopup::initContentView() {
     
     vibrateBtn->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::VIBRATE, true));
     vibrateBtn->setOnSelectedListener([=](bool isSelected) -> bool {
+        
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         
         UserDefault::getInstance()->setBoolForKey(UserDefaultKey::VIBRATE, isSelected);
         UserDefault::getInstance()->flush();
@@ -160,6 +165,8 @@ void SettingPopup::initContentView() {
             stoneBg->addChild(btn);
             
             btn->setOnClickListener([=](Node*) {
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
                 this->performListener((Tag)info.tag);
             });
         }

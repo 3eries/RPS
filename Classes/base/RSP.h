@@ -104,11 +104,23 @@ static const std::string FONT_FAMOUS_SAYING         = DIR_FONT + "game_over.ttf"
 static const std::string DIR_SOUND                  = "sounds/";
 
 static const std::string SOUND_BGM_MAIN             = DIR_SOUND + "bgm_main.mp3";
-static const std::string SOUND_BGM_GAME             = DIR_SOUND + "bgm_game.mp3";
-static const std::string SOUND_BGM_FEVER            = DIR_SOUND + "bgm_fever.mp3";
-static const std::string SOUND_PUNCH                = DIR_SOUND + "punch.mp3";
+static const std::string SOUND_BGM_GAME             = DIR_SOUND + "bgm_game_endless_pain_of_nightmares.mp3";
+static const std::string SOUND_BGM_FEVER            = DIR_SOUND + "bgm_game_fever_metal_opening.mp3";
+static const std::string SOUND_BGM_CONTINUE         = DIR_SOUND + "bgm_take_your_time.mp3";
+static const std::string SOUND_BGM_RECORD           = DIR_SOUND + "bgm_take_your_time.mp3";
+
+static const std::string SOUND_BUTTON_CLICK         = DIR_SOUND + "btn_click.mp3";
 static const std::string SOUND_GAME_OVER            = DIR_SOUND + "game_over.mp3";
 static const std::string SOUND_THUNDER              = DIR_SOUND + "thunder.mp3";
+static const std::string SOUND_SCORE_ROLLING        = DIR_SOUND + "score_rolling.mp3";
+
+static const std::string SOUND_PUNCH                = DIR_SOUND + "punch_1.mp3";
+static const std::vector<std::string> SOUND_PUNCH_VOICE({
+    DIR_SOUND + "kung_fu_voice_1.mp3",
+    DIR_SOUND + "kung_fu_voice_2.mp3",
+    DIR_SOUND + "kung_fu_voice_3.mp3",
+    DIR_SOUND + "kung_fu_voice_4.mp3",
+});
 
 // 좌표
 #define TOP_MENU_MARGIN_Y       (-62 + ((!SceneManager::isGameScene() || User::isOwnRemoveAdsItem()) ? 0 : -superbomb::AdsHelper::getBannerHeight()))

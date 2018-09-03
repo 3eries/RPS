@@ -34,7 +34,9 @@ static const float ANIM_ATTACK_PER_UNIT = 0.0666f;
 static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";   // 피버 포인트 게이지 초기화
 
 Man::Man() :
-gameMgr(GameManager::getInstance()) {
+gameMgr(GameManager::getInstance()),
+attackSoundPlayCount(0),
+voiceSoundIndex(0) {
 }
 
 Man::~Man() {
@@ -319,8 +321,7 @@ void Man::showdown(RSPResult result, RSPType myHand, RSPType oppHand) {
  */
 void Man::rockNroll(Position pos) {
     
-    SBAudioEngine::playEffect(SOUND_PUNCH);
-    
+    playAttackSound();
     runAttackAnimation();
     
     setManPosition(pos);
@@ -331,8 +332,7 @@ void Man::rockNroll(Position pos) {
  */
 void Man::resultWin(RSPType myHand, RSPType oppHand) {
     
-    SBAudioEngine::playEffect(SOUND_PUNCH);
-    
+    playAttackSound();
     runAttackAnimation();
     
     switch( myHand ) {
@@ -384,6 +384,27 @@ void Man::resultDraw(RSPType myHand, RSPType oppHand) {
      */
     
     runAttackAnimation();
+}
+
+/**
+ * 공격 효과음 재생
+ */
+void Man::playAttackSound() {
+    
+    ++attackSoundPlayCount;
+    
+    if( attackSoundPlayCount == 15 || voiceSoundIndex == SOUND_PUNCH_VOICE.size()-1 ) {
+        attackSoundPlayCount = 0;
+
+        SBAudioEngine::playEffect(SOUND_PUNCH_VOICE[voiceSoundIndex++]);
+        
+        if( voiceSoundIndex > SOUND_PUNCH_VOICE.size()-1 ) {
+            voiceSoundIndex = 0;
+        }
+        
+    } else {
+        SBAudioEngine::playEffect(SOUND_PUNCH);
+    }
 }
 
 /**

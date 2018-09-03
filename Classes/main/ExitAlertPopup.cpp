@@ -116,6 +116,8 @@ void ExitAlertPopup::initContentView() {
         stoneBg->addChild(winHandBtn);
         
         winHandBtn->setOnClickListener([=](Node*) {
+            
+            SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             SB_SAFE_PERFORM_LISTENER(this, onExitAppListener);
         });
         
@@ -172,6 +174,8 @@ void ExitAlertPopup::initContentView() {
         */
         
         loseHandBtn->addClickEventListener([=](Ref*) {
+            
+            SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             this->dismissWithAction();
         });
         

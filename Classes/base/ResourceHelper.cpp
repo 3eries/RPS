@@ -67,6 +67,17 @@ void ResourceHelper::preload() {
     SBAudioEngine::preload(SOUND_BGM_MAIN);
     SBAudioEngine::preload(SOUND_BGM_GAME);
     SBAudioEngine::preload(SOUND_BGM_FEVER);
-    SBAudioEngine::preload(SOUND_PUNCH);
+    SBAudioEngine::preload(SOUND_BGM_CONTINUE);
+    SBAudioEngine::preload(SOUND_BGM_RECORD);
+    
+    SBAudioEngine::preload(SOUND_BUTTON_CLICK);
     SBAudioEngine::preload(SOUND_GAME_OVER);
+    SBAudioEngine::preload(SOUND_THUNDER);
+    SBAudioEngine::preload(SOUND_SCORE_ROLLING);
+    
+    SBAudioEngine::preload(SOUND_PUNCH);
+    
+    for( string file : SOUND_PUNCH_VOICE ) {
+        SBAudioEngine::preload(file);
+    }
 }

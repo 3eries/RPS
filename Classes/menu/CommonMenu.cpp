@@ -16,6 +16,7 @@
 #include "RankingPopup.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
@@ -259,6 +260,8 @@ void CommonMenu::closeMenu() {
  */
 void CommonMenu::onClickTopMenu(TopMenu::Tag tag) {
     
+    SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+    
     if( onClickTopMenuListener && onClickTopMenuListener(tag) ) {
         return;
     }
@@ -296,6 +299,8 @@ void CommonMenu::onClickTopMenu(TopMenu::Tag tag) {
  * 하단 메뉴 클릭
  */
 void CommonMenu::onClickBottomMenu(BottomMenu::Tag tag) {
+    
+    SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
     
     if( onClickBottomMenuListener && onClickBottomMenuListener(tag) ) {
         return;

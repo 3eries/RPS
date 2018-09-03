@@ -14,15 +14,17 @@
 #include "RankingManager.hpp"
 #include "RecordRowView.hpp"
 
+USING_NS_CC;
+using namespace cocos2d::ui;
+using namespace std;
+
+static const string SCHEDULER_PLAY_BGM                     = "SCHEDULER_PLAY_BGM";
+
 const float GameOverPopup::SLIDE_IN_DURATION               = EffectDuration::POPUP_SLIDE_NORMAL;
 const float GameOverPopup::SLIDE_OUT_DURATION              = EffectDuration::POPUP_SLIDE_NORMAL;
 
 #define                    SLIDE_IN_POSITION               Vec2(0, 0)
 #define                    SLIDE_OUT_POSITION              Vec2TL(0, -stone->getBoundingBox().getMinY())
-
-USING_NS_CC;
-using namespace cocos2d::ui;
-using namespace std;
 
 GameOverPopup* GameOverPopup::create(int score) {
     
@@ -38,6 +40,7 @@ GameOverPopup* GameOverPopup::create(int score) {
 }
 
 GameOverPopup::GameOverPopup(int score) : BasePopup(Type::GAME_OVER),
+isFirstEnterAction(true),
 score(score) {
     
 }
@@ -160,17 +163,20 @@ void GameOverPopup::runEnterAction(float duration, SBCallback onFinished) {
     
     CCLOG("GameOverPopup::runEnterAction");
     
-    const bool existOtherPopup = PopupManager::getInstance()->exists(BasePopup::Type::NEW_RECORD);
-    
     // 액션 완료
     auto onActionFinished = [=]() {
         CCLOG("GameOverPopup::runEnterAction onActionFinished");
         
-        // 배경음
-        if( !existOtherPopup ) {
+        // 게임 오버 효과음
+        if( isFirstEnterAction ) {
             SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
-        } else {
-            SBAudioEngine::stopBGM();
+            
+            // 게임 오버 효과음 후에 메인 배경음 재생
+            const float delay = 5;
+            
+            this->scheduleOnce([=](float dt) {
+               SBAudioEngine::playBGM(SOUND_BGM_MAIN, true);
+            }, delay, SCHEDULER_PLAY_BGM);
         }
         
         this->onEnterActionFinished();
@@ -195,6 +201,8 @@ void GameOverPopup::runExitAction(float duration, SBCallback onFinished) {
     
     CCLOG("GameOverPopup::runExitAction");
     
+    unschedule(SCHEDULER_PLAY_BGM);
+    
     // slide out
     runSlideAction([=]() {
         CCLOG("GameOverPopup::runExitAction onActionFinished");
@@ -208,4 +216,16 @@ void GameOverPopup::runExitAction(float duration, SBCallback onFinished) {
 void GameOverPopup::runExitAction(SBCallback onFinished) {
     
     runExitAction(SLIDE_OUT_DURATION, onFinished);
+}
+
+/**
+ * 등장 연출 완료
+ */
+void GameOverPopup::onEnterActionFinished() {
+    
+    BasePopup::onEnterActionFinished();
+    
+    if( isFirstEnterAction ) {
+        isFirstEnterAction = false;
+    }
 }

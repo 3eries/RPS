@@ -190,3 +190,24 @@ void RankingPopup::runExitAction(SBCallback onFinished) {
     runExitAction(SLIDE_OUT_DURATION, onFinished);
 }
 
+/**
+ * 등장 연출 완료
+ */
+void RankingPopup::onEnterActionFinished() {
+    
+    BasePopup::onEnterActionFinished();
+    
+    SBAudioEngine::playBGM(SOUND_BGM_RECORD);
+}
+
+/**
+ * 퇴장 연출 완료
+ */
+void RankingPopup::onExitActionFinished() {
+    
+    BasePopup::onExitActionFinished();
+    
+    if( getType() == BasePopup::Type::RANKING ) {
+        SBAudioEngine::playBGM(SOUND_BGM_MAIN);
+    }
+}

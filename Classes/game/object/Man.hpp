@@ -75,6 +75,8 @@ public:
     void resultLose(RSPType myHand, RSPType oppHand);
     void resultDraw(RSPType myHand, RSPType oppHand);
     
+    void playAttackSound();
+    
     void runAttackAnimation();
     void runDieAnimation();
     
@@ -106,6 +108,9 @@ private:
 
     // 삭제 예정 노드 리스트 (리셋 시)
     cocos2d::Vector<cocos2d::Node*> needRemoveNodes;
+    
+    int attackSoundPlayCount;   // 공격 효과음 재생 횟수
+    int voiceSoundIndex;        // 보이스 효과음 인덱스
 };
 
 #endif /* Man_hpp */
