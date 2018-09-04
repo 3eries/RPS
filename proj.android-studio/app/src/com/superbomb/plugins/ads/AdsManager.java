@@ -23,6 +23,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.superbomb.math.Size;
 import com.superbomb.plugins.PluginListener;
 
+import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxHelper;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class AdsManager implements PluginListener {
     }
 
     @Override
-    public void init(Activity context) {
+    public void init(Cocos2dxActivity context) {
         this.context = context;
     }
 

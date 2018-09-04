@@ -29,6 +29,7 @@
 #include "ui/PausePopup.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
@@ -43,7 +44,8 @@ hitCount(0) {
 }
 
 GameView::~GameView() {
-    
+ 
+    iap::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool GameView::init() {
@@ -62,7 +64,7 @@ bool GameView::init() {
     initBlock();
     initMan();
     
-    if( SceneManager::getSceneType() == SceneType::GAME ) {
+    if( SceneManager::isGameScene() ) {
         initRSPButton();
         initTimeBar();
         initLabels();
@@ -75,6 +77,30 @@ bool GameView::init() {
         auto move = MoveTo::create(0.5f, Vec2(blockLayer->getPositionX(), POS_Y));
         blockLayer->runAction(move);
          */
+    }
+    
+    // IAP 리스너
+    {
+        auto onRemoveAds = [=]() {
+            // 타임바 좌표 변경
+            if( SceneManager::isGameScene() ) {
+                timeBar->setPosition(Vec2TC(0, TOP_MENU_MARGIN_Y));
+            }
+        };
+        
+        // purchase listener
+        auto purchaseListener = iap::PurchaseListener::create();
+        purchaseListener->setForever(true);
+        purchaseListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+        
+        // restore listener
+        auto restoreListener = iap::RestoreListener::create();
+        restoreListener->setForever(true);
+        restoreListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, restoreListener);
     }
     
     return true;

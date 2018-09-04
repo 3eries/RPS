@@ -4,6 +4,7 @@
 
 #include "PatchManager.hpp"
 #include "GameConfiguration.hpp"
+#include "User.hpp"
 #include "SceneManager.h"
 #include "RankingManager.hpp"
 #include "game/GameManager.hpp"
@@ -24,6 +25,7 @@ AppDelegate::~AppDelegate()
     RankingManager::destroyInstance();
     GameManager::destroyInstance();
     GameConfiguration::destroyInstance();
+    User::destroyInstance();
     PatchManager::destroyInstance();
     SceneManager::destroyInstance();
     SBDirector::end();

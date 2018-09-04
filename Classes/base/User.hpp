@@ -13,7 +13,7 @@
 #include "cocos2d.h"
 #include "superbomb.h"
 
-class User {
+class User : public cocos2d::Ref {
 public:
     static User* getInstance();
     static void destroyInstance();

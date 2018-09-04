@@ -29,7 +29,7 @@ onClickMenuListener(nullptr) {
 
 SettingPopup::~SettingPopup() {
     
-    superbomb::IAPHelper::getInstance()->removeListener(this);
+    iap::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool SettingPopup::init() {
@@ -40,17 +40,27 @@ bool SettingPopup::init() {
     
     // IAP 리스너
     {
-        auto listener = superbomb::IAPListener::create();
-        listener->onRemoveAdsPurchased = [=](const superbomb::Product &prod) {
-            
+        auto onRemoveAds = [=]() {
             // vip 마크 표시
             stoneBg->getChildByTag(Tag::REMOVE_ADS)->setVisible(false);
             stoneBg->getChildByTag(Tag::VIP_MARK)->setVisible(true);
         };
         
-        superbomb::IAPHelper::getInstance()->addListener(this, listener);
+        // purchase listener
+        auto purchaseListener = iap::PurchaseListener::create();
+        purchaseListener->setForever(true);
+        purchaseListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+        
+        // restore listener
+        auto restoreListener = iap::RestoreListener::create();
+        restoreListener->setForever(true);
+        restoreListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, restoreListener);
     }
-    
+     
     return true;
 }
 

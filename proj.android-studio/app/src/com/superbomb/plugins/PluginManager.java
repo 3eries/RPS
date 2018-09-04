@@ -8,6 +8,8 @@ import com.superbomb.plugins.firebase.Analytics;
 import com.superbomb.plugins.gps.GameHelper;
 import com.superbomb.plugins.iap.IAPHelper;
 
+import org.cocos2dx.lib.Cocos2dxActivity;
+
 import java.util.ArrayList;
 
 public class PluginManager {
@@ -28,7 +30,7 @@ public class PluginManager {
         listeners = new ArrayList<>();
     }
 
-    public static void init(Activity context) {
+    public static void init(Cocos2dxActivity context) {
 
         PluginManager mgr = getInstance();
         mgr.context = context;

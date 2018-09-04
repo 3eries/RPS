@@ -37,10 +37,30 @@ User::User() {
 }
 
 User::~User() {
-    
+ 
+    iap::IAPHelper::getInstance()->removeListener(this);
 }
 
 void User::init() {
+    
+    // IAP 리스너 초기화
+    auto onRemoveAds = [=]() {
+        this->removeAds();
+    };
+    
+    // purchase listener
+    auto purchaseListener = iap::PurchaseListener::create();
+    purchaseListener->setForever(true);
+    purchaseListener->onRemoveAds = onRemoveAds;
+    
+    iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+    
+    // restore listener
+    auto restoreListener = iap::RestoreListener::create();
+    restoreListener->setForever(true);
+    restoreListener->onRemoveAds = onRemoveAds;
+    
+    iap::IAPHelper::getInstance()->addListener(this, restoreListener);
     
     if( isOwnRemoveAdsItem() ) {
         removeAds();
@@ -51,10 +71,14 @@ void User::init() {
  * 광고 제거 아이템 보유 여부
  */
 bool User::isOwnRemoveAdsItem() {
+    
     return UserDefault::getInstance()->getBoolForKey(UserDefaultKey::OWN_REMOVE_ADS_ITEM, false);
 }
 
 void User::setOwnRemoveAdsItem(bool owned) {
+    
+    AdsHelper::getInstance()->setActiveBanner(!owned);
+    // AdsManager::getInstance()->setActiveInterstitial(!owned);
     
     UserDefault::getInstance()->setBoolForKey(UserDefaultKey::OWN_REMOVE_ADS_ITEM, owned);
     UserDefault::getInstance()->flush();
@@ -66,9 +90,9 @@ void User::setOwnRemoveAdsItem(bool owned) {
 void User::removeAds() {
 
     setOwnRemoveAdsItem(true);
+    AdsHelper::hideBanner();
+}
 
-//    AdsManager::getInstance()->setActiveBanner(false);
-//    AdsManager::getInstance()->setActiveInterstitial(false);
 /**
  * 리뷰 체크
  */
@@ -102,3 +126,4 @@ bool User::checkReview(float popupDelay) {
     
     return true;
 }
+

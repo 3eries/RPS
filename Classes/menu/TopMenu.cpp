@@ -13,6 +13,7 @@
 #include "UIHelper.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
@@ -35,7 +36,8 @@ selectedRightMenu(Tag::NONE) {
 }
 
 TopMenu::~TopMenu() {
-    
+ 
+    iap::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool TopMenu::init() {
@@ -53,6 +55,30 @@ bool TopMenu::init() {
     
     setTouchEnabled(true);
     setRightMenu(Tag::SETTING, 0);
+    
+    // IAP 리스너
+    {
+        auto onRemoveAds = [=]() {
+            // 우상단 메뉴 좌표 변경
+            for( auto menu : menus ) {
+                menu->setPosition(MENU_BUTTON_POSITION);
+            }
+        };
+        
+        // purchase listener
+        auto purchaseListener = iap::PurchaseListener::create();
+        purchaseListener->setForever(true);
+        purchaseListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+        
+        // restore listener
+        auto restoreListener = iap::RestoreListener::create();
+        restoreListener->setForever(true);
+        restoreListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, restoreListener);
+    }
     
     return true;
 }
@@ -234,6 +260,8 @@ void TopMenu::initMenu() {
         btn->setZoomScale(0.05f);
         btn->setVisible(false);
         addChild(btn);
+        
+        menus.push_back(btn);
         
         btn->setOnClickListener(CC_CALLBACK_1(TopMenu::onClick, this));
     }

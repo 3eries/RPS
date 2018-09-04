@@ -12,6 +12,7 @@
 #include "PopupManager.hpp"
 #include "UIHelper.hpp"
 
+#include "CommonLoadingBar.hpp"
 #include "SettingPopup.hpp"
 #include "RankingPopup.hpp"
 
@@ -209,14 +210,43 @@ void CommonMenu::showSettingPopup() {
                 
             // restore purchase
             case SettingPopup::Tag::RESTORE_PURCHASE: {
-                // TODO:
-                // popup->dismissWithAction();
+                if( iap::IAPHelper::isReady() ) {
+                    iap::IAPHelper::restore(nullptr);
+                }
+                
+                /*
+                auto listener = iap::RestoreListener::create();
+                listener->setTarget(this);
+                listener->onPurchased = [=](const iap::Item &item) {
+                    
+                };
+                listener->onFinished = [=](bool result) {
+                    
+                };
+                
+                iap::IAPHelper::restore(listener);
+                 */
+
             } break;
                 
             // remove ads
             case SettingPopup::Tag::REMOVE_ADS: {
-                // TODO:
-                // popup->dismissWithAction();
+                if( iap::IAPHelper::isReady() ) {
+                    auto loadingBar = CommonLoadingBar::create();
+                    loadingBar->setUIDelay(0.1f);
+                    loadingBar->show();
+                    
+                    auto listener = iap::PurchaseListener::create();
+                    listener->setTarget(this);
+                    listener->onPurchased = [=](const iap::Item &item) {
+                    };
+                    listener->onFinished = [=](bool result) {
+                        loadingBar->dismissWithDelay(0);
+                    };
+                    
+                    iap::IAPHelper::purchaseRemoveAds(listener);
+                }
+                
             } break;
                 
             default: break;

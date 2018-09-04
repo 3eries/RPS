@@ -31,6 +31,10 @@ void IAPHelper::restoreImpl() {
     [[IAPManager getInstance] restore];
 }
 
+bool IAPHelper::isReady() {
+    return true;
+}
+
 NS_IAP_END;
 NS_SB_END;
 

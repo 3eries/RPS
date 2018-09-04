@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.superbomb.plugins.PluginListener;
 import com.superbomb.series.rps.R;
 
+import org.cocos2dx.lib.Cocos2dxActivity;
+
 public class GameHelper implements PluginListener {
 
     private static final String TAG = "GPS_GAME";
@@ -73,7 +75,7 @@ public class GameHelper implements PluginListener {
     }
 
     @Override
-    public void init(Activity context) {
+    public void init(Cocos2dxActivity context) {
 
         this.context = context;
         this.signInClient = GoogleSignIn.getClient(context,  GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);

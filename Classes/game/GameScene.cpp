@@ -36,6 +36,8 @@ gameView(nullptr) {
 }
 
 GameScene::~GameScene() {
+    
+    iap::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool GameScene::init() {
@@ -88,6 +90,28 @@ bool GameScene::init() {
     
     gameMgr->addListener(this);
     addPopupListener();
+    
+    // IAP 리스너
+    {
+        auto onRemoveAds = [=]() {
+            // 배너 제거
+            removeChildByTag(Tag::BANNER_LOADING);
+        };
+        
+        // purchase listener
+        auto purchaseListener = iap::PurchaseListener::create();
+        purchaseListener->setForever(true);
+        purchaseListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+        
+        // restore listener
+        auto restoreListener = iap::RestoreListener::create();
+        restoreListener->setForever(true);
+        restoreListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, restoreListener);
+    }
     
     return true;
 }
@@ -247,8 +271,21 @@ void GameScene::showPausePopup() {
                 
             // remove ads
             case PausePopup::Tag::REMOVE_ADS: {
-                // TODO:
-                // popup->dismissWithAction();
+                if( iap::IAPHelper::isReady() ) {
+                    auto loadingBar = CommonLoadingBar::create();
+                    loadingBar->setUIDelay(0.1f);
+                    loadingBar->show();
+                    
+                    auto listener = iap::PurchaseListener::create();
+                    listener->setTarget(this);
+                    listener->onPurchased = [=](const iap::Item &item) {
+                    };
+                    listener->onFinished = [=](bool result) {
+                        loadingBar->dismissWithDelay(0);
+                    };
+                    
+                    iap::IAPHelper::purchaseRemoveAds(listener);
+                }
                 
             } break;
                 

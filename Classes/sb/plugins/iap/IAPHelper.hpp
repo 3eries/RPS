@@ -61,21 +61,34 @@ public:
      *
      * @Param name is the name of the item specified in plugin_config.json
      */
-    static bool purchase(const std::string &name, PurchaseListener *listener);
-    static bool purchaseRemoveAds(PurchaseListener *listener);
+    static bool purchase(const Item &item, PurchaseListener *listener = nullptr);
+    static bool purchase(const std::string &name, PurchaseListener *listener = nullptr);
+    static bool purchaseRemoveAds(PurchaseListener *listener = nullptr);
     
     /**
      * Restore purchase
      */
     static void restore(RestoreListener *listener);
     
+    static bool isReady();
+    
 public:
+//    std::function<void(const Item&)>             onPurchased;      // 요청 성공
+//    std::function<void(std::string/*errorMsg*/)> onError;          // 요청 실패
+//    std::function<void()>                        onCanceled;       // 요청 취소
+//    std::function<void(bool)>                    onFinished;       // 요청 종료
+    
     void onPurchased(const std::string &itemId);
+//    void onError(const std::string &errorMsg = "");
+//    void onCanceled();
+//    void onFinished(bool result);
+    
     void onPurchaseError(const std::string &errorMsg = "");
     void onPurchaseCanceled();
     
     void onRestored(const std::string &itemId);
-    void onRestoreError(const std::string &errorMsg = "");
+//    void onRestoreError(const std::string &errorMsg = "");
+    void onRestoreFinished(bool result);
     
 public:
     void addListener(Listener *listener);

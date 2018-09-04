@@ -1,10 +1,12 @@
 package com.superbomb.plugins.iap;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClient.BillingResponse;
@@ -16,7 +18,10 @@ import com.superbomb.json.SBJSON;
 import com.superbomb.plugins.PluginListener;
 import com.superbomb.series.rps.R;
 
+import org.cocos2dx.lib.Cocos2dxActivity;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +40,7 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
         return instance;
     }
 
-    private Activity context;
+    private Cocos2dxActivity context;
     private BillingManager billingManager;
 
     private static class Item {
@@ -48,13 +53,14 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
         }
 
     };
-    private final Map<String, Item> items;
+
+    private final List<Item> items;
 
     private IAPHelper() {
-        items = new HashMap<>();
+        items = new ArrayList<>();
     }
 
-    public static Activity getContext() {
+    public static Cocos2dxActivity getContext() {
         return getInstance().context;
     }
 
@@ -62,18 +68,57 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
         return getInstance().billingManager;
     }
 
-    public static Map<String, Item> getItems() {
+    /**
+     * 아이템 반환
+     */
+    public static List<Item> getItems() {
         return getInstance().items;
     }
 
+
+//    static Item getItemByName(const std::string &name);
+
+    public static Item getItemById(String itemId) {
+
+        List<Item> items = getItems();
+
+        for( Item item : items ) {
+            if( item.itemId.equals(itemId) ) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    public static Item findItem(List<Purchase> purchases, String itemId) {
+
+        if( purchases == null ) {
+            return null;
+        }
+
+        for( Purchase purchase : purchases ) {
+            Item item = getItemById(purchase.getSku());
+
+            if( item != null && item.itemId.equals(itemId) ) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
     @Override
-    public void init(Activity context) {
+    public void init(Cocos2dxActivity context) {
 
         this.context = context;
-        billingManager = new BillingManager(context, this);
-        billingManager.setBase64EncodedPublicKey(context.getString(R.string.iap_base64));
+    }
 
-        Log.i(TAG, "init key: " + context.getString(R.string.iap_base64));
+    public void initBillingManager(String base64Key) {
+
+        // Log.i(TAG, "initBillingManager: " + base64Key);
+
+        billingManager = new BillingManager(context, base64Key, this);
     }
 
     @Override
@@ -87,11 +132,17 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
     @Override
     public void onResume() {
 
-        Log.i(TAG, "onResume isReady: " + isReady());
+        if( billingManager != null ) {
+            Log.i(TAG, "onResume isReady: " + billingManager.isBillingClientReady() + ", " + billingManager.isServiceConnected());
+        } else {
+            Log.i(TAG, "onResume billingManager is null");
+        }
 
+        /*
         if( billingManager != null && billingManager.getBillingClientResponseCode() == BillingResponse.OK ) {
             billingManager.queryPurchases();
         }
+        */
     }
 
     @Override
@@ -121,13 +172,11 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
      */
     public static void initIAP(String json) {
 
-        Log.i(TAG, "initIAP: " + json);
-
         Map<String, Object> jsonObj = (Map<String, Object>)SBJSON.parse(json);
 
         // items
         Map<String, Object> itemsObj = (Map<String, Object>)jsonObj.get("items");
-        Map<String, Item> items = getItems();
+        List<Item> items = getItems();
 
         Iterator<String> it = itemsObj.keySet().iterator();
 
@@ -144,72 +193,138 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
                 item.consumable = type.equals("consumable");
             }
 
-            items.put(key, item);
+            items.add(item);
         }
 
         // base64 key
-        // String base64Key = (String)jsonObj.get("key");
-        // getBillingManager().setBase64EncodedPublicKey(base64Key);
+        final String base64Key = (String)jsonObj.get("key");
+
+        // BillingManager 초기화
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getInstance().initBillingManager(base64Key);
+            }
+        });
     }
 
+    /**
+     * 인벤토리 업데이트
+     */
+    private void updateInventory(final PurchasesUpdatedListener listener) {
+
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                billingManager.queryPurchases(new PurchasesUpdatedListener() {
+
+                    @Override
+                    public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+
+                        Log.i(TAG, "updateInventory onPurchasesUpdated responseCode: " + responseCode +
+                                ", purchases: " + purchases.size());
+
+                        // 요청 성공
+                        if( responseCode == BillingResponse.OK && purchases != null ) {
+                            for( Purchase purchase : purchases ) {
+                                Item item = getItemById(purchase.getSku());
+
+                                // 아이템 소모
+                                if( item != null && item.consumable ) {
+                                    billingManager.consumeAsync(purchase.getPurchaseToken());
+                                }
+                            }
+                        }
+
+                        if( listener != null ) {
+                            listener.onPurchasesUpdated(responseCode, purchases);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * 클라이언트 초기화 완료
+     */
     @Override
     public void onBillingClientSetupFinished() {
 
         Log.i(TAG, "onBillingClientSetupFinished");
+
+        // 인벤토리 업데이트
+        updateInventory(null);
     }
 
+    /**
+     * 아이템 소모 완료
+     */
     @Override
     public void onConsumeFinished(String token, @BillingResponse int responseCode) {
 
-        Log.d(TAG, "Consumption finished. Purchase token: " + token + ", responseCode: " + responseCode);
+        // Log.d(TAG, "Consumption finished. Purchase token: " + token + ", responseCode: " + responseCode);
 
         // 소모 성공
         if( responseCode == BillingResponse.OK )  {
-            // nativeOnPurchased(itemId);
         }
         // 소모 실패
         else {
-            nativeOnPurchaseError("consume error. [code : " + responseCode + "]");
         }
     }
 
+    /**
+     * 아이템 결제 완료
+     */
     @Override
-    public void onPurchasesUpdated(@BillingResponse int responseCode, List<Purchase> purchases) {
+    public void onPurchasesUpdated(@BillingResponse final int responseCode, List<Purchase> purchases) {
 
         Log.i(TAG, "onPurchasesUpdated responseCode: " + responseCode +
                 ", has purchases: " + (purchases != null));
 
-        if( purchases != null ) {
+        // 결제 성공
+        if( responseCode == BillingResponse.OK && purchases != null ) {
             for( Purchase purchase : purchases ) {
-                Log.i(TAG, "purchase: " + purchase);
+                final Item item = getItemById(purchase.getSku());
+                if( item == null ) {
+                    // TODO: 예외처리
+                    continue;
+                }
+
+                // 소모성 아이템, 구매 즉시 소모
+                if( item.consumable ) {
+                    billingManager.consumeAsync(purchase.getPurchaseToken());
+                }
+
+                // 구매 완료 리스너 실행
+                context.runOnGLThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        nativeOnPurchased(item.itemId);
+                    }
+                });
+
+                // Log.i(TAG, "onPurchasesUpdated purchased: " + purchase);
             }
         }
-
-        // 구매 성공
-        if( responseCode == BillingResponse.OK && purchases != null ) {
-//            for( Purchase purchase : purchases ) {
-//                String itemId = purchase.getSku();
-//                Item item = items.get(itemId);
-//
-//                // 소모성 아이템, 구매 즉시 소모
-//                if( item.consumable ) {
-//                    billingManager.consumeAsync(purchase.getPurchaseToken());
-//                }
-//
-//                // 구매 완료 리스너 실행
-//                nativeOnPurchased(itemId);
-//
-//                Log.i(TAG, "purchase: " + purchase);
-//            }
-        }
-        // 구매 취소
+        // 결제 취소
         else if( responseCode == BillingClient.BillingResponse.USER_CANCELED ) {
-            // nativeOnPurchaseCanceled();
+            context.runOnGLThread(new Runnable() {
+                @Override
+                public void run() {
+                    nativeOnPurchaseCanceled();
+                }
+            });
         }
-        // 구매 실패
+        // 결제 실패
         else {
-            // Handle any other error codes.
-            // nativeOnPurchaseError("purchase error. [code : " + responseCode + "]");
+            context.runOnGLThread(new Runnable() {
+                @Override
+                public void run() {
+                    nativeOnPurchaseError("purchase error. [code : " + responseCode + "]");
+                }
+            });
         }
 
         Log.i(TAG, "end onPurchasesUpdated flow.");
@@ -218,34 +333,121 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
     /**
      * 아이템 결제
      */
-    public static void purchase(String itemId, boolean consumable) {
+    public static void purchase(final String itemId) {
 
         Log.i(TAG, "purchase itemId: " + itemId);
 
-        Map<String, Item> items = getItems();
+        final Item item = getItemById(itemId);
 
-        if( !items.containsKey(itemId) ) {
-            // 유효하지 않은 아이템
-            nativeOnPurchaseError("invalid item");
+        // 유효하지 않은 아이템
+        if( item == null ) {
+            getContext().runOnGLThread(new Runnable() {
+                @Override
+                public void run() {
+                    nativeOnPurchaseError("invalid item");
+                }
+            });
+
             return;
         }
 
-        // 결제
-        getBillingManager().initiatePurchaseFlow(itemId, BillingClient.SkuType.INAPP);
+        getContext().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                // Step 1. 아이템 복원
+                restore(new PurchasesUpdatedListener() {
+                    @Override
+                    public void onPurchasesUpdated(final int responseCode, @Nullable List<Purchase> purchases) {
+
+                        // 아이템 복원 요청 성공
+                        if( responseCode == BillingResponse.OK ) {
+                            // 결제 아이템이 복원된 아이템인지 체크
+                            Item restoreItem = findItem(purchases, itemId);
+
+                            // 복원된 아이템, 결제할 수 없음
+                            if( restoreItem != null ) {
+                                getContext().runOnGLThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        nativeOnPurchaseError("already owned.");
+                                    }
+                                });
+                            }
+                            // Step 2. 결제
+                            else {
+                                Log.i(TAG, "start purchase: " + itemId);
+                                getBillingManager().initiatePurchaseFlow(itemId, BillingClient.SkuType.INAPP);
+                            }
+                        }
+                        // 아이템 복원 요청 실패
+                        else {
+                            getContext().runOnGLThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    nativeOnPurchaseError("restore error. [code : " + responseCode + "]");
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
     }
 
     /**
-     * 아이템 소모
+     * 아이템 복원
      */
-    public static void consume() {
+    public static void restore(final PurchasesUpdatedListener listener) {
 
+        getInstance().updateInventory(new PurchasesUpdatedListener() {
+
+            @Override
+            public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+
+                final boolean result = (responseCode == BillingResponse.OK);
+
+                if( result && purchases != null ) {
+                    for( final Purchase purchase : purchases ) {
+                        getContext().runOnGLThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                nativeOnRestored(purchase.getSku());
+                            }
+                        });
+                    }
+                }
+
+                getContext().runOnGLThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        nativeOnRestoreFinished(result);
+                    }
+                });
+
+                if( listener != null ) {
+                    listener.onPurchasesUpdated(responseCode, purchases);
+                }
+            }
+        });
+    }
+
+    public static void restore() {
+        restore(null);
     }
 
     public static boolean isReady() {
-        return getBillingManager() != null && getBillingManager().isBillingClientReady();
+
+        BillingManager billingManager = getBillingManager();
+        if( billingManager == null ) {
+            return false;
+        }
+
+        return billingManager.isBillingClientReady() && billingManager.isServiceConnected();
     }
 
     public static native void nativeOnPurchased(String itemId);
     public static native void nativeOnPurchaseError(String errorMsg);
     public static native void nativeOnPurchaseCanceled();
+    public static native void nativeOnRestored(String itemId);
+    public static native void nativeOnRestoreFinished(boolean result);
 }

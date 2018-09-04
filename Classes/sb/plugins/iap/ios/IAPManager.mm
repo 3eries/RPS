@@ -114,7 +114,11 @@ using namespace std;
  */
 - (void) paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions {
     
+    NSLog(@"paymentQueue updatedTransactions start");
+    
     for( SKPaymentTransaction *transaction in transactions ) {
+        NSLog(@"transactionState: %ld", transaction.transactionState);
+        
         switch( transaction.transactionState ) {
             // 구매 완료
             case SKPaymentTransactionStatePurchased: {
@@ -139,8 +143,13 @@ using namespace std;
             case SKPaymentTransactionStateDeferred:
                 NSLog(@"SKPaymentTransactionStateDeferred");
                 break;
+                
+            default:
+                break;
         }
     }
+    
+    NSLog(@"paymentQueue updatedTransactions end");
 }
 
 /**
@@ -161,16 +170,14 @@ using namespace std;
 - (void) onTransactionStateFailed:(SKPaymentTransaction *)transaction {
     
     NSLog(@"onTransactionStateFailed: %@", transaction.error);
+
+    NSString *errorMsg = [transaction.error.userInfo objectForKey:NSLocalizedDescriptionKey];
     
-//    if( transaction.error.code == SKErrorPaymentCancelled ) {
-//        // 구매/복구 취소
-//        iapRequest->executeErrorListner(FGIAPRequestErrorCode::ERROR_CODE_CANCEL);
-//    } else {
-//        // 구매/복구 실패
-//        iapRequest->executeErrorListner(FGIAPRequestErrorCode::ERROR_CODE_UNKNOWN);
-//    }
-//
-//    CC_SAFE_RELEASE_NULL(iapRequest);
+    if( transaction.error.code == SKErrorPaymentCancelled ) {
+        iap::IAPHelper::getInstance()->onPurchaseCanceled();
+    } else {
+        iap::IAPHelper::getInstance()->onPurchaseError([errorMsg UTF8String]);
+    }
     
     [self finishTransaction:transaction];
 }
@@ -201,14 +208,11 @@ using namespace std;
     
     NSLog(@"paymentQueueRestoreCompletedTransactionsFinished: %d", queue.transactions.count);
     
-//    vector<string> prodIDs;
-//
-//    for( SKPaymentTransaction *transaction in queue.transactions ) {
-//        NSString *prodID = transaction.payment.productIdentifier;
-//        prodIDs.push_back([prodID UTF8String]);
-//    }
-//
-//    iapRequest->executeRestoreSuccessListener(prodIDs);
+    for( SKPaymentTransaction *transaction in queue.transactions ) {
+        iap::IAPHelper::getInstance()->onRestored([IAPManager getItemId:transaction]);
+    }
+    
+    iap::IAPHelper::getInstance()->onRestoreFinished(true);
 }
 
 + (string) getItemId:(SKPaymentTransaction *)transaction {

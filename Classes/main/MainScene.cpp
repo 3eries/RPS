@@ -13,6 +13,7 @@
 #include "PopupManager.hpp"
 #include "UIHelper.hpp"
 
+#include "CommonLoadingBar.hpp"
 #include "CreditPopup.hpp"
 #include "RankingPopup.hpp"
 #include "ExitAlertPopup.hpp"
@@ -35,7 +36,7 @@ MainScene::MainScene() {
 
 MainScene::~MainScene() {
     
-    superbomb::IAPHelper::getInstance()->removeListener(this);
+    iap::IAPHelper::getInstance()->removeListener(this);
 }
 
 bool MainScene::init() {
@@ -93,22 +94,32 @@ bool MainScene::init() {
         getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
     }
     
+    initBg();
+    initMenu();
+    initCommonMenu();
+    
     // IAP 리스너
     {
-        auto listener = superbomb::IAPListener::create();
-        listener->onRemoveAdsPurchased = [=](const superbomb::Product &prod) {
-            
+        auto onRemoveAds = [=]() {
             // vip 마크 표시
             contentView->getChildByTag(Tag::BTN_REMOVE_ADS)->setVisible(false);
             contentView->getChildByTag(Tag::VIP_MARK)->setVisible(true);
         };
         
-        superbomb::IAPHelper::getInstance()->addListener(this, listener);
+        // purchase listener
+        auto purchaseListener = iap::PurchaseListener::create();
+        purchaseListener->setForever(true);
+        purchaseListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+        
+        // restore listener
+        auto restoreListener = iap::RestoreListener::create();
+        restoreListener->setForever(true);
+        restoreListener->onRemoveAds = onRemoveAds;
+        
+        iap::IAPHelper::getInstance()->addListener(this, restoreListener);
     }
-    
-    initBg();
-    initMenu();
-    initCommonMenu();
     
     return true;
 }
@@ -163,7 +174,22 @@ void MainScene::onClick(Node *sender) {
         
         // 광고 제거 아이템
         case Tag::BTN_REMOVE_ADS: {
-            // User::setOwnRemoveAdsItem(!User::isOwnRemoveAdsItem());
+            if( iap::IAPHelper::isReady() ) {
+                auto loadingBar = CommonLoadingBar::create();
+                loadingBar->setUIDelay(0.1f);
+                loadingBar->show();
+                
+                auto listener = iap::PurchaseListener::create();
+                listener->setTarget(this);
+                listener->onPurchased = [=](const iap::Item &item) {
+                };
+                listener->onFinished = [=](bool result) {
+                    loadingBar->dismissWithDelay(0);
+                };
+
+                iap::IAPHelper::purchaseRemoveAds(listener);
+            }
+            
         } break;
             
         // test

@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.superbomb.plugins.PluginListener;
 
+import org.cocos2dx.lib.Cocos2dxActivity;
+
 import java.util.Hashtable;
 import java.util.Iterator;
 
@@ -37,7 +39,7 @@ public class Analytics implements PluginListener {
     }
 
     @Override
-    public void init(Activity context) {
+    public void init(Cocos2dxActivity context) {
 
         this.context = context;
         firebaseAnalytics = FirebaseAnalytics.getInstance(context);

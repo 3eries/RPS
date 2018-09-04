@@ -25,8 +25,7 @@ void IAPHelper::initImpl(const Config &config, const string &originalJson) {
 
 void IAPHelper::purchaseImpl(const Item &item) {
     
-    bool consumable = (item.type == ItemType::CONSUMABLE);
-    cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "purchase", item.itemId, consumable);
+    cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "purchase", item.itemId);
 }
 
 void IAPHelper::restoreImpl() {
@@ -34,9 +33,39 @@ void IAPHelper::restoreImpl() {
     cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "restore");
 }
 
+bool IAPHelper::isReady() {
+    
+    return cocos2d::JniHelper::callStaticBooleanMethod(JNI_CLASS_NAME, "isReady");
+}
+
 extern "C" {
     
-    void Java_com_superbomb_plugins_iap_IAPManager_nativeOnPurchased(JNIEnv *env, jobject obj) {
+    void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnPurchased(JNIEnv *env, jobject obj, jstring jitemId) {
+        
+        string itemId = JniHelper::jstring2string(jitemId);
+        IAPHelper::getInstance()->onPurchased(itemId);
+    }
+    
+    void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnPurchaseError(JNIEnv *env, jobject obj, jstring jerrorMsg) {
+        
+        string errorMsg = JniHelper::jstring2string(jerrorMsg);
+        IAPHelper::getInstance()->onPurchaseError(errorMsg);
+    }
+    
+    void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnPurchaseCanceled(JNIEnv *env, jobject obj) {
+        
+        IAPHelper::getInstance()->onPurchaseCanceled();
+    }
+    
+    void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnRestored(JNIEnv *env, jobject obj, jstring jitemId) {
+        
+        string itemId = JniHelper::jstring2string(jitemId);
+        IAPHelper::getInstance()->onRestored(itemId);
+    }
+    
+    void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnRestoreFinished(JNIEnv *env, jobject obj, jboolean jresult) {
+        
+        IAPHelper::getInstance()->onRestoreFinished(jresult);
     }
 }
 
