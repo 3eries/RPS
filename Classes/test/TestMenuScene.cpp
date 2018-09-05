@@ -75,7 +75,8 @@ bool TestMenuScene::init() {
             User::setOwnRemoveAdsItem(isSelected);
             
             if( isSelected ) {
-                superbomb::IAPHelper::getInstance()->onRemoveAdsPurchased();
+                auto item = superbomb::iap::IAPHelper::getInstance()->getRemoveAdsItem();
+                superbomb::iap::IAPHelper::getInstance()->onPurchased(item.itemId);
             }
             
             return false;
