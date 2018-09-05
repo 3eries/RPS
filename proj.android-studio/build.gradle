@@ -27,7 +27,7 @@ allprojects {
     ext {
         // appcompat_library_version = '27.0.2'
         support_library_version = '27.1.1'
-        firebase_library_version = '16.0.0'
-        gms_library_version = '15.0.1'
+        // firebase_library_version = '16.0.3'
+        // gms_library_version = '15.0.1'
     }
 }
