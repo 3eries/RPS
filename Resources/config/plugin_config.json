@@ -2,7 +2,7 @@
     "android": {
         "firebase": {},
         "ads": {
-            "test": 1,
+            "test": 0,
             "test_devices": ["70E156DD37C77C954FC580FDA70F4645"],
             "auto_load_interval": 10,
             "app_id": "ca-app-pub-9699962520672188~1100277534",
@@ -17,7 +17,7 @@
             "items": {
                 "remove_ads": {
                     "type": "remove_ads",
-                    "id": "remove_ads",
+                    "id": "rps_remove_ads",
                     "amount": 0,
                     "price": ""
                 },
@@ -40,7 +40,7 @@
     "ios": {
         "firebase": {},
         "ads": {
-            "test": 1,
+            "test": 0,
             "test_devices": ["b4557ed216280a136490cbe37144356d"],
             "auto_load_interval": 10,
             "app_id": "ca-app-pub-9699962520672188~4051241482",
