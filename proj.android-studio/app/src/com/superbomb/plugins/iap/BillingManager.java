@@ -251,7 +251,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     }
 
     public boolean isBillingClientReady() {
-        return mBillingClient.isReady();
+        return mBillingClient != null && mBillingClient.isReady();
     }
 
     public boolean isServiceConnected() {
