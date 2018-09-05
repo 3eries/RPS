@@ -146,8 +146,10 @@ public class GameHelper implements PluginListener {
                 }
                 */
 
+                /*
                 new AlertDialog.Builder(getContext()).setMessage(R.string.error_signin)
                         .setNeutralButton(android.R.string.ok, null).show();
+                */
             }
         }
 
