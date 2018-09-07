@@ -264,6 +264,10 @@ void IAPHelper::onPurchaseError(const string &errorMsg) {
     
     CCLOG("IAPHelper::onPurchaseError: %s", errorMsg.c_str());
     
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    MessageBox(errorMsg.c_str(), "");
+#endif
+    
     Director::getInstance()->getScheduler()->performFunctionInCocosThread([=]() {
         
         auto listeners = this->getPurchaseListeners();
