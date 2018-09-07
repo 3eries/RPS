@@ -363,21 +363,31 @@ void GameScene::showContinuePopup() {
             loadingBar->setUIDelay(0.1f);
             loadingBar->show();
             
-            // 동영상 광고
+            // 동영상 광고 노출
             CCLOG("Continue showRewardedVideo");
             
             auto listener = RewardedVideoAdListener::create();
             listener->setTarget(this);
+            
+            // 로딩 실패
+            listener->onAdFailedToLoad = [=](int error) {
+                
+                firebase::Analytics::logEvent("debug_continue_rewarded_ad");
+//                darkLayer->removeFromParent();
+//                gameMgr->onGameOver();
+            };
+            // 보상 완료
             listener->onRewarded = [=](string type, int amount) {
             };
+            // 광고 open
             listener->onAdOpened = [=]() {
                 loadingBar->dismissWithDelay(0);
             };
+            // 광고 close
             listener->onAdClosed = [=]() {
                 
                 if( listener->isRewarded() ) {
                     continueWithAction(nullptr);
-                    // gameMgr->onContinue();
                 } else {
                     darkLayer->removeFromParent();
                     gameMgr->onGameOver();
