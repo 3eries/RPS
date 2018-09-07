@@ -11,6 +11,7 @@
 		1B35D7112CCBBD694F2DD3D2 /* libPods-RPS-mobile.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 177D5B58D4AC09FC066FEF19 /* libPods-RPS-mobile.a */; };
 		1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245120EE018D00037AB1 /* NewRecordBoard.cpp */; };
 		1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245520EE10E000037AB1 /* BasePopup.cpp */; };
+		1D0701E12142607A0086D447 /* ExitAlertPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D0701DF214260790086D447 /* ExitAlertPopup.cpp */; };
 		1D1DA434210EF80C00467E6E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D1DA433210EF80C00467E6E /* StoreKit.framework */; };
 		1D1F3C8320AC9F5E0035A36C /* SBAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */; };
 		1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8820ACD12A0035A36C /* SBDirector.cpp */; };
@@ -97,7 +98,6 @@
 		1DE1DC1520F693EF00BB3238 /* images in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC1020F693EF00BB3238 /* images */; };
 		1DE1DC1B20F6AAF800BB3238 /* IAPHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC1920F6AAF800BB3238 /* IAPHelper.cpp */; };
 		1DE1DC1E20F6AB8E00BB3238 /* IAPListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC1C20F6AB8E00BB3238 /* IAPListener.cpp */; };
-		1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */; };
 		1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2520F759C800BB3238 /* SBEffect.cpp */; };
 		1DE1DC2820F75A3100BB3238 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC2720F75A3100BB3238 /* shaders */; };
 		1DE204E62103352300ABE5EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1DE204E52103352200ABE5EB /* GoogleService-Info.plist */; };
@@ -192,6 +192,8 @@
 		1D06245220EE018D00037AB1 /* NewRecordBoard.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NewRecordBoard.hpp; sourceTree = "<group>"; };
 		1D06245520EE10E000037AB1 /* BasePopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BasePopup.cpp; sourceTree = "<group>"; };
 		1D06245620EE10E000037AB1 /* BasePopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BasePopup.hpp; sourceTree = "<group>"; };
+		1D0701DF214260790086D447 /* ExitAlertPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExitAlertPopup.cpp; sourceTree = "<group>"; };
+		1D0701E02142607A0086D447 /* ExitAlertPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ExitAlertPopup.hpp; sourceTree = "<group>"; };
 		1D1DA433210EF80C00467E6E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBAudioEngine.cpp; sourceTree = "<group>"; };
 		1D1F3C8220AC9F5E0035A36C /* SBAudioEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SBAudioEngine.hpp; sourceTree = "<group>"; };
@@ -363,8 +365,6 @@
 		1DE1DC1C20F6AB8E00BB3238 /* IAPListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IAPListener.cpp; sourceTree = "<group>"; };
 		1DE1DC1D20F6AB8E00BB3238 /* IAPListener.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IAPListener.hpp; sourceTree = "<group>"; };
 		1DE1DC2020F6ADF500BB3238 /* IAPDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IAPDefine.h; sourceTree = "<group>"; };
-		1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExitAlertPopup.cpp; sourceTree = "<group>"; };
-		1DE1DC2220F7479D00BB3238 /* ExitAlertPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExitAlertPopup.hpp; sourceTree = "<group>"; };
 		1DE1DC2420F759C800BB3238 /* SBEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBEffect.h; sourceTree = "<group>"; };
 		1DE1DC2520F759C800BB3238 /* SBEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBEffect.cpp; sourceTree = "<group>"; };
 		1DE1DC2720F75A3100BB3238 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaders; sourceTree = "<group>"; };
@@ -593,8 +593,6 @@
 			children = (
 				1DBC68E620E49B9300CA85F0 /* CreditPopup.cpp */,
 				1DBC68E720E49B9300CA85F0 /* CreditPopup.hpp */,
-				1DE1DC2120F7479D00BB3238 /* ExitAlertPopup.cpp */,
-				1DE1DC2220F7479D00BB3238 /* ExitAlertPopup.hpp */,
 				1D45C49520A8A7D2007E63AD /* MainScene.cpp */,
 				1D45C49620A8A7D2007E63AD /* MainScene.hpp */,
 			);
@@ -725,6 +723,8 @@
 				1D06245620EE10E000037AB1 /* BasePopup.hpp */,
 				1DA723E82109FEAE002B7ADE /* CommonLoadingBar.cpp */,
 				1DA723EB2109FEAE002B7ADE /* CommonLoadingBar.hpp */,
+				1D0701DF214260790086D447 /* ExitAlertPopup.cpp */,
+				1D0701E02142607A0086D447 /* ExitAlertPopup.hpp */,
 				1D8F54A220D2A8C4009E2201 /* LogoView.cpp */,
 				1D8F54A320D2A8C4009E2201 /* LogoView.hpp */,
 				1DE6BB682119A0D800D5A17E /* ReviewPopup.cpp */,
@@ -1267,7 +1267,6 @@
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1D45C48020A8A7B8007E63AD /* json_writer.cpp in Sources */,
 				1DA0408A21034661001980BA /* FirebaseManager-ios.mm in Sources */,
-				1DE1DC2320F7479D00BB3238 /* ExitAlertPopup.cpp in Sources */,
 				1DA723EC2109FEAE002B7ADE /* CommonLoadingBar.cpp in Sources */,
 				1D97ED9920C8E2AA0027C319 /* RSPBlockLayer.cpp in Sources */,
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
@@ -1311,6 +1310,7 @@
 				1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */,
 				1DA0408D210346B4001980BA /* Analytics-ios.mm in Sources */,
 				1DA0408821034661001980BA /* FirebaseManager.cpp in Sources */,
+				1D0701E12142607A0086D447 /* ExitAlertPopup.cpp in Sources */,
 				1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */,
 				1DEA58162109A5B400CF6F98 /* AdsManager.mm in Sources */,
 				1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */,
