@@ -8,10 +8,12 @@
 #include "GameOverPopup.hpp"
 
 #include "RSP.h"
+#include "SceneManager.h"
 #include "UIHelper.hpp"
-
 #include "PopupManager.hpp"
 #include "RankingManager.hpp"
+
+#include "ExitAlertPopup.hpp"
 #include "RecordRowView.hpp"
 
 USING_NS_CC;
@@ -53,6 +55,50 @@ bool GameOverPopup::init() {
     
     if( !BasePopup::init() ) {
         return false;
+    }
+    
+    // back key
+    {
+        auto listener = EventListenerKeyboard::create();
+        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+            
+            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
+                return;
+            }
+            
+            if( SceneManager::getInstance()->onBackKeyReleased() ) {
+                return;
+            }
+            
+            if( isFirstEnterAction ) {
+                return;
+            }
+            
+            // 앱 종료 알림 팝업 처리
+            auto popup = PopupManager::getInstance()->getPopup(BasePopup::Type::EXIT_APP);
+            
+            // 팝업 제거
+            if( popup ) {
+                popup->dismissWithAction();
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+            }
+            // 팝업 생성
+            else if( PopupManager::getInstance()->getPopupCount() == 1 &&
+                     PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
+                
+                auto popup = ExitAlertPopup::create();
+                popup->setOnExitAppListener([=]() {
+                    SBSystemUtils::exitApp();
+                });
+                
+                SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+                
+                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+            }
+        };
+        
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
     }
     
     return true;
