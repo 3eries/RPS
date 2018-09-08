@@ -348,10 +348,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
  */
 - (void) interstitialDidDismissScreen:(GADInterstitial *)ad {
     
-    Application::getInstance()->applicationWillEnterForeground();
-    
     self.onInterstitialListener->onAdClosed();
     [self loadInterstitial];
+    
+    Application::getInstance()->applicationWillEnterForeground();
 }
 
 /**
@@ -404,10 +404,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
  */
 - (void) rewardBasedVideoAdDidClose:(GADRewardBasedVideoAd *)rewardBasedVideoAd {
     
-    Application::getInstance()->applicationWillEnterForeground();
-    
     self.onRewardedVideoListener->onAdClosed();
     [self loadRewardedVideo];
+    
+    Application::getInstance()->applicationWillEnterForeground();
 }
 
 /**
