@@ -70,6 +70,11 @@ bool GameOverPopup::init() {
                 return;
             }
             
+            // 광고가 열렸다 닫힌 경우 예외처리
+            if( !Director::getInstance()->isValid() ) {
+                return;
+            }
+            
             if( isFirstEnterAction ) {
                 return;
             }
