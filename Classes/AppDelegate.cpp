@@ -116,6 +116,14 @@ void AppDelegate::applicationDidEnterBackground() {
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     
+    auto adsHelper = superbomb::AdsHelper::getInstance();
+    
+    if( adsHelper->getInterstitial().listener->isOpened() ||
+        adsHelper->getRewardedVideo().listener->isOpened() ) {
+        
+        return;
+    }
+    
     Director::getInstance()->startAnimation();
     
     SBAudioEngine::resumeAll();
