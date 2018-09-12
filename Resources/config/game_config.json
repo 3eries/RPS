@@ -13,7 +13,7 @@
         "first_point": 500,
         "continue_point": 1000,
         "increase_point_per_hit": 30,
-        "draw_delay": 1.0
+        "draw_delay": 0.8
     },
     "fever": {
         "max_point": 50,
@@ -28,43 +28,48 @@
     "levels": [{
                "level": 1,
                "begin_range": 0,
-               "increase_point_per_hit": 20,
+               "increase_point_per_hit": 33,
                "increase_point_per_fever_hit": 50,
                "decrease_point_per_sec": 72,
+               "fever_gage_rate": 1.6,
                "gage_duration": 3.0,
-               "continuation": 62
+               "continuation": 67
                }, {
                "level": 2,
                "begin_range": 20,
-               "increase_point_per_hit": 20,
+               "increase_point_per_hit": 30,
                "increase_point_per_fever_hit": 50,
                "decrease_point_per_sec": 76,
+               "fever_gage_rate": 1.5,
                "gage_duration": 3.0,
-               "continuation": 62
+               "continuation": 67
                }, {
                "level": 3,
                "begin_range": 40,
-               "increase_point_per_hit": 20,
+               "increase_point_per_hit": 27,
                "increase_point_per_fever_hit": 50,
                "decrease_point_per_sec": 80,
+               "fever_gage_rate": 1.4,
                "gage_duration": 3.0,
-               "continuation": 58
+               "continuation": 62
                }, {
                "level": 4,
                "begin_range": 60,
-               "increase_point_per_hit": 20,
+               "increase_point_per_hit": 25,
                "increase_point_per_fever_hit": 50,
                "decrease_point_per_sec": 84,
+               "fever_gage_rate": 1.4,
                "gage_duration": 3.0,
-               "continuation": 58
+               "continuation": 62
                }, {
                "level": 5,
                "begin_range": 80,
-               "increase_point_per_hit": 21,
+               "increase_point_per_hit": 25,
                "increase_point_per_fever_hit": 50,
                "decrease_point_per_sec": 88,
+               "fever_gage_rate": 1.2,
                "gage_duration": 3.0,
-               "continuation": 58
+               "continuation": 62
                }, {
                "level": 6,
                "begin_range": 100,
