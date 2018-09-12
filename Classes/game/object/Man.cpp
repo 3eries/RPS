@@ -135,6 +135,26 @@ void Man::onContinue() {
     
     setVisible(true);
     reset();
+    
+    // 1UP 효과
+    auto manBox = SBNodeUtils::getBoundingBoxInWorld(this);
+    
+    auto label = Label::createWithTTF("1UP", FONT_RETRO, 40);
+    label->setAnchorPoint(ANCHOR_M);
+    label->setPosition(Vec2(manBox.getMidX() + 50, manBox.getMaxY() + 15));
+    label->setColor(Color3B::WHITE);
+    label->enableOutline(Color4B::BLACK, 5);
+    SceneManager::getScene()->addChild(label, SBZOrder::BOTTOM);
+    
+    scheduleOnce([=](float dt) {
+        
+        SBAudioEngine::playEffect(SOUND_LIFE_UP);
+        
+        auto move = MoveBy::create(0.8f, Vec2(0, 70));
+        auto remove = RemoveSelf::create();
+        label->runAction(Sequence::create(move, remove, nullptr));
+        
+    }, 0.2f, "CONTINUE_EFFECT_DELAY");
 }
 
 void Man::onGameOver() {

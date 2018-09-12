@@ -74,6 +74,7 @@ void ResourceHelper::preload() {
     SBAudioEngine::preload(SOUND_GAME_OVER);
     SBAudioEngine::preload(SOUND_THUNDER);
     SBAudioEngine::preload(SOUND_SCORE_ROLLING);
+    SBAudioEngine::preload(SOUND_LIFE_UP);
     
     SBAudioEngine::preload(SOUND_PUNCH);
     

@@ -119,6 +119,7 @@ static const std::string SOUND_BUTTON_CLICK         = DIR_SOUND + "btn_click.mp3
 static const std::string SOUND_GAME_OVER            = DIR_SOUND + "game_over.mp3";
 static const std::string SOUND_THUNDER              = DIR_SOUND + "thunder.mp3";
 static const std::string SOUND_SCORE_ROLLING        = DIR_SOUND + "score_rolling.mp3";
+static const std::string SOUND_LIFE_UP              = DIR_SOUND + "life_up.mp3";
 
 static const std::string SOUND_PUNCH                = DIR_SOUND + "punch_1.mp3";
 static const std::vector<std::string> SOUND_PUNCH_VOICE({
