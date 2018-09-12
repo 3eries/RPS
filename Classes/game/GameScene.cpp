@@ -46,6 +46,8 @@ bool GameScene::init() {
         return false;
     }
     
+    firebase::Analytics::setScreenName(FA_SCREEN_GAME);
+    
     // back key
     {
         auto listener = EventListenerKeyboard::create();
@@ -153,6 +155,8 @@ void GameScene::reset() {
  */
 void GameScene::onGameStart() {
     
+    firebase::Analytics::setScreenName(FA_SCREEN_GAME);
+    
     reset();
 }
 
@@ -212,6 +216,8 @@ void GameScene::onContinue() {
  * 게임 오버
  */
 void GameScene::onGameOver() {
+    
+    firebase::Analytics::setScreenName(FA_SCREEN_GAME_RESULT);
     
     // 신기록 달성
     if( gameMgr->isNewRecord() ) {

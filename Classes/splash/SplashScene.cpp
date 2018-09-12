@@ -21,6 +21,7 @@
 #include "../game/GameManager.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace spine;
 using namespace std;
 
@@ -60,14 +61,17 @@ bool SplashScene::init() {
         }
     }, CHECK_REPLACE_MAIN_SCENE_INTERVAL, CHECK_REPLACE_MAIN_SCENE_SCHEDULER);
     
+    // Firebase 스크린 설정, 모듈이 초기화 되기 전에 실행될 수 있기 때문에 스케줄러 구현
+    scheduleOnce([=](float dt) {
+        firebase::Analytics::setScreenName(FA_SCREEN_SPLASH);
+    }, 0.1f, "SPLASH_SCREEN_NAME");
+    
     return true;
 }
 
 void SplashScene::onEnter() {
     
     BaseScene::onEnter();
-    
-    superbomb::firebase::Analytics::setScreenName(FA_SCREEN_SPLASH);
 }
 
 void SplashScene::onExit() {

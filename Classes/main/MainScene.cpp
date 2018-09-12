@@ -45,6 +45,8 @@ bool MainScene::init() {
         return false;
     }
     
+    firebase::Analytics::setScreenName(FA_SCREEN_MAIN);
+    
     // back key
     {
         auto listener = EventListenerKeyboard::create();
