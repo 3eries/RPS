@@ -139,11 +139,11 @@ void Man::onContinue() {
     // 1UP 효과
     auto manBox = SBNodeUtils::getBoundingBoxInWorld(this);
     
-    auto label = Label::createWithTTF("1UP", FONT_RETRO, 40);
+    auto label = Label::createWithTTF("1UP", FONT_RETRO, 45);
     label->setAnchorPoint(ANCHOR_M);
-    label->setPosition(Vec2(manBox.getMidX() + 50, manBox.getMaxY() + 15));
-    label->setColor(Color3B::WHITE);
-    label->enableOutline(Color4B::BLACK, 5);
+    label->setPosition(Vec2(manBox.getMidX() - 15, manBox.getMaxY() + 30));
+    label->setColor(Color3B(119, 255, 0));
+    label->enableOutline(Color4B::BLACK, 4);
     SceneManager::getScene()->addChild(label, SBZOrder::BOTTOM);
     
     scheduleOnce([=](float dt) {
