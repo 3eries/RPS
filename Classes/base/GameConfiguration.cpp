@@ -200,6 +200,11 @@ void GameConfiguration::parse(const string &json) {
                 info.increasePointPerFeverHit = info.increasePointPerHit;
             }
             
+            // fever_gage_rate
+            if( levelValue.HasMember("fever_gage_rate") ) {
+                info.feverGageRate = levelValue["fever_gage_rate"].GetFloat();
+            }
+            
             // gage_duration
             if( levelValue.HasMember("gage_duration") ) {
                 info.gageDuration = levelValue["gage_duration"].GetFloat();
@@ -213,6 +218,8 @@ void GameConfiguration::parse(const string &json) {
             } else {
                 info.continuation = continuation;
             }
+            
+            // CCLOG("info level: %d gage_rate: %f", info.level, info.feverGageRate);
             
             levelInfos.push_back(info);
         }

@@ -345,11 +345,10 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
     }
     
     // fever point
-//    if( !gameMgr->isFeverMode() ) {
     auto feverInfo = gameMgr->getConfig()->getFeverInfo();
     auto levelInfo = gameMgr->getLevelInfo();
     
-    addFeverPoint(feverInfo.points[myHand]);
+    addFeverPoint(feverInfo.points[myHand] * levelInfo.feverGageRate);
     
     // 피버 게이지 초기화 스케줄러 실행
     unschedule(SCHEDULER_FEVER_GAGE_RESET);
