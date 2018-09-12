@@ -17,6 +17,7 @@
 struct TimeInfo {
     float maxPoint;               // 최대 포인트
     float firstPoint;             // 최초 포인트
+    float continuePoint;          // 이어하기 후 최초 포인트
     float increasePointPerHit;    // 블럭 히트 획득 포인트
     float drawDelay;              // 비긴 경우의 터치 지연 시간
     

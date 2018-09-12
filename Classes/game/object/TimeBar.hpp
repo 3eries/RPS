@@ -47,7 +47,7 @@ public:
     void startTimeBar();
     void stopTimeBar();
     
-    void setTimePoint(float point);
+    void setTimePoint(float point, bool isUpdateGage = true);
     void increaseTimePoint(float point);
     
     float getTimeRatio();

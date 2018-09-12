@@ -65,8 +65,7 @@ void TimeBar::reset() {
     setVisible(TestHelper::getInstance()->isTimeBarEnabled());
 #endif
     
-    timePoint = gameMgr->getConfig()->getTimeInfo().firstPoint;
-    updateGage();
+    setTimePoint(gameMgr->getConfig()->getTimeInfo().firstPoint);
 }
 
 void TimeBar::onGameStart() {
@@ -98,6 +97,8 @@ void TimeBar::onPreGameOver() {
 void TimeBar::onContinue() {
     
     reset();
+    
+    setTimePoint(gameMgr->getConfig()->getTimeInfo().continuePoint);
 }
 
 void TimeBar::onGameOver() {
@@ -137,7 +138,7 @@ void TimeBar::stopTimeBar() {
 /**
  * 타임 포인트 설정
  */
-void TimeBar::setTimePoint(float point) {
+void TimeBar::setTimePoint(float point, bool isUpdateGage) {
     
     point = MAX(0, point);
     point = MIN(gameMgr->getConfig()->getTimeInfo().maxPoint, point);
@@ -145,6 +146,10 @@ void TimeBar::setTimePoint(float point) {
     this->timePoint = point;
     
 //    CCLOG("timePoint: %f", point);
+    
+    if( isUpdateGage ) {
+        updateGage();
+    }
 }
 
 /**
@@ -155,8 +160,6 @@ void TimeBar::increaseTimePoint(float point) {
     CCASSERT(point > 0, "TimeBar::increaseTimePoint error: invalid point.");
     
     setTimePoint(timePoint + point);
-    
-    updateGage();
 }
 
 float TimeBar::getTimeRatio() {
@@ -171,7 +174,6 @@ void TimeBar::update(float dt) {
     float newTimePoint = timePoint - decreasePoint;
     
     setTimePoint(newTimePoint);
-    updateGage();
     
     // 타임 포인트 체크
     if( timePoint == 0.0f ) {

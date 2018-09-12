@@ -148,6 +148,7 @@ void GameConfiguration::parse(const string &json) {
         
         timeInfo.maxPoint = timeObj["max_point"].GetFloat();
         timeInfo.firstPoint = timeObj["first_point"].GetFloat();
+        timeInfo.continuePoint = timeObj["continue_point"].GetFloat();
         timeInfo.increasePointPerHit = timeObj["increase_point_per_hit"].GetFloat();
         timeInfo.drawDelay = timeObj["draw_delay"].GetFloat();
     }

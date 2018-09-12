@@ -11,6 +11,7 @@
     "time": {
         "max_point": 1000,
         "first_point": 500,
+        "continue_point": 1000,
         "increase_point_per_hit": 30,
         "draw_delay": 1.0
     },
