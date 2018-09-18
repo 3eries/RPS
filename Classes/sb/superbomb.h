@@ -22,8 +22,8 @@
 #include "effect/SBActionHelper.hpp"
 #include "effect/SBEffect.h"
 
-// jsoncpp
-#include "jsoncpp/SBJSON.h"
+// json
+#include "json/SBJSON.h"
 
 // network
 #include "network/SBHttp.hpp"
