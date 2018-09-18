@@ -84,7 +84,7 @@ public class SBJSON {
 		return null;		
 	}
 	
-	public static String toJSONString(Object obj) {
+	public static String toJSON(Object obj) {
 		
 		return toJSONValue(obj).toString();
 	}
