@@ -37,6 +37,7 @@
 
 // utils
 #include "utils/SBCollection.hpp"
+#include "utils/SBMath.hpp"
 #include "utils/SBNodeUtils.hpp"
 #include "utils/SBStringUtils.h"
 #include "utils/SBSystemUtils.h"
