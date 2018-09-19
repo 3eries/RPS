@@ -71,7 +71,7 @@ private:
     bool isOpened;
     
     std::vector<cocos2d::Node*> menus;
-    Tag selectedRightMenu;
+    CC_SYNTHESIZE_READONLY(Tag, selectedRightMenu, SelectedRightMenu);
 };
 
 #endif /* TopMenu_hpp */

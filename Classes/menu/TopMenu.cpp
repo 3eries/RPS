@@ -199,7 +199,6 @@ void TopMenu::setRightMenu(Tag tag, float actionDuration) {
             selectedMenu->runAction(MoveTo::create(actionDuration, IN_POS));
         });
         prevMenu->runAction(Sequence::create(move, callFunc, Hide::create(), nullptr));
-        
     }
     // no action
     else {

@@ -56,6 +56,8 @@ public:
     void openMenu();
     void closeMenu();
     
+    void performClickTopMenu(TopMenu::Tag tag);
+    
 private:
     CC_SYNTHESIZE_READONLY(TopMenu*, topMenu, TopMenu);
     CC_SYNTHESIZE_READONLY(BottomMenu*, bottomMenu, BottomMenu);

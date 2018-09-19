@@ -75,22 +75,16 @@ bool GameOverPopup::init() {
                 return;
             }
             
-            if( isFirstEnterAction ) {
+            // 등/퇴장 연출중
+            if( runningEnterAction || runningExitAction ) {
                 return;
             }
             
-            // 앱 종료 알림 팝업 처리
-            auto popup = PopupManager::getInstance()->getPopup(BasePopup::Type::EXIT_APP);
-            
-            // 팝업 제거
-            if( popup ) {
-                popup->dismissWithAction();
+            // 앱 종료 알림 팝업 생성
+            if( PopupManager::getInstance()->getPopupCount() == 1 &&
+                PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
                 
                 SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-            }
-            // 팝업 생성
-            else if( PopupManager::getInstance()->getPopupCount() == 1 &&
-                     PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
                 
                 auto popup = ExitAlertPopup::create();
                 popup->setOnExitAppListener([=]() {
@@ -98,8 +92,6 @@ bool GameOverPopup::init() {
                 });
                 
                 SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
-                
-                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             }
         };
         

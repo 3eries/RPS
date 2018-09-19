@@ -9,6 +9,7 @@
 
 #include "RSP.h"
 #include "PopupManager.hpp"
+#include "SceneManager.h"
 #include "UIHelper.hpp"
 
 USING_NS_CC;
@@ -19,7 +20,10 @@ BasePopup::BasePopup(Type type) : SBBasePopup(),
 type(type),
 popupMgr(PopupManager::getInstance()),
 onPopupEventListener(nullptr),
-enterTimeScale(1), exitTimeScale(1) {
+enterTimeScale(1),
+exitTimeScale(1),
+runningEnterAction(false),
+runningExitAction(false) {
 }
 
 BasePopup::~BasePopup() {
@@ -33,6 +37,52 @@ bool BasePopup::init() {
     }
     
     popupMgr->addPopup(this);
+    
+    // back key
+    {
+        auto listener = EventListenerKeyboard::create();
+        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+            
+            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
+                return;
+            }
+            
+            if( SceneManager::getInstance()->onBackKeyReleased() ) {
+                return;
+            }
+            
+            // 광고가 열렸다 닫힌 경우 예외처리
+            if( !Director::getInstance()->isValid() ) {
+                return;
+            }
+            
+            // 등/퇴장 연출중
+            if( runningEnterAction || runningExitAction ) {
+                return;
+            }
+            
+            // 우상단 닫기 버튼 활성화된 경우, 닫기 버튼 클릭 강제 수행
+            auto commonMenu = SceneManager::getCommonMenu();
+            if( !commonMenu ) {
+                return;
+            }
+            
+            auto topMenu = commonMenu->getTopMenu();
+            if( !topMenu->isVisible() ) {
+                return;
+            }
+            
+            auto selectedMenu = topMenu->getSelectedRightMenu();
+            
+            if( selectedMenu== TopMenu::Tag::BACK ||
+                selectedMenu == TopMenu::Tag::CLOSE ) {
+                
+                commonMenu->performClickTopMenu(selectedMenu);
+            }
+        };
+        
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
     
     return true;
 }
@@ -48,6 +98,8 @@ void BasePopup::onExit() {
     
     onPopupEvent(PopupEventType::EXIT);
     popupMgr->removePopup(this);
+    
+    getEventDispatcher()->removeEventListenersForTarget(this);
     
     SBBasePopup::onExit();
 }
@@ -89,6 +141,7 @@ void BasePopup::dismissWithAction(SBCallback onFinished) {
  */
 void BasePopup::runEnterAction(float duration, SBCallback onFinished) {
     
+    runningEnterAction = true;
     onPopupEvent(PopupEventType::ENTER_ACTION);
 }
 
@@ -102,6 +155,7 @@ void BasePopup::runEnterAction(SBCallback onFinished) {
  */
 void BasePopup::runExitAction(float duration, SBCallback onFinished) {
     
+    runningExitAction = true;
     onPopupEvent(PopupEventType::EXIT_ACTION);
 }
 
@@ -115,6 +169,7 @@ void BasePopup::runExitAction(SBCallback onFinished) {
  */
 void BasePopup::onEnterActionFinished() {
    
+    runningEnterAction = false;
     onPopupEvent(PopupEventType::ENTER_ACTION_FINISHED);
 }
 
@@ -123,6 +178,7 @@ void BasePopup::onEnterActionFinished() {
  */
 void BasePopup::onExitActionFinished() {
     
+    runningExitAction = false;
     onPopupEvent(PopupEventType::EXIT_ACTION_FINISHED);
 }
 

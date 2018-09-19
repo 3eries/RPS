@@ -65,21 +65,11 @@ bool GameScene::init() {
                 return;
             }
             
-            // 일시 정지 팝업 처리
-            auto pausePopup = PopupManager::getInstance()->getPopup(BasePopup::Type::PAUSE);
-            
-            // 팝업 제거
-            if( pausePopup ) {
-                gameMgr->onGameResume();
-                pausePopup->dismissWithAction();
-                
+            // 일시 정지 팝업 생성
+            if( PopupManager::getInstance()->getPopupCount() == 0 ) {
                 SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-            }
-            // 팝업 생성
-            else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+                
                 this->showPausePopup();
-                
-                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             }
         };
         

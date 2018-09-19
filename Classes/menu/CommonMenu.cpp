@@ -286,6 +286,14 @@ void CommonMenu::closeMenu() {
 }
 
 /**
+ * 상단 메뉴 클릭 강제 수행
+ */
+void CommonMenu::performClickTopMenu(TopMenu::Tag tag) {
+    
+    onClickTopMenu(tag);
+}
+
+/**
  * 상단 메뉴 클릭
  */
 void CommonMenu::onClickTopMenu(TopMenu::Tag tag) {

@@ -60,36 +60,16 @@ bool MainScene::init() {
                 return;
             }
             
-            // 앱 종료 알림 팝업 처리
-            auto popup = PopupManager::getInstance()->getPopup(BasePopup::Type::EXIT_APP);
-            
-            // 팝업 제거
-            if( popup ) {
-                popup->dismissWithAction();
-                
+            // 앱 종료 알림 팝업 생성
+            if( PopupManager::getInstance()->getPopupCount() == 0 ) {
                 SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-            }
-            // 팝업 생성
-            else if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+                
                 auto popup = ExitAlertPopup::create();
                 popup->setOnExitAppListener([=]() {
                     SBSystemUtils::exitApp();
                 });
                 
                 this->addChild(popup, PopupZOrder::MIDDLE);
-                
-                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-                
-                /*
-                // 배너 노출
-                superbomb::AdsHelper::showBanner();
-                
-                // 팝업 삭제 리스너
-                popup->setOnDismissListener([=](Node*) {
-                    // 배너 숨김
-                    superbomb::AdsHelper::hideBanner();
-                });
-                 */
             }
         };
         
