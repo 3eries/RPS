@@ -20,26 +20,41 @@ NS_SB_BEGIN;
 
 namespace firebase {
     
-    void Analytics::setScreenName(const string &screen, const string &screenClass) {
-        
-        [FIRAnalytics setScreenName:NS_STRING(screen.c_str())
-                        screenClass:(screenClass != "") ? NS_STRING(screenClass.c_str()) : nil];
-    }
+void Analytics::setScreenName(const string &screen, const string &screenClass) {
     
-    void Analytics::logEvent(const string &event, const EventParams &params) {
+    [FIRAnalytics setScreenName:NS_STRING(screen.c_str())
+                    screenClass:(screenClass != "") ? NS_STRING(screenClass.c_str()) : nil];
+}
+
+void Analytics::logEvent(const string &event, const EventParams &params) {
+    
+    NSMutableDictionary *nsParams = [NSMutableDictionary dictionary];
+    
+    for( auto it = params.begin(); it != params.end(); ++it ) {
+        NSString *nsKey = NS_STRING(it->first.c_str());
+        NSObject *nsValue = nil;
         
-        NSMutableDictionary *nsParams = [NSMutableDictionary dictionary];
+        Value value = it->second;
         
-        for( auto it = params.begin(); it != params.end(); ++it ) {
-            NSString *key = NS_STRING(it->first.c_str());
-            NSString *value = NS_STRING(it->second.c_str());
-            
-            [nsParams setValue:value forKey:key];
+        switch( value.getType() ) {
+            case Value::Type::INTEGER:      nsValue = [NSNumber numberWithInt:value.asInt()];                   break;
+            case Value::Type::UNSIGNED:     nsValue = [NSNumber numberWithUnsignedInt:value.asUnsignedInt()];   break;
+            case Value::Type::FLOAT:
+            case Value::Type::DOUBLE:       nsValue = [NSNumber numberWithDouble:value.asDouble()];             break;
+            case Value::Type::STRING:       nsValue = NS_STRING(value.asString().c_str());                      break;
+            default:
+                CCASSERT(false, "Analytics::logEvent invalid event parameter type.");
+                break;
         }
         
-        [FIRAnalytics logEventWithName:NS_STRING(event.c_str())
-                            parameters:nsParams];
+        if( nsKey && nsValue ) {
+            [nsParams setValue:nsValue forKey:nsKey];
+        }
     }
+    
+    [FIRAnalytics logEventWithName:NS_STRING(event.c_str())
+                        parameters:nsParams];
+}
     
 } // namespace firebase
 

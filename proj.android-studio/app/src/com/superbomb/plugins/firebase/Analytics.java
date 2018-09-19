@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.superbomb.json.SBJSON;
 import com.superbomb.plugins.PluginListener;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
 
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Map;
 
 public class Analytics implements PluginListener {
     private static Analytics instance = null;
@@ -86,14 +89,24 @@ public class Analytics implements PluginListener {
         });
     }
 
-    public static void logEvent(String event, Hashtable<String, String> params) {
+    public static void logEvent(String event, String jsonParam) {
 
         Bundle bundle = new Bundle();
-        Iterator<String> it = params.keySet().iterator();
 
-        while( it.hasNext() ) {
-            String key = it.next();
-            bundle.putString(key, params.get(key));
+        if( !TextUtils.isEmpty(jsonParam) ) {
+            Map<String, Object> params = (Map<String, Object>)SBJSON.parse(jsonParam);
+            Iterator<String> it = params.keySet().iterator();
+
+            while( it.hasNext() ) {
+                String key = it.next();
+                Object value = params.get(key);
+
+                if( value instanceof Integer )         bundle.putInt(key, (Integer)value);
+                else if( value instanceof Long )       bundle.putLong(key, (Long)value);
+                else if( value instanceof Float )      bundle.putFloat(key, (Float)value);
+                else if( value instanceof Double)      bundle.putDouble(key, (Double)value);
+                else if( value instanceof String )     bundle.putString(key, (String)value);
+            }
         }
 
         getFirebaseAnalytics().logEvent(event, bundle);

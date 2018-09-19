@@ -9,6 +9,8 @@
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 
 #include "../../platform/android/SBJniHelper.hpp"
+#include "../../json/SBJSON.h"
+
 #include "platform/android/jni/JniHelper.h"
 
 #define JNI_CLASS_NAME     "com/superbomb/plugins/firebase/Analytics"
@@ -20,45 +22,21 @@ NS_SB_BEGIN;
 
 namespace firebase {
     
-    void Analytics::setScreenName(const string &screen, const string &screenClass) {
-        
-        JniMethodInfo t;
-        
-        const char *methodName = "setScreenName";
-        const char *paramCode = "(Ljava/lang/String;Ljava/lang/String;)V";
-        
-        bool find = cocos2d::JniHelper::getStaticMethodInfo(t, JNI_CLASS_NAME, methodName, paramCode);
-        CCAssert(find, "Analytics::setScreenName jni error.");
-        
-        jstring jstr1 = t.env->NewStringUTF(screen.c_str());
-        jstring jstr2 = t.env->NewStringUTF(screenClass.c_str());
-        
-        t.env->CallStaticVoidMethod(t.classID, t.methodID, jstr1, jstr2);
-        
-        t.env->DeleteLocalRef(jstr1);
-        t.env->DeleteLocalRef(jstr2);
-        t.env->DeleteLocalRef(t.classID);
+void Analytics::setScreenName(const string &screen, const string &screenClass) {
+
+    cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "setScreenName", screen, screenClass);
+}
+
+void Analytics::logEvent(const string &event, const EventParams &params) {
+
+    string jsonParam = "";
+    
+    if( params.size() > 0 ) {
+        jsonParam = SBJSON::toJSON(Value(params));
     }
     
-    void Analytics::logEvent(const string &event, const EventParams &params) {
-
-        JniMethodInfo t;
-        
-        const char *methodName = "logEvent";
-        const char *paramCode = "(Ljava/lang/String;Ljava/util/Hashtable;)V";
-        
-        bool find = cocos2d::JniHelper::getStaticMethodInfo(t, JNI_CLASS_NAME, methodName, paramCode);
-        CCAssert(find, "Analytics::logEvent jni error.");
-        
-        jstring jevent = t.env->NewStringUTF(event.c_str());
-        jobject jobjMap = superbomb::JniHelper::createMapObject(t.env, params);
-        
-        t.env->CallStaticVoidMethod(t.classID, t.methodID, jevent, jobjMap);
-        
-        t.env->DeleteLocalRef(jevent);
-        t.env->DeleteLocalRef(jobjMap);
-        t.env->DeleteLocalRef(t.classID);
-    }
+    cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "logEvent", event, jsonParam);
+}
     
 } // namespace firebase
 

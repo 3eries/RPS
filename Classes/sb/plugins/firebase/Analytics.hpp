@@ -19,7 +19,7 @@ namespace firebase {
 
 class Analytics {
 public:
-    typedef std::map<std::string, std::string> EventParams;
+    typedef cocos2d::ValueMap EventParams;
     
 public:
     static void setScreenName(const std::string &screen, const std::string &screenClass = "");
