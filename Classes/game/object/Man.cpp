@@ -326,8 +326,6 @@ void Man::updateFeverGage() {
  */
 void Man::showdown(RSPResult result, RSPType myHand, RSPType oppHand) {
     
-    CCLOG("Man::showdown: %d", (int)result);
-    
     switch( result ) {
         case RSPResult::WIN:    this->resultWin(myHand, oppHand);      break;
         case RSPResult::LOSE:   this->resultLose(myHand, oppHand);     break;

@@ -342,8 +342,6 @@ void GameView::onClickFeverButton(int i) {
  */
 void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     
-    CCLOG("GameView::hitBlock gameMode: %d", (int)gameMgr->getGameMode());
-    
     auto hitBlockType = hitBlock->getType();
     blockLayer->hitBlock(hitBlock, btnType, man->getManPosition());
     
