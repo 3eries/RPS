@@ -42,9 +42,8 @@ PluginManager::PluginManager() {
 PluginManager::~PluginManager() {
 }
 
-void PluginManager::init(const string &jsonFile) {
+void PluginManager::init(const string &json) {
  
-    string json = SBStringUtils::readTextFile(jsonFile);
     CCLOG("PluginManager::init:\n%s", json.c_str());
     
     // parse json

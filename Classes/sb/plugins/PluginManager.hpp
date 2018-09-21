@@ -30,7 +30,7 @@ private:
     void initIAP(const rapidjson::Value &obj);
     
 public:
-    void init(const std::string &jsonFile);
+    void init(const std::string &json);
 };
 
 NS_SB_END;

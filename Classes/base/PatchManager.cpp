@@ -50,6 +50,8 @@ void PatchManager::patch() {
     // config
     {
         string json = SBStringUtils::readTextFile(INTERNAL_GAME_CONFIG_FILE);
+        json = SBSecurity::decryptAES256(json, AES256_KEY);
+        
         GameConfiguration::getInstance()->parse(json);
     }
     

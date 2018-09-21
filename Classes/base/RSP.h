@@ -14,6 +14,8 @@
 static const std::string SERVER_VERSION_FILE                    = "http://superbomb.co/3eries/rsp/version.json";
 static const std::string SERVER_GAME_CONFIG_FILE                = "http://superbomb.co/3eries/rsp/game_config.json";
 
+#define                  AES256_KEY                               "A1din7oih98dh9wef974fnsudh54ugJs"
+
 static const std::string GAME_CONFIG_FILE                       = "game_config.json";
 
 static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GAME_CONFIG_FILE;

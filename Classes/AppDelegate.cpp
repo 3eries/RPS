@@ -12,6 +12,7 @@
 #include "game/GameScene.hpp"
 
 USING_NS_CC;
+using namespace std;
 
 static cocos2d::Size designResolutionSize       = cocos2d::Size(720, 1280);
 static cocos2d::Size designResolutionSizeIPad   = cocos2d::Size(960, 1280);
@@ -77,7 +78,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     // 라이브러리 초기화
     SBDirector::init();
-    superbomb::PluginManager::getInstance()->init(PLUGIN_CONFIG_FILE);
+    {
+        string json = SBStringUtils::readTextFile(PLUGIN_CONFIG_FILE);
+        json = SBSecurity::decryptAES256(json, AES256_KEY);
+        
+        superbomb::PluginManager::getInstance()->init(json);
+    }
     superbomb::ReviewHelper::getInstance()->setFirstLockedDay(1);
     superbomb::ReviewHelper::getInstance()->setLockedDay(1);
     
