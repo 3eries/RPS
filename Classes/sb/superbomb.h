@@ -56,6 +56,9 @@
 
 #endif
 
+// security
+#include "security/SBSecurity.hpp"
+
 // plugins
 #include "plugins/plugins.h"
 
