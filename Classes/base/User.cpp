@@ -78,7 +78,8 @@ bool User::isOwnRemoveAdsItem() {
 void User::setOwnRemoveAdsItem(bool owned) {
     
     AdsHelper::getInstance()->setActiveBanner(!owned);
-    // AdsManager::getInstance()->setActiveInterstitial(!owned);
+    AdsHelper::getInstance()->setActiveInterstitial(!owned);
+    AdsHelper::getInstance()->setActiveRewardedVideo(!owned);
     
     UserDefault::getInstance()->setBoolForKey(UserDefaultKey::OWN_REMOVE_ADS_ITEM, owned);
     UserDefault::getInstance()->flush();

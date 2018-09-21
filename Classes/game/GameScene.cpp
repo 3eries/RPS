@@ -338,8 +338,8 @@ void GameScene::showContinuePopup() {
             darkLayer->runAction(Sequence::create(actions));
         };
 
-        // 광고 없음, 무료 이어하기
-        if( !isAdsLoaded ) {
+        // VIP or 광고 없음, 무료 이어하기
+        if( User::isOwnRemoveAdsItem() || !isAdsLoaded ) {
             darkLayer->setOpacity(0);
             
             auto fadeIn = FadeIn::create(0.4f);

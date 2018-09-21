@@ -8,6 +8,7 @@
 #include "ContinuePopup.hpp"
 
 #include "RSP.h"
+#include "User.hpp"
 #include "UIHelper.hpp"
 
 USING_NS_CC;
@@ -163,7 +164,13 @@ void ContinuePopup::initMenu(bool isAdsLoaded) {
     
     // 이어하기 버튼
     // btn_continue.png Vec2BC(0, 392) , Size(520, 152)
-    string file = isAdsLoaded ? "btn_continue.png" : "btn_continue_free.png";
+    string file = "btn_continue_free.png";
+    
+    if( User::isOwnRemoveAdsItem() ) {
+        file = "btn_continue_vip.png";
+    } else if( isAdsLoaded ) {
+        file = "btn_continue.png";
+    }
     
     auto continueBtn = SBButton::create(DIR_IMG_GAME + file);
     continueBtn->setTag(Tag::BTN_CONTINUE);
