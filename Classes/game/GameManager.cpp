@@ -67,8 +67,9 @@ void GameManager::reset() {
     preGameOver = false;
     gameOver = false;
     gameMode = GameMode::NORMAL;
-    continueCount = 0;
+    drawCount = 0;
     feverModeCount = 0;
+    continueCount = 0;
     levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
     score = 0;
     ranking = INVALID_RANKING;
@@ -262,6 +263,47 @@ void GameManager::onContinue() {
 //    onGameResume();
 }
 
+static void logEventGameResult(int score) {
+    
+    if( score < 1 ) {
+        return;
+    }
+    
+    // 스코어 범위 획득 함수
+    auto getScoreRange = [](int score) -> string {
+        
+        int begin = 1;
+        int end   = 100;
+
+        while( true ) {
+            if( score >= begin && score <= end ) {
+                break;
+            }
+            
+            int gap = (end < 800) ? 100 : 50;
+            
+            begin = (end + 1);
+            end += gap;
+        }
+        
+        return STR_FORMAT("%d ~ %d", begin, end);
+    };
+    
+    // firebase 이벤트 기록
+    auto gameMgr = GameManager::getInstance();
+    
+    const int feverModeCount = gameMgr->getFeverModeCount();
+    
+    firebase::Analytics::EventParams params;
+    params[FA_EVENT_PARAM_SCORE] = Value(score);
+    params[FA_EVENT_PARAM_SCORE_RANGE] = Value(getScoreRange(score));
+    params[FA_EVENT_PARAM_FEVER] = Value(feverModeCount);
+    params[FA_EVENT_PARAM_FIRST_FEVER] = Value(feverModeCount > 0 ? 1 : 0);
+    params[FA_EVENT_PARAM_DRAW] = Value(gameMgr->getDrawCount());
+    
+    firebase::Analytics::logEvent(FA_EVENT_GAME_RESULT, params);
+}
+
 /**
  * 게임 오버
  */
@@ -276,6 +318,8 @@ void GameManager::onGameOver() {
     updateLocked = true;
     
     if( score > 0 ) {
+        logEventGameResult(score);
+        
         // 순위 선정
         ranking = RankingManager::getNewRanking(score);
         
@@ -318,6 +362,18 @@ void GameManager::onLevelChanged() {
     
     for( auto listener : listeners ) {
         listener->onLevelChanged(levelInfo);
+    }
+}
+
+/**
+ * 블럭 비김
+ */
+void GameManager::onDrawBlock() {
+    
+    ++drawCount;
+    
+    for( auto listener : listeners ) {
+        listener->onDrawBlock();
     }
 }
 

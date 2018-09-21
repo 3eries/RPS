@@ -38,6 +38,7 @@ public:
     
     virtual void onStartTimer() {}                     // 타이머 시작
     virtual void onLevelChanged(LevelInfo level) {}    // 레벨 변경
+    virtual void onDrawBlock() {}                      // 블럭 비김
     virtual void onGameModeChanged(GameMode mode) {}   // 게임 모드 전환
     virtual void onPreFeverModeEnd() {}                // 피버 모드 종료 전
     virtual void onLastFeverBlockHit() {}              // 마지막 피버 블럭 히트
@@ -83,8 +84,9 @@ private:
     SB_SYNTHESIZE_BOOL(gameOver, GameOver);                       // 게임 오버 여부
     CC_SYNTHESIZE_READONLY(GameMode, gameMode, GameMode);         // 게임 모드
     
-    CC_SYNTHESIZE_READONLY(int, continueCount, ContinueCount);    // 이어하기한 횟수
+    CC_SYNTHESIZE_READONLY(int, drawCount, DrawCount);            // 비긴 총 횟수
     CC_SYNTHESIZE_READONLY(int, feverModeCount, FeverModeCount);  // 피버 모드한 횟수
+    CC_SYNTHESIZE_READONLY(int, continueCount, ContinueCount);    // 이어하기한 횟수
     CC_SYNTHESIZE(LevelInfo, levelInfo, LevelInfo);               // 현재 레벨 정보
     CC_SYNTHESIZE_READONLY(int, score, Score);                    // 현재 스코어
     CC_SYNTHESIZE_READONLY(int, ranking, Ranking);                // 최종 스코어에 해당하는 순위
@@ -105,6 +107,7 @@ public:
     
     void onStartTimer();
     void onLevelChanged();
+    void onDrawBlock();
     
     void onGameModeChanged(GameMode mode);
     void onNormalMode();

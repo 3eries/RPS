@@ -381,6 +381,8 @@ void GameView::misBlock(RSPBlock *block) {
  */
 void GameView::drawBlock(RSPBlock *block) {
     
+    gameMgr->onDrawBlock();
+    
     // vibrate
     if( UserDefault::getInstance()->getBoolForKey(UserDefaultKey::VIBRATE, true) ) {
         Device::vibrate(DRAW_VIBRATE_DURATION);
