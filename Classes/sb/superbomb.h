@@ -14,6 +14,10 @@
 #include "base/SBTypes.hpp"
 #include "base/SBUserDefaultKey.h"
 
+// consent
+#include "consent/ConsentForm.hpp"
+#include "consent/ConsentManager.hpp"
+
 // audio
 #include "audio/SBAudioEngine.hpp"
 

@@ -12,6 +12,8 @@
 		1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245120EE018D00037AB1 /* NewRecordBoard.cpp */; };
 		1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D06245520EE10E000037AB1 /* BasePopup.cpp */; };
 		1D0701E12142607A0086D447 /* ExitAlertPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D0701DF214260790086D447 /* ExitAlertPopup.cpp */; };
+		1D18E425215CA19D0069A888 /* ConsentForm-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D18E422215CA19C0069A888 /* ConsentForm-android.cpp */; };
+		1D18E428215CBE430069A888 /* ConsentManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D18E426215CBE430069A888 /* ConsentManager.cpp */; };
 		1D1DA434210EF80C00467E6E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D1DA433210EF80C00467E6E /* StoreKit.framework */; };
 		1D1F3C8320AC9F5E0035A36C /* SBAudioEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */; };
 		1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D1F3C8820ACD12A0035A36C /* SBDirector.cpp */; };
@@ -24,6 +26,8 @@
 		1D24F6EB21218A56002461A7 /* ReviewHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D24F6E921218A56002461A7 /* ReviewHelper.cpp */; };
 		1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D720E9F9E900D059C6 /* RankingPopup.cpp */; };
 		1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D920E9F9E900D059C6 /* RankingManager.cpp */; };
+		1D3DCFFC215B33EC00DE7409 /* ConsentForm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DCFFA215B33EC00DE7409 /* ConsentForm.cpp */; };
+		1D3DD000215B46EB00DE7409 /* ConsentForm-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DCFFF215B46EB00DE7409 /* ConsentForm-ios.mm */; };
 		1D3DF50321045BEC0055B66E /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3DF50221045BEC0055B66E /* GameKit.framework */; };
 		1D3DF5082104664C0055B66E /* PluginPlay-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DF5042104664B0055B66E /* PluginPlay-android.cpp */; };
 		1D3DF5092104664C0055B66E /* PluginPlay-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DF5052104664B0055B66E /* PluginPlay-ios.mm */; };
@@ -195,6 +199,9 @@
 		1D06245620EE10E000037AB1 /* BasePopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BasePopup.hpp; sourceTree = "<group>"; };
 		1D0701DF214260790086D447 /* ExitAlertPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExitAlertPopup.cpp; sourceTree = "<group>"; };
 		1D0701E02142607A0086D447 /* ExitAlertPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ExitAlertPopup.hpp; sourceTree = "<group>"; };
+		1D18E422215CA19C0069A888 /* ConsentForm-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "ConsentForm-android.cpp"; sourceTree = "<group>"; };
+		1D18E426215CBE430069A888 /* ConsentManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConsentManager.cpp; sourceTree = "<group>"; };
+		1D18E427215CBE430069A888 /* ConsentManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ConsentManager.hpp; sourceTree = "<group>"; };
 		1D1DA433210EF80C00467E6E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		1D1F3C8120AC9F5E0035A36C /* SBAudioEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBAudioEngine.cpp; sourceTree = "<group>"; };
 		1D1F3C8220AC9F5E0035A36C /* SBAudioEngine.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SBAudioEngine.hpp; sourceTree = "<group>"; };
@@ -221,6 +228,9 @@
 		1D3120D820E9F9E900D059C6 /* RankingManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingManager.hpp; sourceTree = "<group>"; };
 		1D3120D920E9F9E900D059C6 /* RankingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankingManager.cpp; sourceTree = "<group>"; };
 		1D3120DA20E9F9E900D059C6 /* RankingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingPopup.hpp; sourceTree = "<group>"; };
+		1D3DCFFA215B33EC00DE7409 /* ConsentForm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConsentForm.cpp; sourceTree = "<group>"; };
+		1D3DCFFB215B33EC00DE7409 /* ConsentForm.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ConsentForm.hpp; sourceTree = "<group>"; };
+		1D3DCFFF215B46EB00DE7409 /* ConsentForm-ios.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "ConsentForm-ios.mm"; sourceTree = "<group>"; };
 		1D3DF50221045BEC0055B66E /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS11.4.sdk/System/Library/Frameworks/GameKit.framework; sourceTree = DEVELOPER_DIR; };
 		1D3DF5042104664B0055B66E /* PluginPlay-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "PluginPlay-android.cpp"; sourceTree = "<group>"; };
 		1D3DF5052104664B0055B66E /* PluginPlay-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "PluginPlay-ios.mm"; sourceTree = "<group>"; };
@@ -538,6 +548,19 @@
 			path = ranking;
 			sourceTree = "<group>";
 		};
+		1D3DCFF7215B33D900DE7409 /* consent */ = {
+			isa = PBXGroup;
+			children = (
+				1D18E422215CA19C0069A888 /* ConsentForm-android.cpp */,
+				1D3DCFFF215B46EB00DE7409 /* ConsentForm-ios.mm */,
+				1D3DCFFA215B33EC00DE7409 /* ConsentForm.cpp */,
+				1D3DCFFB215B33EC00DE7409 /* ConsentForm.hpp */,
+				1D18E426215CBE430069A888 /* ConsentManager.cpp */,
+				1D18E427215CBE430069A888 /* ConsentManager.hpp */,
+			);
+			path = consent;
+			sourceTree = "<group>";
+		};
 		1D3DF5062104664B0055B66E /* ios */ = {
 			isa = PBXGroup;
 			children = (
@@ -602,6 +625,7 @@
 			children = (
 				1D1F3C8020AC9F5E0035A36C /* audio */,
 				1D45C47820A8A7B8007E63AD /* base */,
+				1D3DCFF7215B33D900DE7409 /* consent */,
 				1D8F54AD20D2D107009E2201 /* editor-support */,
 				1D45E0F520ED163F0065CB3D /* effect */,
 				1D62213D214F500400567075 /* json */,
@@ -1300,6 +1324,7 @@
 				1D45C49420A8A7C8007E63AD /* GameScene.cpp in Sources */,
 				1DD38B5120FC92E600811604 /* BottomMenu.cpp in Sources */,
 				1D1F3C8320AC9F5E0035A36C /* SBAudioEngine.cpp in Sources */,
+				1D3DCFFC215B33EC00DE7409 /* ConsentForm.cpp in Sources */,
 				1D45C48C20A8A7B8007E63AD /* SBCollection.cpp in Sources */,
 				1D45C47E20A8A7B8007E63AD /* SBButton.cpp in Sources */,
 				1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */,
@@ -1339,6 +1364,7 @@
 				1DA98BD220B47E66006BC169 /* User.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				1D45E0F820ED164C0065CB3D /* SBAction.cpp in Sources */,
+				1D18E428215CBE430069A888 /* ConsentManager.cpp in Sources */,
 				1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */,
 				1D86439C21523AEC001841C9 /* NSData+Base64.m in Sources */,
 				1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */,
@@ -1356,9 +1382,11 @@
 				1DA98BBE20B4675A006BC169 /* RSPBlock.cpp in Sources */,
 				1D3DF50E210466EE0055B66E /* PluginPlay.cpp in Sources */,
 				1D45C47F20A8A7B8007E63AD /* SBToggleButton.cpp in Sources */,
+				1D18E425215CA19D0069A888 /* ConsentForm-android.cpp in Sources */,
 				1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */,
 				1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				1D3DD000215B46EB00DE7409 /* ConsentForm-ios.mm in Sources */,
 				1DFDEB1620C11B53001BC81D /* TestHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
