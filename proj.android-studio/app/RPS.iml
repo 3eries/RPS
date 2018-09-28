@@ -72,9 +72,6 @@
     <content url="file://$MODULE_DIR$/../../Classes/sb/effect">
       <sourceFolder url="file://$MODULE_DIR$/../../Classes/sb/effect" isTestSource="false" />
     </content>
-    <content url="file://$MODULE_DIR$/../../Classes/sb/jsoncpp">
-      <sourceFolder url="file://$MODULE_DIR$/../../Classes/sb/jsoncpp" isTestSource="false" />
-    </content>
     <content url="file://$MODULE_DIR$/../../Classes/sb/network">
       <sourceFolder url="file://$MODULE_DIR$/../../Classes/sb/network" isTestSource="false" />
     </content>
@@ -474,6 +471,9 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
+    </content>
+    <content url="file://$MODULE_DIR$/jni/../../../Classes/sb/jsoncpp">
+      <sourceFolder url="file://$MODULE_DIR$/jni/../../../Classes/sb/jsoncpp" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
