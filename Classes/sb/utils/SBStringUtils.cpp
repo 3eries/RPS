@@ -264,6 +264,17 @@ int SBStringUtils::calcCharCount(string str) {
     return n;
 }
 
+string SBStringUtils::toString(const vector<string> &vec) {
+    
+    string str = "";
+    
+    for( string s : vec ) {
+        str += s;
+    }
+    
+    return str;
+}
+
 string SBStringUtils::toString(vector<char> *vec) {
     
     string result(vec->begin(),vec->end());

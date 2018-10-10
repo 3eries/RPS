@@ -71,6 +71,7 @@ public:
     static std::vector<std::string> toArray(std::string str);
     static int calcCharCount(std::string str);
     
+    static std::string toString(const std::vector<std::string> &vec);
     static std::string toString(std::vector<char> *vec);
     static cocos2d::Texture2D* toTexture(std::string result);
     
