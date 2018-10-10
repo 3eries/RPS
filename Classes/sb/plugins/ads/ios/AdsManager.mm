@@ -134,6 +134,10 @@ using namespace std;
     
     NSLog(@"initBanner unitId: %s", unitId.c_str());
     
+    if( unitId == "" ) {
+        return;
+    }
+    
     // bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner]; // example
     bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
     bannerView.adUnitID = NS_STRING(unitId.c_str());
@@ -308,6 +312,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
  */
 - (void) initInterstitial:(const string&)unitId {
     
+    if( unitId == "" ) {
+        return;
+    }
+    
     interstitialUnitId = NS_STRING(unitId.c_str());
     [self loadInterstitial];
 }
@@ -358,6 +366,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
  * 보상형 비디오 초기화
  */
 - (void) initRewardedVideo:(const string&)unitId {
+    
+    if( unitId == "" ) {
+        return;
+    }
     
     rewardedVideoUnitId = NS_STRING(unitId.c_str());
     
@@ -440,6 +452,10 @@ didFailToReceiveAdWithError:(GADRequestError *)error {
 - (void) loadInterstitial {
     
     NSLog(@"loadInterstitial isLoading: %d", isInterstitialLoading);
+
+    if( !interstitialUnitId || [interstitialUnitId isEqualToString:@""] ) {
+        return;
+    }
     
     if( isInterstitialLoading ) {
         return;

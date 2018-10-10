@@ -168,6 +168,10 @@ public class AdsManager implements PluginListener {
 
         Log.i(TAG, "initBanner unitId: " + unitId);
 
+        if( TextUtils.isEmpty(unitId) ) {
+            return;
+        }
+
         bannerView = new AdView(context);
         bannerView.setAdUnitId(unitId);
         bannerView.setAdSize(BANNER_SIZE);
@@ -251,6 +255,10 @@ public class AdsManager implements PluginListener {
 
         Log.i(TAG, "initInterstitial unitId: " + unitId);
 
+        if( TextUtils.isEmpty(unitId) ) {
+            return;
+        }
+
         interstitialAd = new InterstitialAd(context);
         interstitialAd.setAdUnitId(unitId);
         interstitialAd.setAdListener(new AdListener() {
@@ -318,6 +326,10 @@ public class AdsManager implements PluginListener {
     private void initRewardedVideo(String unitId) {
 
         Log.i(TAG, "initRewardedVideo unitId: " + unitId);
+
+        if( TextUtils.isEmpty(unitId) ) {
+            return;
+        }
 
         this.rewardedVideoUnitId = unitId;
 
