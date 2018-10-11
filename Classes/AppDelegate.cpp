@@ -7,6 +7,7 @@
 #include "User.hpp"
 #include "SceneManager.h"
 #include "RankingManager.hpp"
+#include "character/CharacterManager.hpp"
 #include "game/GameManager.hpp"
 
 #include "game/GameScene.hpp"
@@ -92,6 +93,14 @@ bool AppDelegate::applicationDidFinishLaunching() {
     PatchManager::getInstance()->init();
     RankingManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();
+    
+    // 캐릭터 매니저 초기화
+    {
+        string json = SBStringUtils::readTextFile(CHARACTER_PACKAGE_FILE);
+        // json = SBSecurity::decryptAES256(json, AES256_KEY);
+        
+        CharacterManager::getInstance()->init(json);
+    }
     
     // run
     SceneManager::getInstance()->replace(SceneType::SPLASH);

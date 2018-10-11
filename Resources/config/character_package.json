@@ -1,0 +1,38 @@
+ [{
+  "pack_001": [{
+               "char_id": "char_001",
+               "name": "zeus",
+               "unlock_type": 1,
+               "unlock_amount": 800,
+               "unlock_desc": "BEST SCORE"
+               },
+               {
+               "char_id": "char_002",
+               "name": "poseidon",
+               "unlock_type": 2,
+               "unlock_amount": 20000,
+               "unlock_desc": "200 SCORE %d"
+               },
+               {
+               "char_id": "char_003",
+               "name": "hades",
+               "unlock_type": 3,
+               "unlock_amount": 300,
+               "unlock_desc": "300 SCORE %d"
+               },
+               {
+               "char_id": "char_004",
+               "name": "afrodite",
+               "unlock_type": 4,
+               "unlock_amount": 400,
+               "unlock_desc": "400 SCORE %d"
+               },
+               {
+               "char_id": "char_005",
+               "name": "cupid",
+               "unlock_type": 5,
+               "unlock_amount": 500,
+               "unlock_desc": "500 SCORE %d"
+               }
+               ]
+  }]
