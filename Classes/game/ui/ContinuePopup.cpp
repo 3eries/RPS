@@ -35,6 +35,9 @@ ContinuePopup* ContinuePopup::create(bool isAdsLoaded) {
 }
 
 ContinuePopup::ContinuePopup() : BasePopup(Type::CONTINUE),
+isAdsLoaded(false),
+isTimeOut(false),
+isContinue(false),
 onContinueListener(nullptr),
 onTimeOutListener(nullptr),
 count(COUNTDOWN_START) {
@@ -83,11 +86,42 @@ void ContinuePopup::countdown() {
  */
 void ContinuePopup::timeOut() {
     
+    CCLOG("ContinuePopup::timeOut isContinue: %d", isContinue);
+    
+    if( isContinue ) {
+        return;
+    }
+    
+    isTimeOut = true;
     unscheduleAllCallbacks();
     
     dismissWithAction([=]() {
-        onTimeOutListener();
+        if( onTimeOutListener ) {
+            onTimeOutListener();
+        }
     });
+}
+
+/**
+ * 이어하기 버튼 클릭
+ */
+void ContinuePopup::onClickContinue() {
+    
+    CCLOG("ContinuePopup::onClickContinue isTimeOut: %d", isTimeOut);
+    
+    if( isTimeOut ) {
+        return;
+    }
+    
+    isContinue = true;
+    
+    anim->clearTracks();
+    anim->stopAllActions();
+    anim->unscheduleAllCallbacks();
+    
+    if( onContinueListener ) {
+        onContinueListener();
+    }
 }
 
 void ContinuePopup::initBackgroundView() {
@@ -123,7 +157,7 @@ void ContinuePopup::initContentView() {
     anim->setCompleteListener([=](spTrackEntry *entry) {
 
         CCLOG("countdown animation completed: %s", entry->animation->name);
-
+        
         if( !SBStringUtils::isInteger(entry->animation->name) ) {
             return;
         }
@@ -180,8 +214,7 @@ void ContinuePopup::initMenu(bool isAdsLoaded) {
     addChild(continueBtn, 1);
     
     continueBtn->setOnClickListener([=](Node*) {
-        onContinueListener();
-//        this->dismiss();
+        this->onClickContinue();
     });
 }
 

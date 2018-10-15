@@ -39,6 +39,7 @@ private:
     
     void countdown();
     void timeOut();
+    void onClickContinue();
     
 public:
     void runEnterAction(SBCallback onFinished = nullptr) override;
@@ -48,6 +49,8 @@ public:
     
 private:
     bool isAdsLoaded;
+    bool isTimeOut;
+    bool isContinue;
     
     CC_SYNTHESIZE(SBCallback, onContinueListener, OnContinueListener);
     CC_SYNTHESIZE(SBCallback, onTimeOutListener, OnTimeOutListener);
