@@ -34,7 +34,7 @@ static const float          BLOCK_DISPLAY_HEIGHT         = 950; // (BLOCK_HEIGHT
 static const float          BLOCK_MOVE_DURATION          = 0.1f;
 
 // 캐릭터 좌표
-#define                     MAN_POS_LEFT                 Vec2BC(-212, 210)
-#define                     MAN_POS_RIGHT                Vec2BC(212,  210)
+#define                     MAN_POS_LEFT                 Vec2BC(-194, 345)
+#define                     MAN_POS_RIGHT                Vec2BC(194, 345)
 
 #endif /* GameDefine_h */

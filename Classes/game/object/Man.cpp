@@ -13,28 +13,15 @@
 USING_NS_CC;
 using namespace std;
 
-// idle 애니메이션
-static const vector<string> ANIM_IDLE_FILES({
-    DIR_IMG_GAME + "RSP_avatar_idle1.png",
-    DIR_IMG_GAME + "RSP_avatar_idle2.png",
-});
-
 static const float ANIM_IDLE_DELAY_PER_UNIT = 0.5f;
-
-// attack 애니메이션
-static const vector<string> ANIM_ATTACK_FILES({
-    DIR_IMG_GAME + "RSP_avatar_attack1.png",
-    DIR_IMG_GAME + "RSP_avatar_attack2.png",
-    // DIR_IMG_GAME + "RSP_avatar_idle1.png",
-});
-
-static const float ANIM_ATTACK_PER_UNIT = 0.0666f;
+static const float ANIM_ATTACK_PER_UNIT     = 0.0666f;
 
 // 스케줄러
 static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";   // 피버 포인트 게이지 초기화
 
 Man::Man() :
 gameMgr(GameManager::getInstance()),
+character(CharacterManager::getInstance()->getSelectedCharacter()),
 attackSoundPlayCount(0),
 voiceSoundIndex(0) {
 }
@@ -51,7 +38,7 @@ bool Man::init() {
     initImage();
     initFeverGage();
     
-    setAnchorPoint(ANCHOR_MB);
+    setAnchorPoint(ANCHOR_M);
     setManPosition(Position::LEFT);
     setFeverGageVisible(false);
     
@@ -78,7 +65,7 @@ void Man::reset() {
     setFeverPoint(0);
     setFeverGageVisible(false);
     
-    setManAnimation(AnimationType::IDLE);
+    setAnimation(AnimationType::IDLE);
     setManPosition(Position::LEFT);
 }
 
@@ -196,34 +183,19 @@ void Man::onLastFeverBlockHit() {
 /**
  * 애니메이션 설정
  */
-void Man::setManAnimation(AnimationType animType, bool runAnimation) {
+void Man::setAnimation(AnimationType animType, bool runAnimation, SBCallback onCompleted) {
     
     img->stopAnimation();
     
-    switch( animType ) {
-        case AnimationType::IDLE: {
-            auto anim = SBNodeUtils::createAnimation(ANIM_IDLE_FILES, ANIM_IDLE_DELAY_PER_UNIT);
-            // anim->setRestoreOriginalFrame(true);
-            
-            img->setAnimation(anim);
-            
-        } break;
-            
-        case AnimationType::ATTACK: {
-            auto anim = SBNodeUtils::createAnimation(ANIM_ATTACK_FILES, ANIM_ATTACK_PER_UNIT);
-            anim->setRestoreOriginalFrame(true);
-            
-            img->setAnimation(anim, 1);
-            
-        } break;
-            
-        default:
-            CCASSERT(false, "Man::setManAnimation error: invalid animation.");
-            break;
-    }
+    int loops = (animType == AnimationType::ATTACK) ? 1 : SBAnimationSprite::LOOP_FOREVER;
+    img->setAnimation(createAnimation(animType), loops);
     
     if( runAnimation ) {
-        img->runAnimation();
+        img->runAnimation([=](Node*) {
+            if( onCompleted ) {
+                onCompleted();
+            }
+        });
     }
 }
 
@@ -239,7 +211,7 @@ void Man::setManPosition(Position pos) {
             img->setFlippedX(false);
             setPosition(MAN_POS_LEFT);
             
-            feverGage.bg->setPosition(Vec2TC(getContentSize(), -24, 22));
+            feverGage.bg->setPosition(Vec2MC(getContentSize(), character.feverGagePos.x, character.feverGagePos.y));
             
         } break;
             
@@ -247,7 +219,7 @@ void Man::setManPosition(Position pos) {
             img->setFlippedX(true);
             setPosition(MAN_POS_RIGHT);
             
-            feverGage.bg->setPosition(Vec2TC(getContentSize(), 24, 22));
+            feverGage.bg->setPosition(Vec2MC(getContentSize(), -character.feverGagePos.x, character.feverGagePos.y));
             
         } break;
             
@@ -429,12 +401,10 @@ void Man::playAttackSound() {
  */
 void Man::runAttackAnimation() {
     
-    // switch attack animation
-    setManAnimation(AnimationType::ATTACK, false);
-    
-    img->runAnimation([=](Node*) {
+    // run attack animation
+    setAnimation(AnimationType::ATTACK, true, [=]() {
         // restore animation
-        setManAnimation(AnimationType::IDLE);
+        this->setAnimation(AnimationType::IDLE);
     });
 }
 
@@ -488,7 +458,7 @@ void Man::setFeverGageVisible(bool visible) {
  */
 void Man::initImage() {
     
-    auto anim = SBNodeUtils::createAnimation(ANIM_IDLE_FILES, ANIM_IDLE_DELAY_PER_UNIT);
+    auto anim = createAnimation(AnimationType::IDLE);
 //    anim->setRestoreOriginalFrame(true);
     
     img = SBAnimationSprite::create(anim);
@@ -507,7 +477,7 @@ void Man::initImage() {
 void Man::initFeverGage() {
  
     feverGage.bg = Sprite::create(DIR_IMG_GAME + "RSP_gage_fever_bg.png");
-    feverGage.bg->setAnchorPoint(ANCHOR_MB);
+    feverGage.bg->setAnchorPoint(ANCHOR_M);
     addChild(feverGage.bg);
 
     auto bgSize = feverGage.bg->getContentSize();
@@ -539,3 +509,27 @@ void Man::initFeverGage() {
     feverGage.bg->addChild(feverGage.gage);
     */
 }
+
+/**
+ * 애니메이션 생성
+ */
+Animation* Man::createAnimation(AnimationType animType) {
+    
+    auto create = [](vector<string> animFiles, float delayPerUnit) -> Animation* {
+        return SBNodeUtils::createAnimation(animFiles, delayPerUnit);
+    };
+
+//    auto anim = SBNodeUtils::createAnimation(ANIM_ATTACK_FILES, ANIM_ATTACK_PER_UNIT);
+//    anim->setRestoreOriginalFrame(true);
+//
+//    img->setAnimation(anim, 1);
+    
+    switch( animType ) {
+        case AnimationType::IDLE:     return create(character.idleAnims, ANIM_IDLE_DELAY_PER_UNIT);
+        case AnimationType::ATTACK:   return create(character.attackAnims, ANIM_ATTACK_PER_UNIT);
+        default:
+            CCASSERT(false, "Man::createAnimation error: invalid animation.");
+            break;
+    }
+}
+

@@ -15,6 +15,7 @@
 #include "RSP.h"
 
 #include "../GameManager.hpp"
+#include "CharacterManager.hpp"
 
 class Man : public cocos2d::Node, public GameListener {
 public:
@@ -43,10 +44,13 @@ private:
     void initImage();
     void initFeverGage();
     
+    cocos2d::Animation* createAnimation(AnimationType animType);
+    
     void reset();
     void clearRemoveNodes();
     
-    void setManAnimation(AnimationType animType, bool runAnimation = true);
+    void setAnimation(AnimationType animType, bool runAnimation = true,
+                      SBCallback onCompleted = nullptr);
     void setManPosition(Position pos);
     
     void setFeverPoint(float point, bool isUpdateGage = true);
@@ -87,10 +91,11 @@ public:
 private:
     GameManager *gameMgr;
     
-    CC_SYNTHESIZE_READONLY(Position, manPosition, ManPosition);
-    
-    // 캐릭터 이미지
+    // 캐릭터
+    Character character;
     SBAnimationSprite *img;
+    
+    CC_SYNTHESIZE_READONLY(Position, manPosition, ManPosition);
     
     // 피버 게이지
     struct FeverGage {
