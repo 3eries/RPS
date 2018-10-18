@@ -1,0 +1,12 @@
+{
+    "pack_id": "pack_000",
+    "unlock:": 0,
+    "best_score": 0,
+    "total_score": 0,
+    "game_play": 0,
+    "game_over": 0,
+    "daily_login": 0,
+    "fever": 0,
+    "view_ads": 0,
+    "unlock_characters": ["char_000"]
+}

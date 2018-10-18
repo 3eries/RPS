@@ -55,6 +55,7 @@
 		1D59F3D820FA69F100649A99 /* PopupListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D59F3D620FA69F100649A99 /* PopupListener.cpp */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1D622140214F500400567075 /* SBJSON.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D62213E214F500400567075 /* SBJSON.cpp */; };
+		1D6800B22175BC05000774F8 /* PackageDB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D6800B02175BC05000774F8 /* PackageDB.cpp */; };
 		1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */; };
 		1D86438D2152385D001841C9 /* SBSecurity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D86438B2152385D001841C9 /* SBSecurity.cpp */; };
 		1D86438F21523898001841C9 /* SBSecurity-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D86438E21523898001841C9 /* SBSecurity-android.cpp */; };
@@ -286,6 +287,8 @@
 		1D6058910D05DD3D006BFB54 /* God of RPS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "God of RPS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D62213E214F500400567075 /* SBJSON.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBJSON.cpp; sourceTree = "<group>"; };
 		1D62213F214F500400567075 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		1D6800B02175BC05000774F8 /* PackageDB.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PackageDB.cpp; sourceTree = "<group>"; };
+		1D6800B12175BC05000774F8 /* PackageDB.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PackageDB.hpp; sourceTree = "<group>"; };
 		1D691D6E216F17B4009C3BD9 /* Package.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Package.h; sourceTree = "<group>"; };
 		1D691D6F216F17C3009C3BD9 /* Character.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
 		1D773ACC20D394D200EB4B99 /* ContinuePopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ContinuePopup.cpp; sourceTree = "<group>"; };
@@ -774,6 +777,15 @@
 			path = json;
 			sourceTree = "<group>";
 		};
+		1D6800AD2175BBF5000774F8 /* db */ = {
+			isa = PBXGroup;
+			children = (
+				1D6800B02175BC05000774F8 /* PackageDB.cpp */,
+				1D6800B12175BC05000774F8 /* PackageDB.hpp */,
+			);
+			path = db;
+			sourceTree = "<group>";
+		};
 		1D691D6B216F17A5009C3BD9 /* model */ = {
 			isa = PBXGroup;
 			children = (
@@ -788,6 +800,7 @@
 			children = (
 				1D981071216DE90C0092F628 /* CharacterManager.cpp */,
 				1D981072216DE90C0092F628 /* CharacterManager.hpp */,
+				1D6800AD2175BBF5000774F8 /* db */,
 				1D691D6B216F17A5009C3BD9 /* model */,
 			);
 			path = character;
@@ -1411,6 +1424,7 @@
 				1D18E425215CA19D0069A888 /* ConsentForm-android.cpp in Sources */,
 				1D06245320EE018D00037AB1 /* NewRecordBoard.cpp in Sources */,
 				1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */,
+				1D6800B22175BC05000774F8 /* PackageDB.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				1D3DD000215B46EB00DE7409 /* ConsentForm-ios.mm in Sources */,
 				1DFDEB1620C11B53001BC81D /* TestHelper.cpp in Sources */,

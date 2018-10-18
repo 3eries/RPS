@@ -24,6 +24,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    CharacterManager::destroyInstance();
     RankingManager::destroyInstance();
     GameManager::destroyInstance();
     GameConfiguration::destroyInstance();

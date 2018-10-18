@@ -24,7 +24,7 @@ struct Package {
         str += STR_FORMAT("\tpackId: %s\n", packId.c_str());
         
         for( Character c : characters ) {
-            str += "\t" + c.toString() + "\n";
+            str += c.toString() + "\n";
         }
         
         str += "}";

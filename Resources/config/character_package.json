@@ -1,38 +1,72 @@
- [{
-  "pack_001": [{
-               "char_id": "char_001",
-               "name": "zeus",
-               "unlock_type": 1,
-               "unlock_amount": 800,
-               "unlock_desc": "BEST SCORE"
-               },
-               {
-               "char_id": "char_002",
-               "name": "poseidon",
-               "unlock_type": 2,
-               "unlock_amount": 20000,
-               "unlock_desc": "200 SCORE %d"
-               },
-               {
-               "char_id": "char_003",
-               "name": "hades",
-               "unlock_type": 3,
-               "unlock_amount": 300,
-               "unlock_desc": "300 SCORE %d"
-               },
-               {
-               "char_id": "char_004",
-               "name": "afrodite",
-               "unlock_type": 4,
-               "unlock_amount": 400,
-               "unlock_desc": "400 SCORE %d"
-               },
-               {
-               "char_id": "char_005",
-               "name": "cupid",
-               "unlock_type": 5,
-               "unlock_amount": 500,
-               "unlock_desc": "500 SCORE %d"
-               }
-               ]
-  }]
+[{
+ "pack_001": [{
+              "char_id": "char_001",
+              "name": "master_lee",
+              "unlock_type": 0,
+              "unlock_amount": 0,
+              "unlock_desc": "",
+              "idle_anim": ["RSP_avatar_idle1.png", "RSP_avatar_idle2.png"],
+              "attack_anim": ["RSP_avatar_attack1.png", "RSP_avatar_attack2.png"],
+              "fever_gage_pos_x": -44,
+              "fever_gage_pos_y": 100
+              }]
+ },
+ {
+ "pack_002": [{
+              "char_id": "char_011",
+              "name": "zeus",
+              "unlock_type": 1,
+              "unlock_amount": 800,
+              "unlock_desc": "BEST SCORE",
+              "idle_anim": ["RSP_zeus_idle1.png", "RSP_zeus_idle2.png"],
+              "attack_anim": ["RSP_zeus_attack1.png", "RSP_zeus_attack2.png"],
+              "fever_gage_pos_x": -39,
+              "fever_gage_pos_y": 144
+              },
+              {
+              "char_id": "char_012",
+              "name": "poseidon",
+              "unlock_type": 2,
+              "unlock_amount": 20000,
+              "unlock_desc": "200 SCORE %d",
+              "idle_anim": ["RSP_poseidon_idle1.png", "RSP_poseidon_idle2.png"],
+              "attack_anim": ["RSP_poseidon_attack1.png", "RSP_poseidon_attack2.png"],
+              "fever_gage_pos_x": -33,
+              "fever_gage_pos_y": 150
+              },
+              {
+              "char_id": "char_013",
+              "name": "hades",
+              "unlock_type": 3,
+              "unlock_amount": 300,
+              "unlock_desc": "300 SCORE %d",
+              "idle_anim": ["RSP_hades_idle1.png", "RSP_hades_idle2.png"],
+              "attack_anim": ["RSP_hades_attack1.png", "RSP_hades_attack2.png"],
+              "fever_gage_pos_x": -29,
+              "fever_gage_pos_y": 152
+              },
+              {
+              "char_id": "char_014",
+              "name": "afrodite",
+              "unlock_type": 4,
+              "unlock_amount": 400,
+              "unlock_desc": "400 SCORE %d",
+              "idle_anim": ["RSP_aphrodite_idle1.png", "RSP_aphrodite_idle2.png"],
+              "attack_anim": ["RSP_aphrodite_attack1.png", "RSP_aphrodite_attack2.png"],
+              "fever_gage_pos_x": -37,
+              "fever_gage_pos_y": 140
+              },
+              {
+              "char_id": "char_015",
+              "name": "cupid",
+              "unlock_type": 5,
+              "unlock_amount": 500,
+              "unlock_desc": "500 SCORE %d",
+              "idle_anim": ["RSP_cupid_idle1.png", "RSP_cupid_idle2.png"],
+              "attack_anim": ["RSP_cupid_attack1.png", "RSP_cupid_attack2.png"],
+              "fever_gage_pos_x": -36,
+              "fever_gage_pos_y": 120
+              }
+              ]
+ }
+ ]
