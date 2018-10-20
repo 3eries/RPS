@@ -91,9 +91,6 @@ private:
     CC_SYNTHESIZE_READONLY(int, score, Score);                    // 현재 스코어
     CC_SYNTHESIZE_READONLY(int, ranking, Ranking);                // 최종 스코어에 해당하는 순위
     
-    // 전면 광고 오픈 여부
-    SB_SYNTHESIZE_BOOL(interstitialAdOpened, InterstitialAdOpened);
-    
 // GameListener
 public:
     void onGameStart();

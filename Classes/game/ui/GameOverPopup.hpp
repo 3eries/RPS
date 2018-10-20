@@ -44,7 +44,7 @@ public:
     void onEnterActionFinished() override;
     
 private:
-    bool isFirstEnterAction;
+    SB_SYNTHESIZE_BOOL(firstEnterAction, FirstEnterAction);
     
     int score;
     

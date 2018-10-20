@@ -42,7 +42,7 @@ GameOverPopup* GameOverPopup::create(int score) {
 }
 
 GameOverPopup::GameOverPopup(int score) : BasePopup(Type::GAME_OVER),
-isFirstEnterAction(true),
+firstEnterAction(true),
 score(score) {
     
 }
@@ -211,7 +211,7 @@ void GameOverPopup::runEnterAction(float duration, SBCallback onFinished) {
         CCLOG("GameOverPopup::runEnterAction onActionFinished");
         
         // 게임 오버 효과음
-        if( isFirstEnterAction ) {
+        if( firstEnterAction ) {
             SBAudioEngine::playBGM(SOUND_GAME_OVER, false);
             
             // 게임 오버 효과음 후에 메인 배경음 재생
@@ -268,7 +268,7 @@ void GameOverPopup::onEnterActionFinished() {
     
     BasePopup::onEnterActionFinished();
     
-    if( isFirstEnterAction ) {
-        isFirstEnterAction = false;
+    if( firstEnterAction ) {
+        firstEnterAction = false;
     }
 }

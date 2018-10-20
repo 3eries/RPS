@@ -81,7 +81,6 @@ bool GameScene::init() {
     initBanner();
     
     gameMgr->addListener(this);
-    addPopupListener();
     
     // IAP 리스너
     {
@@ -449,6 +448,28 @@ void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
         switch( eventType ) {
             case PopupEventType::ENTER_ACTION_FINISHED: {
                 popup->setEnterTimeScale(1);
+                
+                // 최초 등장 후 전면 광고 노출
+                if( popup->isFirstEnterAction() ) {
+                    // 전면 광고 로딩됨, 1초 후 노출
+                    if( !User::isOwnRemoveAdsItem() && AdsHelper::isInterstitialLoaded() ) {
+                        SBDirector::postDelayed(this, [=]() {
+                            auto listener = AdListener::create(AdType::INTERSTITIAL);
+                            listener->setTarget(this);
+                            listener->onAdOpened = [=]() {
+                            };
+                            listener->onAdClosed = [=]() {
+                                this->checkReview();
+                            };
+                            AdsHelper::getInstance()->showInterstitial(listener);
+                        }, 1.0f, true);
+                    }
+                    // 전면 광고 로딩되지 않음, 리뷰 유도
+                    else {
+                        this->checkReview();
+                    }
+                }
+                
             } break;
                 
             case PopupEventType::EXIT_ACTION_FINISHED: {
@@ -658,46 +679,4 @@ void GameScene::initCommonMenu() {
     
     commonMenu->setOnClickTopMenuListener(CC_CALLBACK_1(GameScene::onClickTopMenu, this));
     commonMenu->setOnClickBottomMenuListener(CC_CALLBACK_1(GameScene::onClickBottomMenu, this));
-}
-
-void GameScene::addPopupListener() {
-    
-    auto listener = PopupListener::create();
-    listener->setTarget(this);
-    listener->onEvent = [=](Node *sender, PopupEventType eventType) {
-        
-        auto popup = dynamic_cast<BasePopup*>(sender);
-        
-        // 게임 오버 등장 연출 완료 후, 전면 광고 노출
-        if( popup->getType() == BasePopup::Type::GAME_OVER &&
-            eventType == PopupEventType::ENTER_ACTION_FINISHED ) {
-            
-            CCLOG("User::isOwnRemoveAdsItem: %d AdsHelper::isInterstitialLoaded: %d", User::isOwnRemoveAdsItem(), AdsHelper::isInterstitialLoaded());
-            
-            // 전면 광고 O, 1초 후 노출
-            if( !User::isOwnRemoveAdsItem() &&          // 광고 제거 아이템 없음
-                AdsHelper::isInterstitialLoaded() &&    // 광고 로드됨
-                gameMgr->getFeverModeCount() > 0 &&     // 피버 모드 횟수
-               !gameMgr->isInterstitialAdOpened() ) {
-                
-                SBDirector::postDelayed(this, [=]() {
-                    auto listener = AdListener::create(AdType::INTERSTITIAL);
-                    listener->setTarget(this);
-                    listener->onAdOpened = [=]() {
-                        gameMgr->setInterstitialAdOpened(true);
-                    };
-                    listener->onAdClosed = [=]() {
-                        this->checkReview();
-                    };
-                    AdsHelper::getInstance()->showInterstitial(listener);
-                }, 1.0f, true);
-            }
-            // 전면 광고 X
-            else {
-                this->checkReview();
-            }
-        }
-    };
-    
-    PopupManager::getInstance()->addListener(listener);
 }
