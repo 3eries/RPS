@@ -8,10 +8,6 @@
 
 #include "RSP.h"
 
-//
-#include "User.hpp"
-//
-
 #include "../splash/SplashScene.hpp"
 #include "../main/MainScene.hpp"
 #include "../game/GameScene.hpp"
