@@ -26,6 +26,7 @@ public:
         EXIT_APP,
         REVIEW,
         CREDIT,
+        SHOP,
         SETTING,
         RANKING,
         NEW_RECORD,
