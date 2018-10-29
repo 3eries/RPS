@@ -31,6 +31,7 @@ void SBDirector::destroyInstance() {
 }
 
 SBDirector::SBDirector() :
+todayFirstRun(false),
 touchListener(nullptr),
 screenTouchLocked(false) {
 }
@@ -42,10 +43,14 @@ SBDirector::~SBDirector() {
 
 void SBDirector::init() {
     
-    // 실행 횟수 및 시간 설정
+    // 실행 횟수 설정
     auto userDefault = UserDefault::getInstance();
     
     const int runCount = getRunCount() + 1;
+    userDefault->setIntegerForKey(SBUserDefaultKey::RUN_COUNT, runCount);
+    
+    // 실행 시간 설정
+    // 시간은 숫자지만, 자료형 범위를 벗어날 수 있어 저장은 문자열로 한다.
     const string nowTime = TO_STRING(mktime(SBSystemUtils::getCurrentTime()));
     
     if( runCount == 1 ) {
@@ -53,8 +58,28 @@ void SBDirector::init() {
         userDefault->setStringForKey(SBUserDefaultKey::FIRST_RUN_TIME, nowTime);
     }
     
-    userDefault->setIntegerForKey(SBUserDefaultKey::RUN_COUNT, runCount);
     userDefault->setStringForKey(SBUserDefaultKey::LAST_RUN_TIME, nowTime);
+    
+    // 오늘 첫번째 실행인지 설정
+    {
+        auto getDate = [](time_t time) -> string {
+            return SBSystemUtils::timeToString(time, "%Y-%m-%d");
+        };
+        
+        string todayDate = getDate(SBStringUtils::toNumber<time_t>(nowTime));
+        string savedDate = getTodayDate();
+        
+        if( savedDate == "" ) {
+            getInstance()->todayFirstRun = true;
+        } else {
+            getInstance()->todayFirstRun = (todayDate != savedDate);
+        }
+        
+        if( getInstance()->todayFirstRun ) {
+            userDefault->setStringForKey(SBUserDefaultKey::TODAY_DATE, todayDate);
+        }
+    }
+    
     userDefault->flush();
     
     // log
@@ -63,6 +88,7 @@ void SBDirector::init() {
         log += "\t" + STR_FORMAT("run count: %d", getRunCount()) + "\n";
         log += "\t" + STR_FORMAT("first run time: %s", SBSystemUtils::timeToString(getFirstRunTime(),"%Y-%m-%d %l:%M:%S").c_str()) + "\n";
         log += "\t" + STR_FORMAT("last run time: %s", SBSystemUtils::timeToString(getLastRunTime(), "%Y-%m-%d %l:%M:%S").c_str()) + "\n";
+        log += "\t" + STR_FORMAT("today first run: %d", getInstance()->todayFirstRun) + "\n";
         
         CCLOG("SBDirector::init\n{\n%s}", log.c_str());
     }
@@ -98,11 +124,19 @@ int SBDirector::getRunCount() {
 }
 
 /**
- * 첫번째 실행 여부를 반환 합니다
+ * 앱 설치 후 첫번째 실행인지를 반환합니다
  */
 bool SBDirector::isFirstRun() {
     
     return (getRunCount() == 1);
+}
+
+/**
+ * 오늘 첫번째 실행인지를 반환합니다
+ */
+bool SBDirector::isTodayFirstRun() {
+    
+    return getInstance()->todayFirstRun;
 }
 
 /**
@@ -131,6 +165,14 @@ time_t SBDirector::getLastRunTime() {
     }
     
     return 0;
+}
+
+/**
+ * 저장된 오늘 날짜를 반환 합니다
+ */
+string SBDirector::getTodayDate() {
+    
+    return UserDefault::getInstance()->getStringForKey(SBUserDefaultKey::TODAY_DATE, "");
 }
 
 /**

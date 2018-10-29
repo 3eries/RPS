@@ -26,10 +26,12 @@ public:
     static void init();
     static void end();
     
-    static int getRunCount();
-    static bool isFirstRun();
-    static time_t getFirstRunTime();
-    static time_t getLastRunTime();
+    static int           getRunCount();
+    static bool          isFirstRun();
+    static bool          isTodayFirstRun();
+    static time_t        getFirstRunTime();
+    static time_t        getLastRunTime();
+    static std::string   getTodayDate();
     
     static void postDelayed(cocos2d::Node *handler, SBCallback runnable,
                             float delay, bool isScreenTouchLocked = false);
@@ -42,6 +44,8 @@ public:
     static float getScreenRatio();
     
 private:
+    bool todayFirstRun;
+    
     cocos2d::EventListenerTouchOneByOne *touchListener;
     SB_SYNTHESIZE_BOOL(screenTouchLocked, ScreenTouchLocked);   // 화면 터치 잠금 여부
 };
