@@ -76,6 +76,7 @@ protected:
     
     SB_SYNTHESIZE_BOOL(runningEnterAction, RunningEnterAction); // 등장 연출 진행 여부
     SB_SYNTHESIZE_BOOL(runningExitAction, RunningExitAction);   // 퇴장 연출 진행 여부
+    TopMenu::Tag savedTopMenu;
 };
 
 #endif /* BasePopup_hpp */

@@ -143,6 +143,8 @@ void BasePopup::runEnterAction(float duration, SBCallback onFinished) {
     
     runningEnterAction = true;
     onPopupEvent(PopupEventType::ENTER_ACTION);
+    
+    savedTopMenu = SceneManager::getCommonMenu()->getTopMenu()->getSelectedRightMenu();
 }
 
 void BasePopup::runEnterAction(SBCallback onFinished) {
