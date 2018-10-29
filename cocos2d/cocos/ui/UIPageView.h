@@ -468,7 +468,7 @@ protected:
 #endif
     ccPageViewCallback _eventCallback;
     float _autoScrollStopEpsilon;
-    ssize_t _previousPageIndex;
+    CC_SYNTHESIZE_READONLY(ssize_t, _previousPageIndex, PreviousPageIndex);
     bool _isTouchBegin;
 };
 
