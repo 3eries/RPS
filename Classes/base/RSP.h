@@ -114,6 +114,9 @@ static const std::string ANIM_EVENT_MAN_MOVE        = "move";
 // 폰트 경로
 static const std::string DIR_FONT                   = "fonts/";
 
+static const std::string FONT_COMMODORE             = DIR_FONT + "Commodore.ttf";
+static const std::string FONT_SABO                  = DIR_FONT + "Sabo-Filled.otf";
+static const std::string FONT_GAME_OVER             = DIR_FONT + "game_over.ttf";
 static const std::string FONT_RETRO                 = DIR_FONT + "Commodore.ttf";
 static const std::string FONT_NEW_RECORD            = DIR_FONT + "Sabo-Filled.otf";
 static const std::string FONT_FAMOUS_SAYING         = DIR_FONT + "game_over.ttf";
