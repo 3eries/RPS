@@ -18,6 +18,7 @@ public:
     static const int LOOP_FOREVER = -1;
     
 public:
+    CREATE_FUNC(SBAnimationSprite);
     static SBAnimationSprite* create(cocos2d::Animation *anim, int loops = LOOP_FOREVER);
     static SBAnimationSprite* create(std::vector<std::string> animFiles,
                                      float delayPerUnit, int loops = LOOP_FOREVER);
@@ -26,6 +27,7 @@ public:
 protected:
     SBAnimationSprite();
     
+    virtual bool init() override;
     virtual bool init(cocos2d::Animation *anim, int loops);
     virtual bool init(cocos2d::Animation *anim);
     

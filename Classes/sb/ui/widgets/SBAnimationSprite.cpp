@@ -44,6 +44,15 @@ SBAnimationSprite::~SBAnimationSprite() {
     CC_SAFE_RELEASE_NULL(anim);
 }
 
+bool SBAnimationSprite::init() {
+    
+    if( !Sprite::init() ) {
+        return false;
+    }
+    
+    return true;
+}
+
 bool SBAnimationSprite::init(Animation *anim, int loops) {
     
     CCASSERT(anim != nullptr, "SBAnimationSprite::init error: invalid animation.");
