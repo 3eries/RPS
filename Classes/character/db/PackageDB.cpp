@@ -27,8 +27,8 @@ using namespace std;
 #define KEY_VIEW_ADS                    "view_ads"
 #define KEY_UNLOCK_CHARACTERS           "unlock_characters"
 
-static const char* getDBKey(Package pack) {
-    return STR_FORMAT("character_%s", pack.packId.c_str()).c_str();
+static string getDBKey(Package pack) {
+    return STR_FORMAT("character_%s", pack.packId.c_str());
 }
 
 static const char* getFieldKey(PackageDB::Field field) {
@@ -78,31 +78,60 @@ isUnlocked(false) {
         Field::GAME_OVER,
         Field::DAILY_LOGIN,
         Field::FEVER,
-        Field::VIEW_ADS,
     };
     
     for( auto field : fields ) {
         fieldValues[field] = 0;
     }
     
-    string data = UserDefault::getInstance()->getStringForKey(getDBKey(pack), "");
+    for( auto c : pack.characters ) {
+        if( c.unlockType == UnlockType::VIEW_ADS ) {
+            viewAdsValues[c.charId] = 0;
+        }
+    }
+    
+    string data = UserDefault::getInstance()->getStringForKey(getDBKey(pack).c_str(), "");
     CCLOG("PackageDB packId: %s, data:\n%s", pack.packId.c_str(), data.c_str());
     
     // 기존 데이터 있음
     if( data != "" ) {
         rapidjson::Document doc = SBJSON::parse(data);
         
+        // package unlock
         isUnlocked = doc[KEY_UNLOCK].GetBool();
         
+        // field
         for( auto it = fieldValues.begin(); it != fieldValues.end(); ++it ) {
             auto field = it->first;
             fieldValues[field] = doc[getFieldKey(field)].GetInt();
         }
         
+        // view ads field
+        auto viewAdsList = doc[KEY_VIEW_ADS].GetArray();
+        
+        for( int i = 0; i < viewAdsList.Size(); ++i ) {
+            auto it = viewAdsList[i].MemberBegin();
+            viewAdsValues[it->name.GetString()] = it->value.GetInt();
+        }
+        
+        // unlock characters
         auto unlockCharList = doc[KEY_UNLOCK_CHARACTERS].GetArray();
         
         for( int i = 0; i < unlockCharList.Size(); ++i ) {
             unlockCharacters.push_back(unlockCharList[i].GetString());
+        }
+    }
+    // 기존 데이터 없음
+    else {
+        // 잠금 해제 타입이 없는 캐릭터 해제
+        for( auto c : pack.characters ) {
+            if( c.unlockType == UnlockType::NONE ) {
+                unlockCharacter(c.charId);
+            }
+        }
+        
+        if( unlockCharacters.size() > 0 ) {
+            commit();
         }
     }
 }
@@ -119,6 +148,10 @@ string PackageDB::toString() {
     
     for( auto it = fieldValues.begin(); it != fieldValues.end(); ++it ) {
         str += "\t" + STR_FORMAT("%s: %d", getFieldKey(it->first), it->second) + "\n";
+    }
+    
+    for( auto it = viewAdsValues.begin(); it != viewAdsValues.end(); ++it ) {
+        str += "\t" + STR_FORMAT("viewAds %s: %d", it->first.c_str(), it->second) + "\n";
     }
 
     str += "\tunlockCharacters: ";
@@ -152,6 +185,16 @@ void PackageDB::commit() {
         doc.AddMember(SBJSON::value(key, allocator), rapidjson::Value(it->second), allocator);
     }
     
+    // view ads field
+    rapidjson::Value viewAdsList(rapidjson::kArrayType);
+    
+    for( auto it = viewAdsValues.begin(); it != viewAdsValues.end(); ++it ) {
+        rapidjson::Value v(rapidjson::kObjectType);
+        v.AddMember(SBJSON::value(it->first, allocator), rapidjson::Value(it->second), allocator);
+        
+        viewAdsList.PushBack(v, allocator);
+    }
+    
     // unlock characters
     rapidjson::Value unlockCharValue(rapidjson::kArrayType);
     
@@ -171,7 +214,7 @@ void PackageDB::commit() {
     string json = strbuf.GetString();
     CCLOG("PackageDB::commit:\n%s", json.c_str());
     
-//    UserDefault::getInstance()->setStringForKey(getDBKey(pack), json);
+//    UserDefault::getInstance()->setStringForKey(getDBKey(pack).c_str(), json);
 //    UserDefault::getInstance()->flush();
 }
 
@@ -195,6 +238,60 @@ bool PackageDB::isCharacterUnlocked(const string &charId) {
     }
     
     return false;
+}
+
+/**
+ * 필드 값 반환
+ */
+int PackageDB::getFieldValue(Field f) {
+    
+    auto it = fieldValues.find(f);
+    if( it == fieldValues.end() ) {
+        CCASSERT(false, "PackageDB::getFieldValue error");
+        return 0;
+    }
+    
+    return it->second;
+}
+
+/**
+ * 광고 시청 값 반환
+ */
+int PackageDB::getViewAdsValue(const string &charId) {
+    
+    auto it = viewAdsValues.find(charId);
+    if( it == viewAdsValues.end() ) {
+        CCASSERT(false, "PackageDB::getViewAdsValue error");
+        return 0;
+    }
+    
+    return it->second;
+}
+
+/**
+ * 캐릭터 잠금 해제 조건에 해당하는 필드 값 반환
+ */
+int PackageDB::getUnlockFieldValue(Character c) {
+    
+    // 잠금 해제된 경우, 조건 값을 반환
+    if( isCharacterUnlocked(c.charId) ) {
+        return c.unlockAmount;
+    }
+    
+    switch( c.unlockType ) {
+        case UnlockType::BEST_SCORE:      return getFieldValue(Field::BEST_SCORE);
+        case UnlockType::TOTAL_SCORE:     return getFieldValue(Field::TOTAL_SCORE);
+        case UnlockType::GAME_PLAY:       return getFieldValue(Field::GAME_PLAY);
+        case UnlockType::GAME_OVER:       return getFieldValue(Field::GAME_OVER);
+        case UnlockType::DAILY_LOGIN:     return getFieldValue(Field::DAILY_LOGIN);
+        case UnlockType::FEVER:           return getFieldValue(Field::FEVER);
+        case UnlockType::VIEW_ADS:        return getViewAdsValue(c.charId);
+        default:
+            CCASSERT(false, "PackageDB::getUnlockFieldValue error.");
+            break;
+    }
+    
+    return 0;
 }
 
 /**

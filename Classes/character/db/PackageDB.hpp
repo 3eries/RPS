@@ -44,7 +44,10 @@ public:
     
     bool    isPackageUnlocked();
     bool    isCharacterUnlocked(const std::string &charId);
-    int     getValue(Field field);
+    
+    int     getFieldValue(Field f);
+    int     getViewAdsValue(const std::string &charId);
+    int     getUnlockFieldValue(Character c);
     
     void    unlockPackage();
     void    unlockCharacter(const std::string &charId);
@@ -53,10 +56,14 @@ public:
                    OnCharacterUnlocked onCharacterUnlocked = nullptr);
     
 private:
-    Package pack;
-    bool isUnlocked;
-    std::map<Field, int> fieldValues;
-    std::vector<std::string> unlockCharacters;
+    Package pack;                                // 패키지 기본 데이터
+    bool isUnlocked;                             // 패키지 잠금 해제 여부
+    std::map<Field, int> fieldValues;            // DB 필드 값
+    
+    // Key : 캐릭터 아이디, Value : 광고 시청 횟수
+    std::map<std::string, int> viewAdsValues;
+    
+    std::vector<std::string> unlockCharacters;   // 잠금 해제된 캐릭터 리스트
 };
 
 #endif /* PackageDB_hpp */

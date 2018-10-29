@@ -7,6 +7,12 @@
     "game_over": 0,
     "daily_login": 0,
     "fever": 0,
-    "view_ads": 0,
+    "view_ads": [{
+                 "char_002": 0
+                 },
+                 {
+                 "char_003": 0
+                 }
+                 ],
     "unlock_characters": ["char_000"]
 }

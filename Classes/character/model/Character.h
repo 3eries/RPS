@@ -23,6 +23,7 @@ enum class UnlockType {
 };
 
 struct Character {
+    std::string              packId;
     std::string              charId;
     std::string              name;
     UnlockType               unlockType;

@@ -13,6 +13,7 @@
 
 struct Package {
     std::string packId;
+    std::string name;
     std::vector<Character> characters;
     
     Package() {
@@ -22,6 +23,7 @@ struct Package {
     std::string toString() {
         std::string str = "Package {\n";
         str += STR_FORMAT("\tpackId: %s\n", packId.c_str());
+        str += STR_FORMAT("\tname: %s\n", name.c_str());
         
         for( Character c : characters ) {
             str += c.toString() + "\n";
@@ -32,5 +34,7 @@ struct Package {
         return str;
     }
 };
+
+typedef std::function<void(Package)> PackageListener;
 
 #endif /* Package_h */

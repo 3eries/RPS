@@ -40,6 +40,8 @@ CharacterManager::CharacterManager() {
 
 CharacterManager::~CharacterManager() {
  
+    listeners.clear();
+    
     for( auto it = packageDbs.begin(); it != packageDbs.end(); ++it ) {
         CC_SAFE_RELEASE_NULL(it->second);
     }
@@ -53,38 +55,59 @@ void CharacterManager::init(const string &json) {
     
     // 패키지 json 파싱
     rapidjson::Document doc = SBJSON::parse(json);
-    auto packList = doc.GetArray();
+    
+    // package_order
+    auto order = doc["package_order"].GetArray();
+    
+    for( int i = 0; i < order.Size(); ++i ) {
+        packageOrder.push_back(order[i].GetString());
+    }
+    
+    // packages
+    auto packList = doc["packages"].GetArray();
     
     for( int i = 0; i < packList.Size(); ++i ) {
-        auto it = packList[i].MemberBegin();
-        auto charList = it->value.GetArray();
+        const rapidjson::Value &v = packList[i];
         
         Package pack;
-        pack.packId = it->name.GetString();
+        pack.packId = v["pack_id"].GetString();
+        pack.name = v["name"].GetString();
+        
+        const string DIR = DIR_ADD(DIR_CHARACTER, pack.packId);
+        auto charList = v["characters"].GetArray();
         
         for( int j = 0; j < charList.Size(); ++j ) {
             const rapidjson::Value &charValue = charList[j];
             
             Character character;
+            character.packId = pack.packId;
             character.charId = charValue["char_id"].GetString();
             character.name = charValue["name"].GetString();
             character.unlockType = (UnlockType)charValue["unlock_type"].GetInt();
             character.unlockAmount = charValue["unlock_amount"].GetInt();
             character.unlockDesc = charValue["unlock_desc"].GetString();
             
-            auto getAnims = [](rapidjson::Value::ConstArray animList) -> vector<string> {
+            auto getAnims = [=](string key) -> vector<string> {
                 
                 vector<string> anims;
+                int i = 0;
                 
-                for( int k = 0; k < animList.Size(); ++k ) {
-                    anims.push_back(DIR_IMG_CHARACTER + animList[k].GetString());
+                while( true ) {
+                    string file = DIR + STR_FORMAT("%s_%s_%02d.png", character.charId.c_str(), key.c_str(), i+1);
+                    
+                    if( !FileUtils::getInstance()->isFileExist(file) ) {
+                        break;
+                    }
+                    
+                    anims.push_back(file);
+                    ++i;
                 }
                 
                 return anims;
             };
             
-            character.idleAnims = getAnims(charValue["idle_anim"].GetArray());
-            character.attackAnims = getAnims(charValue["attack_anim"].GetArray());
+            character.idleAnims = getAnims("idle");
+            character.attackAnims = getAnims("attack");
             character.feverGagePos.x = charValue["fever_gage_pos_x"].GetFloat();
             character.feverGagePos.y = charValue["fever_gage_pos_y"].GetFloat();
             
@@ -264,6 +287,65 @@ void CharacterManager::submit(PackageDB::Field field, int i, PackageDB::OnCharac
 //    CCLOG("unlockCharacter: %s newData: %s", charId.c_str(), newData.c_str());
 //}
 
+/**
+ * 패키지 잠금 해제
+ */
+void CharacterManager::onPackageUnlocked(const vector<string> &packages) {
+    
+    for( auto listener : listeners ) {
+        if( listener->onPackageUnlocked ) {
+            listener->onPackageUnlocked(packages);
+        }
+    }
+}
 
+/**
+ * 캐릭터 잠금 해제
+ */
+void CharacterManager::onCharacterUnlocked(const vector<string> &characters) {
+    
+    for( auto listener : listeners ) {
+        if( listener->onCharacterUnlocked ) {
+            listener->onCharacterUnlocked(characters);
+        }
+    }
+}
+
+/**
+ * 리스너 등록
+ */
+void CharacterManager::addListener(CharacterListener *listener) {
+    
+    CCASSERT(listener != nullptr, "CharacterManager::addListener error: listener must be not null");
+    
+    if( !listeners.contains(listener) ) {
+        listeners.pushBack(listener);
+    }
+}
+
+/**
+ * 리스너 제거
+ */
+void CharacterManager::removeListener(CharacterListener *listener) {
+    
+    CCASSERT(listener != nullptr, "CharacterManager::addListener error: listener must be not null");
+    
+    if( listeners.contains(listener) ) {
+        listeners.eraseObject(listener);
+    }
+}
+
+void CharacterManager::removeListener(Ref *target) {
+    
+    CCASSERT(target != nullptr, "CharacterManager::removeListener error: target must be not null");
+    
+    auto removeListeners = SBCollection::find(listeners, [=](CharacterListener *listener) -> bool {
+        return listener->getTarget() == target;
+    });
+    
+    for( auto listener : removeListeners ) {
+        listeners.eraseObject(listener);
+    }
+}
 
 
