@@ -65,6 +65,9 @@ enum class RSPResult {
     DRAW,
 };
 
+// 캐릭터 경로
+static const std::string DIR_CHARACTER              = "character/";
+
 // 이미지 경로
 static const std::string DIR_IMG                    = "images/";
 static const std::string DIR_IMG_COMMON             = DIR_ADD(DIR_IMG, "common");
@@ -72,7 +75,6 @@ static const std::string DIR_IMG_SPLASH             = DIR_ADD(DIR_IMG, "splash")
 static const std::string DIR_IMG_GAME               = DIR_ADD(DIR_IMG, "game");
 static const std::string DIR_IMG_GAME_IPAD          = DIR_ADD(DIR_IMG_GAME, "ipad");
 static const std::string DIR_IMG_MAIN               = DIR_ADD(DIR_IMG, "main");
-static const std::string DIR_IMG_CHARACTER          = DIR_ADD(DIR_IMG, "character");
 
 // 애니메이션 경로
 static const std::string DIR_ANIM                   = "anims/";
