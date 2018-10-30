@@ -121,13 +121,16 @@ void EffectSprite::setEffect(Effect* effect) {
         return;
     }
     
-    effect->setTarget(this);
-    
     CC_SAFE_RELEASE(defaultEffect);
     defaultEffect = effect;
     CC_SAFE_RETAIN(defaultEffect);
     
-    setGLProgramState(defaultEffect->getGLProgramState());
+    if( defaultEffect ) {
+        defaultEffect->setTarget(this);
+        setGLProgramState(defaultEffect->getGLProgramState());
+    } else {
+        setGLProgramState(GLProgramState::getOrCreateWithGLProgramName(GLProgram::SHADER_NAME_POSITION_TEXTURE_COLOR_NO_MVP));
+    }
 }
 
 static int tuple_sort(const std::tuple<ssize_t,Effect*,QuadCommand> &tuple1,

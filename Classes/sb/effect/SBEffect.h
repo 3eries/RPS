@@ -45,6 +45,7 @@ protected:
 
 class EffectSprite : public cocos2d::Sprite {
 public:
+    CREATE_FUNC(EffectSprite);
     static EffectSprite* create(const std::string &filename);
     static EffectSprite* create(cocos2d::Texture2D *tex);
     virtual ~EffectSprite();
