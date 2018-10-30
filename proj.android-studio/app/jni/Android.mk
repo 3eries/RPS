@@ -24,9 +24,11 @@ $(SOURCE_FILES)
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../../Classes \
 $(LOCAL_PATH)/../../../Classes/sb \
 $(LOCAL_PATH)/../../../Classes/base \
+$(LOCAL_PATH)/../../../Classes/character \
 $(LOCAL_PATH)/../../../Classes/menu \
 $(LOCAL_PATH)/../../../Classes/popup \
 $(LOCAL_PATH)/../../../Classes/ranking \
+$(LOCAL_PATH)/../../../Classes/shop \
 $(LOCAL_PATH)/../../../Classes/test \
 $(LOCAL_PATH)/../../../Classes/ui \
 
