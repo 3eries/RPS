@@ -69,6 +69,8 @@ void PopupManager::removePopup(BasePopup *popup) {
  */
 BasePopup* PopupManager::getPopup(BasePopup::Type type) {
     
+    auto popups = getInstance()->popups;
+    
     for( auto popup : popups ) {
         if( popup->getType() == type ) {
             return popup;
@@ -83,14 +85,41 @@ BasePopup* PopupManager::getPopup(BasePopup::Type type) {
  */
 BasePopup* PopupManager::getFrontPopup() {
     
-    return popups.at(popups.size()-1);
+    auto popups = getInstance()->popups;
+    
+    for( int i = popups.size()-1; i >= 0; --i ) {
+        auto popup = popups.at(i);
+        
+        if( popup->isVisible() ) {
+            return popup;
+        }
+    }
+    
+    return nullptr;
 }
 
 /**
- * 팝업 갯수 반환
+ * 모든 팝업 갯수 반환
  */
 size_t PopupManager::getPopupCount() {
-    return popups.size();
+    return getInstance()->popups.size();
+}
+
+/**
+ * 해당 타입의 팝업 갯수를 반환합니다
+ */
+size_t PopupManager::getPopupCount(BasePopup::Type type) {
+    
+    auto popups = getInstance()->popups;
+    size_t cnt = 0;
+    
+    for( auto popup : popups ) {
+        if( popup->getType() == type ) {
+            cnt++;
+        }
+    }
+    
+    return cnt;
 }
 
 /**
@@ -99,6 +128,7 @@ size_t PopupManager::getPopupCount() {
  */
 size_t PopupManager::getLargePopupCount() {
     
+    auto popups = getInstance()->popups;
     size_t cnt = 0;
     
     for( auto popup : popups ) {

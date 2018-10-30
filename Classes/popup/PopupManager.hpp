@@ -30,10 +30,12 @@ public:
     void addPopup(BasePopup *popup);
     void removePopup(BasePopup *popup);
     
-    BasePopup* getPopup(BasePopup::Type type);
-    BasePopup* getFrontPopup();
-    size_t     getPopupCount();
-    size_t     getLargePopupCount();
+    static BasePopup* getPopup(BasePopup::Type type);
+    static BasePopup* getFrontPopup();
+    static size_t     getPopupCount();
+    static size_t     getPopupCount(BasePopup::Type type);
+    static size_t     getLargePopupCount();
+    static bool       exists(BasePopup::Type type);
     
     bool       exists(BasePopup::Type type);
     
