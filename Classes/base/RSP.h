@@ -155,8 +155,8 @@ namespace Color {
 // Popup
 namespace PopupZOrder {
     static const int BOTTOM = SBZOrder::MIDDLE;
-    static const int MIDDLE = BOTTOM + 1;
-    static const int TOP    = BOTTOM + 2;
+    static const int MIDDLE = BOTTOM + 10;
+    static const int TOP    = MIDDLE + 10;
 }
 
 // 연출 시간
