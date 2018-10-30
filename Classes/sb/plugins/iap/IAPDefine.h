@@ -38,6 +38,8 @@ struct Item {
     }
 };
 
+typedef std::vector<Item> ItemList;
+
 struct Config {
     std::vector<Item> items;
 };

@@ -50,11 +50,11 @@ public:
     /**
      * Get all the products
      */
-    static std::vector<Item> getItems();
-    
-    static Item getItemByName(const std::string &name);
-    static Item getItemById(const std::string &itemId);
-    static Item getRemoveAdsItem();
+    static ItemList     getItems();
+    static bool         hasItem(const std::string &name);
+    static Item         getItemByName(const std::string &name);
+    static Item         getItemById(const std::string &itemId);
+    static Item         getRemoveAdsItem();
     
     /**
      * Make a purchase request
@@ -73,11 +73,6 @@ public:
     static bool isReady();
     
 public:
-//    std::function<void(const Item&)>             onPurchased;      // 요청 성공
-//    std::function<void(std::string/*errorMsg*/)> onError;          // 요청 실패
-//    std::function<void()>                        onCanceled;       // 요청 취소
-//    std::function<void(bool)>                    onFinished;       // 요청 종료
-    
     void onPurchased(const std::string &itemId);
 //    void onError(const std::string &errorMsg = "");
 //    void onCanceled();

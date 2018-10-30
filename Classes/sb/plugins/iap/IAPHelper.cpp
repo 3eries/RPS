@@ -53,9 +53,14 @@ void IAPHelper::setDebug(bool debug) {
 /**
  * 아이템 반환
  */
-vector<Item> IAPHelper::getItems() {
+ItemList IAPHelper::getItems() {
     
     return getInstance()->config.items;
+}
+
+bool IAPHelper::hasItem(const string &name) {
+    
+    return getItemByName(name).itemId != "";
 }
 
 Item IAPHelper::getItemByName(const string &name) {
