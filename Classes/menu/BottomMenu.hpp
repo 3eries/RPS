@@ -53,8 +53,8 @@ public:
     void setTouchEnabled(bool enabled);
     void setRankingButton(Tag tag);
     
-    void openMenu();
-    void closeMenu();
+    void openMenu(float duration = SLIDE_IN_DURATION);
+    void closeMenu(float duration = SLIDE_OUT_DURATION);
     
 private:
     CC_SYNTHESIZE(std::function<void(Tag)>, onClickListener, OnClickListener);

@@ -93,7 +93,7 @@ void BottomMenu::setRankingButton(Tag tag) {
 /**
  * 메뉴 오픈
  */
-void BottomMenu::openMenu() {
+void BottomMenu::openMenu(float duration) {
 
     /*
     if( isOpened ) {
@@ -107,21 +107,25 @@ void BottomMenu::openMenu() {
     setVisible(true);
     setTouchEnabled(false);
     
-    // slide in
-    SBActionHelper::runMoveAction(this, MENU_OUT_POSITION, MENU_IN_POSITION, SLIDE_IN_DURATION);
-    
-    // callback
-    auto delay = DelayTime::create(SLIDE_IN_DURATION);
-    auto callFunc = CallFunc::create([=]() {
+    auto onActionFinished = [=]() {
         this->setTouchEnabled(true);
-    });
-    runAction(Sequence::create(delay, callFunc, nullptr));
+    };
+    
+    if( duration == 0 ) {
+        setPosition(MENU_IN_POSITION);
+        onActionFinished();
+        return;
+    }
+    
+    // slide in
+    SBActionHelper::runMoveAction(this, MENU_OUT_POSITION, MENU_IN_POSITION, duration);
+    SBDirector::postDelayed(this, onActionFinished, duration);
 }
 
 /**
  * 메뉴 닫기
  */
-void BottomMenu::closeMenu() {
+void BottomMenu::closeMenu(float duration) {
     
     /*
     if( !isOpened ) {
@@ -135,15 +139,19 @@ void BottomMenu::closeMenu() {
     setVisible(true);
     setTouchEnabled(false);
     
-    // slide out
-    SBActionHelper::runMoveAction(this, MENU_IN_POSITION, MENU_OUT_POSITION, SLIDE_OUT_DURATION);
-    
-    // callback
-    auto delay = DelayTime::create(SLIDE_OUT_DURATION);
-    auto callFunc = CallFunc::create([=]() {
+    auto onActionFinished = [=]() {
         this->setVisible(false);
-    });
-    runAction(Sequence::create(delay, callFunc, nullptr));
+    };
+    
+    if( duration == 0 ) {
+        setPosition(MENU_OUT_POSITION);
+        onActionFinished();
+        return;
+    }
+    
+    // slide out
+    SBActionHelper::runMoveAction(this, MENU_IN_POSITION, MENU_OUT_POSITION, duration);
+    SBDirector::postDelayed(this, onActionFinished, duration);
 }
 
 /**
