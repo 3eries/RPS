@@ -215,25 +215,6 @@ void BottomMenu::initMenu() {
         btn->setOnClickListener(CC_CALLBACK_1(BottomMenu::onClick, this));
     }
     
-    // Shop 버튼 커밍순
-    {
-        auto btn = getChildByTag<SBButton*>(Tag::SHOP);
-        // btn->setTouchEnabled(false);
-        btn->setZoomScale(0);
-        
-        // auto btnBox = SBNodeUtils::getBoundingBoxInWorld(btn);
-        // comingSoon->setPosition(Vec2(btnBox.getMidX(), btnBox.getMidY()));
-        
-        auto comingSoon = SkeletonAnimation::createWithJsonFile(DIR_ANIM + "coming_soon.json");
-        comingSoon->setAnchorPoint(Vec2::ZERO);
-        comingSoon->setPosition(Vec2MC(btn->getContentSize(), 0, 0));
-        comingSoon->setAnimation(0, ANIM_NAME_RUN, true);
-        btn->addChild(comingSoon);
-        
-        comingSoon->setOpacity(0);
-        comingSoon->runAction(FadeIn::create(1.0f));
-    }
-    
     // START 버튼 연출
     /*
      {
