@@ -288,7 +288,7 @@ void GameScene::showPausePopup() {
         }
     });
 
-    SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+    SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
 }
 
 /**
@@ -301,7 +301,7 @@ void GameScene::showContinuePopup() {
     
     auto popup = ContinuePopup::create(isAdsLoaded);
     popup->setTag(Tag::POPUP_CONTINUE);
-    SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+    SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
     
     // 팝업 종료
     popup->setOnDismissListener([=](Node*){
@@ -428,7 +428,7 @@ void GameScene::showNewRecordPopup(int ranking, int score) {
         }
     });
     
-    SceneManager::getScene()->addChild(popup, PopupZOrder::BOTTOM);
+    SceneManager::getScene()->addChild(popup, ZOrder::POPUP_BOTTOM);
 }
 
 /**
@@ -500,7 +500,7 @@ void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
             onEventListener(sender, eventType);
         }
     });
-    SceneManager::getScene()->addChild(popup, PopupZOrder::BOTTOM);
+    SceneManager::getScene()->addChild(popup, ZOrder::POPUP_BOTTOM);
 }
 
 /**
@@ -535,7 +535,7 @@ bool GameScene::onClickTopMenu(TopMenu::Tag tag) {
             auto popup = PopupManager::getInstance()->getFrontPopup();
             
             // 일시 정지 팝업
-            if( popup->getType() == BasePopup::Type::PAUSE ) {
+            if( popup->getType() == PopupType::PAUSE ) {
                 auto pausePopup = dynamic_cast<PausePopup*>(popup);
                 pausePopup->performListener(PausePopup::Tag::RESUME);
 
@@ -572,7 +572,7 @@ bool GameScene::onClickBottomMenu(BottomMenu::Tag tag) {
             /*
             // 팝업 퇴장
             // 게임 오버 창 제거
-            auto popup = PopupManager::getInstance()->getPopup(BasePopup::Type::GAME_OVER);
+            auto popup = PopupManager::getInstance()->getPopup(PopupType::GAME_OVER);
             if( popup ) {
                 popup->dismissWithAction();
             }

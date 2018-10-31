@@ -34,7 +34,7 @@ ContinuePopup* ContinuePopup::create(bool isAdsLoaded) {
     return nullptr;
 }
 
-ContinuePopup::ContinuePopup() : BasePopup(Type::CONTINUE),
+ContinuePopup::ContinuePopup() : BasePopup(PopupType::CONTINUE),
 isAdsLoaded(false),
 isTimeOut(false),
 isContinue(false),

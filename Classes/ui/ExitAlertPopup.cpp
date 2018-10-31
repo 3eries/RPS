@@ -18,7 +18,7 @@ using namespace std;
 static const float FADE_DURATION    = 0.15f;
 static const float SLIDE_DURATION   = EffectDuration::POPUP_SLIDE_FAST;
 
-ExitAlertPopup::ExitAlertPopup() : BasePopup(Type::EXIT_APP),
+ExitAlertPopup::ExitAlertPopup() : BasePopup(PopupType::EXIT_APP),
 onExitAppListener(nullptr) {
     
 }

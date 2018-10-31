@@ -152,11 +152,11 @@ namespace Color {
     static const cocos2d::Color4B POPUP_BG          = cocos2d::Color4B(0,0,0,255*0.75f);
 }
 
-// Popup
-namespace PopupZOrder {
-    static const int BOTTOM = SBZOrder::MIDDLE;
-    static const int MIDDLE = BOTTOM + 10;
-    static const int TOP    = MIDDLE + 10;
+// ZOrder
+namespace ZOrder {
+    static const int POPUP_BOTTOM = SBZOrder::MIDDLE;
+    static const int POPUP_MIDDLE = POPUP_BOTTOM + 10;
+    static const int POPUP_TOP    = POPUP_MIDDLE + 10;
 }
 
 // 연출 시간

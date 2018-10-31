@@ -18,7 +18,7 @@ using namespace std;
 static const float FADE_DURATION    = 0.15f;
 static const float SLIDE_DURATION   = EffectDuration::POPUP_SLIDE_FAST;
 
-ReviewPopup::ReviewPopup() : BasePopup(Type::REVIEW),
+ReviewPopup::ReviewPopup() : BasePopup(PopupType::REVIEW),
 onGoListener(nullptr) {
     
 }

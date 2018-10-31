@@ -36,7 +36,7 @@ NewRecordPopup* NewRecordPopup::create(int ranking, int score) {
     return nullptr;
 }
 
-NewRecordPopup::NewRecordPopup(int ranking, int score) : RankingPopup(Type::NEW_RECORD),
+NewRecordPopup::NewRecordPopup(int ranking, int score) : RankingPopup(PopupType::NEW_RECORD),
 onRecordCompletedListener(nullptr) {
     
     record.ranking = ranking;

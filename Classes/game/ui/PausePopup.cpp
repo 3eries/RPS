@@ -21,7 +21,7 @@ using namespace std;
 static const float FADE_DURATION    = 0.15f;
 static const float SLIDE_DURATION   = EffectDuration::POPUP_SLIDE_FAST;
 
-PausePopup::PausePopup() : BasePopup(Type::PAUSE),
+PausePopup::PausePopup() : BasePopup(PopupType::PAUSE),
 onClickMenuListener(nullptr) {
     
 }

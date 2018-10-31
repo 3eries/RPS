@@ -129,7 +129,7 @@ void MainScene::onClick(Node *sender) {
             firebase::Analytics::logEvent(FA_EVENT_CREDIT);
             
             auto popup = CreditPopup::create();
-            addChild(popup, PopupZOrder::TOP);
+            addChild(popup, ZOrder::POPUP_TOP);
         } break;
         
         // 광고 제거 아이템
@@ -249,13 +249,13 @@ void MainScene::initPopupListener() {
         auto popup = dynamic_cast<BasePopup*>(sender);
         
         // 팝업 연출에 따른 메인화면 메뉴 처리
-        if( popup->getType() != BasePopup::Type::RANKING &&
-            popup->getType() != BasePopup::Type::SHOP) {
+        if( popup->getType() != PopupType::RANKING &&
+            popup->getType() != PopupType::SHOP) {
             return;
         }
         
-        if( PopupManager::getPopup(BasePopup::Type::RANKING) &&
-            PopupManager::getPopup(BasePopup::Type::SHOP) ) {
+        if( PopupManager::getPopup(PopupType::RANKING) &&
+            PopupManager::getPopup(PopupType::SHOP) ) {
             return;
         }
         
@@ -306,7 +306,7 @@ void MainScene::processBackKey() {
                 SBSystemUtils::exitApp();
             });
             
-            this->addChild(popup, PopupZOrder::MIDDLE);
+            this->addChild(popup, ZOrder::POPUP_MIDDLE);
         }
     };
     

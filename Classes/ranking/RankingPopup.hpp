@@ -29,7 +29,7 @@ public:
     virtual ~RankingPopup();
     
 protected:
-    RankingPopup(Type type = Type::RANKING);
+    RankingPopup(PopupType type = PopupType::RANKING);
     
     virtual bool init() override;
     virtual void onEnter() override;

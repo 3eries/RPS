@@ -34,7 +34,7 @@ static const vector<Member> MEMBERS = {
 
 static const std::string FONT_NORMAL = "fonts/BorisBlackBloxx.ttf";
 
-CreditPopup::CreditPopup() : BasePopup(Type::CREDIT) {
+CreditPopup::CreditPopup() : BasePopup(PopupType::CREDIT) {
 }
 
 CreditPopup::~CreditPopup() {

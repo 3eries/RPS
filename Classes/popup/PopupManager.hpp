@@ -14,7 +14,9 @@
 #include "superbomb.h"
 
 #include "BasePopup.hpp"
+#include "PopupDefine.h"
 #include "PopupListener.hpp"
+
 #include "CharacterManager.hpp"
 
 class PopupManager {
@@ -32,16 +34,16 @@ public:
     void addPopup(BasePopup *popup);
     void removePopup(BasePopup *popup);
     
-    static BasePopup* getPopup(BasePopup::Type type);
+    static BasePopup* getPopup(PopupType type);
     static BasePopup* getFrontPopup();
     static size_t     getPopupCount();
-    static size_t     getPopupCount(BasePopup::Type type);
+    static size_t     getPopupCount(PopupType type);
     static size_t     getLargePopupCount();
-    static bool       exists(BasePopup::Type type);
+    static bool       exists(PopupType type);
     
 public:
-    static void show(OnPopupEvent onEventListener, BasePopup::Type type);
-    static void show(BasePopup::Type type);
+    static void show(OnPopupEvent onEventListener, PopupType type);
+    static void show(PopupType type);
     static void showGetCharacterPopup(const Characters &characters);
     
     static void cross(OnPopupEvent onEventListener,
@@ -50,7 +52,7 @@ public:
     static void cross(BasePopup *popup1, BasePopup *popup2,
                       BasePopup *popup3 = nullptr);
     
-    static BasePopup* createPopup(BasePopup::Type type);
+    static BasePopup* createPopup(PopupType type);
     
 public:
     void addListener(PopupListener *listener);

@@ -44,21 +44,21 @@ PopupManager::~PopupManager() {
 
 string PopupManager::getPopupInfo() {
     
-    auto getPopupName = [](BasePopup::Type type) -> string {
+    auto getPopupName = [](PopupType type) -> string {
         switch( type ) {
-            case BasePopup::Type::NONE:              return "NONE";
-            case BasePopup::Type::LOADING_BAR:       return "LOADING_BAR";
-            case BasePopup::Type::EXIT_APP:          return "EXIT_APP";
-            case BasePopup::Type::REVIEW:            return "REVIEW";
-            case BasePopup::Type::CREDIT:            return "CREDIT";
-            case BasePopup::Type::SHOP:              return "SHOP";
-            case BasePopup::Type::GET_CHARACTER:     return "GET_CHARACTER";
-            case BasePopup::Type::SETTING:           return "SETTING";
-            case BasePopup::Type::RANKING:           return "RANKING";
-            case BasePopup::Type::NEW_RECORD:        return "NEW_RECORD";
-            case BasePopup::Type::PAUSE:             return "PAUSE";
-            case BasePopup::Type::GAME_OVER:         return "GAME_OVER";
-            case BasePopup::Type::CONTINUE:          return "CONTINUE";
+            case PopupType::NONE:              return "NONE";
+            case PopupType::LOADING_BAR:       return "LOADING_BAR";
+            case PopupType::EXIT_APP:          return "EXIT_APP";
+            case PopupType::REVIEW:            return "REVIEW";
+            case PopupType::CREDIT:            return "CREDIT";
+            case PopupType::SHOP:              return "SHOP";
+            case PopupType::GET_CHARACTER:     return "GET_CHARACTER";
+            case PopupType::SETTING:           return "SETTING";
+            case PopupType::RANKING:           return "RANKING";
+            case PopupType::NEW_RECORD:        return "NEW_RECORD";
+            case PopupType::PAUSE:             return "PAUSE";
+            case PopupType::GAME_OVER:         return "GAME_OVER";
+            case PopupType::CONTINUE:          return "CONTINUE";
             default: break;
         };
         
@@ -84,7 +84,7 @@ string PopupManager::getPopupInfo() {
 void PopupManager::addPopup(BasePopup *popup) {
     
     CCASSERT(popup != nullptr, "PopupManager::addPopup error: popup must be not null");
-    CCASSERT(popup->getType() != BasePopup::Type::NONE, "PopupManager::addPopup error: type must be not none");
+    CCASSERT(popup->getType() != PopupType::NONE, "PopupManager::addPopup error: type must be not none");
     CCASSERT(!popups.contains(popup), "PopupManager::addPopup error: popup already added");
     
     popups.pushBack(popup);
@@ -109,7 +109,7 @@ void PopupManager::removePopup(BasePopup *popup) {
 /**
  * 해당 타입의 팝업 반환
  */
-BasePopup* PopupManager::getPopup(BasePopup::Type type) {
+BasePopup* PopupManager::getPopup(PopupType type) {
     
     auto popups = getInstance()->popups;
     
@@ -150,7 +150,7 @@ size_t PopupManager::getPopupCount() {
 /**
  * 해당 타입의 팝업 갯수를 반환합니다
  */
-size_t PopupManager::getPopupCount(BasePopup::Type type) {
+size_t PopupManager::getPopupCount(PopupType type) {
     
     auto popups = getInstance()->popups;
     size_t cnt = 0;
@@ -174,9 +174,9 @@ size_t PopupManager::getLargePopupCount() {
     size_t cnt = 0;
     
     for( auto popup : popups ) {
-        if( popup->getType() == BasePopup::Type::RANKING ||
-            popup->getType() == BasePopup::Type::NEW_RECORD ||
-            popup->getType() == BasePopup::Type::GAME_OVER ) {
+        if( popup->getType() == PopupType::RANKING ||
+            popup->getType() == PopupType::NEW_RECORD ||
+            popup->getType() == PopupType::GAME_OVER ) {
             cnt++;
         }
     }
@@ -187,7 +187,7 @@ size_t PopupManager::getLargePopupCount() {
 /**
  * 해당 타입의 팝업 존재 여부 반환
  */
-bool PopupManager::exists(BasePopup::Type type) {
+bool PopupManager::exists(PopupType type) {
     
     return getPopup(type) != nullptr;
 }
@@ -195,7 +195,7 @@ bool PopupManager::exists(BasePopup::Type type) {
 /**
  * 팝업 노출
  */
-void PopupManager::show(OnPopupEvent onEventListener, BasePopup::Type type) {
+void PopupManager::show(OnPopupEvent onEventListener, PopupType type) {
     
     auto popup = createPopup(type);
     popup->setOnPopupEventListener([=](Node *sender, PopupEventType eventType) {
@@ -204,15 +204,12 @@ void PopupManager::show(OnPopupEvent onEventListener, BasePopup::Type type) {
             onEventListener(sender, eventType);
         }
     });
-    popup->setOnDismissListener([=](Node*) {
-    });
-    
-    SceneManager::getInstance()->getScene()->addChild(popup, PopupZOrder::BOTTOM);
+    SceneManager::getInstance()->getScene()->addChild(popup, ZOrder::POPUP_BOTTOM);
     
     popup->runEnterAction();
 }
 
-void PopupManager::show(BasePopup::Type type) {
+void PopupManager::show(PopupType type) {
 
     show(nullptr, type);
 }
@@ -246,7 +243,7 @@ void PopupManager::showGetCharacterPopup(const Characters &characters) {
             nextPopup->setVisible(true);
             nextPopup->onEnterActionFinished();
         });
-        SceneManager::getInstance()->getScene()->addChild(popup, PopupZOrder::TOP);
+        SceneManager::getInstance()->getScene()->addChild(popup, ZOrder::POPUP_TOP);
         
         getCharacterPopups.push_back(popup);
     }
@@ -358,7 +355,7 @@ void PopupManager::cross(OnPopupEvent onEventListener,
 //        }
         
         // Step 2. 2번 팝업 등장
-        SceneManager::getScene()->addChild(popup2, PopupZOrder::BOTTOM);
+        SceneManager::getScene()->addChild(popup2, ZOrder::POPUP_BOTTOM);
         popup2->runEnterAction();
     });
     
@@ -370,11 +367,11 @@ void PopupManager::cross(BasePopup *popup1, BasePopup *popup2, BasePopup *popup3
     cross(nullptr, popup1, popup2, popup3);
 }
 
-BasePopup* PopupManager::createPopup(BasePopup::Type type) {
+BasePopup* PopupManager::createPopup(PopupType type) {
     
     switch( type ) {
-        case BasePopup::Type::SHOP:                  return ShopPopup::create();
-        case BasePopup::Type::RANKING:               return RankingPopup::create();
+        case PopupType::SHOP:                  return ShopPopup::create();
+        case PopupType::RANKING:               return RankingPopup::create();
         default:
             return nullptr;
     }

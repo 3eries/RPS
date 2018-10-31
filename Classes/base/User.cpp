@@ -114,7 +114,7 @@ bool User::checkReview(float popupDelay) {
                 
                 popup->dismissWithAction();
             });
-            SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+            SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
         });
     };
     

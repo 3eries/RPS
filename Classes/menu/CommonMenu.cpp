@@ -81,9 +81,9 @@ void CommonMenu::addPopupListener() {
         
         // 팝업 등/퇴장에 따른 우상단 버튼 설정
         switch( type ) {
-            case BasePopup::Type::EXIT_APP:
-            case BasePopup::Type::RANKING: {
-            // case BasePopup::Type::SETTING: {
+            case PopupType::EXIT_APP:
+            case PopupType::RANKING: {
+            // case PopupType::SETTING: {
                 // 등장, 닫기 버튼
                 if( eventType == PopupEventType::ENTER_ACTION ) {
                     topMenu->setRightMenu(TopMenu::Tag::BACK);
@@ -95,7 +95,7 @@ void CommonMenu::addPopupListener() {
                 
             } break;
                 
-            case BasePopup::Type::PAUSE: {
+            case PopupType::PAUSE: {
                 // 등장, 닫기 버튼
                 if( eventType == PopupEventType::ENTER_ACTION ) {
                     topMenu->setRightMenu(TopMenu::Tag::BACK);
@@ -226,7 +226,7 @@ void CommonMenu::showSettingPopup() {
             default: break;
         }
     });
-    SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+    SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
 }
 
 /**
@@ -235,12 +235,12 @@ void CommonMenu::showSettingPopup() {
 void CommonMenu::showRankingPopup(OnPopupEvent onEventListener) {
     
     if( PopupManager::getPopupCount() == 0 ) {
-        PopupManager::show(onEventListener, BasePopup::Type::RANKING);
+        PopupManager::show(onEventListener, PopupType::RANKING);
         
     } else {
         auto popup1 = PopupManager::getFrontPopup();
-        auto popup2 = PopupManager::createPopup(BasePopup::Type::RANKING);
-        auto popup3 = nullptr; // (popup1->getType() == BasePopup::Type::GAME_OVER) ? popup1 : nullptr;
+        auto popup2 = PopupManager::createPopup(PopupType::RANKING);
+        auto popup3 = nullptr; // (popup1->getType() == PopupType::GAME_OVER) ? popup1 : nullptr;
         
         PopupManager::cross([=](Node *sender, PopupEventType eventType) {
             
@@ -251,12 +251,12 @@ void CommonMenu::showRankingPopup(OnPopupEvent onEventListener) {
             auto popup = dynamic_cast<BasePopup*>(sender);
             
             // 랭킹 팝업 퇴장 후 새로 등장한 팝업이 없는 경우, 이전 팝업을 재등장
-            if( popup->getType() == BasePopup::Type::RANKING &&
+            if( popup->getType() == PopupType::RANKING &&
                 eventType == PopupEventType::EXIT_ACTION_FINISHED ) {
                 CCLOG("RANKING EXIT_ACTION_FINISHED:\n%s", PopupManager::getPopupInfo().c_str());
                 CCLOG("RANKING popup1 scale: %f, %f", popup1->getEnterTimeScale(), popup1->getExitTimeScale());
                 
-                if( PopupManager::getFrontPopup()->getType() == BasePopup::Type::RANKING ) {
+                if( PopupManager::getFrontPopup()->getType() == PopupType::RANKING ) {
                     popup1->runEnterAction([=]() {
                         popup1->setEnterTimeScale(1);
                     });
@@ -275,15 +275,15 @@ void CommonMenu::showShopPopup(OnPopupEvent onEventListener) {
     superbomb::firebase::Analytics::logEvent(FA_EVENT_SHOP);
     
     if( PopupManager::getPopupCount() == 0 ) {
-        PopupManager::show(onEventListener, BasePopup::Type::SHOP);
+        PopupManager::show(onEventListener, PopupType::SHOP);
         
     } else {
         CCLOG("showShopPopup:\n%s", PopupManager::getPopupInfo().c_str());
         
         auto popup1 = PopupManager::getFrontPopup();
-        auto popup2 = PopupManager::createPopup(BasePopup::Type::SHOP);
-        auto popup3 = PopupManager::exists(BasePopup::Type::GAME_OVER) ?
-                                            PopupManager::getPopup(BasePopup::Type::GAME_OVER) : nullptr;
+        auto popup2 = PopupManager::createPopup(PopupType::SHOP);
+        auto popup3 = PopupManager::exists(PopupType::GAME_OVER) ?
+                                            PopupManager::getPopup(PopupType::GAME_OVER) : nullptr;
         
         PopupManager::cross([=](Node *sender, PopupEventType eventType) {
             
@@ -294,7 +294,7 @@ void CommonMenu::showShopPopup(OnPopupEvent onEventListener) {
             auto popup = dynamic_cast<BasePopup*>(sender);
             
             // 랭킹 팝업과 크로스된 경우, 랭킹 팝업은 삭제
-            if( popup->getType() == BasePopup::Type::RANKING &&
+            if( popup->getType() == PopupType::RANKING &&
                 eventType == PopupEventType::EXIT_ACTION_FINISHED ) {
                 popup->dismiss();
             }

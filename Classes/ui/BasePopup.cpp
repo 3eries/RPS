@@ -16,7 +16,7 @@ USING_NS_CC;
 using namespace cocos2d::ui;
 using namespace std;
 
-BasePopup::BasePopup(Type type) : SBBasePopup(),
+BasePopup::BasePopup(PopupType type) : SBBasePopup(),
 type(type),
 popupMgr(PopupManager::getInstance()),
 onPopupEventListener(nullptr),

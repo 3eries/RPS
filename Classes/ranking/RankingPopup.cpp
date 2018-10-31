@@ -22,7 +22,7 @@ const float RankingPopup::SLIDE_OUT_DURATION              = EffectDuration::POPU
 #define                   SLIDE_IN_POSITION               Vec2(0, 0)
 #define                   SLIDE_OUT_POSITION              Vec2TL(0, -stone->getBoundingBox().getMinY())
 
-RankingPopup::RankingPopup(Type type) : BasePopup(type) {
+RankingPopup::RankingPopup(PopupType type) : BasePopup(type) {
     
 }
 
@@ -147,7 +147,7 @@ void RankingPopup::runEnterAction(float duration, SBCallback onFinished) {
     // slide
     runSlideAction(onActionFinished, duration, SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
     
-    if( type == Type::RANKING ) {
+    if( type == PopupType::RANKING ) {
         // 닫기 버튼으로 전환
         SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, duration);
         
@@ -182,7 +182,7 @@ void RankingPopup::runExitAction(float duration, SBCallback onFinished) {
     // slide
     runSlideAction(onActionFinished, duration, SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
     
-    if( type == Type::RANKING ) {
+    if( type == PopupType::RANKING ) {
         // 설정 버튼으로 전환
         SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, duration);
         
@@ -213,7 +213,7 @@ void RankingPopup::onExitActionFinished() {
     
     BasePopup::onExitActionFinished();
     
-    if( getType() == BasePopup::Type::RANKING ) {
+    if( getType() == PopupType::RANKING ) {
         SBAudioEngine::playBGM(SOUND_BGM_MAIN);
     }
 }

@@ -43,7 +43,7 @@ ShopPopup* ShopPopup::create() {
     return nullptr;
 }
 
-ShopPopup::ShopPopup() : BasePopup(Type::SHOP),
+ShopPopup::ShopPopup() : BasePopup(PopupType::SHOP),
 charMgr(CharacterManager::getInstance()),
 pack(charMgr->getPackage(charMgr->getPackageOrder()[0])),
 characterIndex(0) {

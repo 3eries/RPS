@@ -19,7 +19,7 @@ using namespace std;
 static const string SCHEDULER_SHOW_DELAY     = "SCHEDULER_SHOW_DELAY";
 static const string SCHEDULER_DISMISS_DELAY  = "SCHEDULER_DISMISS_DELAY";
 
-CommonLoadingBar::CommonLoadingBar() : BasePopup(Type::LOADING_BAR),
+CommonLoadingBar::CommonLoadingBar() : BasePopup(PopupType::LOADING_BAR),
 isShowing(false),
 uiDelay(0),
 dotCount(0),

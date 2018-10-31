@@ -41,7 +41,7 @@ GameOverPopup* GameOverPopup::create(int score) {
     return nullptr;
 }
 
-GameOverPopup::GameOverPopup(int score) : BasePopup(Type::GAME_OVER),
+GameOverPopup::GameOverPopup(int score) : BasePopup(PopupType::GAME_OVER),
 firstEnterAction(true),
 score(score) {
     
@@ -82,7 +82,7 @@ bool GameOverPopup::init() {
             
             // 앱 종료 알림 팝업 생성
             if( PopupManager::getInstance()->getPopupCount() == 1 &&
-                PopupManager::getInstance()->exists(BasePopup::Type::GAME_OVER) ) {
+                PopupManager::getInstance()->exists(PopupType::GAME_OVER) ) {
                 
                 SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
                 
@@ -91,7 +91,7 @@ bool GameOverPopup::init() {
                     SBSystemUtils::exitApp();
                 });
                 
-                SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+                SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
             }
         };
         

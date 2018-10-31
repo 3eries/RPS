@@ -34,7 +34,7 @@ GetCharacterPopup* GetCharacterPopup::create(Character character) {
     return nullptr;
 }
 
-GetCharacterPopup::GetCharacterPopup(Character character) : BasePopup(Type::GET_CHARACTER),
+GetCharacterPopup::GetCharacterPopup(Character character) : BasePopup(PopupType::GET_CHARACTER),
 character(character) {
     
 }

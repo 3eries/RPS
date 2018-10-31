@@ -14,6 +14,7 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
+#include "PopupDefine.h"
 #include "PopupListener.hpp"
 #include "TopMenu.hpp"
 
@@ -21,27 +22,10 @@ class PopupManager;
 
 class BasePopup : public SBBasePopup {
 public:
-    enum class Type {
-        NONE,
-        LOADING_BAR,
-        EXIT_APP,
-        REVIEW,
-        CREDIT,
-        SHOP,
-        GET_CHARACTER,
-        SETTING,
-        RANKING,
-        NEW_RECORD,
-        PAUSE,
-        GAME_OVER,
-        CONTINUE,
-    };
-    
-public:
     virtual ~BasePopup();
     
 protected:
-    BasePopup(Type type);
+    BasePopup(PopupType type);
     
     virtual bool init() override;
     virtual void onEnter() override;
@@ -70,7 +54,7 @@ public:
     
 protected:
     PopupManager *popupMgr;
-    CC_SYNTHESIZE_READONLY(Type, type, Type);
+    CC_SYNTHESIZE_READONLY(PopupType, type, Type);
     CC_SYNTHESIZE(OnPopupEvent, onPopupEventListener, OnPopupEventListener);
     
     CC_SYNTHESIZE(float, enterTimeScale, EnterTimeScale);       // 등장 연출 타임 스케일
