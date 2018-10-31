@@ -47,35 +47,6 @@ bool MainScene::init() {
     
     firebase::Analytics::setScreenName(FA_SCREEN_MAIN);
     
-    // back key
-    {
-        auto listener = EventListenerKeyboard::create();
-        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
-            
-            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-                return;
-            }
-            
-            if( SceneManager::getInstance()->onBackKeyReleased() ) {
-                return;
-            }
-            
-            // 앱 종료 알림 팝업 생성
-            if( PopupManager::getInstance()->getPopupCount() == 0 ) {
-                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-                
-                auto popup = ExitAlertPopup::create();
-                popup->setOnExitAppListener([=]() {
-                    SBSystemUtils::exitApp();
-                });
-                
-                this->addChild(popup, PopupZOrder::MIDDLE);
-            }
-        };
-        
-        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    }
-    
     initBg();
     initMenu();
     initCommonMenu();
@@ -285,4 +256,33 @@ void MainScene::addPopupListener() {
     };
     
     PopupManager::getInstance()->addListener(listener);
+}
+
+void MainScene::processBackKey() {
+    
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+        
+        if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
+            return;
+        }
+        
+        if( SceneManager::getInstance()->onBackKeyReleased() ) {
+            return;
+        }
+        
+        // 앱 종료 알림 팝업 생성
+        if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+            SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+            
+            auto popup = ExitAlertPopup::create();
+            popup->setOnExitAppListener([=]() {
+                SBSystemUtils::exitApp();
+            });
+            
+            this->addChild(popup, PopupZOrder::MIDDLE);
+        }
+    };
+    
+    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }

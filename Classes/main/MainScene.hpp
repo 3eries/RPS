@@ -42,6 +42,7 @@ private:
     void initMenu();
     
     void addPopupListener();
+    void processBackKey() override;
     
 private:
     void replaceGame();

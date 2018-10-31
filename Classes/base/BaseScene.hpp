@@ -22,8 +22,10 @@ protected:
     virtual ~BaseScene();
     
 protected:
+    virtual bool init() override;
     virtual void initCommonMenu();
-
+    virtual void processBackKey() {};
+    
     virtual void onClick(cocos2d::Node *sender) override {}
     
 protected:

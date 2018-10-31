@@ -21,6 +21,17 @@ BaseScene::~BaseScene() {
     
 }
 
+bool BaseScene::init() {
+    
+    if( !Scene::init() ) {
+        return false;
+    }
+    
+    processBackKey();
+    
+    return true;
+}
+
 void BaseScene::initCommonMenu() {
     
     commonMenu = CommonMenu::create();
