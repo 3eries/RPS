@@ -314,10 +314,6 @@ void ShopPopup::updateViewAdsButton() {
     
     bottomMenu->getChildByTag(Tag::BTN_VIEW_ADS)->setVisible(isAdLoaded);
     bottomMenu->getChildByTag(Tag::IMG_VIEW_ADS_DISABLED)->setVisible(!isAdLoaded);
-    
-    if( isAdLoaded ) {
-        // TODO: 스파인 연출 시작?
-    }
 }
 
 /**
@@ -357,11 +353,6 @@ void ShopPopup::initBottomMenu() {
     bottomMenu->setPosition(Vec2(0, -180));
     addChild(bottomMenu);
     
-    // RSP_btn_left.png Vec2BC(-268, 100) , Size(160, 152)
-    // RSP_btn_right.png Vec2BC(268, 100) , Size(160, 152)
-    // RSP_btn_shop_select.png Vec2BC(0, 100) , Size(352, 152)
-    // RSP_btn_shop_buy.png
-    // RSP_btn_shop_play_movie.png
     vector<SBUIInfo> infos({
         SBUIInfo(Tag::BTN_LEFT,            ANCHOR_M,    Vec2BC(-268, 100),    "RSP_btn_left.png"),
         SBUIInfo(Tag::BTN_RIGHT,           ANCHOR_M,    Vec2BC(268, 100),     "RSP_btn_right.png"),
@@ -411,12 +402,8 @@ void ShopPopup::runEnterAction(float duration, SBCallback onFinished) {
     duration *= enterTimeScale;
     BasePopup::runEnterAction(duration, onFinished);
     
-    CCLOG("ShopPopup::runEnterAction");
-    
     // 액션 완료
     auto onActionFinished = [=]() {
-        CCLOG("ShopPopup::runEnterAction onActionFinished");
-        
         this->onEnterActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
     };
@@ -448,12 +435,8 @@ void ShopPopup::runExitAction(float duration, SBCallback onFinished) {
     duration *= exitTimeScale;
     BasePopup::runExitAction(duration, onFinished);
     
-    CCLOG("ShopPopup::runExitAction");
-    
     // slide out
     runSlideAction([=]() {
-        CCLOG("ShopPopup::runExitAction onActionFinished");
-        
         this->onExitActionFinished();
         SB_SAFE_PERFORM_LISTENER(this, onFinished);
         
