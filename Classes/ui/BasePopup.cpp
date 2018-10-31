@@ -23,11 +23,14 @@ onPopupEventListener(nullptr),
 enterTimeScale(1),
 exitTimeScale(1),
 runningEnterAction(false),
-runningExitAction(false) {
+runningExitAction(false),
+ignoreDismissAction(false),
+toRestoreTopMenu(TopMenu::Tag::NONE) {
 }
 
 BasePopup::~BasePopup() {
     
+    popupMgr->removePopup(this);
 }
 
 bool BasePopup::init() {
@@ -123,7 +126,7 @@ void BasePopup::setBackgroundColor(const Color4B &color) {
 
 void BasePopup::dismissWithAction(SBCallback onFinished) {
     
-    runExitAction([=]() {
+    auto executeDismiss = [=]() {
         
         this->retain();
         
@@ -133,7 +136,13 @@ void BasePopup::dismissWithAction(SBCallback onFinished) {
         
         this->dismiss();
         this->release();
-    });
+    };
+    
+    if( ignoreDismissAction ) {
+        executeDismiss();
+    } else {
+        runExitAction(executeDismiss);
+    }
 }
 
 /**
@@ -144,7 +153,7 @@ void BasePopup::runEnterAction(float duration, SBCallback onFinished) {
     runningEnterAction = true;
     onPopupEvent(PopupEventType::ENTER_ACTION);
     
-    savedTopMenu = SceneManager::getCommonMenu()->getTopMenu()->getSelectedRightMenu();
+    toRestoreTopMenu = SceneManager::getCommonMenu()->getTopMenu()->getSelectedRightMenu();
 }
 
 void BasePopup::runEnterAction(SBCallback onFinished) {

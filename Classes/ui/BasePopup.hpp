@@ -15,6 +15,7 @@
 #include "superbomb.h"
 
 #include "PopupListener.hpp"
+#include "TopMenu.hpp"
 
 class PopupManager;
 
@@ -77,7 +78,12 @@ protected:
     
     SB_SYNTHESIZE_BOOL(runningEnterAction, RunningEnterAction); // 등장 연출 진행 여부
     SB_SYNTHESIZE_BOOL(runningExitAction, RunningExitAction);   // 퇴장 연출 진행 여부
-    TopMenu::Tag savedTopMenu;
+    
+    // 팝업 제거 시 퇴장 연출 무시 여부
+    SB_SYNTHESIZE_BOOL(ignoreDismissAction, IgnoreDismissAction);
+    
+    // 복원할 상단 메뉴
+    CC_SYNTHESIZE(TopMenu::Tag, toRestoreTopMenu, ToRestoreTopMenu);
 };
 
 #endif /* BasePopup_hpp */
