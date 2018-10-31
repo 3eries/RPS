@@ -41,7 +41,9 @@ private:
     void initBg();
     void initMenu();
     
-    void addPopupListener();
+    void initIAPListener();
+    void initPopupListener();
+    
     void processBackKey() override;
     
 private:

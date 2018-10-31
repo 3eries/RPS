@@ -51,28 +51,7 @@ bool MainScene::init() {
     initMenu();
     initCommonMenu();
     
-    // IAP 리스너
-    {
-        auto onRemoveAds = [=]() {
-            // vip 마크 표시
-            contentView->getChildByTag(Tag::BTN_REMOVE_ADS)->setVisible(false);
-            contentView->getChildByTag(Tag::VIP_MARK)->setVisible(true);
-        };
-        
-        // purchase listener
-        auto purchaseListener = iap::PurchaseListener::create();
-        purchaseListener->setForever(true);
-        purchaseListener->onRemoveAds = onRemoveAds;
-        
-        iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
-        
-        // restore listener
-        auto restoreListener = iap::RestoreListener::create();
-        restoreListener->setForever(true);
-        restoreListener->onRemoveAds = onRemoveAds;
-        
-        iap::IAPHelper::getInstance()->addListener(this, restoreListener);
-    }
+    initIAPListener();
     
     return true;
 }
@@ -81,7 +60,7 @@ void MainScene::onEnter() {
     
     BaseScene::onEnter();
     
-    addPopupListener();
+    initPopupListener();
     
     // bgm
     scheduleOnce([=](float) {
@@ -220,7 +199,36 @@ void MainScene::initMenu() {
     }
 }
 
-void MainScene::addPopupListener() {
+/**
+ * 인앱 결제 리스너 초기화
+ */
+void MainScene::initIAPListener() {
+    
+    auto onRemoveAds = [=]() {
+        // vip 마크 표시
+        contentView->getChildByTag(Tag::BTN_REMOVE_ADS)->setVisible(false);
+        contentView->getChildByTag(Tag::VIP_MARK)->setVisible(true);
+    };
+    
+    // purchase listener
+    auto purchaseListener = iap::PurchaseListener::create();
+    purchaseListener->setForever(true);
+    purchaseListener->onRemoveAds = onRemoveAds;
+    
+    iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+    
+    // restore listener
+    auto restoreListener = iap::RestoreListener::create();
+    restoreListener->setForever(true);
+    restoreListener->onRemoveAds = onRemoveAds;
+    
+    iap::IAPHelper::getInstance()->addListener(this, restoreListener);
+}
+
+/**
+ * 팝업 리스너 초기화
+ */
+void MainScene::initPopupListener() {
     
     auto listener = PopupListener::create();
     listener->setTarget(this);
