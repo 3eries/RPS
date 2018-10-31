@@ -50,6 +50,7 @@ public:
 // getter
 public:
     static SceneType     getSceneType();
+    static SceneType     getPreviousSceneType();
     static bool          isGameScene();
     static BaseScene*    getScene();
     static CommonMenu*   getCommonMenu();
@@ -57,6 +58,7 @@ public:
     
 private:
     SceneType sceneType;
+    SceneType prevSceneType;
     BaseScene *scene;
     GameView *gameView;
     

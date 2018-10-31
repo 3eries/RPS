@@ -37,6 +37,7 @@ void SceneManager::destroyInstance() {
 
 SceneManager::SceneManager() :
 sceneType(SceneType::NONE),
+prevSceneType(SceneType::NONE),
 scene(nullptr),
 gameView(nullptr),
 isRunningReplaceScene(false) {
@@ -92,7 +93,7 @@ void SceneManager::replace(SceneType type, function<BaseScene*()> createSceneFun
         return;
     }
     
-    auto prevSceneType = sceneType;
+    prevSceneType = sceneType;
     auto prevScene = scene;
     
     isRunningReplaceScene = true;
@@ -185,6 +186,10 @@ bool SceneManager::onBackKeyReleased() {
 
 SceneType SceneManager::getSceneType() {
     return instance->sceneType;
+}
+
+SceneType SceneManager::getPreviousSceneType() {
+    return instance->prevSceneType;
 }
 
 bool SceneManager::isGameScene() {
