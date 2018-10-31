@@ -391,6 +391,8 @@ void NavigationItem::onEnter() {
     // 캐릭터 리스너 초기화
     auto listener = CharacterListener::create();
     listener->setTarget(this);
+    
+    // 패키지 해제
     listener->onPackageUnlocked = [=](Packages packages) {
         
         bool found = false;
@@ -403,6 +405,7 @@ void NavigationItem::onEnter() {
         }
         
         if( found ) {
+            this->setTouchEnabled(false);
             SB_SAFE_SHOW(unlockedMark);
             SB_SAFE_HIDE(buyMark);
         }
