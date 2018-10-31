@@ -14,8 +14,8 @@
 #include "superbomb.h"
 
 #include "BasePopup.hpp"
-
 #include "PopupListener.hpp"
+#include "CharacterManager.hpp"
 
 class PopupManager {
 public:
@@ -64,6 +64,10 @@ public:
 private:
     CC_SYNTHESIZE_READONLY(cocos2d::Vector<BasePopup*>, popups, Popups);
     cocos2d::Vector<PopupListener*> listeners;
+    
+    // 캐릭터 획득 팝업 리스트
+    // 팝업 소멸 시 리스트에서도 제거된다
+    std::vector<BasePopup*> getCharacterPopups;
 };
 
 #endif /* PopupManager_hpp */

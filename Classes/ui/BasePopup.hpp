@@ -27,6 +27,7 @@ public:
         REVIEW,
         CREDIT,
         SHOP,
+        GET_CHARACTER,
         SETTING,
         RANKING,
         NEW_RECORD,
