@@ -89,7 +89,7 @@ void MainScene::onEnterTransitionDidFinish() {
     }
     
     // 패키지 DB 업데이트, DAILY_LOGIN
-    if( SBDirector::isTodayFirstRun() ) {
+    if( SBDirector::isTodayFirstRun() && SceneManager::getPreviousSceneType() == SceneType::SPLASH ) {
         CharacterListener listener;
         listener.onCharacterUnlocked = [=](Characters characters) {
             PopupManager::showGetCharacterPopup(characters);
