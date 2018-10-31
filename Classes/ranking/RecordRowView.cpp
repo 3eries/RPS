@@ -7,7 +7,7 @@
 
 #include "RecordRowView.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 
 USING_NS_CC;
 using namespace std;

@@ -8,7 +8,7 @@
 
 #include <spine/spine-cocos2dx.h>
 
-#include "RSP.h"
+#include "Define.h"
 #include "UserDefaultKey.h"
 #include "PatchManager.hpp"
 #include "ResourceHelper.hpp"

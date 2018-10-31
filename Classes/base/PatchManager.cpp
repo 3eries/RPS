@@ -7,7 +7,7 @@
 
 #include "PatchManager.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "UserDefaultKey.h"
 #include "GameConfiguration.hpp"
 

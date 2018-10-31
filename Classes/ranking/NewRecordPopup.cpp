@@ -7,7 +7,7 @@
 
 #include "NewRecordPopup.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "UIHelper.hpp"
 #include "SceneManager.h"
 #include "UserDefaultKey.h"

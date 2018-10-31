@@ -7,7 +7,7 @@
 
 #include "RankingPopup.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "UIHelper.hpp"
 #include "SceneManager.h"
 #include "PopupManager.hpp"

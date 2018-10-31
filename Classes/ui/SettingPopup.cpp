@@ -7,7 +7,7 @@
 
 #include "SettingPopup.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "User.hpp"
 #include "UserDefaultKey.h"
 

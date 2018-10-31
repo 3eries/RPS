@@ -15,7 +15,7 @@
 #include "superbomb.h"
 
 #include "BaseScene.hpp"
-#include "RSP.h"
+#include "Define.h"
 
 #include "GameManager.hpp"
 

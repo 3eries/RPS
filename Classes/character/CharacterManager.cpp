@@ -11,7 +11,7 @@
 #include "json/stringbuffer.h"
 #include "json/prettywriter.h"
 
-#include "RSP.h"
+#include "Define.h"
 
 USING_NS_CC;
 using namespace std;

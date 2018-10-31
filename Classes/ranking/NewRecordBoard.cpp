@@ -7,7 +7,7 @@
 
 #include "NewRecordBoard.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "UserDefaultKey.h"
 
 USING_NS_CC;

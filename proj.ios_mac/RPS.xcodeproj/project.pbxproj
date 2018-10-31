@@ -254,7 +254,7 @@
 		1D45C44520A8A787007E63AD /* SceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneManager.h; sourceTree = "<group>"; };
 		1D45C44620A8A787007E63AD /* SceneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneManager.cpp; sourceTree = "<group>"; };
 		1D45C44720A8A787007E63AD /* UserDefaultKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultKey.h; sourceTree = "<group>"; };
-		1D45C44920A8A795007E63AD /* RSP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RSP.h; sourceTree = "<group>"; };
+		1D45C44920A8A795007E63AD /* Define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Define.h; sourceTree = "<group>"; };
 		1D45C44E20A8A7B8007E63AD /* SBUIInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SBUIInfo.cpp; sourceTree = "<group>"; };
 		1D45C44F20A8A7B8007E63AD /* SBUIInfo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SBUIInfo.hpp; sourceTree = "<group>"; };
 		1D45C45120A8A7B8007E63AD /* SBButton.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SBButton.hpp; sourceTree = "<group>"; };
@@ -600,6 +600,7 @@
 			children = (
 				1D4C659B21008BB8005A43D8 /* BaseScene.cpp */,
 				1D4C659C21008BB8005A43D8 /* BaseScene.hpp */,
+				1D45C44920A8A795007E63AD /* Define.h */,
 				1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */,
 				1DF7736C20EEF7F000BB3261 /* FunnyHelper.hpp */,
 				1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */,
@@ -608,7 +609,6 @@
 				1D97ED8F20C7348D0027C319 /* PatchManager.hpp */,
 				1D1F3C8B20ACD36F0035A36C /* ResourceHelper.cpp */,
 				1D1F3C8C20ACD36F0035A36C /* ResourceHelper.hpp */,
-				1D45C44920A8A795007E63AD /* RSP.h */,
 				1D45C44620A8A787007E63AD /* SceneManager.cpp */,
 				1D45C44520A8A787007E63AD /* SceneManager.h */,
 				1DA98BD020B47E66006BC169 /* User.cpp */,

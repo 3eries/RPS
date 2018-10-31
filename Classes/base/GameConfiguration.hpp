@@ -12,7 +12,7 @@
 
 #include "cocos2d.h"
 #include "superbomb.h"
-#include "RSP.h"
+#include "Define.h"
 
 struct TimeInfo {
     float maxPoint;               // 최대 포인트

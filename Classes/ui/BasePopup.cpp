@@ -7,7 +7,7 @@
 
 #include "BasePopup.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "PopupManager.hpp"
 #include "SceneManager.h"
 #include "UIHelper.hpp"

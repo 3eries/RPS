@@ -12,7 +12,7 @@
 
 #include "cocos2d.h"
 #include "superbomb.h"
-#include "RSP.h"
+#include "Define.h"
 
 #include "../GameManager.hpp"
 #include "CharacterManager.hpp"

@@ -7,7 +7,7 @@
 
 #include "CommonMenu.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "SceneManager.h"
 #include "PopupManager.hpp"
 #include "UIHelper.hpp"

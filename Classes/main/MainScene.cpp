@@ -7,7 +7,7 @@
 
 #include "MainScene.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "User.hpp"
 #include "SceneManager.h"
 #include "PopupManager.hpp"

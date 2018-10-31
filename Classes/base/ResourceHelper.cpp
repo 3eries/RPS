@@ -8,7 +8,7 @@
 #include "ResourceHelper.hpp"
 
 #include "superbomb.h"
-#include "RSP.h"
+#include "Define.h"
 
 USING_NS_CC;
 using namespace std;

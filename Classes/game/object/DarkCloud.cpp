@@ -7,7 +7,7 @@
 
 #include "DarkCloud.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "UserDefaultKey.h"
 #include "TestHelper.hpp"
 

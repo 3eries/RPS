@@ -14,7 +14,7 @@
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
 
-#include "RSP.h"
+#include "Define.h"
 
 class RSPButton : public cocos2d::ui::Widget {
 public:

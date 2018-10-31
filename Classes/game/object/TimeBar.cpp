@@ -7,7 +7,7 @@
 
 #include "TimeBar.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "GameConfiguration.hpp"
 #include "UserDefaultKey.h"
 #include "TestHelper.hpp"

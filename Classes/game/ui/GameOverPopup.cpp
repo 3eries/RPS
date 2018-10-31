@@ -7,7 +7,7 @@
 
 #include "GameOverPopup.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 #include "PopupManager.hpp"

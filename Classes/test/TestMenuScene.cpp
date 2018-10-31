@@ -7,7 +7,7 @@
 
 #include "TestMenuScene.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "User.hpp"
 #include "SceneManager.h"
 #include "RankingManager.hpp"

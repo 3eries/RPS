@@ -6,7 +6,7 @@
 
 #include "SceneManager.h"
 
-#include "RSP.h"
+#include "Define.h"
 
 #include "../splash/SplashScene.hpp"
 #include "../main/MainScene.hpp"

@@ -9,7 +9,7 @@
 
 #include <spine/spine-cocos2dx.h>
 
-#include "RSP.h"
+#include "Define.h"
 #include "../game/GameDefine.h"
 
 USING_NS_CC;

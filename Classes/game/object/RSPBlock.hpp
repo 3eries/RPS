@@ -13,7 +13,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
-#include "RSP.h"
+#include "Define.h"
 
 class RSPBlock : public cocos2d::Sprite {
 public:

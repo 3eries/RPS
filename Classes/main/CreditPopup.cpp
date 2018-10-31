@@ -7,7 +7,7 @@
 
 #include "CreditPopup.hpp"
 
-#include "RSP.h"
+#include "Define.h"
 #include "UIHelper.hpp"
 
 USING_NS_CC;

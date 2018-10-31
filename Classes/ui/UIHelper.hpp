@@ -13,7 +13,7 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 #include "superbomb.h"
-#include "RSP.h"
+#include "Define.h"
 
 // 버튼 정의
 enum class ButtonType {

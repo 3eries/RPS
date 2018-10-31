@@ -1,12 +1,12 @@
 //
-//  RSP.h
-//  RSP
+//  Define.h
+//  Define
 //
-//  Created by seongmin hwang on 2018. 5. 14..
+//  Created by seongmin hwang
 //
 
-#ifndef RSP_h
-#define RSP_h
+#ifndef Define_h
+#define Define_h
 
 #include "cocos2d.h"
 #include "superbomb.h"
@@ -250,4 +250,4 @@ static std::string typeToString(RSPType type) {
     }
 }
 
-#endif /* RSP_h */
+#endif /* Define_h */
