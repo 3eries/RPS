@@ -566,57 +566,7 @@ bool GameScene::onClickBottomMenu(BottomMenu::Tag tag) {
             
         } return true;
             
-        // 랭킹
-        case BottomMenu::Tag::RANKING_LOCAL: {
-            const float POPUP_EFFECT_TIME_SCALE = 0.7f;
-            
-            // Step 1. 게임 오버 팝업 퇴장
-            auto gameOverPopup = PopupManager::getInstance()->getPopup(BasePopup::Type::GAME_OVER);
-            gameOverPopup->setExitTimeScale(POPUP_EFFECT_TIME_SCALE);
-            gameOverPopup->runExitAction([=]() {
-                
-                // Step 2. 랭킹 팝업 등장
-//                commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, 0);
-//                commonMenu->getTopMenu()->openMenu(RankingPopup::SLIDE_IN_DURATION);
-                
-                commonMenu->showRankingPopup([=](Node *sender, PopupEventType eventType) {
-                    
-                    auto rankingPopup = (RankingPopup*)sender;
-                    
-                    switch( eventType ) {
-                        // 랭킹 등장
-                        case PopupEventType::ENTER: {
-                            rankingPopup->setEnterTimeScale(POPUP_EFFECT_TIME_SCALE);
-                            rankingPopup->setExitTimeScale(POPUP_EFFECT_TIME_SCALE);
-                        } break;
-                    
-                        // 랭킹 퇴장 연출 시작
-                        case PopupEventType::EXIT_ACTION: {
-                            // commonMenu->getTopMenu()->closeMenu(RankingPopup::SLIDE_OUT_DURATION);
-                        } break;
-                    
-                        // 랭킹 퇴장 완료
-                        case PopupEventType::EXIT_ACTION_FINISHED: {
-                             // 게임 오버 재등장
-                            // commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, 0);
-                            // commonMenu->getTopMenu()->openMenu(GameOverPopup::SLIDE_IN_DURATION);
-                            
-                            gameOverPopup->setEnterTimeScale(POPUP_EFFECT_TIME_SCALE);
-                            gameOverPopup->runEnterAction();
-                            
-                        } break;
-                            
-                        default: break;
-                    }
-                });
-            });
-            
-            commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::BACK);
-            
-        } return true;
-            
-        default:
-            break;
+        default: break;
     }
     
     return false;

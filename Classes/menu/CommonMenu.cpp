@@ -15,6 +15,7 @@
 #include "CommonLoadingBar.hpp"
 #include "SettingPopup.hpp"
 #include "RankingPopup.hpp"
+#include "ShopPopup.hpp"
 
 USING_NS_CC;
 USING_NS_SB;
@@ -167,33 +168,6 @@ void CommonMenu::setTouchEnabled(bool enabled) {
 }
 
 /**
- * 로컬 랭킹 팝업 노출
- */
-void CommonMenu::showRankingPopup(OnPopupEvent onEventListener) {
-    
-    bottomMenu->setRankingButton(BottomMenu::Tag::RANKING_WORLD);
-    
-    auto popup = RankingPopup::create();
-    popup->setOnPopupEventListener([=](Node *sender, PopupEventType eventType) {
-        
-        if( onEventListener ) {
-            onEventListener(sender, eventType);
-        }
-    });
-    popup->setOnDismissListener([=](Node*) {
-//        this->runTopMenuEnterAction(RankingPopup::SLIDE_OUT_DURATION * 0.75f);
-//        this->setRankingButton(Tag::RANKING_LOCAL);
-        
-        bottomMenu->setRankingButton(BottomMenu::Tag::RANKING_LOCAL);
-    });
-    
-    SceneManager::getInstance()->getScene()->addChild(popup, PopupZOrder::BOTTOM);
-    
-    // 연출
-    popup->runEnterAction();
-}
-
-/**
  * 설정 팝업 노출
  */
 void CommonMenu::showSettingPopup() {
@@ -215,18 +189,18 @@ void CommonMenu::showSettingPopup() {
                 }
                 
                 /*
-                auto listener = iap::RestoreListener::create();
-                listener->setTarget(this);
-                listener->onPurchased = [=](const iap::Item &item) {
-                    
-                };
-                listener->onFinished = [=](bool result) {
-                    
-                };
-                
-                iap::IAPHelper::restore(listener);
+                 auto listener = iap::RestoreListener::create();
+                 listener->setTarget(this);
+                 listener->onPurchased = [=](const iap::Item &item) {
+                 
+                 };
+                 listener->onFinished = [=](bool result) {
+                 
+                 };
+                 
+                 iap::IAPHelper::restore(listener);
                  */
-
+                
             } break;
                 
             // remove ads
@@ -253,6 +227,80 @@ void CommonMenu::showSettingPopup() {
         }
     });
     SceneManager::getScene()->addChild(popup, PopupZOrder::MIDDLE);
+}
+
+/**
+ * 로컬 랭킹 팝업 노출
+ */
+void CommonMenu::showRankingPopup(OnPopupEvent onEventListener) {
+    
+    if( PopupManager::getPopupCount() == 0 ) {
+        PopupManager::show(onEventListener, BasePopup::Type::RANKING);
+        
+    } else {
+        auto popup1 = PopupManager::getFrontPopup();
+        auto popup2 = PopupManager::createPopup(BasePopup::Type::RANKING);
+        auto popup3 = nullptr; // (popup1->getType() == BasePopup::Type::GAME_OVER) ? popup1 : nullptr;
+        
+        PopupManager::cross([=](Node *sender, PopupEventType eventType) {
+            
+            if( onEventListener ) {
+                onEventListener(sender, eventType);
+            }
+            
+            auto popup = dynamic_cast<BasePopup*>(sender);
+            
+            // 랭킹 팝업 퇴장 후 새로 등장한 팝업이 없는 경우, 이전 팝업을 재등장
+            if( popup->getType() == BasePopup::Type::RANKING &&
+                eventType == PopupEventType::EXIT_ACTION_FINISHED ) {
+                CCLOG("RANKING EXIT_ACTION_FINISHED:\n%s", PopupManager::getPopupInfo().c_str());
+                CCLOG("RANKING popup1 scale: %f, %f", popup1->getEnterTimeScale(), popup1->getExitTimeScale());
+                
+                if( PopupManager::getFrontPopup()->getType() == BasePopup::Type::RANKING ) {
+                    popup1->runEnterAction([=]() {
+                        popup1->setEnterTimeScale(1);
+                    });
+                }
+            }
+            
+        }, popup1, popup2, popup3);
+    }
+}
+
+/**
+ * 상점 팝업 노출
+ */
+void CommonMenu::showShopPopup(OnPopupEvent onEventListener) {
+    
+    superbomb::firebase::Analytics::logEvent(FA_EVENT_SHOP);
+    
+    if( PopupManager::getPopupCount() == 0 ) {
+        PopupManager::show(onEventListener, BasePopup::Type::SHOP);
+        
+    } else {
+        CCLOG("showShopPopup:\n%s", PopupManager::getPopupInfo().c_str());
+        
+        auto popup1 = PopupManager::getFrontPopup();
+        auto popup2 = PopupManager::createPopup(BasePopup::Type::SHOP);
+        auto popup3 = PopupManager::exists(BasePopup::Type::GAME_OVER) ?
+                                            PopupManager::getPopup(BasePopup::Type::GAME_OVER) : nullptr;
+        
+        PopupManager::cross([=](Node *sender, PopupEventType eventType) {
+            
+            if( onEventListener ) {
+                onEventListener(sender, eventType);
+            }
+            
+            auto popup = dynamic_cast<BasePopup*>(sender);
+            
+            // 랭킹 팝업과 크로스된 경우, 랭킹 팝업은 삭제
+            if( popup->getType() == BasePopup::Type::RANKING &&
+                eventType == PopupEventType::EXIT_ACTION_FINISHED ) {
+                popup->dismiss();
+            }
+            
+        }, popup1, popup2, popup3);
+    }
 }
 
 /**
@@ -362,7 +410,7 @@ void CommonMenu::onClickBottomMenu(BottomMenu::Tag tag) {
             
         // 상점
         case BottomMenu::Tag::SHOP: {
-            superbomb::firebase::Analytics::logEvent(FA_EVENT_SHOP_COMING_SOON);
+            showShopPopup();
         } break;
             
         default:

@@ -147,9 +147,12 @@ void RankingPopup::runEnterAction(float duration, SBCallback onFinished) {
     // slide
     runSlideAction(onActionFinished, duration, SLIDE_OUT_POSITION, SLIDE_IN_POSITION);
     
-    // 닫기 버튼으로 전환
     if( type == Type::RANKING ) {
+        // 닫기 버튼으로 전환
         SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::BACK, duration);
+        
+        // 월드 랭킹 버튼으로 전환
+        SceneManager::getCommonMenu()->getBottomMenu()->setRankingButton(BottomMenu::Tag::RANKING_WORLD);
     }
 }
 
@@ -179,9 +182,12 @@ void RankingPopup::runExitAction(float duration, SBCallback onFinished) {
     // slide
     runSlideAction(onActionFinished, duration, SLIDE_IN_POSITION, SLIDE_OUT_POSITION);
     
-    // 설정 버튼으로 전환
     if( type == Type::RANKING ) {
+        // 설정 버튼으로 전환
         SceneManager::getCommonMenu()->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, duration);
+        
+        // 로컬 랭킹 버튼으로 전환
+        SceneManager::getCommonMenu()->getBottomMenu()->setRankingButton(BottomMenu::Tag::RANKING_LOCAL);
     }
 }
 

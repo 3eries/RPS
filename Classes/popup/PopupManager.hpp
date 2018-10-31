@@ -23,6 +23,8 @@ public:
     static void destroyInstance();
     ~PopupManager();
     
+    static std::string getPopupInfo();
+    
 private:
     PopupManager();
     
@@ -37,8 +39,20 @@ public:
     static size_t     getLargePopupCount();
     static bool       exists(BasePopup::Type type);
     
-    bool       exists(BasePopup::Type type);
+public:
+    static void show(OnPopupEvent onEventListener, BasePopup::Type type);
+    static void show(BasePopup::Type type);
+    static void showGetCharacterPopup(const Characters &characters);
     
+    static void cross(OnPopupEvent onEventListener,
+                      BasePopup *popup1, BasePopup *popup2,
+                      BasePopup *popup3 = nullptr);
+    static void cross(BasePopup *popup1, BasePopup *popup2,
+                      BasePopup *popup3 = nullptr);
+    
+    static BasePopup* createPopup(BasePopup::Type type);
+    
+public:
     void addListener(PopupListener *listener);
     void addListener(cocos2d::Node *target, PopupListener *listener);
     

@@ -48,8 +48,9 @@ public:
     void setVisible(bool visible) override;
     void setTouchEnabled(bool enabled);
     
-    void showRankingPopup(OnPopupEvent onEventListener = nullptr);
     void showSettingPopup();
+    void showRankingPopup(OnPopupEvent onEventListener = nullptr);
+    void showShopPopup(OnPopupEvent onEventListener = nullptr);
     
     void showLeaderboards();
     
