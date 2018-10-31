@@ -40,8 +40,8 @@ private:
     void showArrows();
     
 private:
-    CC_SYNTHESIZE(PackageListener, onPackageChangedListener, OnPackageChangedListener);
-    CC_SYNTHESIZE(PackageListener, onPackagePurchaseListener, OnPackagePurchaseListener);
+    CC_SYNTHESIZE(OnPackageListener, onPackageChangedListener, OnPackageChangedListener);
+    CC_SYNTHESIZE(OnPackageListener, onPackagePurchaseListener, OnPackagePurchaseListener);
     
     std::vector<Package> packs;
     
@@ -77,6 +77,9 @@ private:
     CC_SYNTHESIZE(SBCallbackNode, onPurchaseListener, OnPurchaseListener);
     Package pack;
     
+    cocos2d::Node *background;
+    cocos2d::Node *unlockedMark;
+    cocos2d::Node *buyMark;
     std::map<ArrowType, cocos2d::Sprite*> arrows;
 };
 

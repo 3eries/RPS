@@ -13,20 +13,36 @@
 USING_NS_CC;
 using namespace std;
 
-static const float ANIM_IDLE_DELAY_PER_UNIT = 0.5f;
-static const float ANIM_ATTACK_PER_UNIT     = 0.0666f;
-
 // 스케줄러
 static const string SCHEDULER_FEVER_GAGE_RESET = "SCHEDULER_FEVER_GAGE_RESET";   // 피버 포인트 게이지 초기화
 
-Man::Man() :
+Man* Man::create(Character character) {
+    
+    auto man = new Man(character);
+    
+    if( man && man->init() ) {
+        man->autorelease();
+        return man;
+    }
+    
+    delete man;
+    return nullptr;
+}
+
+Man* Man::create() {
+    
+    return create(CharacterManager::getInstance()->getSelectedCharacter());
+}
+
+Man::Man(Character character) :
+character(character),
 gameMgr(GameManager::getInstance()),
-character(CharacterManager::getInstance()->getSelectedCharacter()),
 attackSoundPlayCount(0),
 voiceSoundIndex(0) {
 }
 
 Man::~Man() {
+    CharacterManager::getInstance()->removeListener(this);
 }
 
 bool Man::init() {
@@ -47,12 +63,40 @@ bool Man::init() {
     return true;
 }
 
+void Man::onEnter() {
+    
+    Node::onEnter();
+    
+    // 캐릭터 리스너 초기화
+    auto listener = CharacterListener::create();
+    listener->setTarget(this);
+    listener->onCharacterSelected = [=](const Character &character) {
+        this->setCharacter(character, !SceneManager::isGameScene());
+    };
+    
+    CharacterManager::getInstance()->addListener(listener);
+}
+
 void Man::onExit() {
     
     clearRemoveNodes();
+    
+    CharacterManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
     
     Node::onExit();
+}
+
+/**
+ * 캐릭터 설정
+ */
+void Man::setCharacter(Character character, bool isReset) {
+    
+    this->character = character;
+    
+    if( isReset ) {
+        reset();
+    }
 }
 
 /**
@@ -380,19 +424,26 @@ void Man::resultDraw(RSPType myHand, RSPType oppHand) {
  */
 void Man::playAttackSound() {
     
-    ++attackSoundPlayCount;
-    
-    if( attackSoundPlayCount == 15 || voiceSoundIndex == SOUND_PUNCH_VOICE.size()-1 ) {
-        attackSoundPlayCount = 0;
+    // 기본 효과음
+    if( character.punchSound == "" ) {
+        ++attackSoundPlayCount;
+        
+        if( attackSoundPlayCount == 15 || voiceSoundIndex == SOUND_PUNCH_VOICE.size()-1 ) {
+            attackSoundPlayCount = 0;
 
-        SBAudioEngine::playEffect(SOUND_PUNCH_VOICE[voiceSoundIndex++]);
-        
-        if( voiceSoundIndex > SOUND_PUNCH_VOICE.size()-1 ) {
-            voiceSoundIndex = 0;
+            SBAudioEngine::playEffect(SOUND_PUNCH_VOICE[voiceSoundIndex++]);
+            
+            if( voiceSoundIndex > SOUND_PUNCH_VOICE.size()-1 ) {
+                voiceSoundIndex = 0;
+            }
+            
+        } else {
+            SBAudioEngine::playEffect(SOUND_PUNCH);
         }
-        
-    } else {
-        SBAudioEngine::playEffect(SOUND_PUNCH);
+    }
+    // 캐릭터 효과음
+    else {
+        SBAudioEngine::playEffect(character.punchSound);
     }
 }
 
@@ -525,8 +576,8 @@ Animation* Man::createAnimation(AnimationType animType) {
 //    img->setAnimation(anim, 1);
     
     switch( animType ) {
-        case AnimationType::IDLE:     return create(character.idleAnims, ANIM_IDLE_DELAY_PER_UNIT);
-        case AnimationType::ATTACK:   return create(character.attackAnims, ANIM_ATTACK_PER_UNIT);
+        case AnimationType::IDLE:     return create(character.idleAnims, HERO_ANIM_IDLE_DELAY_PER_UNIT);
+        case AnimationType::ATTACK:   return create(character.attackAnims, HERO_ANIM_ATTACK_PER_UNIT);
         default:
             CCASSERT(false, "Man::createAnimation error: invalid animation.");
             break;

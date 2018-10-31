@@ -18,6 +18,9 @@
 
 #include "CharacterListener.hpp"
 
+/** @class CharacterManager
+ * @brief
+ */
 class CharacterManager {    
 public:
     static CharacterManager* getInstance();
@@ -30,19 +33,25 @@ private:
 public:
     void init(const std::string &json);
     
-    Package                    getPackage(size_t i);
-    Package                    getPackage(const std::string &packId);
-    Character                  getCharacter(const std::string &charId);
-    Character                  getSelectedCharacter();
-    PackageDB*                 getPackageDB(const std::string &packId);
+    Package             getPackage(size_t i);
+    Package             getPackage(const std::string &packId);
+    Character           getCharacter(const std::string &charId);
+    Character           getSelectedCharacter();
+    PackageDB*          getPackageDB(const std::string &packId);
+    bool                isPackageUnlocked(const std::string &packId);
+    bool                isCharacterUnlocked(const std::string &charId);
     
-    void setSelected(const std::string &charId);
+    void    setSelected(const std::string &charId);
     
-//    void unlockPackage(const std::string &packId);
-//    void unlockCharacter(const std::string &charId);
+    void    unlockPackage(const std::string &packId);
+    void    unlockCharacter(const std::string &charId);
     
-    void submit(PackageDB::Field field, int i = 1,
-                PackageDB::OnCharacterUnlocked onCharacterUnlocked = nullptr);
+    void    commit(const std::string &packId);
+    void    commitAll();
+    void    submit(CharacterListener listener, PackageDB::Field field,
+                   int i = 1, const std::string &charId = "");
+    void    submit(PackageDB::Field field,
+                   int i = 1, const std::string &charId = "");
     
 private:
     // 패키지 노출 순서
@@ -58,10 +67,14 @@ private:
     std::map<std::string, PackageDB*> packageDbs;
     
 public:
+    // 캐릭터 선택됨
+    void onCharacterSelected(const Character &character);
+    
     // 패키지 잠금 해제
-    void onPackageUnlocked(const std::vector<std::string> &packages);
+    void onPackageUnlocked(const Packages &packages);
+    
     // 캐릭터 잠금 해제
-    void onCharacterUnlocked(const std::vector<std::string> &characters);
+    void onCharacterUnlocked(const Characters &characters);
     
 public:
     void addListener(CharacterListener *listener);

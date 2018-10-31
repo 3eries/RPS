@@ -32,6 +32,7 @@ private:
         BTN_SELECT,
         BTN_BUY,
         BTN_VIEW_ADS,
+        IMG_VIEW_ADS_DISABLED,
     };
     
 public:
@@ -52,9 +53,17 @@ private:
     void initBottomMenu();
     
     void onClick(cocos2d::Node *sender) override;
+    
     void onPackageChanged(Package pack);
+    void onPackagePurchase(Package pack);
+    void onCharacterPurchase(Character character);
+    
+    void showAd();
     
     void setCharacter(int i);
+    
+    void updateBottomMenu();
+    void updateViewAdsButton();
     
 private:
     Character getCharacter();

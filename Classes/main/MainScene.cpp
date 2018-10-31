@@ -87,6 +87,18 @@ void MainScene::onEnterTransitionDidFinish() {
         ->setPolicyUrl("http://www.3eries.com/privacy_policy")
         ->show();
     }
+    
+    // 패키지 DB 업데이트, DAILY_LOGIN
+    if( SBDirector::isTodayFirstRun() ) {
+        CharacterListener listener;
+        listener.onCharacterUnlocked = [=](Characters characters) {
+            PopupManager::showGetCharacterPopup(characters);
+        };
+        
+        auto charMgr = CharacterManager::getInstance();
+        charMgr->submit(listener, PackageDB::Field::DAILY_LOGIN);
+        charMgr->commitAll();
+    }
 }
 
 void MainScene::onExit() {
@@ -236,8 +248,14 @@ void MainScene::initPopupListener() {
         
         auto popup = dynamic_cast<BasePopup*>(sender);
         
-        // 랭킹 팝업 연출에 따른 메인화면 메뉴 처리
-        if( popup->getType() != BasePopup::Type::RANKING ) {
+        // 팝업 연출에 따른 메인화면 메뉴 처리
+        if( popup->getType() != BasePopup::Type::RANKING &&
+            popup->getType() != BasePopup::Type::SHOP) {
+            return;
+        }
+        
+        if( PopupManager::getPopup(BasePopup::Type::RANKING) &&
+            PopupManager::getPopup(BasePopup::Type::SHOP) ) {
             return;
         }
         

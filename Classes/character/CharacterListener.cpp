@@ -9,6 +9,7 @@
 
 CharacterListener::CharacterListener() :
 target(nullptr),
+onCharacterSelected(nullptr),
 onPackageUnlocked(nullptr),
 onCharacterUnlocked(nullptr) {
 }

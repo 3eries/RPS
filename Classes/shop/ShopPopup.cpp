@@ -11,8 +11,10 @@
 #include "SceneManager.h"
 #include "UIHelper.hpp"
 #include "PopupManager.hpp"
+
 #include "PackageNavigator.hpp"
 #include "CharacterView.hpp"
+#include "CommonLoadingBar.hpp"
 
 USING_NS_CC;
 USING_NS_SB;
@@ -25,6 +27,8 @@ const float ShopPopup::SLIDE_OUT_DURATION              = EffectDuration::POPUP_S
 
 #define                SLIDE_IN_POSITION               Vec2(0, 0)
 #define                SLIDE_OUT_POSITION              Vec2TL(0, -SBNodeUtils::getBoundingBoxInWorld(characterView->getBackground()).getMinY())
+
+static const string    SCHEDULER_CHECK_AD_LOADED       = "SCHEDULER_CHECK_AD_LOADED";
 
 ShopPopup* ShopPopup::create() {
     
@@ -47,7 +51,9 @@ characterIndex(0) {
 }
 
 ShopPopup::~ShopPopup() {
-    
+ 
+    charMgr->removeListener(this);
+    AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
 }
 
 bool ShopPopup::init() {
@@ -56,12 +62,32 @@ bool ShopPopup::init() {
         return false;
     }
     
+    schedule([=](float dt) {
+        this->updateViewAdsButton();
+    }, 1.0f, SCHEDULER_CHECK_AD_LOADED);
+    
     return true;
 }
 
 void ShopPopup::onEnter() {
     
     BasePopup::onEnter();
+    
+    // 캐릭터 리스너 초기화
+    auto listener = CharacterListener::create();
+    listener->setTarget(this);
+    listener->onCharacterUnlocked = [=](Characters characters) {
+        
+        characterView->updateSelf();
+        this->updateBottomMenu();
+        
+        PopupManager::showGetCharacterPopup(characters);
+    };
+    
+    listener->onPackageUnlocked = [=](Packages packages) {
+    };
+    
+    charMgr->addListener(listener);
 }
 
 void ShopPopup::initBackgroundView() {
@@ -86,19 +112,31 @@ void ShopPopup::onClick(Node *sender) {
     
     const Tag tag = (Tag)sender->getTag();
     
+    // 클릭 효과음
+    if( tag != Tag::BTN_VIEW_ADS ) {
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+    }
+    
     switch( tag ) {
+        // 이전/다음 캐릭터로 이동
         case Tag::BTN_LEFT:                 setCharacter(characterIndex-1);        break;
-        case Tag::BTN_RIGHT:                setCharacter(characterIndex+1);         break;
+        case Tag::BTN_RIGHT:                setCharacter(characterIndex+1);        break;
+            
+        // 캐릭터 선택
         case Tag::BTN_SELECT: {
+            charMgr->setSelected(getCharacter().charId);
+            dismissWithAction();
             
         } break;
             
+        // 캐릭터 구매
         case Tag::BTN_BUY: {
-            
+            onCharacterPurchase(getCharacter());
         } break;
             
+        // 광고 시청
         case Tag::BTN_VIEW_ADS: {
-            
+            showAd();
         } break;
             
         default: break;
@@ -128,6 +166,78 @@ void ShopPopup::onPackageChanged(Package pack) {
 }
 
 /**
+ * 패키지 구매
+ */
+void ShopPopup::onPackagePurchase(Package pack) {
+    
+    CCLOG("ShopPopup::onPackagePurchase:\n%s", pack.toString().c_str());
+    
+    // MessageBox(STR_FORMAT("TODO: %s", pack.name.c_str()).c_str(), "");
+
+    // 패키지 해제
+    charMgr->unlockPackage(pack.packId);
+}
+
+/**
+ * 캐릭터 구매
+ */
+void ShopPopup::onCharacterPurchase(Character character) {
+    
+    CCLOG("ShopPopup::onCharacterPurchase:\n%s", character.toString().c_str());
+    
+    // MessageBox(STR_FORMAT("TODO: %s", character.name.c_str()).c_str(), "");
+    
+    // 캐릭터 해제
+    charMgr->unlockCharacter(character.charId);
+}
+
+/**
+ * 광고 시청
+ */
+void ShopPopup::showAd() {
+    
+    if( !AdsHelper::isRewardedVideoLoaded() ) {
+        return;
+    }
+    
+    const auto character = getCharacter();
+    
+    auto loadingBar = CommonLoadingBar::create();
+    loadingBar->setUIDelay(0.1f);
+    loadingBar->show();
+    
+    auto listener = RewardedVideoAdListener::create();
+    listener->setTarget(this);
+    
+    // 로딩 실패
+    listener->onAdFailedToLoad = [=](int error) {
+        firebase::Analytics::logEvent("debug_continue_rewarded_ad");
+    };
+    // 보상 완료
+    listener->onRewarded = [=](string type, int amount) {
+    };
+    // 광고 open
+    listener->onAdOpened = [=]() {
+        loadingBar->dismissWithDelay(0);
+    };
+    // 광고 close
+    listener->onAdClosed = [=]() {
+        if( listener->isRewarded() ) {
+            // submit & commit
+            charMgr->submit(PackageDB::Field::VIEW_ADS, 1, character.charId);
+            charMgr->commit(character.packId);
+            
+            // update ui
+            characterView->updateSelf();
+        }
+        
+        this->updateViewAdsButton();
+    };
+    
+    AdsHelper::getInstance()->showRewardedVideo(listener);
+}
+
+/**
  * 캐릭터 변경
  */
 void ShopPopup::setCharacter(int i) {
@@ -139,7 +249,75 @@ void ShopPopup::setCharacter(int i) {
     else if( i > pack.characters.size()-1 )   characterIndex = 0;
     
     // 캐릭터 UI 변경
-    characterView->setCharacter(pack.characters[characterIndex]);
+    characterView->setCharacter(getCharacter());
+    
+    // 하단 메뉴 업데이트
+    updateBottomMenu();
+}
+
+/**
+ * 하단 메뉴 업데이트
+ */
+void ShopPopup::updateBottomMenu() {
+    
+    auto character = getCharacter();
+    
+    auto setVisible = [=](Tag tag, bool isVisible) {
+        bottomMenu->getChildByTag(tag)->setVisible(isVisible);
+    };
+    
+    Tag tags[] = {
+        Tag::BTN_SELECT,
+        Tag::BTN_BUY,
+        Tag::BTN_VIEW_ADS,
+        Tag::IMG_VIEW_ADS_DISABLED,
+    };
+    
+    for( auto tag : tags ) {
+        setVisible(tag, false);
+    }
+    
+    // 잠금 해제됨
+    if( charMgr->isCharacterUnlocked(character.charId) ) {
+        setVisible(Tag::BTN_SELECT, true);
+    }
+    // 구매 가능
+    else if( iap::IAPHelper::hasItem(character.charId) ) {
+        setVisible(Tag::BTN_BUY, true);
+    }
+    // VIEW ADS 타입
+    else if( character.unlockType == UnlockType::VIEW_ADS ) {
+        // setVisible(Tag::BTN_VIEW_ADS, true);
+        updateViewAdsButton();
+    }
+    else {
+        CCLOG("ShopPopup::updateBottomMenu error: invalid character(id: %s).", character.charId.c_str());
+    }
+}
+
+/**
+ * 광고 시청 버튼 업데이트
+ */
+void ShopPopup::updateViewAdsButton() {
+    
+    auto character = getCharacter();
+    
+    if( character.charId == "" || character.unlockType != UnlockType::VIEW_ADS ) {
+        return;
+    }
+    
+    if( charMgr->isCharacterUnlocked(character.charId) ) {
+        return;
+    }
+    
+    const bool isAdLoaded = AdsHelper::isRewardedVideoLoaded();
+    
+    bottomMenu->getChildByTag(Tag::BTN_VIEW_ADS)->setVisible(isAdLoaded);
+    bottomMenu->getChildByTag(Tag::IMG_VIEW_ADS_DISABLED)->setVisible(!isAdLoaded);
+    
+    if( isAdLoaded ) {
+        // TODO: 스파인 연출 시작?
+    }
 }
 
 /**
@@ -157,6 +335,7 @@ void ShopPopup::initNavigator() {
     
     navigator = PackageNavigator::create();
     navigator->setOnPackageChangedListener(CC_CALLBACK_1(ShopPopup::onPackageChanged, this));
+    navigator->setOnPackagePurchaseListener(CC_CALLBACK_1(ShopPopup::onPackagePurchase, this));
     addContentChild(navigator);
 }
 
@@ -205,6 +384,16 @@ void ShopPopup::initBottomMenu() {
     
     bottomMenu->getChildByTag(Tag::BTN_BUY)->setVisible(false);
     bottomMenu->getChildByTag(Tag::BTN_VIEW_ADS)->setVisible(false);
+    
+    // VIEW ADS 비활성화 이미지
+    {
+        auto img = Sprite::create(DIR_IMG_GAME + "RSP_btn_shop_play_movie_dis.png");
+        img->setTag(Tag::IMG_VIEW_ADS_DISABLED);
+        img->setVisible(false);
+        img->setAnchorPoint(ANCHOR_M);
+        img->setPosition(Vec2BC(0, 100));
+        bottomMenu->addChild(img);
+    }
 }
 
 void ShopPopup::dismiss() {

@@ -14,6 +14,7 @@
 #include "superbomb.h"
 
 #include "../model/Package.h"
+#include "../CharacterListener.hpp"
 
 /** @class PackageDB
  * @brief 1개 캐릭터 패키지의 DB
@@ -31,8 +32,6 @@ public:
         VIEW_ADS,       // 동영상 광고 시청 횟수
     };
     
-    typedef std::function<void(std::vector<std::string>)> OnCharacterUnlocked;
-    
 public:
     PackageDB(Package pack);
     ~PackageDB();
@@ -40,30 +39,31 @@ public:
     std::string toString();
     
 public:
-    void    commit();
+    void            commit();
     
-    bool    isPackageUnlocked();
-    bool    isCharacterUnlocked(const std::string &charId);
+    Characters      getLockedCharacters();
     
-    int     getFieldValue(Field f);
-    int     getViewAdsValue(const std::string &charId);
-    int     getUnlockFieldValue(Character c);
+    bool            isPackageUnlocked();
+    bool            isCharacterUnlocked(const std::string &charId);
     
-    void    unlockPackage();
-    void    unlockCharacter(const std::string &charId);
+    int             getFieldValue(Field f);
+    int             getViewAdsValue(const std::string &charId);
+    int             getUnlockFieldValue(Character c);
     
-    void    submit(Field field, int i = 1,
-                   OnCharacterUnlocked onCharacterUnlocked = nullptr);
+    void            unlockPackage();
+    void            unlockCharacter(const std::string &charId);
+    
+    void            submit(OnCharacterListListener listener, Field field,
+                           int i = 1, const std::string &charId = "");
     
 private:
-    Package pack;                                // 패키지 기본 데이터
-    bool isUnlocked;                             // 패키지 잠금 해제 여부
-    std::map<Field, int> fieldValues;            // DB 필드 값
+    CC_SYNTHESIZE_READONLY(Package, pack, Package);   // 패키지 기본 데이터
+    std::map<Field, int> fieldValues;                 // DB 필드 값
     
     // Key : 캐릭터 아이디, Value : 광고 시청 횟수
     std::map<std::string, int> viewAdsValues;
     
-    std::vector<std::string> unlockCharacters;   // 잠금 해제된 캐릭터 리스트
+    std::vector<std::string> unlockCharacters;        // 잠금 해제된 캐릭터 리스트
 };
 
 #endif /* PackageDB_hpp */

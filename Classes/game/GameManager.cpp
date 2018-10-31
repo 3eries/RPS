@@ -73,6 +73,7 @@ void GameManager::reset() {
     levelInfo = GameConfiguration::getInstance()->getLevelInfo(1);
     score = 0;
     ranking = INVALID_RANKING;
+    unlockedCharacters.clear();
 }
 
 /**
@@ -316,8 +317,20 @@ void GameManager::onGameOver() {
     preGameOver = false;
     updateLocked = true;
     
+    // 캐릭터 리스너 초기화
+    auto charMgr = CharacterManager::getInstance();
+    
+    CharacterListener characterListener;
+    characterListener.onCharacterUnlocked = [=](Characters characters) {
+        SBCollection::addAll(unlockedCharacters, characters);
+    };
+    
     if( score > 0 ) {
         logEventGameResult(score);
+    
+        // 패키지 DB 업데이트
+        charMgr->submit(characterListener, PackageDB::Field::BEST_SCORE, score);
+        charMgr->submit(characterListener, PackageDB::Field::TOTAL_SCORE, score);
         
         // 순위 선정
         ranking = RankingManager::getNewRanking(score);
@@ -325,6 +338,12 @@ void GameManager::onGameOver() {
         // 리더보드 등록
         superbomb::PluginPlay::submitScore(LEADER_BOARD_HIGH_SCORE, score);
     }
+    
+    // 패키지 DB 업데이트
+    charMgr->submit(characterListener, PackageDB::Field::GAME_PLAY);
+    charMgr->submit(characterListener, PackageDB::Field::GAME_OVER);
+    charMgr->submit(characterListener, PackageDB::Field::FEVER, feverModeCount);
+    charMgr->commitAll();
     
     // 리스너 실행
     for( auto listener : listeners ) {

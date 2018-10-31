@@ -31,6 +31,7 @@ struct Character {
     std::string              unlockDesc;
     std::vector<std::string> idleAnims;
     std::vector<std::string> attackAnims;
+    std::string              punchSound;
     cocos2d::Vec2            feverGagePos;
     
     Character() {
@@ -53,10 +54,41 @@ struct Character {
             str += anim + ", ";
         }
         
+        str += "\n\t\tpunchSound: " + punchSound;
+        
         str += "\n\t}";
         
         return str;
     }
 };
+
+typedef std::vector<Character>               Characters;
+typedef std::vector<std::string>             CharacterIds;
+
+typedef std::function<void(Character)>       OnCharacterListener;
+typedef std::function<void(Characters)>      OnCharacterListListener;
+typedef std::function<void(CharacterIds)>    OnCharacterIdListListener;
+
+static inline CharacterIds getCharacterIds(Characters characters) {
+    
+    CharacterIds ids;
+    
+    for( auto character : characters ) {
+        ids.push_back(character.charId);
+    }
+    
+    return ids;
+}
+
+static inline std::string charIdToString(CharacterIds ids) {
+    
+    std::string str = "";
+
+    for( auto charId : ids ) {
+        str += charId + ", ";
+    }
+    
+    return str;
+}
 
 #endif /* Character_h */

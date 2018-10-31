@@ -35,6 +35,33 @@ struct Package {
     }
 };
 
-typedef std::function<void(Package)> PackageListener;
+typedef std::vector<Package>                 Packages;
+typedef std::vector<std::string>             PackageIds;
+
+typedef std::function<void(Package)>         OnPackageListener;
+typedef std::function<void(Packages)>        OnPackageListListener;
+typedef std::function<void(PackageIds)>      OnPackageIdListListener;
+
+static inline PackageIds getPackageIds(Packages packs) {
+    
+    PackageIds ids;
+    
+    for( auto pack : packs ) {
+        ids.push_back(pack.packId);
+    }
+    
+    return ids;
+}
+
+static inline std::string packIdToString(PackageIds ids) {
+    
+    std::string str = "";
+    
+    for( auto packId : ids ) {
+        str += packId + ", ";
+    }
+    
+    return str;
+}
 
 #endif /* Package_h */

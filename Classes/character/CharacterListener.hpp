@@ -17,14 +17,14 @@
 class CharacterListener : public cocos2d::Ref {
 public:
     SB_REF_CREATE_FUNC(CharacterListener);
+    CharacterListener();
     ~CharacterListener();
     
-    std::function<void(const std::vector<std::string>&)> onPackageUnlocked;         // 패키지 잠금 해제
-    std::function<void(const std::vector<std::string>&)> onCharacterUnlocked;       // 캐릭터 잠금 해제
+    OnCharacterListener         onCharacterSelected;       // 캐릭터 선택됨
+    OnPackageListListener       onPackageUnlocked;         // 패키지 잠금 해제
+    OnCharacterListListener     onCharacterUnlocked;       // 캐릭터 잠금 해제
     
 private:
-    CharacterListener();
-    
     CC_SYNTHESIZE(cocos2d::Ref*, target, Target);
 };
 

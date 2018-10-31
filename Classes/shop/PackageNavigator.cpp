@@ -95,15 +95,13 @@ void PackageNavigator::onPackagePurchase(size_t i) {
     
     CCLOG("onPackagePurchase: %d", i);
     
-    // onPackagePurchaseListener(packs[i]);
+    onPackagePurchaseListener(packs[i]);
 }
 
 /**
  * 스크롤 이벤트
  */
 void PackageNavigator::onScrollEvent(ScrollView::EventType type) {
-    
-    auto currentItem = (NavigationItem*)pageView->getItem(pageView->getCurrentPageIndex());
     
     switch( type ) {
         // 페이지 스크롤 진행중
@@ -273,12 +271,15 @@ NavigationItem* NavigationItem::create(Package pack) {
 
 NavigationItem::NavigationItem(Package pack) :
 pack(pack),
-onPurchaseListener(nullptr) {
-    
+onPurchaseListener(nullptr),
+background(nullptr),
+unlockedMark(nullptr),
+buyMark(nullptr) {
 }
 
 NavigationItem::~NavigationItem() {
     
+    CharacterManager::getInstance()->removeListener(this);
 }
 
 bool NavigationItem::init() {
@@ -293,6 +294,8 @@ bool NavigationItem::init() {
     // RSP_popup_bg_shop_pack_title.png Vec2TC(0, -316) , Size(560, 152)
     auto bg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_shop_pack_title.png");
     addChild(bg);
+    
+    background = bg;
     
     setContentSize(Size(SB_WIN_SIZE.width, bg->getContentSize().height));
     
@@ -311,7 +314,6 @@ bool NavigationItem::init() {
     addChild(titleLabel);
     
     // 화살표
-    // icon_shop_pack_title_navi.png Vec2MC(-242, 6) , Size(20, 36)
     auto arrowLeft = Sprite::create(DIR_IMG_GAME + "icon_shop_pack_title_navi.png");
     arrowLeft->setAnchorPoint(ANCHOR_M);
     arrowLeft->setPosition(Vec2MC(bg->getContentSize(), -242, 6));
@@ -320,7 +322,6 @@ bool NavigationItem::init() {
     
     arrows[ArrowType::LEFT] = arrowLeft;
     
-    // icon_shop_pack_title_navi.png Vec2MC(242, 6) , Size(20, 36)
     auto arrowRight = Sprite::create(DIR_IMG_GAME + "icon_shop_pack_title_navi.png");
     arrowRight->setAnchorPoint(ANCHOR_M);
     arrowRight->setPosition(Vec2MC(bg->getContentSize(), 242, 6));
@@ -332,21 +333,31 @@ bool NavigationItem::init() {
         return true;
     }
     
+    // 패키지 잠금 해제 마크
+    unlockedMark = Sprite::create(DIR_IMG_GAME + "RSP_sub_title_purple.png");
+    unlockedMark->setVisible(false);
+    unlockedMark->setAnchorPoint(ANCHOR_M);
+    unlockedMark->setPosition(Vec2MC(bg->getContentSize(), 0, 88));
+    bg->addChild(unlockedMark, -1);
+    
     // 패키지 잠금 해제됨
-    if( false ) {
-        // unlock all mark
-        auto mark = Sprite::create(DIR_IMG_GAME + "RSP_sub_title_purple.png");
-        mark->setAnchorPoint(ANCHOR_M);
-        mark->setPosition(Vec2MC(bg->getContentSize(), 0, 88));
-        bg->addChild(mark, -1);
+    if( CharacterManager::getInstance()->isPackageUnlocked(pack.packId) ) {
+        unlockedMark->setVisible(true);
     }
     // 구매 가능 패키지
-    else if( true ) {
+    else if( iap::IAPHelper::hasItem(pack.packId) ) {
         setTouchEnabled(true);
-        addClickEventListener([=](Ref*) {
+        
+        auto onClickBuy = [=]() {
+            SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
             onPurchaseListener(this);
+        };
+        
+        addClickEventListener([=](Ref*) {
+            onClickBuy();
         });
         
+        // 구매 가능 마크
         // RSP_sub_title_red.png Vec2MC(0, 88) , Size(360, 64)
         auto buyBtn = Button::create(DIR_IMG_GAME + "RSP_sub_title_red.png");
         buyBtn->setZoomScale(0);
@@ -354,9 +365,16 @@ bool NavigationItem::init() {
         buyBtn->setPosition(Vec2MC(bg->getContentSize(), 0, 88));
         bg->addChild(buyBtn, -1);
         
+        buyMark = buyBtn;
+        
         buyBtn->addClickEventListener([=](Ref*) {
-            onPurchaseListener(this);
+            onClickBuy();
         });
+        
+        auto scale1 = ScaleTo::create(0.5f, 1.05f);
+        auto scale2 = ScaleTo::create(0.5f, 1.0f);
+        auto seq = Sequence::create(scale1, scale2, nullptr);
+        buyBtn->runAction(RepeatForever::create(seq));
     }
     // 구매할 수 없는 패키지
     else {
@@ -369,6 +387,28 @@ bool NavigationItem::init() {
 void NavigationItem::onEnter() {
     
     Widget::onEnter();
+    
+    // 캐릭터 리스너 초기화
+    auto listener = CharacterListener::create();
+    listener->setTarget(this);
+    listener->onPackageUnlocked = [=](Packages packages) {
+        
+        bool found = false;
+        
+        for( auto pack : packages ) {
+            if( this->pack.packId == pack.packId ) {
+                found = true;
+                break;
+            }
+        }
+        
+        if( found ) {
+            SB_SAFE_SHOW(unlockedMark);
+            SB_SAFE_HIDE(buyMark);
+        }
+    };
+    
+    CharacterManager::getInstance()->addListener(listener);
 }
 
 void NavigationItem::showArrow(ArrowType type) {

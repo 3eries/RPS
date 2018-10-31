@@ -2,21 +2,21 @@
     "package_order": ["pack_001", "pack_002", ""],
     "packages": [{
                  "pack_id": "pack_001",
-                 "name": "Master Lee\nPackage",
+                 "name": "Master Lee",
                  "characters": [{
                                 "char_id": "char_001",
-                                "name": "master_lee",
-                                "unlock_type": 5,
+                                "name": "master",
+                                "unlock_type": 0,
                                 "unlock_amount": 1,
-                                "unlock_desc": "DAILY LOGIN",
+                                "unlock_desc": "START THE GAME",
                                 "fever_gage_pos_x": -44,
                                 "fever_gage_pos_y": 100
                                 },
                                 {
                                 "char_id": "char_002",
-                                "name": "hiphop",
+                                "name": "swagger",
                                 "unlock_type": 7,
-                                "unlock_amount": 15,
+                                "unlock_amount": 9,
                                 "unlock_desc": "VIEW ADS",
                                 "fever_gage_pos_x": -44,
                                 "fever_gage_pos_y": 100
@@ -25,7 +25,7 @@
                                 "char_id": "char_003",
                                 "name": "muscle",
                                 "unlock_type": 7,
-                                "unlock_amount": 15,
+                                "unlock_amount": 12,
                                 "unlock_desc": "VIEW ADS",
                                 "fever_gage_pos_x": -44,
                                 "fever_gage_pos_y": 100
@@ -38,7 +38,7 @@
                                 "char_id": "char_011",
                                 "name": "zeus",
                                 "unlock_type": 1,
-                                "unlock_amount": 1200,
+                                "unlock_amount": 1500,
                                 "unlock_desc": "Best Score",
                                 "fever_gage_pos_x": -39,
                                 "fever_gage_pos_y": 144
@@ -47,7 +47,7 @@
                                 "char_id": "char_012",
                                 "name": "poseidon",
                                 "unlock_type": 2,
-                                "unlock_amount": 50000,
+                                "unlock_amount": 65000,
                                 "unlock_desc": "Total Score",
                                 "fever_gage_pos_x": -33,
                                 "fever_gage_pos_y": 150
@@ -56,7 +56,7 @@
                                 "char_id": "char_013",
                                 "name": "hades",
                                 "unlock_type": 3,
-                                "unlock_amount": 100,
+                                "unlock_amount": 144,
                                 "unlock_desc": "Death",
                                 "fever_gage_pos_x": -29,
                                 "fever_gage_pos_y": 152

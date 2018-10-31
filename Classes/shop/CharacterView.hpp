@@ -20,6 +20,10 @@ class CharacterView : public cocos2d::Node {
 private:
     enum Tag {
         BG = 1,
+        COMING_SOON_VIEW,     // 커밍순 뷰
+        UNLOCK_DESC,          // 잠금 해제 조건 설명
+        CHAR_NAME,            // 캐릭터 이름
+        CHAR_IMAGE,           // 캐릭터 이미지
     };
     
 public:
@@ -38,18 +42,16 @@ private:
     void initImage();
     
 public:
+    void updateSelf();
     void setCharacter(Character character);
+    void runCharacterAnimation(bool isIdle);
     
     cocos2d::Node* getBackground();
     
 private:
     Character character;
     
-    cocos2d::Node *comingSoonView;
-    cocos2d::Label *unlockDescLabel;
     std::vector<cocos2d::Label*> unlockAmountLabels;    // '진행도' '/' '조건'
-    cocos2d::Sprite *characterTitleImage;
-    SBAnimationSprite *characterImage;
 };
 
 #endif /* CharacterView_hpp */

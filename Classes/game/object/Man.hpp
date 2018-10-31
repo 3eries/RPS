@@ -32,19 +32,24 @@ public:
     };
     
 public:
-    CREATE_FUNC(Man);
+    static Man* create(Character character);
+    static Man* create();
     ~Man();
     
 private:
-    Man();
+    Man(Character character);
     
     bool init() override;
+    void onEnter() override;
     void onExit() override;
     
     void initImage();
     void initFeverGage();
     
     cocos2d::Animation* createAnimation(AnimationType animType);
+    
+public:
+    void setCharacter(Character character, bool isReset = true);
     
     void reset();
     void clearRemoveNodes();

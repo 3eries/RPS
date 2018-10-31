@@ -26,6 +26,9 @@
 		1D24F6EB21218A56002461A7 /* ReviewHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D24F6E921218A56002461A7 /* ReviewHelper.cpp */; };
 		1D3120DB20E9F9EA00D059C6 /* RankingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D720E9F9E900D059C6 /* RankingPopup.cpp */; };
 		1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3120D920E9F9E900D059C6 /* RankingManager.cpp */; };
+		1D3641CE217DD42F0003D49C /* ShopPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3641CC217DD42F0003D49C /* ShopPopup.cpp */; };
+		1D3641D6218212CC0003D49C /* character in Resources */ = {isa = PBXBuildFile; fileRef = 1D3641D3218212CB0003D49C /* character */; };
+		1D3641DE21825AB60003D49C /* CharacterListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3641DC21825AB60003D49C /* CharacterListener.cpp */; };
 		1D3DCFFC215B33EC00DE7409 /* ConsentForm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DCFFA215B33EC00DE7409 /* ConsentForm.cpp */; };
 		1D3DD000215B46EB00DE7409 /* ConsentForm-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1D3DCFFF215B46EB00DE7409 /* ConsentForm-ios.mm */; };
 		1D3DF50321045BEC0055B66E /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3DF50221045BEC0055B66E /* GameKit.framework */; };
@@ -98,6 +101,9 @@
 		1DD38B5120FC92E600811604 /* BottomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B4F20FC92E600811604 /* BottomMenu.cpp */; };
 		1DD38B5420FC92F100811604 /* CommonMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B5220FC92F100811604 /* CommonMenu.cpp */; };
 		1DD38B5720FC93D200811604 /* SBActionHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B5520FC93D200811604 /* SBActionHelper.cpp */; };
+		1DDE8DAB2178787600973918 /* PackageNavigator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE8DA92178787600973918 /* PackageNavigator.cpp */; };
+		1DDE8DAE2178788B00973918 /* CharacterView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE8DAC2178788B00973918 /* CharacterView.cpp */; };
+		1DDE8DB52178825D00973918 /* GetCharacterPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DDE8DB32178825D00973918 /* GetCharacterPopup.cpp */; };
 		1DE1DC1120F693EF00BB3238 /* anims in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0C20F693EE00BB3238 /* anims */; };
 		1DE1DC1220F693EF00BB3238 /* config in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0D20F693EE00BB3238 /* config */; };
 		1DE1DC1320F693EF00BB3238 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1DE1DC0E20F693EE00BB3238 /* fonts */; };
@@ -230,6 +236,11 @@
 		1D3120D820E9F9E900D059C6 /* RankingManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingManager.hpp; sourceTree = "<group>"; };
 		1D3120D920E9F9E900D059C6 /* RankingManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RankingManager.cpp; sourceTree = "<group>"; };
 		1D3120DA20E9F9E900D059C6 /* RankingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RankingPopup.hpp; sourceTree = "<group>"; };
+		1D3641CC217DD42F0003D49C /* ShopPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ShopPopup.cpp; sourceTree = "<group>"; };
+		1D3641CD217DD42F0003D49C /* ShopPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ShopPopup.hpp; sourceTree = "<group>"; };
+		1D3641D3218212CB0003D49C /* character */ = {isa = PBXFileReference; lastKnownFileType = folder; path = character; sourceTree = "<group>"; };
+		1D3641DC21825AB60003D49C /* CharacterListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterListener.cpp; sourceTree = "<group>"; };
+		1D3641DD21825AB60003D49C /* CharacterListener.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CharacterListener.hpp; sourceTree = "<group>"; };
 		1D3DCFFA215B33EC00DE7409 /* ConsentForm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ConsentForm.cpp; sourceTree = "<group>"; };
 		1D3DCFFB215B33EC00DE7409 /* ConsentForm.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ConsentForm.hpp; sourceTree = "<group>"; };
 		1D3DCFFF215B46EB00DE7409 /* ConsentForm-ios.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "ConsentForm-ios.mm"; sourceTree = "<group>"; };
@@ -371,6 +382,12 @@
 		1DD38B5320FC92F100811604 /* CommonMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CommonMenu.hpp; sourceTree = "<group>"; };
 		1DD38B5520FC93D200811604 /* SBActionHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBActionHelper.cpp; sourceTree = "<group>"; };
 		1DD38B5620FC93D200811604 /* SBActionHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBActionHelper.hpp; sourceTree = "<group>"; };
+		1DDE8DA92178787600973918 /* PackageNavigator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PackageNavigator.cpp; sourceTree = "<group>"; };
+		1DDE8DAA2178787600973918 /* PackageNavigator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PackageNavigator.hpp; sourceTree = "<group>"; };
+		1DDE8DAC2178788B00973918 /* CharacterView.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterView.cpp; sourceTree = "<group>"; };
+		1DDE8DAD2178788B00973918 /* CharacterView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CharacterView.hpp; sourceTree = "<group>"; };
+		1DDE8DB32178825D00973918 /* GetCharacterPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GetCharacterPopup.cpp; sourceTree = "<group>"; };
+		1DDE8DB42178825D00973918 /* GetCharacterPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GetCharacterPopup.hpp; sourceTree = "<group>"; };
 		1DE1DC0C20F693EE00BB3238 /* anims */ = {isa = PBXFileReference; lastKnownFileType = folder; path = anims; sourceTree = "<group>"; };
 		1DE1DC0D20F693EE00BB3238 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
 		1DE1DC0E20F693EE00BB3238 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
@@ -740,6 +757,8 @@
 				1D4C659920FF94AB005A43D8 /* SettingPopup.hpp */,
 				1D45C49920A8A9E2007E63AD /* UIHelper.cpp */,
 				1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */,
+				1DDE8DB32178825D00973918 /* GetCharacterPopup.cpp */,
+				1DDE8DB42178825D00973918 /* GetCharacterPopup.hpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -798,6 +817,8 @@
 		1D7B446F216DE0FB00D403E1 /* character */ = {
 			isa = PBXGroup;
 			children = (
+				1D3641DC21825AB60003D49C /* CharacterListener.cpp */,
+				1D3641DD21825AB60003D49C /* CharacterListener.hpp */,
 				1D981071216DE90C0092F628 /* CharacterManager.cpp */,
 				1D981072216DE90C0092F628 /* CharacterManager.hpp */,
 				1D6800AD2175BBF5000774F8 /* db */,
@@ -958,6 +979,19 @@
 			path = menu;
 			sourceTree = "<group>";
 		};
+		1DDE8DA221786C6B00973918 /* shop */ = {
+			isa = PBXGroup;
+			children = (
+				1DDE8DAC2178788B00973918 /* CharacterView.cpp */,
+				1DDE8DAD2178788B00973918 /* CharacterView.hpp */,
+				1DDE8DA92178787600973918 /* PackageNavigator.cpp */,
+				1DDE8DAA2178787600973918 /* PackageNavigator.hpp */,
+				1D3641CC217DD42F0003D49C /* ShopPopup.cpp */,
+				1D3641CD217DD42F0003D49C /* ShopPopup.hpp */,
+			);
+			path = shop;
+			sourceTree = "<group>";
+		};
 		1DE1DC1720F6AAAE00BB3238 /* plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -1078,6 +1112,7 @@
 			isa = PBXGroup;
 			children = (
 				1DE1DC0C20F693EE00BB3238 /* anims */,
+				1D3641D3218212CB0003D49C /* character */,
 				1DE1DC0D20F693EE00BB3238 /* config */,
 				1DE1DC0E20F693EE00BB3238 /* fonts */,
 				1DE1DC1020F693EF00BB3238 /* images */,
@@ -1102,6 +1137,7 @@
 				1D59F3D220FA69D200649A99 /* popup */,
 				1D3120D620E9F9E900D059C6 /* ranking */,
 				1D45C44C20A8A7B8007E63AD /* sb */,
+				1DDE8DA221786C6B00973918 /* shop */,
 				1D45C48E20A8A7BC007E63AD /* splash */,
 				1DA98BC920B47CC4006BC169 /* test */,
 				1D45C49820A8A9DC007E63AD /* ui */,
@@ -1265,6 +1301,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D3641D6218212CC0003D49C /* character in Resources */,
 				1DE1DC1220F693EF00BB3238 /* config in Resources */,
 				1DE1DC1320F693EF00BB3238 /* fonts in Resources */,
 				5087E78117EB970100C73F5D /* Icon-120.png in Resources */,
@@ -1378,6 +1415,7 @@
 				1DEA58162109A5B400CF6F98 /* AdsManager.mm in Sources */,
 				1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */,
 				1DE4B350210DEEC300653FA8 /* IAPManager.mm in Sources */,
+				1D3641DE21825AB60003D49C /* CharacterListener.cpp in Sources */,
 				1DE1DC1E20F6AB8E00BB3238 /* IAPListener.cpp in Sources */,
 				1DA98BC820B46F64006BC169 /* GameManager.cpp in Sources */,
 				1DE1DC1B20F6AAF800BB3238 /* IAPHelper.cpp in Sources */,
@@ -1397,13 +1435,16 @@
 				1D86439B21523AEC001841C9 /* NSData+AES.m in Sources */,
 				1D06245720EE10E000037AB1 /* BasePopup.cpp in Sources */,
 				1DE1DC2620F759C800BB3238 /* SBEffect.cpp in Sources */,
+				1DDE8DAB2178787600973918 /* PackageNavigator.cpp in Sources */,
 				1D45C48A20A8A7B8007E63AD /* SBStringUtils.cpp in Sources */,
 				1D2247C12150EADF00439BBD /* SBMath.cpp in Sources */,
 				1D1F3C9720AD4CCB0035A36C /* GameOverPopup.cpp in Sources */,
 				1DA98BD220B47E66006BC169 /* User.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				1D45E0F820ED164C0065CB3D /* SBAction.cpp in Sources */,
+				1DDE8DAE2178788B00973918 /* CharacterView.cpp in Sources */,
 				1D18E428215CBE430069A888 /* ConsentManager.cpp in Sources */,
+				1DDE8DB52178825D00973918 /* GetCharacterPopup.cpp in Sources */,
 				1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */,
 				1D86439C21523AEC001841C9 /* NSData+Base64.m in Sources */,
 				1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */,
@@ -1411,6 +1452,7 @@
 				1D1F3C8A20ACD12B0035A36C /* SBDirector.cpp in Sources */,
 				1D86439D21523AEC001841C9 /* NSString+Base64.m in Sources */,
 				1D45C48920A8A7B8007E63AD /* SBSystemUtils.cpp in Sources */,
+				1D3641CE217DD42F0003D49C /* ShopPopup.cpp in Sources */,
 				1DA0408B21034661001980BA /* FirebaseManager-android.cpp in Sources */,
 				1D3120DC20E9F9EA00D059C6 /* RankingManager.cpp in Sources */,
 				1D3DF5092104664C0055B66E /* PluginPlay-ios.mm in Sources */,

@@ -15,6 +15,8 @@
 #include "RSP.h"
 #include "GameConfiguration.hpp"
 
+#include "CharacterManager.hpp"
+
 class GameScene;
 class GameView;
 
@@ -90,6 +92,10 @@ private:
     CC_SYNTHESIZE(LevelInfo, levelInfo, LevelInfo);               // 현재 레벨 정보
     CC_SYNTHESIZE_READONLY(int, score, Score);                    // 현재 스코어
     CC_SYNTHESIZE_READONLY(int, ranking, Ranking);                // 최종 스코어에 해당하는 순위
+    
+    // 획득 캐릭터
+    CC_SYNTHESIZE_READONLY(Characters,
+                           unlockedCharacters, UnlockedCharacters);
     
 // GameListener
 public:

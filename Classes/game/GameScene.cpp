@@ -449,8 +449,27 @@ void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
             case PopupEventType::ENTER_ACTION_FINISHED: {
                 popup->setEnterTimeScale(1);
                 
-                // 최초 등장 후 전면 광고 노출
+                // 최초 등장
                 if( popup->isFirstEnterAction() ) {
+                    auto showGetCharacterPopup = [=]() -> bool {
+                      
+                        auto characters = gameMgr->getUnlockedCharacters();
+                        
+                        if( characters.size() > 0 ) {
+                            PopupManager::showGetCharacterPopup(characters);
+                            return true;
+                        }
+                        
+                        return false;
+                    };
+                    
+                    auto onAdFinished = [=]() {
+                        // 캐릭터 획득 팝업 노출 or 리뷰 유도
+                        if( !showGetCharacterPopup() ) {
+                            this->checkReview();
+                        }
+                    };
+                    
                     // 전면 광고 로딩됨, 1초 후 노출
                     if( !User::isOwnRemoveAdsItem() && AdsHelper::isInterstitialLoaded() ) {
                         SBDirector::postDelayed(this, [=]() {
@@ -458,15 +477,13 @@ void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
                             listener->setTarget(this);
                             listener->onAdOpened = [=]() {
                             };
-                            listener->onAdClosed = [=]() {
-                                this->checkReview();
-                            };
+                            listener->onAdClosed = onAdFinished;
                             AdsHelper::getInstance()->showInterstitial(listener);
                         }, 1.0f, true);
                     }
-                    // 전면 광고 로딩되지 않음, 리뷰 유도
+                    // 전면 광고 로딩되지 않음
                     else {
-                        this->checkReview();
+                        onAdFinished();
                     }
                 }
                 

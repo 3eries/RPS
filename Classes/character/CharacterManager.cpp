@@ -52,6 +52,7 @@ CharacterManager::~CharacterManager() {
 void CharacterManager::init(const string &json) {
     
     CCLOG("CharacterManager::init:\n%s", json.c_str());
+    CCLOG("========== PARSE START (character_package.json)  ==========");
     
     // 패키지 json 파싱
     rapidjson::Document doc = SBJSON::parse(json);
@@ -87,6 +88,18 @@ void CharacterManager::init(const string &json) {
             character.unlockAmount = charValue["unlock_amount"].GetInt();
             character.unlockDesc = charValue["unlock_desc"].GetString();
             
+            // 테스트를 위한 amount 조절
+            //
+            if( character.unlockType == UnlockType::VIEW_ADS ) {
+                character.unlockAmount = 1;
+            } else {
+                character.unlockAmount /= 3;
+            }
+            
+            // character.unlockAmount = 1;
+            character.unlockAmount = MAX(1, character.unlockAmount);
+            //
+            
             auto getAnims = [=](string key) -> vector<string> {
                 
                 vector<string> anims;
@@ -108,6 +121,14 @@ void CharacterManager::init(const string &json) {
             
             character.idleAnims = getAnims("idle");
             character.attackAnims = getAnims("attack");
+            character.attackAnims = getAnims("attack");
+            
+            character.punchSound = DIR + STR_FORMAT("%s_snd_punch.mp3", character.charId.c_str());
+            
+            if( !FileUtils::getInstance()->isFileExist(character.punchSound) ) {
+                character.punchSound = "";
+            }
+            
             character.feverGagePos.x = charValue["fever_gage_pos_x"].GetFloat();
             character.feverGagePos.y = charValue["fever_gage_pos_y"].GetFloat();
             
@@ -120,13 +141,18 @@ void CharacterManager::init(const string &json) {
         CCLOG("%s", pack.toString().c_str());
     }
     
+    CCLOG("========== PARSE END (character_package.json)  ==========");
+    
     // DB 초기화
+    CCLOG("================ CHARACTER DB INIT  ================");
     for( auto pack : packages ) {
         auto packDB = new PackageDB(pack);
         packageDbs[pack.packId] = packDB;
         
         CCLOG("%s", packDB->toString().c_str());
     }
+    
+    CCLOG("============== CHARACTER DB INIT END  ==============");
     
     // 기본 캐릭터 설정
     string charId = UserDefault::getInstance()->getStringForKey(SELECTED_CHARACTER, "");
@@ -197,6 +223,29 @@ PackageDB* CharacterManager::getPackageDB(const string &packId) {
 }
 
 /**
+ * 패키지 잠금 해제 여부를 반환 합니다
+ */
+bool CharacterManager::isPackageUnlocked(const string &packId) {
+    
+    return getPackageDB(packId)->isPackageUnlocked();
+}
+
+/**
+ * 캐릭터 잠금 해제 여부를 반환 합니다
+ */
+bool CharacterManager::isCharacterUnlocked(const string &charId) {
+    
+    for( auto it = packageDbs.begin(); it != packageDbs.end(); ++it ) {
+        auto db = it->second;
+        if( db->isCharacterUnlocked(charId) ) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+/**
  * 캐릭터 선택
  */
 void CharacterManager::setSelected(const string &charId) {
@@ -205,92 +254,151 @@ void CharacterManager::setSelected(const string &charId) {
     
     UserDefault::getInstance()->setStringForKey(SELECTED_CHARACTER, charId);
     UserDefault::getInstance()->flush();
-}
-
-/**
- * DB 필드 값 업데이트
- */
-void CharacterManager::submit(PackageDB::Field field, int i, PackageDB::OnCharacterUnlocked onCharacterUnlocked) {
     
-    for( auto it = packageDbs.begin(); it != packageDbs.end(); ++it ) {
-        it->second->submit(field, i, onCharacterUnlocked);
-    }
+    onCharacterSelected(getCharacter(charId));
 }
-
-///**
-// * 패키지 잠금 해제
-// */
-//void CharacterManager::unlockPackage(const string &packId) {
-//
-//    auto pack = getPackage(packId);
-//
-//    for( auto character : pack.characters ) {
-//        unlockCharacter(character.charId);
-//    }
-//}
-//
-///**
-// * 캐릭터 잠금 해제
-// */
-//void CharacterManager::unlockCharacter(const string &charId) {
-//
-//    if( getCharacter(charId).charId == "" ) {
-//        CCASSERT(false, "CharacterManager::unlockCharacter error: invalid character id.");
-//        return;
-//    }
-//
-//    // json 오브젝트 생성
-//    rapidjson::Document doc;
-//    doc.SetArray();
-//
-//    rapidjson::Document::AllocatorType &allocator = doc.GetAllocator();
-//
-//    // 이전 데이터 추가
-//    string data = UserDefault::getInstance()->getStringForKey(UNLOCK_CHARACTERS, "");
-//
-//    if( data != "" ) {
-//        auto charList = SBJSON::parse(data).GetArray();
-//
-//        for( int i = 0; i < charList.Size(); ++i ) {
-//            doc.PushBack(SBJSON::value(charList[i].GetString(), allocator), allocator);
-//        }
-//    }
-//
-//    // 새로운 캐릭터 추가
-//    bool isContains = false;
-//
-//    for( int i = 0; i < doc.Size(); ++i ) {
-//        string unlockCharId = doc[i].GetString();
-//
-//        if( unlockCharId == charId ) {
-//            isContains = true;
-//            break;
-//        }
-//    }
-//
-//    if( !isContains ) {
-//        doc.PushBack(SBJSON::value(charId, allocator), allocator);
-//    }
-//
-//    // 잠금 해제된 캐릭터 리스트 저장
-//    rapidjson::StringBuffer strbuf;
-//    strbuf.Clear();
-//
-//    rapidjson::Writer<rapidjson::StringBuffer> writer(strbuf);
-//    doc.Accept(writer);
-//
-//    string newData = strbuf.GetString();
-//
-//    UserDefault::getInstance()->setStringForKey(UNLOCK_CHARACTERS, newData);
-//    UserDefault::getInstance()->flush();
-//
-//    CCLOG("unlockCharacter: %s newData: %s", charId.c_str(), newData.c_str());
-//}
 
 /**
  * 패키지 잠금 해제
  */
-void CharacterManager::onPackageUnlocked(const vector<string> &packages) {
+void CharacterManager::unlockPackage(const string &packId) {
+    
+    auto db = getPackageDB(packId);
+    
+    if( db->isPackageUnlocked() ) {
+        return;
+    }
+    
+    auto newUnlockCharacters = db->getLockedCharacters();
+    
+    db->unlockPackage();
+    db->commit();
+    
+    onCharacterUnlocked(newUnlockCharacters);
+    onPackageUnlocked(Packages({db->getPackage()}));
+}
+
+/**
+ * 캐릭터 잠금 해제
+ */
+void CharacterManager::unlockCharacter(const string &charId) {
+    
+    auto character = getCharacter(charId);
+    auto db = getPackageDB(character.packId);
+    
+    if( db->isCharacterUnlocked(charId) ) {
+        return;
+    }
+    
+    db->unlockCharacter(charId);
+    db->commit();
+    
+    onCharacterUnlocked(Characters({character}));
+}
+
+/**
+ * DB 커밋
+ */
+void CharacterManager::commit(const string &packId) {
+ 
+    getPackageDB(packId)->commit();
+}
+
+void CharacterManager::commitAll() {
+    
+    for( auto it = packageDbs.begin(); it != packageDbs.end(); ++it ) {
+        auto db = it->second;
+        db->commit();
+    }
+}
+
+/**
+ * DB 필드 값 업데이트
+ * 새로 해제된 패키지, 캐릭터를 리스너로 전달합니다
+ */
+void CharacterManager::submit(CharacterListener listener, PackageDB::Field field, int i, const string &charId) {
+    
+    Characters *unlockCharacters = new Characters();
+    Packages *unlockPackages = new Packages();
+    
+    auto submit = [=](PackageDB *db) {
+        
+        db->submit([=](Characters characters) {
+            
+            for( auto character : characters ) {
+                unlockCharacters->push_back(character);
+            }
+            
+            if( db->isPackageUnlocked() ) {
+                unlockPackages->push_back(db->getPackage());
+            }
+            
+        }, field, i, charId);
+    };
+    
+    // 기본 필드
+    if( field != PackageDB::Field::VIEW_ADS ) {
+        for( auto it = packageDbs.begin(); it != packageDbs.end(); ++it ) {
+            auto db = it->second;
+            submit(db);
+        }
+    }
+    // VIEW_ADS 필드
+    else {
+        if( charId == "" ) {
+            CCASSERT(false, "CharacterManager::submit error: invalid character id.");
+            return;
+        }
+        
+        auto db = getPackageDB(getCharacter(charId).packId);
+        submit(db);
+    }
+    
+    if( unlockCharacters->size() > 0 ) {
+        if( listener.onCharacterUnlocked ) {
+            listener.onCharacterUnlocked(*unlockCharacters);
+        }
+        
+        onCharacterUnlocked(*unlockCharacters);
+    }
+    
+    if( unlockPackages->size() > 0 ) {
+        if( listener.onPackageUnlocked ) {
+            listener.onPackageUnlocked(*unlockPackages);
+        }
+        
+        onPackageUnlocked(*unlockPackages);
+    }
+    
+    delete unlockCharacters;
+    delete unlockPackages;
+}
+
+void CharacterManager::submit(PackageDB::Field field, int i, const string &charId) {
+ 
+    submit(CharacterListener(), field, i, charId);
+}
+
+/**
+ * 캐릭터 선택됨
+ */
+void CharacterManager::onCharacterSelected(const Character &character) {
+    
+    CCLOG("CharacterManager::onCharacterSelected: %s", character.charId.c_str());
+    
+    for( auto listener : listeners ) {
+        if( listener->onCharacterSelected ) {
+            listener->onCharacterSelected(character);
+        }
+    }
+}
+
+/**
+ * 패키지 잠금 해제
+ */
+void CharacterManager::onPackageUnlocked(const Packages &packages) {
+    
+    CCLOG("CharacterManager::onPackageUnlocked: %s", packIdToString(getPackageIds(packages)).c_str());
     
     for( auto listener : listeners ) {
         if( listener->onPackageUnlocked ) {
@@ -302,7 +410,9 @@ void CharacterManager::onPackageUnlocked(const vector<string> &packages) {
 /**
  * 캐릭터 잠금 해제
  */
-void CharacterManager::onCharacterUnlocked(const vector<string> &characters) {
+void CharacterManager::onCharacterUnlocked(const Characters &characters) {
+    
+    CCLOG("CharacterManager::onCharacterUnlocked: %s", charIdToString(getCharacterIds(characters)).c_str());
     
     for( auto listener : listeners ) {
         if( listener->onCharacterUnlocked ) {
