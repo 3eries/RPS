@@ -96,7 +96,9 @@ void PackageNavigator::onPackagePurchase(size_t i) {
     
     CCLOG("onPackagePurchase: %d", i);
     
-    onPackagePurchaseListener(packs[i]);
+    if( pageIndex == i ) {
+        onPackagePurchaseListener(packs[i]);
+    }
 }
 
 /**
