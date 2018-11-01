@@ -19,6 +19,7 @@ using namespace std;
 
 #define           FIRST_INDEX                   1
 static const Size NAVIGATION_ITEM_SIZE          = Size(560, 152);
+#define           NAVIGATION_ITEM_MARGIN        (-(SB_WIN_SIZE.width - NAVIGATION_ITEM_SIZE.width - 20))
 
 PackageNavigator* PackageNavigator::create() {
     
@@ -202,15 +203,13 @@ void PackageNavigator::showArrows() {
  */
 void PackageNavigator::initItems() {
     
-    // RSP_popup_bg_shop_pack_title.png Vec2TC(0, -316) , Size(560, 152)
-    // RSP_popup_bg_shop_pack_title.png Vec2TC(580, -316) , Size(560, 152)
     // PageView 초기화
     pageView = PageView::create();
     pageView->setDirection(PageView::Direction::HORIZONTAL);
     pageView->setAnchorPoint(ANCHOR_M);
     pageView->setPosition(Vec2TC(0, -316));
     pageView->setContentSize(Size(SB_WIN_SIZE.width, 152));
-    pageView->setItemsMargin(-140);
+    pageView->setItemsMargin(NAVIGATION_ITEM_MARGIN);
     pageView->setClippingEnabled(false);
     pageView->setBounceEnabled(true);
     // pageView->setAutoScrollStopEpsilon(0.1f);
