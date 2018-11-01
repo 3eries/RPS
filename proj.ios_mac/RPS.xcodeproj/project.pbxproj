@@ -332,6 +332,7 @@
 		1D97ED9820C8E2AA0027C319 /* RSPBlockLayer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = RSPBlockLayer.hpp; sourceTree = "<group>"; };
 		1D981071216DE90C0092F628 /* CharacterManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterManager.cpp; sourceTree = "<group>"; };
 		1D981072216DE90C0092F628 /* CharacterManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CharacterManager.hpp; sourceTree = "<group>"; };
+		1D98CB89218A230D00757DD7 /* PopupDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopupDefine.h; sourceTree = "<group>"; };
 		1D9ED20020C421D8006DE988 /* GameConfiguration.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameConfiguration.cpp; sourceTree = "<group>"; };
 		1D9ED20120C421D8006DE988 /* GameConfiguration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameConfiguration.hpp; sourceTree = "<group>"; };
 		1DA0407921034660001980BA /* PluginManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PluginManager.cpp; sourceTree = "<group>"; };
@@ -779,6 +780,7 @@
 		1D59F3D220FA69D200649A99 /* popup */ = {
 			isa = PBXGroup;
 			children = (
+				1D98CB89218A230D00757DD7 /* PopupDefine.h */,
 				1D59F3D620FA69F100649A99 /* PopupListener.cpp */,
 				1D59F3D720FA69F100649A99 /* PopupListener.hpp */,
 				1D59F3D320FA69D200649A99 /* PopupManager.cpp */,
