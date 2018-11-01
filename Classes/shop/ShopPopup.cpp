@@ -260,8 +260,6 @@ void ShopPopup::setCharacter(int i) {
  */
 void ShopPopup::updateBottomMenu() {
     
-    auto character = getCharacter();
-    
     auto setVisible = [=](Tag tag, bool isVisible) {
         bottomMenu->getChildByTag(tag)->setVisible(isVisible);
     };
@@ -276,6 +274,12 @@ void ShopPopup::updateBottomMenu() {
     for( auto tag : tags ) {
         setVisible(tag, false);
     }
+    
+    if( pack.packId == "" ) {
+        return;
+    }
+    
+    auto character = getCharacter();
     
     // 잠금 해제됨
     if( charMgr->isCharacterUnlocked(character.charId) ) {
@@ -300,6 +304,10 @@ void ShopPopup::updateBottomMenu() {
  */
 void ShopPopup::updateViewAdsButton() {
     
+    if( pack.packId == "" ) {
+        return;
+    }
+    
     auto character = getCharacter();
     
     if( character.charId == "" || character.unlockType != UnlockType::VIEW_ADS ) {
@@ -320,6 +328,10 @@ void ShopPopup::updateViewAdsButton() {
  * 현재 캐릭터 반환
  */
 Character ShopPopup::getCharacter() {
+    
+    if( pack.packId == "" ) {
+        CCASSERT(false, "ShopPopup::getCharacter error: invalid package.");
+    }
     
     return pack.characters[characterIndex];
 }
