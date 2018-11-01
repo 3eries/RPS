@@ -27,7 +27,16 @@ bool BaseScene::init() {
         return false;
     }
     
-    processBackKey();
+    // Key 이벤트 리스너 등록
+    auto listener = EventListenerKeyboard::create();
+    listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+        
+        if( keyCode == EventKeyboard::KeyCode::KEY_BACK ) {
+            this->onBackKeyReleased();
+        }
+    };
+    
+    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
     
     return true;
 }

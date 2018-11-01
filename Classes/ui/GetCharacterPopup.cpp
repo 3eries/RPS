@@ -57,6 +57,14 @@ void GetCharacterPopup::onEnter() {
     BasePopup::onEnter();
 }
 
+bool GetCharacterPopup::onBackKeyReleased() {
+    
+    // Back Key 이벤트를 무시한다
+    CCLOG("GetCharacterPopup::onBackKeyReleased: %s", character.charId.c_str());
+    
+    return true;
+}
+
 void GetCharacterPopup::initBackgroundView() {
     
     BasePopup::initBackgroundView();

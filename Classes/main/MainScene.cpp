@@ -108,6 +108,33 @@ void MainScene::onExit() {
     BaseScene::onExit();
 }
 
+bool MainScene::onBackKeyReleased() {
+    
+    if( !BaseScene::onBackKeyReleased() ) {
+        return false;
+    }
+    
+    if( SceneManager::getInstance()->onBackKeyReleased() ) {
+        return false;
+    }
+    
+    // 앱 종료 알림 팝업 생성
+    if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+        
+        auto popup = ExitAlertPopup::create();
+        popup->setOnExitAppListener([=]() {
+            SBSystemUtils::exitApp();
+        });
+        
+        addChild(popup, ZOrder::POPUP_MIDDLE);
+        
+        return true;
+    }
+    
+    return false;
+}
+
 /**
  * 게임 화면으로 이동
  */
@@ -282,33 +309,4 @@ void MainScene::initPopupListener() {
     };
     
     PopupManager::getInstance()->addListener(listener);
-}
-
-void MainScene::processBackKey() {
-    
-    auto listener = EventListenerKeyboard::create();
-    listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
-        
-        if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-            return;
-        }
-        
-        if( SceneManager::getInstance()->onBackKeyReleased() ) {
-            return;
-        }
-        
-        // 앱 종료 알림 팝업 생성
-        if( PopupManager::getInstance()->getPopupCount() == 0 ) {
-            SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-            
-            auto popup = ExitAlertPopup::create();
-            popup->setOnExitAppListener([=]() {
-                SBSystemUtils::exitApp();
-            });
-            
-            this->addChild(popup, ZOrder::POPUP_MIDDLE);
-        }
-    };
-    
-    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }

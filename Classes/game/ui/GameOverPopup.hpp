@@ -30,6 +30,7 @@ private:
     
     bool init() override;
     void onEnter() override;
+    bool onBackKeyReleased() override;
     
     void initBackgroundView() override;
     void initContentView() override;

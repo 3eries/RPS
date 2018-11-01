@@ -37,25 +37,40 @@ bool SBBasePopup::init() {
     initBackgroundView();
     initContentView();
     
-    // 터치 방지
-    auto listener = EventListenerTouchOneByOne::create();
-    listener->setSwallowTouches(true);
-    listener->onTouchBegan = [=](Touch *touch, Event*) -> bool {
-        
-        if( !SBNodeUtils::hasVisibleParents(this) ) {
-            return false;
-        }
-        
-        this->onTouch(this, touch, SBTouchEventType::BEGAN);
-        
-        return true;
-    };
-    listener->onTouchEnded = [=](Touch *touch, Event*) {
-        
-        this->onTouch(this, touch, SBTouchEventType::ENDED);
-    };
+    // Key 이벤트 리스너 등록
+    {
+        auto listener = EventListenerKeyboard::create();
+        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
+            
+            if( keyCode == EventKeyboard::KeyCode::KEY_BACK ) {
+                this->onBackKeyReleased();
+            }
+        };
     
-    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
+    
+    // 터치 방지
+    {
+        auto listener = EventListenerTouchOneByOne::create();
+        listener->setSwallowTouches(true);
+        listener->onTouchBegan = [=](Touch *touch, Event*) -> bool {
+            
+            if( !SBNodeUtils::hasVisibleParents(this) ) {
+                return false;
+            }
+            
+            this->onTouch(this, touch, SBTouchEventType::BEGAN);
+            
+            return true;
+        };
+        listener->onTouchEnded = [=](Touch *touch, Event*) {
+            
+            this->onTouch(this, touch, SBTouchEventType::ENDED);
+        };
+        
+        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    }
     
     return true;
 }

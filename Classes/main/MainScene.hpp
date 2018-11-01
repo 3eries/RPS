@@ -37,14 +37,13 @@ private:
     void onEnter() override;
     void onEnterTransitionDidFinish() override;
     void onExit() override;
+    bool onBackKeyReleased() override;
     
     void initBg();
     void initMenu();
     
     void initIAPListener();
     void initPopupListener();
-    
-    void processBackKey() override;
     
 private:
     void replaceGame();

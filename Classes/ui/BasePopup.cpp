@@ -41,52 +41,6 @@ bool BasePopup::init() {
     
     popupMgr->addPopup(this);
     
-    // back key
-    {
-        auto listener = EventListenerKeyboard::create();
-        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
-            
-            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-                return;
-            }
-            
-            if( SceneManager::getInstance()->onBackKeyReleased() ) {
-                return;
-            }
-            
-            // 광고가 열렸다 닫힌 경우 예외처리
-            if( !Director::getInstance()->isValid() ) {
-                return;
-            }
-            
-            // 등/퇴장 연출중
-            if( runningEnterAction || runningExitAction ) {
-                return;
-            }
-            
-            // 우상단 닫기 버튼 활성화된 경우, 닫기 버튼 클릭 강제 수행
-            auto commonMenu = SceneManager::getCommonMenu();
-            if( !commonMenu ) {
-                return;
-            }
-            
-            auto topMenu = commonMenu->getTopMenu();
-            if( !topMenu->isVisible() ) {
-                return;
-            }
-            
-            auto selectedMenu = topMenu->getSelectedRightMenu();
-            
-            if( selectedMenu== TopMenu::Tag::BACK ||
-                selectedMenu == TopMenu::Tag::CLOSE ) {
-                
-                commonMenu->performClickTopMenu(selectedMenu);
-            }
-        };
-        
-        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    }
-    
     return true;
 }
 
@@ -105,6 +59,56 @@ void BasePopup::onExit() {
     getEventDispatcher()->removeEventListenersForTarget(this);
     
     SBBasePopup::onExit();
+}
+
+bool BasePopup::onBackKeyReleased() {
+    
+    CCLOG("BasePopup::onBackKeyReleased");
+    
+    if( !SBBasePopup::onBackKeyReleased() ) {
+        return false;
+    }
+    
+    if( SceneManager::getInstance()->onBackKeyReleased() ) {
+        return false;
+    }
+    
+    // 최상위 팝업 체크
+    if( PopupManager::getFrontPopup() != this ) {
+        return false;
+    }
+    
+    // 우상단 닫기 버튼 활성화된 경우, 닫기 버튼 클릭 강제 수행
+    auto commonMenu = SceneManager::getCommonMenu();
+    if( !commonMenu ) {
+        return false;
+    }
+    
+    auto topMenu = commonMenu->getTopMenu();
+    if( !topMenu->isVisible() ) {
+        return false;
+    }
+    
+    auto selectedMenu = topMenu->getSelectedRightMenu();
+    
+    if( selectedMenu != TopMenu::Tag::BACK &&
+        selectedMenu != TopMenu::Tag::CLOSE ) {
+        return false;
+    }
+    
+    // 광고가 열렸다 닫힌 경우 예외처리
+    if( !Director::getInstance()->isValid() ) {
+        return true;
+    }
+    
+    // 등/퇴장 연출중
+    if( runningEnterAction || runningExitAction ) {
+        return true;
+    }
+    
+    commonMenu->performClickTopMenu(selectedMenu);
+    
+    return true;
 }
 
 void BasePopup::onPopupEvent(PopupEventType eventType) {

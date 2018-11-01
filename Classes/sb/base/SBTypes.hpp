@@ -44,6 +44,8 @@ enum class SBTouchEventType {
 
 class SBNodeListener {
 public:
+    virtual bool onBackKeyReleased() { return true; }
+    
     virtual void onClick(cocos2d::Node *sender) {}
     virtual void onTouch(cocos2d::Node *sender,
                          cocos2d::Touch *touch, SBTouchEventType eventType) {}

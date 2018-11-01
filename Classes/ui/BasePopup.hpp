@@ -30,6 +30,7 @@ protected:
     virtual bool init() override;
     virtual void onEnter() override;
     virtual void onExit() override;
+    virtual bool onBackKeyReleased() override;
     
     virtual void onPopupEvent(PopupEventType eventType);
     

@@ -57,47 +57,6 @@ bool GameOverPopup::init() {
         return false;
     }
     
-    // back key
-    {
-        auto listener = EventListenerKeyboard::create();
-        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
-            
-            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-                return;
-            }
-            
-            if( SceneManager::getInstance()->onBackKeyReleased() ) {
-                return;
-            }
-            
-            // 광고가 열렸다 닫힌 경우 예외처리
-            if( !Director::getInstance()->isValid() ) {
-                return;
-            }
-            
-            // 등/퇴장 연출중
-            if( runningEnterAction || runningExitAction ) {
-                return;
-            }
-            
-            // 앱 종료 알림 팝업 생성
-            if( PopupManager::getInstance()->getPopupCount() == 1 &&
-                PopupManager::getInstance()->exists(PopupType::GAME_OVER) ) {
-                
-                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-                
-                auto popup = ExitAlertPopup::create();
-                popup->setOnExitAppListener([=]() {
-                    SBSystemUtils::exitApp();
-                });
-                
-                SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
-            }
-        };
-        
-        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    }
-    
     return true;
 }
 
@@ -106,6 +65,39 @@ void GameOverPopup::onEnter() {
     BasePopup::onEnter();
     
     runEnterAction();
+}
+
+bool GameOverPopup::onBackKeyReleased() {
+    
+    if( SceneManager::getInstance()->onBackKeyReleased() ) {
+        return false;
+    }
+    
+    if( PopupManager::getPopupCount() > 1 || !PopupManager::exists(PopupType::GAME_OVER) ) {
+        return false;
+    }
+    
+    // 광고가 열렸다 닫힌 경우 예외처리
+    if( !Director::getInstance()->isValid() ) {
+        return true;
+    }
+    
+    // 등/퇴장 연출중
+    if( runningEnterAction || runningExitAction ) {
+        return true;
+    }
+    
+    // 앱 종료 알림 팝업 생성
+    SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+    
+    auto popup = ExitAlertPopup::create();
+    popup->setOnExitAppListener([=]() {
+        SBSystemUtils::exitApp();
+    });
+    
+    SceneManager::getScene()->addChild(popup, ZOrder::POPUP_MIDDLE);
+    
+    return true;
 }
 
 void GameOverPopup::initBackgroundView() {

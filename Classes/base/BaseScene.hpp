@@ -24,8 +24,8 @@ protected:
 protected:
     virtual bool init() override;
     virtual void initCommonMenu();
-    virtual void processBackKey() {};
     
+    virtual bool onBackKeyReleased() override { return true; }
     virtual void onClick(cocos2d::Node *sender) override {}
     
 protected:

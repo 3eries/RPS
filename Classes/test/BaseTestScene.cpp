@@ -34,11 +34,9 @@ bool BaseTestScene::init() {
         auto listener = EventListenerKeyboard::create();
         listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
             
-            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-                return;
+            if( keyCode == EventKeyboard::KeyCode::KEY_BACK ) {
+                this->onBack();
             }
-            
-            this->onBack();
         };
         
         getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);

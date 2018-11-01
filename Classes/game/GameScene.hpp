@@ -42,6 +42,7 @@ private:
     void onEnter() override;
     void onEnterTransitionDidFinish() override;
     void onExit() override;
+    bool onBackKeyReleased() override;
     
     void initBg();
     void initCommonMenu() override;

@@ -48,34 +48,6 @@ bool GameScene::init() {
     
     firebase::Analytics::setScreenName(FA_SCREEN_GAME);
     
-    // back key
-    {
-        auto listener = EventListenerKeyboard::create();
-        listener->onKeyReleased = [=] (EventKeyboard::KeyCode keyCode, Event *event) {
-            
-            if( keyCode != EventKeyboard::KeyCode::KEY_BACK ) {
-                return;
-            }
-            
-            if( SceneManager::getInstance()->onBackKeyReleased() ) {
-                return;
-            }
-            
-            if( gameMgr->isPreGameOver() || gameMgr->isGameOver() ) {
-                return;
-            }
-            
-            // 일시 정지 팝업 생성
-            if( PopupManager::getInstance()->getPopupCount() == 0 ) {
-                SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
-                
-                this->showPausePopup();
-            }
-        };
-        
-        getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
-    }
-    
     initBg();
     initCommonMenu();
     initBanner();
@@ -131,6 +103,32 @@ void GameScene::onExit() {
     AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
     
     BaseScene::onExit();
+}
+
+bool GameScene::onBackKeyReleased() {
+    
+    if( !BaseScene::onBackKeyReleased() ) {
+        return false;
+    }
+    
+    if( SceneManager::getInstance()->onBackKeyReleased() ) {
+        return false;
+    }
+    
+    if( gameMgr->isPreGameOver() || gameMgr->isGameOver() ) {
+        return false;
+    }
+    
+    // 일시 정지 팝업 생성
+    if( PopupManager::getInstance()->getPopupCount() == 0 ) {
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
+        
+        this->showPausePopup();
+        
+        return true;
+    }
+    
+    return false;
 }
 
 void GameScene::reset() {
