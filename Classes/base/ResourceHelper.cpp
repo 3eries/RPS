@@ -9,6 +9,7 @@
 
 #include "superbomb.h"
 #include "Define.h"
+#include "CharacterManager.hpp"
 
 USING_NS_CC;
 using namespace std;
@@ -20,6 +21,13 @@ void ResourceHelper::preload() {
     
     auto getAnimPNG = [](string anim) -> string {
         return SBStringUtils::replaceAll(anim, ANIM_EXT, ".png");
+    };
+    
+    auto addImageAsync = [textureCache](StringList list) {
+      
+        for( auto file : list ) {
+            textureCache->addImageAsync(file, nullptr);
+        }
     };
     
     // add image
@@ -60,6 +68,22 @@ void ResourceHelper::preload() {
                 const string secondFile = SBStringUtils::replaceAll(getAnimPNG(file), ".png", "2.png");
                 textureCache->addImageAsync(getAnimPNG(secondFile), nullptr);
             }
+        }
+    }
+    
+    // add character resources
+    {
+        auto charMgr = CharacterManager::getInstance();
+        
+        // selected character
+        auto chc = charMgr->getSelectedCharacter();
+        addImageAsync(chc.idleAnims);
+        
+        // 각 패키지의 첫번째 캐릭터
+        auto packs = charMgr->getPackages();
+        
+        for( auto pack : packs ) {
+            addImageAsync(pack.characters[0].idleAnims);
         }
     }
     
