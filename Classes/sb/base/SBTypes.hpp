@@ -22,6 +22,8 @@ typedef long double BigFloat;
 
 NS_SB_END
 
+typedef std::vector<std::string> StringList;
+
 typedef enum {
     BOTTOM = 100,
     MIDDLE = 1000,
