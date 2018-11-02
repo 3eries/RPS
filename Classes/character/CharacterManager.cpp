@@ -90,16 +90,16 @@ void CharacterManager::init(const string &json) {
             character.unlockDesc = charValue["unlock_desc"].GetString();
             
             // 테스트를 위한 amount 조절
-            //
+            /*
             if( character.unlockType == UnlockType::VIEW_ADS ) {
                 character.unlockAmount = 1;
             } else {
                 character.unlockAmount /= 3;
             }
-            
-            // character.unlockAmount = 1;
+
             character.unlockAmount = MAX(1, character.unlockAmount);
-            //
+             */
+            /////////////////////////////
             
             auto getAnims = [=](string key) -> vector<string> {
                 
