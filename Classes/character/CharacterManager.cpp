@@ -12,6 +12,7 @@
 #include "json/prettywriter.h"
 
 #include "Define.h"
+#include "CharacterResourceHelper.hpp"
 
 USING_NS_CC;
 using namespace std;
@@ -119,15 +120,9 @@ void CharacterManager::init(const string &json) {
                 return anims;
             };
             
-            character.idleAnims = getAnims("idle");
-            character.attackAnims = getAnims("attack");
-            character.attackAnims = getAnims("attack");
-            
-            character.punchSound = DIR + STR_FORMAT("%s_snd_punch.mp3", character.charId.c_str());
-            
-            if( !FileUtils::getInstance()->isFileExist(character.punchSound) ) {
-                character.punchSound = "";
-            }
+            character.idleAnims = CHC_IDLE_ANIMATION(character);
+            character.attackAnims = CHC_ATTACK_ANIMATION(character);
+            character.punchSound = CHC_PUNCH_SOUND(character);
             
             character.feverGagePos.x = charValue["fever_gage_pos_x"].GetFloat();
             character.feverGagePos.y = charValue["fever_gage_pos_y"].GetFloat();
