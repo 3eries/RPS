@@ -7,6 +7,8 @@
 
 #include "PopupManager.hpp"
 
+#include <spine/spine-cocos2dx.h>
+
 #include "Define.h"
 #include "SceneManager.h"
 
@@ -16,6 +18,7 @@
 #include "GetCharacterPopup.hpp"
 
 USING_NS_CC;
+using namespace spine;
 using namespace std;
 
 static PopupManager *instance = nullptr;
@@ -224,6 +227,30 @@ void PopupManager::showGetCharacterPopup(const Characters &characters) {
     // 이전 리스트 클리어
     getCharacterPopups.clear();
     
+    // Effect 노드 생성
+    const int POPUP_ZORDER = ZOrder::POPUP_TOP+1;
+    const int SHINE_ACTION_TAG_FADE = 100;
+    
+    // bg
+    auto darkBg = LayerColor::create(Color::POPUP_BG);
+    SceneManager::getScene()->addChild(darkBg, POPUP_ZORDER-1);
+    
+    // shine
+    auto shine = Sprite::create(DIR_IMG_GAME + "shine_effect.png");
+    shine->setAnchorPoint(ANCHOR_M);
+    shine->setPosition(Vec2MC(0, 25));
+    shine->setScale(4);
+    shine->setVisible(false);
+    SceneManager::getScene()->addChild(shine, POPUP_ZORDER-1);
+    
+    // powder
+    auto powder = SkeletonAnimation::createWithJsonFile(DIR_ANIM + "get_powder.json");
+    powder->setAnchorPoint(Vec2::ZERO);
+    powder->setPosition(Vec2MC(0,0));
+    powder->setVisible(false);
+    SceneManager::getScene()->addChild(powder, POPUP_ZORDER+1);
+    
+    // 팝업 생성
     for( auto character : characters ) {
         auto popup = GetCharacterPopup::create(character);
         popup->setVisible(false);
@@ -235,6 +262,7 @@ void PopupManager::showGetCharacterPopup(const Characters &characters) {
             getCharacterPopups.erase(getCharacterPopups.begin());
             
             if( getCharacterPopups.size() == 0 ) {
+                // 마지막 팝업 퇴장 완료
                 return;
             }
             
@@ -243,19 +271,63 @@ void PopupManager::showGetCharacterPopup(const Characters &characters) {
             nextPopup->setVisible(true);
             nextPopup->onEnterActionFinished();
         });
-        SceneManager::getInstance()->getScene()->addChild(popup, ZOrder::POPUP_TOP);
+        SceneManager::getScene()->addChild(popup, POPUP_ZORDER);
         
         getCharacterPopups.push_back(popup);
     }
-
+    
     // 첫번째 팝업 노출
     auto firstPopup = getCharacterPopups[0];
     firstPopup->setVisible(true);
-    firstPopup->runEnterAction();
+    firstPopup->runEnterAction([=]() {
+        
+        // shine
+        shine->setVisible(true);
+        shine->setOpacity(0);
+        shine->runAction(RepeatForever::create(RotateBy::create(4.0f, 360)));
+        
+        auto fadeIn = FadeIn::create(0.2f);
+        fadeIn->setTag(SHINE_ACTION_TAG_FADE);
+        shine->runAction(fadeIn);
+        
+        // powder
+        powder->setVisible(true);
+        powder->setAnimation(0, ANIM_NAME_RUN, true);
+        
+        // 효과음
+        SBAudioEngine::playEffect(DIR_SOUND + "fanfare.mp3");
+    });
+    
+    // 배경 등장 연출
+    darkBg->setOpacity(0);
+    darkBg->runAction(FadeTo::create(0.15f, Color::POPUP_BG.a));
     
     // 마지막 팝업 퇴장 연출 나오도록
     auto lastPopup = getCharacterPopups[getCharacterPopups.size()-1];
     lastPopup->setIgnoreDismissAction(false);
+    lastPopup->setOnPopupEventListener([=](Node *sender, PopupEventType eventType) {
+        
+        switch( eventType ) {
+            case PopupEventType::EXIT_ACTION: {
+                // bg
+                darkBg->stopAllActions();
+                darkBg->runAction(Sequence::create(FadeOut::create(0.15f), RemoveSelf::create(), nullptr));
+                
+                // shine
+                shine->stopActionByTag(SHINE_ACTION_TAG_FADE);
+                shine->runAction(Sequence::create(FadeOut::create(0.06f), RemoveSelf::create(), nullptr));
+                
+                // powder
+                powder->runAction(Sequence::create(FadeOut::create(0.06f), RemoveSelf::create(), nullptr));
+            } break;
+                
+            case PopupEventType::EXIT_ACTION_FINISHED: {
+                
+            } break;
+                
+            default: break;
+        }
+    });
 }
 
 /**

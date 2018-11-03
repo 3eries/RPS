@@ -69,7 +69,7 @@ void GetCharacterPopup::initBackgroundView() {
     
     BasePopup::initBackgroundView();
     
-    setBackgroundColor(Color::POPUP_BG);
+    // setBackgroundColor(Color::POPUP_BG);
 }
 
 void GetCharacterPopup::initContentView() {
@@ -133,7 +133,7 @@ void GetCharacterPopup::runEnterAction(SBCallback onFinished) {
     BasePopup::runEnterAction(SLIDE_DURATION, onFinished);
     
     // 배경 fade in
-    runBackgroundFadeInAction(nullptr, FADE_DURATION);
+    // runBackgroundFadeInAction(nullptr, FADE_DURATION);
     
     // 컨텐츠 slide in
     runSlideInAction([=]() {
@@ -152,7 +152,7 @@ void GetCharacterPopup::runExitAction(SBCallback onFinished) {
     BasePopup::runExitAction(SLIDE_DURATION, onFinished);
     
     // 배경 fade out
-    runBackgroundFadeOutAction(nullptr, FADE_DURATION);
+    // runBackgroundFadeOutAction(nullptr, FADE_DURATION);
     
     // 컨텐츠 slide out
     runSlideOutAction([=]() {
