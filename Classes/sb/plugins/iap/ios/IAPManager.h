@@ -9,8 +9,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-
-#import <GoogleMobileAds/GoogleMobileAds.h>
+#import <StoreKit/StoreKit.h>
 
 #include "cocos2d.h"
 #include "IAPHelper.hpp"
