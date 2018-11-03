@@ -37,6 +37,7 @@ static const std::string FA_EVENT_GAME_PLAY                     = "game_play";  
 static const std::string FA_EVENT_GAME_RESULT                   = "game_result";           // 게임 결과
 static const std::string FA_EVENT_CREDIT                        = "credit";                // 크레딧 화면 진입
 static const std::string FA_EVENT_SHOP                          = "shop";                  // 샵 화면 진입
+static const std::string FA_EVENT_GET_CHARACTER                 = "get_character";         // 캐릭터 획득
 static const std::string FA_EVENT_REVIEW_POPUP                  = "review_popup";          // 리뷰 팝업 진입
 
 static const std::string FA_EVENT_PARAM_SCORE                   = "score";                 // 스코어
@@ -44,6 +45,7 @@ static const std::string FA_EVENT_PARAM_SCORE_RANGE             = "score_range";
 static const std::string FA_EVENT_PARAM_DRAW                    = "draw";                  // 비긴 총 횟수
 static const std::string FA_EVENT_PARAM_FEVER                   = "fever";                 // 피버 진입 총 횟수
 static const std::string FA_EVENT_PARAM_FIRST_FEVER             = "first_fever";           // 최초 피버 진입 여부 (0 or 1)
+static const std::string FA_EVENT_PARAM_CHAR_ID                 = "char_id";               // 캐릭터 아이디
 
 // Leaderboard
 // 현재는 아이디를 사용하지만, 추후 plugin_config.json에 이름과 아이디를 정의하여 사용

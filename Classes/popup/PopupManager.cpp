@@ -18,6 +18,7 @@
 #include "GetCharacterPopup.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace spine;
 using namespace std;
 
@@ -226,6 +227,16 @@ void PopupManager::showGetCharacterPopup(const Characters &characters) {
     
     // 이전 리스트 클리어
     getCharacterPopups.clear();
+    
+    // firebase event
+    {
+        for( auto chc : characters ) {
+            firebase::Analytics::EventParams params;
+            params[FA_EVENT_PARAM_CHAR_ID] = Value(chc.charId);
+            
+            firebase::Analytics::logEvent(FA_EVENT_GET_CHARACTER, params);
+        }
+    }
     
     // Effect 노드 생성
     const int POPUP_ZORDER = ZOrder::POPUP_TOP+1;
