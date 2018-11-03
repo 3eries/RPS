@@ -39,6 +39,7 @@ static const std::string FA_EVENT_FEVER                         = "fever";      
 static const std::string FA_EVENT_FIRST_FEVER                   = "first_fever";           // 게임 당 최초 피버 진입 횟수
 static const std::string FA_EVENT_CREDIT                        = "credit";                // 크레딧 화면 진입
 static const std::string FA_EVENT_SHOP                          = "shop";                  // 샵 화면 진입
+static const std::string FA_EVENT_REVIEW_POPUP                  = "review_popup";          // 리뷰 팝업 진입
 
 static const std::string FA_EVENT_PARAM_SCORE                   = "score";                 // 스코어
 static const std::string FA_EVENT_PARAM_SCORE_RANGE             = "score_range";           // 스코어 범위

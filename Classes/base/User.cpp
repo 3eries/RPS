@@ -103,6 +103,8 @@ bool User::checkReview(float popupDelay) {
     }
     
     auto showPopup = [=]() {
+        firebase::Analytics::logEvent(FA_EVENT_REVIEW_POPUP);
+        
         ReviewHelper::showReviewPopup([=]() {
             
             // 커스텀 팝업
