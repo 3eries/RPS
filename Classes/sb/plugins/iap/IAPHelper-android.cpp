@@ -44,6 +44,12 @@ bool IAPHelper::isReady() {
 }
 
 extern "C" {
+    void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnSetupFinished(JNIEnv *env, jobject obj) {
+        
+        if( IAPHelper::getInstance()->isAutoRestore() ) {
+            IAPHelper::restore();
+        }
+    }
     
     void Java_com_superbomb_plugins_iap_IAPHelper_nativeOnPurchased(JNIEnv *env, jobject obj, jstring jitemId) {
         

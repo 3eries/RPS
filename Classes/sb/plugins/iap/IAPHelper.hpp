@@ -68,7 +68,7 @@ public:
     /**
      * Restore purchase
      */
-    static void restore(RestoreListener *listener);
+    static void restore(RestoreListener *listener = nullptr);
     static void consumeAll();
     
     static bool isReady();
@@ -104,6 +104,9 @@ protected:
     
     Config config;
     cocos2d::Vector<Listener*> listeners;
+    
+    // IAP 초기화 후 구매 아이템 자동 복원 여부
+    SB_SYNTHESIZE_BOOL(autoRestore, AutoRestore);
 };
 
 NS_IAP_END;

@@ -30,7 +30,8 @@ void IAPHelper::destroyInstance() {
 }
 
 IAPHelper::IAPHelper() :
-state(State::IDLE) {
+state(State::IDLE),
+autoRestore(true) {
 }
 
 IAPHelper::~IAPHelper() {

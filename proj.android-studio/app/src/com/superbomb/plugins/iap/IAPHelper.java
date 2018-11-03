@@ -254,6 +254,13 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
 
         Log.i(TAG, "onBillingClientSetupFinished");
 
+        context.runOnGLThread(new Runnable() {
+            @Override
+            public void run() {
+                nativeOnSetupFinished();
+            }
+        });
+
         // 인벤토리 업데이트
         updateInventory(null);
 
@@ -467,6 +474,7 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
         return billingManager.isBillingClientReady() && billingManager.isServiceConnected();
     }
 
+    public static native void nativeOnSetupFinished();
     public static native void nativeOnPurchased(String itemId);
     public static native void nativeOnPurchaseError(String errorMsg);
     public static native void nativeOnPurchaseCanceled();
