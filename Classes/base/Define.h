@@ -35,8 +35,6 @@ static const std::string FA_SCREEN_GAME_RESULT                  = "game_result";
 
 static const std::string FA_EVENT_GAME_PLAY                     = "game_play";             // 게임 플레이 횟수
 static const std::string FA_EVENT_GAME_RESULT                   = "game_result";           // 게임 결과
-static const std::string FA_EVENT_FEVER                         = "fever";                 // 피버 진입 총 횟수
-static const std::string FA_EVENT_FIRST_FEVER                   = "first_fever";           // 게임 당 최초 피버 진입 횟수
 static const std::string FA_EVENT_CREDIT                        = "credit";                // 크레딧 화면 진입
 static const std::string FA_EVENT_SHOP                          = "shop";                  // 샵 화면 진입
 static const std::string FA_EVENT_REVIEW_POPUP                  = "review_popup";          // 리뷰 팝업 진입

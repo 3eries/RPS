@@ -421,12 +421,6 @@ void GameManager::onNormalMode() {
  */
 void GameManager::onFeverMode() {
     
-    firebase::Analytics::logEvent(FA_EVENT_FEVER);
-    
-    if( feverModeCount == 0 ) {
-        firebase::Analytics::logEvent(FA_EVENT_FIRST_FEVER);
-    }
-    
     ++feverModeCount;
     onGameModeChanged(GameMode::FEVER);
     
