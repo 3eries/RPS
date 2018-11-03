@@ -10,6 +10,7 @@
 #include "User.hpp"
 #include "SceneManager.h"
 #include "PopupManager.hpp"
+#include "CharacterManager.hpp"
 #include "UIHelper.hpp"
 
 #include "GameDefine.h"
@@ -37,6 +38,7 @@ gameView(nullptr) {
 
 GameScene::~GameScene() {
     
+    CharacterManager::getInstance()->removeListener(this);
     iap::IAPHelper::getInstance()->removeListener(this);
 }
 
@@ -86,6 +88,20 @@ void GameScene::onEnter() {
     // 게임뷰 초기화
     gameView = SceneManager::getGameView();
     gameMgr->onEnterGame(gameView);
+    
+    // 캐릭터 리스너 초기화
+    {
+        auto listener = CharacterListener::create();
+        listener->setTarget(this);
+        listener->onCharacterSelected = [=](const Character &chc) {
+            auto shopPopup = PopupManager::getPopup(PopupType::SHOP);
+            shopPopup->setIgnoreDismissAction(true);
+            
+            this->replaceMain();
+        };
+        
+        CharacterManager::getInstance()->addListener(listener);
+    }
 }
 
 void GameScene::onEnterTransitionDidFinish() {
@@ -97,9 +113,10 @@ void GameScene::onEnterTransitionDidFinish() {
 
 void GameScene::onExit() {
     
+    CharacterManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
-    
     PopupManager::getInstance()->removeListener(this);
+    iap::IAPHelper::getInstance()->removeListener(this);
     AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
     
     BaseScene::onExit();
@@ -256,9 +273,12 @@ void GameScene::showPausePopup() {
                 
             // main
             case PausePopup::Tag::MAIN: {
+                /*
                 popup->dismissWithAction([=]() {
                     this->replaceMain();
                 });
+                */
+                this->replaceMain();
                 
             } break;
                 
