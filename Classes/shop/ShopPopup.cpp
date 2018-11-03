@@ -124,7 +124,18 @@ void ShopPopup::onClick(Node *sender) {
             
         // 캐릭터 선택
         case Tag::BTN_SELECT: {
-            charMgr->setSelected(getCharacter().charId);
+            const auto chr = getCharacter();
+            
+            // firebase event
+            if( charMgr->getSelectedCharacter().charId != chr.charId ) {
+                firebase::Analytics::EventParams params;
+                params[FA_EVENT_PARAM_CHAR_ID] = Value(chr.charId);
+                
+                firebase::Analytics::logEvent(FA_EVENT_SELECT_CHARACTER, params);
+            }
+            
+            // select
+            charMgr->setSelected(chr.charId);
             dismissWithAction();
             
         } break;
