@@ -21,8 +21,12 @@ public:
     ~CharacterListener();
     
     OnCharacterListener         onCharacterSelected;       // 캐릭터 선택됨
+    
     OnPackageListListener       onPackageUnlocked;         // 패키지 잠금 해제
     OnCharacterListListener     onCharacterUnlocked;       // 캐릭터 잠금 해제
+
+    OnPackageListListener       onPackageRestored;         // 패키지 IAP 복원
+    OnCharacterListListener     onCharacterRestored;       // 캐릭터 IAP 복원
     
 private:
     CC_SYNTHESIZE(cocos2d::Ref*, target, Target);

@@ -16,6 +16,9 @@
 #include "CharacterView.hpp"
 #include "CommonLoadingBar.hpp"
 
+#define DEBUG_PACKAGE           0
+#define DEBUG_CHARACTER         0
+
 USING_NS_CC;
 USING_NS_SB;
 using namespace cocos2d::ui;
@@ -53,6 +56,7 @@ characterIndex(0) {
 ShopPopup::~ShopPopup() {
  
     charMgr->removeListener(this);
+    iap::IAPHelper::getInstance()->removeListener(this);
     AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
 }
 
@@ -83,11 +87,25 @@ void ShopPopup::onEnter() {
         
         PopupManager::showGetCharacterPopup(characters);
     };
+    listener->onCharacterRestored = [=](Characters characters) {
+        
+        characterView->updateSelf();
+        this->updateBottomMenu();
+    };
     
     listener->onPackageUnlocked = [=](Packages packages) {
     };
     
     charMgr->addListener(listener);
+}
+
+void ShopPopup::onExit() {
+    
+    charMgr->removeListener(this);
+    iap::IAPHelper::getInstance()->removeListener(this);
+    AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
+    
+    BasePopup::onExit();
 }
 
 void ShopPopup::initBackgroundView() {
@@ -182,11 +200,37 @@ void ShopPopup::onPackageChanged(Package pack) {
 void ShopPopup::onPackagePurchase(Package pack) {
     
     CCLOG("ShopPopup::onPackagePurchase:\n%s", pack.toString().c_str());
-    
-    // MessageBox(STR_FORMAT("TODO: %s", pack.name.c_str()).c_str(), "");
 
+#if (DEBUG_PACKAGE == 0)
     // 패키지 해제
+    const auto item = iap::IAPHelper::getItemByName(pack.packId);
+    
+    if( item.itemId == "" ) {
+        CCASSERT(false, "ShopPopup::onPackagePurchase error: invalid item id.");
+        return;
+    }
+    
+    if( iap::IAPHelper::isReady() ) {
+        auto loadingBar = CommonLoadingBar::create();
+        loadingBar->setUIDelay(0.1f);
+        loadingBar->show();
+        
+        auto listener = iap::PurchaseListener::create();
+        listener->setTarget(this);
+        listener->onPurchased = [=](const iap::Item &item) {
+            
+            CCLOG("ShopPopup::onPackagePurchase onPurchased: %s", item.name.c_str());
+            charMgr->unlockPackage(pack.packId);
+        };
+        listener->onFinished = [=](bool result) {
+            loadingBar->dismissWithDelay(0);
+        };
+        
+        iap::IAPHelper::purchase(item, listener);
+    }
+#else
     charMgr->unlockPackage(pack.packId);
+#endif
 }
 
 /**
@@ -196,10 +240,36 @@ void ShopPopup::onCharacterPurchase(Character character) {
     
     CCLOG("ShopPopup::onCharacterPurchase:\n%s", character.toString().c_str());
     
-    // MessageBox(STR_FORMAT("TODO: %s", character.name.c_str()).c_str(), "");
-    
+#if (DEBUG_CHARACTER == 0)
     // 캐릭터 해제
+    const auto item = iap::IAPHelper::getItemByName(character.charId);
+    
+    if( item.itemId == "" ) {
+        CCASSERT(false, "ShopPopup::onCharacterPurchase error: invalid item id.");
+        return;
+    }
+    
+    if( iap::IAPHelper::isReady() ) {
+        auto loadingBar = CommonLoadingBar::create();
+        loadingBar->setUIDelay(0.1f);
+        loadingBar->show();
+        
+        auto listener = iap::PurchaseListener::create();
+        listener->setTarget(this);
+        listener->onPurchased = [=](const iap::Item &item) {
+            
+            CCLOG("ShopPopup::onCharacterPurchase onPurchased: %s", item.name.c_str());
+            charMgr->unlockCharacter(character.charId);
+        };
+        listener->onFinished = [=](bool result) {
+            loadingBar->dismissWithDelay(0);
+        };
+        
+        iap::IAPHelper::purchase(item, listener);
+    }
+#else
     charMgr->unlockCharacter(character.charId);
+#endif
 }
 
 /**

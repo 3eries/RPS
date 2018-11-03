@@ -21,7 +21,7 @@
 /** @class CharacterManager
  * @brief
  */
-class CharacterManager {    
+class CharacterManager : public cocos2d::Ref {
 public:
     static CharacterManager* getInstance();
     static void destroyInstance();
@@ -29,6 +29,8 @@ public:
     
 private:
     CharacterManager();
+    
+    void initIAPListener();
     
 public:
     void init(const std::string &json);
@@ -43,8 +45,8 @@ public:
     
     void    setSelected(const std::string &charId);
     
-    void    unlockPackage(const std::string &packId);
-    void    unlockCharacter(const std::string &charId);
+    void    unlockPackage(const std::string &packId, bool isRestored = false);
+    void    unlockCharacter(const std::string &charId, bool isRestored = false);
     
     void    commit(const std::string &packId);
     void    commitAll();
@@ -75,6 +77,12 @@ public:
     
     // 캐릭터 잠금 해제
     void onCharacterUnlocked(const Characters &characters);
+
+    // 패키지 IAP 복원
+    void onPackageRestored(const Packages &packages);
+    
+    // 캐릭터 IAP 복원
+    void onCharacterRestored(const Characters &characters);
     
 public:
     void addListener(CharacterListener *listener);

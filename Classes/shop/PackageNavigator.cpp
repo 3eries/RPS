@@ -394,7 +394,7 @@ void NavigationItem::onEnter() {
     listener->setTarget(this);
     
     // 패키지 해제
-    listener->onPackageUnlocked = [=](Packages packages) {
+    auto onPackageUnlocked = [=](Packages packages) {
         
         bool found = false;
         
@@ -412,7 +412,17 @@ void NavigationItem::onEnter() {
         }
     };
     
+    listener->onPackageUnlocked = onPackageUnlocked;
+    listener->onPackageRestored = onPackageUnlocked;
+    
     CharacterManager::getInstance()->addListener(listener);
+}
+
+void NavigationItem::onExit() {
+    
+    CharacterManager::getInstance()->removeListener(this);
+    
+    Widget::onExit();
 }
 
 void NavigationItem::showArrow(ArrowType type) {

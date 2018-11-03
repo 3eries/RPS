@@ -15,6 +15,7 @@
 #include "CharacterResourceHelper.hpp"
 
 USING_NS_CC;
+USING_NS_SB;
 using namespace std;
 
 static const char* SELECTED_CHARACTER                      = "SELECTED_CHARACTER";      // 선택된 캐릭터
@@ -37,10 +38,13 @@ void CharacterManager::destroyInstance() {
 
 CharacterManager::CharacterManager() {
     
+    initIAPListener();
 }
 
 CharacterManager::~CharacterManager() {
  
+    iap::IAPHelper::getInstance()->removeListener(this);
+    
     listeners.clear();
     
     for( auto it = packageDbs.begin(); it != packageDbs.end(); ++it ) {
@@ -48,6 +52,54 @@ CharacterManager::~CharacterManager() {
     }
     
     packageDbs.clear();
+}
+
+/**
+ * 인앱 결제 리스너 초기화
+ */
+void CharacterManager::initIAPListener() {
+    
+    // purchase listener
+//    auto purchaseListener = iap::PurchaseListener::create();
+//    purchaseListener->setForever(true);
+//    purchaseListener->onPurchased
+//    purchaseListener->onRemoveAds = onRemoveAds;
+//
+//    iap::IAPHelper::getInstance()->addListener(this, purchaseListener);
+    
+    // restore listener
+    auto restoreListener = iap::RestoreListener::create();
+    restoreListener->setTarget(this);
+    restoreListener->setForever(true);
+    restoreListener->onPurchased = [=](const iap::Item &item) {
+        
+        CCLOG("CharacterManager RestoreListener::onPurchased: %s", item.name.c_str());
+        
+        bool found = false;
+        
+        // 패키지 복원 체크
+        for( auto pack : packages ) {
+            if( pack.packId == item.name ) {
+                this->unlockPackage(pack.packId, true);
+                found = true;
+                break;
+            }
+        }
+        
+        // 캐릭터 복원 체크
+        if( !found ) {
+            for( auto it : characters ) {
+                auto charId = it.first;
+                
+                if( charId == item.name ) {
+                    this->unlockCharacter(charId, true);
+                    break;
+                }
+            }
+        }
+    };
+    
+    iap::IAPHelper::getInstance()->addListener(restoreListener);
 }
 
 void CharacterManager::init(const string &json) {
@@ -256,7 +308,7 @@ void CharacterManager::setSelected(const string &charId) {
 /**
  * 패키지 잠금 해제
  */
-void CharacterManager::unlockPackage(const string &packId) {
+void CharacterManager::unlockPackage(const string &packId, bool isRestored) {
     
     auto db = getPackageDB(packId);
     
@@ -269,14 +321,19 @@ void CharacterManager::unlockPackage(const string &packId) {
     db->unlockPackage();
     db->commit();
     
-    onCharacterUnlocked(newUnlockCharacters);
-    onPackageUnlocked(Packages({db->getPackage()}));
+    if( !isRestored ) {
+        onCharacterUnlocked(newUnlockCharacters);
+        onPackageUnlocked(Packages({db->getPackage()}));
+    } else {
+        onCharacterRestored(newUnlockCharacters);
+        onPackageRestored(Packages({db->getPackage()}));
+    }
 }
 
 /**
  * 캐릭터 잠금 해제
  */
-void CharacterManager::unlockCharacter(const string &charId) {
+void CharacterManager::unlockCharacter(const string &charId, bool isRestored) {
     
     auto character = getCharacter(charId);
     auto db = getPackageDB(character.packId);
@@ -288,7 +345,11 @@ void CharacterManager::unlockCharacter(const string &charId) {
     db->unlockCharacter(charId);
     db->commit();
     
-    onCharacterUnlocked(Characters({character}));
+    if( !isRestored ) {
+        onCharacterUnlocked(Characters({character}));
+    } else {
+        onCharacterRestored(Characters({character}));
+    }
 }
 
 /**
@@ -412,6 +473,34 @@ void CharacterManager::onCharacterUnlocked(const Characters &characters) {
     for( auto listener : listeners ) {
         if( listener->onCharacterUnlocked ) {
             listener->onCharacterUnlocked(characters);
+        }
+    }
+}
+
+/**
+ * 패키지 IAP 복원
+ */
+void CharacterManager::onPackageRestored(const Packages &packages) {
+    
+    CCLOG("CharacterManager::onPackageRestored: %s", packIdToString(getPackageIds(packages)).c_str());
+    
+    for( auto listener : listeners ) {
+        if( listener->onPackageRestored ) {
+            listener->onPackageRestored(packages);
+        }
+    }
+}
+
+/**
+ * 캐릭터 IAP 복원
+ */
+void CharacterManager::onCharacterRestored(const Characters &characters) {
+    
+    CCLOG("CharacterManager::onCharacterRestored: %s", charIdToString(getCharacterIds(characters)).c_str());
+    
+    for( auto listener : listeners ) {
+        if( listener->onCharacterRestored ) {
+            listener->onCharacterRestored(characters);
         }
     }
 }

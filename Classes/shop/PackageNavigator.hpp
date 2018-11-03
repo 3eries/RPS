@@ -62,6 +62,7 @@ private:
     
     bool init() override;
     void onEnter() override;
+    void onExit() override;
     
 public:
     enum class ArrowType {

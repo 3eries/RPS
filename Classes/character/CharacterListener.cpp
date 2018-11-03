@@ -11,7 +11,9 @@ CharacterListener::CharacterListener() :
 target(nullptr),
 onCharacterSelected(nullptr),
 onPackageUnlocked(nullptr),
-onCharacterUnlocked(nullptr) {
+onCharacterUnlocked(nullptr),
+onPackageRestored(nullptr),
+onCharacterRestored(nullptr) {
 }
 
 CharacterListener::~CharacterListener() {
