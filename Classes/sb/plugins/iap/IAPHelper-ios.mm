@@ -31,6 +31,9 @@ void IAPHelper::restoreImpl() {
     [[IAPManager getInstance] restore];
 }
 
+void IAPHelper::consumeAll() {
+}
+
 bool IAPHelper::isReady() {
     return true;
 }

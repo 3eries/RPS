@@ -33,6 +33,11 @@ void IAPHelper::restoreImpl() {
     cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "restore");
 }
 
+void IAPHelper::consumeAll() {
+    
+    cocos2d::JniHelper::callStaticVoidMethod(JNI_CLASS_NAME, "consumeAll");
+}
+
 bool IAPHelper::isReady() {
     
     return cocos2d::JniHelper::callStaticBooleanMethod(JNI_CLASS_NAME, "isReady");

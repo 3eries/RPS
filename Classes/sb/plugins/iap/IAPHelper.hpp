@@ -69,6 +69,7 @@ public:
      * Restore purchase
      */
     static void restore(RestoreListener *listener);
+    static void consumeAll();
     
     static bool isReady();
     

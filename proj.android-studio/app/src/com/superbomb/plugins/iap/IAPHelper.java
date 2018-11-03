@@ -256,6 +256,9 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
 
         // 인벤토리 업데이트
         updateInventory(null);
+
+        // consume for test
+        // consumeAll();
     }
 
     /**
@@ -433,6 +436,25 @@ public class IAPHelper implements PluginListener, BillingManager.BillingUpdatesL
 
     public static void restore() {
         restore(null);
+    }
+
+    public static void consumeAll() {
+
+        getInstance().updateInventory(new PurchasesUpdatedListener() {
+
+            @Override
+            public void onPurchasesUpdated(int responseCode, @Nullable List<Purchase> purchases) {
+
+                final boolean result = (responseCode == BillingResponse.OK);
+
+                if( result && purchases != null ) {
+                    for( final Purchase purchase : purchases ) {
+                        Log.i(TAG, "consumeAll item: " + purchase.getSku());
+                        getInstance().billingManager.consumeAsync(purchase.getPurchaseToken());
+                    }
+                }
+            }
+        });
     }
 
     public static boolean isReady() {
