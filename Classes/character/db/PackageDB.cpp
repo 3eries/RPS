@@ -380,6 +380,16 @@ void PackageDB::submit(OnCharacterListListener listener, Field field, int i, con
         return;
     }
     
+    // 필드에 해당하는 캐릭터가 모두 잠금 해제된 경우 값을 업데이트 하지 않는다
+    const auto unlockType = getCharacterUnlockType(field);
+    auto lockedCharacters = SBCollection::find(getLockedCharacters(), [=](Character chc) -> bool {
+        return chc.unlockType == unlockType;
+    });
+    
+    if( lockedCharacters.size() == 0 ) {
+        return;
+    }
+    
     const bool isViewAdsField = (field == Field::VIEW_ADS);
     int fieldValue = 0;
     
@@ -423,7 +433,6 @@ void PackageDB::submit(OnCharacterListListener listener, Field field, int i, con
     }
     
     // 잠금 해제된 캐릭터 체크
-    const auto unlockType = getCharacterUnlockType(field);
     Characters newUnlockCharacters;
     
     auto isUnlocked = [=](Character c) -> bool {
