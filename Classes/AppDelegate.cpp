@@ -98,7 +98,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // 캐릭터 매니저 초기화
     {
         string json = SBStringUtils::readTextFile(CHARACTER_PACKAGE_FILE);
-        // json = SBSecurity::decryptAES256(json, AES256_KEY);
+        json = SBSecurity::decryptAES256(json, AES256_KEY);
         
         CharacterManager::getInstance()->init(json);
     }
