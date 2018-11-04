@@ -89,6 +89,8 @@ pack(pack) {
     }
     
     string data = UserDefault::getInstance()->getStringForKey(getDBKey(pack).c_str(), "");
+    data = SBSecurity::decryptAES256(data, AES256_KEY);
+    
     CCLOG("PackageDB packId: %s, data:\n%s", pack.packId.c_str(), data.c_str());
     
     // 기존 데이터 있음
@@ -234,6 +236,7 @@ void PackageDB::commit() {
     // write
     string json = strbuf.GetString();
     CCLOG("PackageDB::commit:\n%s", json.c_str());
+    json = SBSecurity::encryptAES256(json, AES256_KEY);
     
     UserDefault::getInstance()->setStringForKey(getDBKey(pack).c_str(), json);
     UserDefault::getInstance()->flush();
