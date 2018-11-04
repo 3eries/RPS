@@ -17,7 +17,7 @@ static const std::string SERVER_GAME_CONFIG_FILE                = "http://superb
 #define                  AES256_KEY                               "A1din7oih98dh9wef974fnsudh54ugJs"
 
 static const std::string GAME_CONFIG_FILE                       = "game_config.json";
-static const std::string CHARACTER_PACKAGE_FILE                 = "config/character_package.json";
+static const std::string CHARACTER_PACKAGE_FILE                 = "character/character_package.json";
 
 static const std::string INTERNAL_GAME_CONFIG_FILE              = "config/" + GAME_CONFIG_FILE;
 #define                  EXTERNAL_GAME_CONFIG_FILE                 std::string(cocos2d::FileUtils::getInstance()->getWritablePath() + GAME_CONFIG_FILE)
