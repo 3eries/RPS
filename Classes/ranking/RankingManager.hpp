@@ -53,6 +53,9 @@ public:
     static void sort(RankingRecords &records);
     static void sort();
     
+    static bool setBestScore(int score);
+    static int  getBestScore();
+    
     static void setRecord(RankingRecord record, bool isSave = true);
     static void setNewRecord(int score, std::string name, bool isSave = true);
     

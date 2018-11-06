@@ -173,6 +173,29 @@ void RankingManager::sort() {
 }
 
 /**
+ * 베스트 스코어 설정
+ */
+bool RankingManager::setBestScore(int score) {
+    
+    if( score <= getBestScore() ) {
+        return false;
+    }
+    
+    UserDefault::getInstance()->setIntegerForKey(UserDefaultKey::BEST_SCORE, score);
+    UserDefault::getInstance()->flush();
+    
+    return true;
+}
+
+/**
+ * 베스트 스코어를 반환합니다
+ */
+int RankingManager::getBestScore() {
+    
+    return UserDefault::getInstance()->getIntegerForKey(UserDefaultKey::BEST_SCORE, 0);
+}
+
+/**
  * 기록 설정
  */
 void RankingManager::setRecord(RankingRecord record, bool isSave) {

@@ -55,6 +55,7 @@ void GameManager::init() {
     {
         string log;
         log += "\t" + STR_FORMAT("play count: %d", getPlayCount()) + "\n";
+        log += "\t" + STR_FORMAT("best score: %d", RankingManager::getBestScore()) + "\n";
         
         CCLOG("GameManager::init\n{\n%s}", log.c_str());
     }
@@ -335,7 +336,8 @@ void GameManager::onGameOver() {
         // 순위 선정
         ranking = RankingManager::getNewRanking(score);
         
-        // 리더보드 등록
+        // 스코어 등록
+        RankingManager::setBestScore(score);
         superbomb::PluginPlay::submitScore(LEADER_BOARD_HIGH_SCORE, score);
     }
     
