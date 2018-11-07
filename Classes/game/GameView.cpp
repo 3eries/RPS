@@ -131,7 +131,7 @@ void GameView::onExit() {
 void GameView::reset() {
     
     buttonLayer->setVisible(true);
-    buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
+    showTapHint();
 }
 
 /**
@@ -262,7 +262,7 @@ void GameView::onGameModeChanged(GameMode mode) {
             }
             */
             // Tap Hint 노출
-            buttonLayer->showTapHintFeverMode();
+            showTapHint();
             
         } break;
     }
@@ -420,6 +420,22 @@ void GameView::drawBlock(RSPBlock *block) {
     
     // 버튼 터치 지연
     buttonLayer->touchLocked(gameMgr->getConfig()->getTimeInfo().drawDelay);
+}
+
+/**
+ * TAP 힌트 노출
+ */
+void GameView::showTapHint() {
+    
+    switch( gameMgr->getGameMode() ) {
+        case GameMode::NORMAL: {
+            buttonLayer->showTapHint(getWinHand(blockLayer->getFirstBlock()->getType()));
+        } break;
+            
+        case GameMode::FEVER: {
+            buttonLayer->showTapHintFeverMode();
+        } break;
+    }
 }
 
 /**

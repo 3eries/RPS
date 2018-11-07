@@ -90,7 +90,7 @@ private:
     void misBlock(RSPBlock *block);
     void drawBlock(RSPBlock *block);
     
-private:
+    void showTapHint();
     void showLevelLabel();
     
 private:
