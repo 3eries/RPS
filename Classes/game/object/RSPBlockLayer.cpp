@@ -232,12 +232,13 @@ void RSPBlockLayer::drawBlock(RSPBlock *block) {
 void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosition) {
     
     auto block = hitBlock->clone();
+    block->setPositionY(getBlockPosition(0).y);
     hitBlock->getParent()->addChild(block, -1);
     
     // move
     {
-        float POS_LEFT  = 0;
-        float POS_RIGHT = SB_WIN_SIZE.width;
+        float POS_LEFT  = -block->getAnchorPointInPoints().x;
+        float POS_RIGHT = SB_WIN_SIZE.width + block->getAnchorPointInPoints().x;
         float posX = 0;
         
         switch( manPosition ) {
