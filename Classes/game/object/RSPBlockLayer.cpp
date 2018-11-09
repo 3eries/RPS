@@ -237,8 +237,8 @@ void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosit
     
     // move
     {
-        float POS_LEFT  = -block->getAnchorPointInPoints().x;
-        float POS_RIGHT = SB_WIN_SIZE.width + block->getAnchorPointInPoints().x;
+        float POS_LEFT  = -BLOCK_WIDTH * 0.5f;
+        float POS_RIGHT = SB_WIN_SIZE.width + (BLOCK_WIDTH * 0.5f);
         float posX = 0;
         
         switch( manPosition ) {
