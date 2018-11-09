@@ -11,6 +11,7 @@
 // base
 #include "base/SBDirector.hpp"
 #include "base/SBMacros.h"
+#include "base/SBScheduleHelper.hpp"
 #include "base/SBTypes.hpp"
 #include "base/SBUserDefaultKey.h"
 
