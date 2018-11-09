@@ -44,8 +44,8 @@ bool BaseScene::init() {
 void BaseScene::initCommonMenu() {
     
     commonMenu = CommonMenu::create();
-    commonMenu->setTopMenu(this, ZOrder::POPUP_TOP);
-    commonMenu->setBottomMenu(this, ZOrder::POPUP_MIDDLE);
+    commonMenu->setTopMenu(this, ZOrder::COMMON_MENU_TOP);
+    commonMenu->setBottomMenu(this, ZOrder::COMMON_MENU_BOTTOM);
     addChild(commonMenu);
 }
 

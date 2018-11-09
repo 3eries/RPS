@@ -156,9 +156,12 @@ namespace Color {
 
 // ZOrder
 namespace ZOrder {
-    static const int POPUP_BOTTOM = SBZOrder::MIDDLE;
-    static const int POPUP_MIDDLE = POPUP_BOTTOM + 10;
-    static const int POPUP_TOP    = POPUP_MIDDLE + 10;
+    static const int POPUP_BOTTOM              = SBZOrder::MIDDLE;
+    static const int POPUP_MIDDLE              = POPUP_BOTTOM + 10;
+    static const int POPUP_TOP                 = POPUP_MIDDLE + 10;
+    
+    static const int COMMON_MENU_TOP           = POPUP_TOP;
+    static const int COMMON_MENU_BOTTOM        = POPUP_MIDDLE;
 }
 
 // 연출 시간
