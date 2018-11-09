@@ -497,7 +497,7 @@ void PopupManager::removeListener(PopupListener *listener) {
     CCLOG("PopupManager::removeListener count: %d", (int)listeners.size());
 }
 
-void PopupManager::removeListener(Node *target) {
+void PopupManager::removeListener(Ref *target) {
     
     CCASSERT(target != nullptr, "PopupManager::removeListener error: target must be not null");
     

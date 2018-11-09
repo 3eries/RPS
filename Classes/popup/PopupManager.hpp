@@ -59,7 +59,7 @@ public:
     void addListener(cocos2d::Node *target, PopupListener *listener);
     
     void removeListener(PopupListener *listener);
-    void removeListener(cocos2d::Node *target);
+    void removeListener(cocos2d::Ref *target);
     
     void dispatchEvent(BasePopup *popup, PopupEventType eventType);
     

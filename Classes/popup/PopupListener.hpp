@@ -32,7 +32,7 @@ protected:
     PopupListener();
     virtual ~PopupListener();
     
-    CC_SYNTHESIZE(cocos2d::Node*, target, Target);
+    CC_SYNTHESIZE(cocos2d::Ref*, target, Target);
     OnPopupEvent onEvent;
 };
 

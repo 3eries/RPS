@@ -49,7 +49,7 @@ void AdsEventDispatcher::removeListener(AdListener *listener) {
     }
 }
 
-void AdsEventDispatcher::removeListener(Node *target) {
+void AdsEventDispatcher::removeListener(Ref *target) {
     
     if( !target ) {
         return;

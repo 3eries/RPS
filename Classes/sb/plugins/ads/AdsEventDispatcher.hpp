@@ -33,7 +33,7 @@ public:
     void addListener(AdListener *listener);
     void addListener(AdType type, AdListener *listener);
     void removeListener(AdListener *listener);
-    void removeListener(cocos2d::Node *target);
+    void removeListener(cocos2d::Ref *target);
     void removeListeners(AdListeners listeners, bool remainForever = true);
     
 public:
