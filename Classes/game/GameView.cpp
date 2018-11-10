@@ -35,6 +35,7 @@ using namespace spine;
 using namespace std;
 
 static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
+static const string SCHEDULER_TAP_HINT           = "SCHEDULER_TAP_HINT";
 
 #define LEVEL_LABEL_POS            Vec2MC(0, 290 + 130 - 30)
 
@@ -177,6 +178,9 @@ void GameView::onGameResume() {
  * 게임 오버 전
  */
 void GameView::onPreGameOver() {
+    
+    unschedule(SCHEDULER_TAP_HINT);
+    buttonLayer->hideTapHint(false);
     
     getChildByTag<Label*>(Tag::LABEL_LEVEL)->setString("");
     getChildByTag<Label*>(Tag::LABEL_SCORE)->setString("");
@@ -324,6 +328,15 @@ void GameView::onClickNormalButton(RSPType type) {
     if( !timeBar->isStarted() && result != RSPResult::LOSE ) {
         gameMgr->onStartTimer();
     }
+    
+    // Tap Hint 스케줄러
+    unschedule(SCHEDULER_TAP_HINT);
+    
+    if( result != RSPResult::LOSE ) {
+        scheduleOnce([=](float dt) {
+            this->showTapHint();
+        }, 1.0f, SCHEDULER_TAP_HINT);
+    }
 }
 
 /**
@@ -335,6 +348,9 @@ void GameView::onClickFeverButton(int i) {
     man->rockNroll((i == 0) ? Man::Position::LEFT : Man::Position::RIGHT);
     
     hitBlock(block, RSPType::ROCK_N_ROLL);
+    
+    // Tap Hint 스케줄러
+    unschedule(SCHEDULER_TAP_HINT);
 }
 
 /**
