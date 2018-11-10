@@ -136,6 +136,26 @@ void GameView::reset() {
 }
 
 /**
+ * Tap 힌트 스케줄러 시작
+ */
+void GameView::scheduleTapHint() {
+    
+    unscheduleTapHint();
+    
+    scheduleOnce([=](float dt) {
+        this->showTapHint();
+    }, 0.5f, SCHEDULER_TAP_HINT);
+}
+
+/**
+ * Tap 힌트 스케줄러 정지
+ */
+void GameView::unscheduleTapHint() {
+    
+    unschedule(SCHEDULER_TAP_HINT);
+}
+
+/**
  * 게임 시작
  */
 void GameView::onGameStart() {
@@ -179,7 +199,7 @@ void GameView::onGameResume() {
  */
 void GameView::onPreGameOver() {
     
-    unschedule(SCHEDULER_TAP_HINT);
+    unscheduleTapHint();
     buttonLayer->hideTapHint(false);
     
     getChildByTag<Label*>(Tag::LABEL_LEVEL)->setString("");
@@ -279,6 +299,15 @@ void GameView::onPreFeverModeEnd() {
 }
 
 /**
+ * 마지막 피버 블럭 히트
+ */
+void GameView::onLastFeverBlockHit() {
+    
+    // Tap Hint 스케줄러 시작
+    scheduleTapHint();
+}
+
+/**
  * 스코어 업데이트
  */
 void GameView::updateScore() {
@@ -315,6 +344,11 @@ void GameView::onClickNormalButton(RSPType type) {
     }
 #endif
     
+    // Tap Hint 스케줄러 시작
+    if( result != RSPResult::LOSE ) {
+        scheduleTapHint();
+    }
+    
     man->showdown(result, type, block->getType());
     
     switch( result ) {
@@ -328,15 +362,6 @@ void GameView::onClickNormalButton(RSPType type) {
     if( !timeBar->isStarted() && result != RSPResult::LOSE ) {
         gameMgr->onStartTimer();
     }
-    
-    // Tap Hint 스케줄러
-    unschedule(SCHEDULER_TAP_HINT);
-    
-    if( result != RSPResult::LOSE ) {
-        scheduleOnce([=](float dt) {
-            this->showTapHint();
-        }, 1.0f, SCHEDULER_TAP_HINT);
-    }
 }
 
 /**
@@ -344,13 +369,13 @@ void GameView::onClickNormalButton(RSPType type) {
  */
 void GameView::onClickFeverButton(int i) {
     
+    // Tap Hint 스케줄러 정지
+    unscheduleTapHint();
+    
     auto block = blockLayer->getFirstBlock();
     man->rockNroll((i == 0) ? Man::Position::LEFT : Man::Position::RIGHT);
     
     hitBlock(block, RSPType::ROCK_N_ROLL);
-    
-    // Tap Hint 스케줄러
-    unschedule(SCHEDULER_TAP_HINT);
 }
 
 /**

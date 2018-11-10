@@ -65,6 +65,9 @@ private:
     
     void reset();
     
+    void scheduleTapHint();
+    void unscheduleTapHint();
+    
 // GameListener
 private:
     void onGameStart() override;
@@ -78,6 +81,7 @@ private:
     void onLevelChanged(LevelInfo level) override; 
     void onGameModeChanged(GameMode mode) override;
     void onPreFeverModeEnd() override;
+    void onLastFeverBlockHit() override;
     
 private:
     void updateScore();
