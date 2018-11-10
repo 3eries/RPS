@@ -306,6 +306,7 @@ static void logEventGameResult(int score) {
     params[FA_EVENT_PARAM_FEVER] = Value(feverModeCount);
     params[FA_EVENT_PARAM_FIRST_FEVER] = Value(feverModeCount > 0 ? 1 : 0);
     params[FA_EVENT_PARAM_DRAW] = Value(gameMgr->getDrawCount());
+    params[FA_EVENT_PARAM_CONTINUE] = Value(gameMgr->getContinueCount() > 0 ? 1 : 0);
     
     firebase::Analytics::logEvent(FA_EVENT_GAME_RESULT, params);
 }

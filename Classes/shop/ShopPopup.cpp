@@ -149,7 +149,7 @@ void ShopPopup::onClick(Node *sender) {
                 firebase::Analytics::EventParams params;
                 params[FA_EVENT_PARAM_CHAR_ID] = Value(chr.charId);
                 
-                firebase::Analytics::logEvent(FA_EVENT_SELECT_CHARACTER, params);
+                firebase::Analytics::logEvent(FA_EVENT_CHARACTER_SELECT, params);
             }
             
             // select
@@ -165,7 +165,16 @@ void ShopPopup::onClick(Node *sender) {
             
         // 광고 시청
         case Tag::BTN_VIEW_ADS: {
+            // firebase event
+            {
+                firebase::Analytics::EventParams params;
+                params[FA_EVENT_PARAM_CHAR_ID] = Value(getCharacter().charId);
+                
+                firebase::Analytics::logEvent(FA_EVENT_CHARACTER_VIEW_ADS_CLICK, params);
+            }
+            
             showAd();
+            
         } break;
             
         default: break;

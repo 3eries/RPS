@@ -234,7 +234,7 @@ void PopupManager::showGetCharacterPopup(const Characters &characters) {
             firebase::Analytics::EventParams params;
             params[FA_EVENT_PARAM_CHAR_ID] = Value(chc.charId);
             
-            firebase::Analytics::logEvent(FA_EVENT_GET_CHARACTER, params);
+            firebase::Analytics::logEvent(FA_EVENT_CHARACTER_GET, params);
         }
     }
     
