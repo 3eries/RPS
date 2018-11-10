@@ -1,0 +1,20 @@
+
+boost_on.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boost_on
+  rotate: false
+  xy: 2, 2
+  size: 448, 216
+  orig: 448, 216
+  offset: 0, 0
+  index: -1
+boost_on_lightning
+  rotate: false
+  xy: 452, 110
+  size: 88, 108
+  orig: 88, 108
+  offset: 0, 0
+  index: -1

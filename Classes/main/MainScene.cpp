@@ -11,6 +11,7 @@
 #include "User.hpp"
 #include "SceneManager.h"
 #include "PopupManager.hpp"
+#include "GiftManager.hpp"
 #include "UIHelper.hpp"
 
 #include "CommonLoadingBar.hpp"
@@ -52,6 +53,7 @@ bool MainScene::init() {
     initCommonMenu();
     
     initIAPListener();
+    initGiftListener();
     
     return true;
 }
@@ -76,6 +78,10 @@ void MainScene::onEnter() {
 void MainScene::onEnterTransitionDidFinish() {
     
     BaseScene::onEnterTransitionDidFinish();
+    
+    // 선물 활성화
+    GiftManager::setEnabled(GiftType::BOOST, true);
+    GiftManager::setCheckEnabled(true);
     
     // 개인 정보 처리 방침 안내 팝업
     if( !ConsentManager::isPrivacyPolicyChecked() ) {
@@ -103,6 +109,8 @@ void MainScene::onEnterTransitionDidFinish() {
 
 void MainScene::onExit() {
     
+    iap::IAPHelper::getInstance()->removeListener(this);
+    GiftManager::getInstance()->removeListener(this);
     PopupManager::getInstance()->removeListener(this);
     
     BaseScene::onExit();
@@ -262,6 +270,23 @@ void MainScene::initIAPListener() {
     restoreListener->onRemoveAds = onRemoveAds;
     
     iap::IAPHelper::getInstance()->addListener(this, restoreListener);
+}
+
+/**
+ * 선물 리스너 초기화
+ */
+void MainScene::initGiftListener() {
+    
+    auto listener = GiftListener::create();
+    listener->setTarget(this);
+    listener->onRewarded = [=](const GiftRewardItem &item) {
+        
+        if( item.type == GiftType::BOOST ) {
+            SceneManager::getInstance()->replaceGameScene(item);
+        }
+    };
+    
+    GiftManager::getInstance()->addListener(listener);
 }
 
 /**

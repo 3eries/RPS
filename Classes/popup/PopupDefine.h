@@ -24,6 +24,7 @@ enum class PopupType {
     PAUSE,
     GAME_OVER,
     CONTINUE,
+    GIFT,
 };
 
 #endif /* PopupDefine_h */

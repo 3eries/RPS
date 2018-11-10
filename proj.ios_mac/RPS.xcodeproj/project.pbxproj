@@ -52,6 +52,8 @@
 		1D45C49720A8A7D2007E63AD /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49520A8A7D2007E63AD /* MainScene.cpp */; };
 		1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45C49920A8A9E2007E63AD /* UIHelper.cpp */; };
 		1D45E0F820ED164C0065CB3D /* SBAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45E0F620ED164C0065CB3D /* SBAction.cpp */; };
+		1D4831992191613000EA0F2D /* GiftPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4831962191612F00EA0F2D /* GiftPopup.cpp */; };
+		1D48319A2191613000EA0F2D /* GiftBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4831982191612F00EA0F2D /* GiftBox.cpp */; };
 		1D4C659A20FF94AD005A43D8 /* SettingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */; };
 		1D4C659D21008BB8005A43D8 /* BaseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4C659B21008BB8005A43D8 /* BaseScene.cpp */; };
 		1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D59F3D320FA69D200649A99 /* PopupManager.cpp */; };
@@ -98,6 +100,8 @@
 		1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DA98BD320B47EEE006BC169 /* BaseTestScene.cpp */; };
 		1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DBC68E220E490D300CA85F0 /* DarkCloud.cpp */; };
 		1DBC68E820E49B9300CA85F0 /* CreditPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DBC68E620E49B9300CA85F0 /* CreditPopup.cpp */; };
+		1DC8553721902C9F007E180C /* GiftManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8553521902C9F007E180C /* GiftManager.cpp */; };
+		1DC8554121902FB2007E180C /* GiftListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DC8553F21902FB2007E180C /* GiftListener.cpp */; };
 		1DD38B4E20FC92DD00811604 /* TopMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B4C20FC92DD00811604 /* TopMenu.cpp */; };
 		1DD38B5120FC92E600811604 /* BottomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B4F20FC92E600811604 /* BottomMenu.cpp */; };
 		1DD38B5420FC92F100811604 /* CommonMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DD38B5220FC92F100811604 /* CommonMenu.cpp */; };
@@ -125,6 +129,7 @@
 		1DEA58162109A5B400CF6F98 /* AdsManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA580E2109A5B300CF6F98 /* AdsManager.mm */; };
 		1DEA58172109A5B400CF6F98 /* AdsHelper-android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA58102109A5B400CF6F98 /* AdsHelper-android.cpp */; };
 		1DEA58182109A5B400CF6F98 /* AdsHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEA58122109A5B400CF6F98 /* AdsHelper.cpp */; };
+		1DEAFE672195C814001CE5B7 /* SBScheduleHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DEAFE652195C814001CE5B7 /* SBScheduleHelper.cpp */; };
 		1DECFE8C2105C01C00F47252 /* SBPlatformHelper-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7736B20EEF7F000BB3261 /* FunnyHelper.cpp */; };
@@ -288,6 +293,10 @@
 		1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = UIHelper.hpp; sourceTree = "<group>"; };
 		1D45E0F620ED164C0065CB3D /* SBAction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBAction.cpp; sourceTree = "<group>"; };
 		1D45E0F720ED164C0065CB3D /* SBAction.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBAction.hpp; sourceTree = "<group>"; };
+		1D4831952191612F00EA0F2D /* GiftBox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GiftBox.hpp; sourceTree = "<group>"; };
+		1D4831962191612F00EA0F2D /* GiftPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GiftPopup.cpp; sourceTree = "<group>"; };
+		1D4831972191612F00EA0F2D /* GiftPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GiftPopup.hpp; sourceTree = "<group>"; };
+		1D4831982191612F00EA0F2D /* GiftBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GiftBox.cpp; sourceTree = "<group>"; };
 		1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingPopup.cpp; sourceTree = "<group>"; };
 		1D4C659920FF94AB005A43D8 /* SettingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SettingPopup.hpp; sourceTree = "<group>"; };
 		1D4C659B21008BB8005A43D8 /* BaseScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseScene.cpp; sourceTree = "<group>"; };
@@ -378,6 +387,11 @@
 		1DBC68E320E490D300CA85F0 /* DarkCloud.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DarkCloud.hpp; sourceTree = "<group>"; };
 		1DBC68E620E49B9300CA85F0 /* CreditPopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CreditPopup.cpp; sourceTree = "<group>"; };
 		1DBC68E720E49B9300CA85F0 /* CreditPopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CreditPopup.hpp; sourceTree = "<group>"; };
+		1DC8553521902C9F007E180C /* GiftManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GiftManager.cpp; sourceTree = "<group>"; };
+		1DC8553621902C9F007E180C /* GiftManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GiftManager.hpp; sourceTree = "<group>"; };
+		1DC8553821902CA9007E180C /* GiftDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GiftDefine.h; sourceTree = "<group>"; };
+		1DC8553F21902FB2007E180C /* GiftListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GiftListener.cpp; sourceTree = "<group>"; };
+		1DC8554021902FB2007E180C /* GiftListener.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GiftListener.hpp; sourceTree = "<group>"; };
 		1DD38B4C20FC92DD00811604 /* TopMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TopMenu.cpp; sourceTree = "<group>"; };
 		1DD38B4D20FC92DD00811604 /* TopMenu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TopMenu.hpp; sourceTree = "<group>"; };
 		1DD38B4F20FC92E600811604 /* BottomMenu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BottomMenu.cpp; sourceTree = "<group>"; };
@@ -423,6 +437,8 @@
 		1DEA58102109A5B400CF6F98 /* AdsHelper-android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "AdsHelper-android.cpp"; sourceTree = "<group>"; };
 		1DEA58112109A5B400CF6F98 /* AdsDefine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdsDefine.h; sourceTree = "<group>"; };
 		1DEA58122109A5B400CF6F98 /* AdsHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdsHelper.cpp; sourceTree = "<group>"; };
+		1DEAFE652195C814001CE5B7 /* SBScheduleHelper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SBScheduleHelper.cpp; sourceTree = "<group>"; };
+		1DEAFE662195C814001CE5B7 /* SBScheduleHelper.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SBScheduleHelper.hpp; sourceTree = "<group>"; };
 		1DECFE8B2105C01C00F47252 /* SBPlatformHelper-ios.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = "SBPlatformHelper-ios.mm"; sourceTree = "<group>"; };
 		1DECFE942105E9AF00F47252 /* SBPlatformHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBPlatformHelper.h; sourceTree = "<group>"; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -728,6 +744,8 @@
 				1D1F3C8820ACD12A0035A36C /* SBDirector.cpp */,
 				1D1F3C8920ACD12B0035A36C /* SBDirector.hpp */,
 				1D45C47B20A8A7B8007E63AD /* SBMacros.h */,
+				1DEAFE652195C814001CE5B7 /* SBScheduleHelper.cpp */,
+				1DEAFE662195C814001CE5B7 /* SBScheduleHelper.hpp */,
 				1D45C47A20A8A7B8007E63AD /* SBTypes.cpp */,
 				1D45C47920A8A7B8007E63AD /* SBTypes.hpp */,
 				1D1F3C8420AC9FD30035A36C /* SBUserDefaultKey.h */,
@@ -778,6 +796,17 @@
 				1DE1DC2420F759C800BB3238 /* SBEffect.h */,
 			);
 			path = effect;
+			sourceTree = "<group>";
+		};
+		1D4831942191612F00EA0F2D /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				1D4831982191612F00EA0F2D /* GiftBox.cpp */,
+				1D4831952191612F00EA0F2D /* GiftBox.hpp */,
+				1D4831962191612F00EA0F2D /* GiftPopup.cpp */,
+				1D4831972191612F00EA0F2D /* GiftPopup.hpp */,
+			);
+			path = ui;
 			sourceTree = "<group>";
 		};
 		1D59F3D220FA69D200649A99 /* popup */ = {
@@ -973,6 +1002,19 @@
 			path = test;
 			sourceTree = "<group>";
 		};
+		1DC8553221902C89007E180C /* gift */ = {
+			isa = PBXGroup;
+			children = (
+				1DC8553821902CA9007E180C /* GiftDefine.h */,
+				1DC8553F21902FB2007E180C /* GiftListener.cpp */,
+				1DC8554021902FB2007E180C /* GiftListener.hpp */,
+				1DC8553521902C9F007E180C /* GiftManager.cpp */,
+				1DC8553621902C9F007E180C /* GiftManager.hpp */,
+				1D4831942191612F00EA0F2D /* ui */,
+			);
+			path = gift;
+			sourceTree = "<group>";
+		};
 		1DD38B4A20FC92CA00811604 /* menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1139,6 +1181,7 @@
 				1D45C44420A8A787007E63AD /* base */,
 				1D7B446F216DE0FB00D403E1 /* character */,
 				1D45C44A20A8A7AC007E63AD /* game */,
+				1DC8553221902C89007E180C /* gift */,
 				1D45C44B20A8A7B3007E63AD /* main */,
 				1DD38B4A20FC92CA00811604 /* menu */,
 				1D59F3D220FA69D200649A99 /* popup */,
@@ -1369,6 +1412,7 @@
 				1D4C659A20FF94AD005A43D8 /* SettingPopup.cpp in Sources */,
 				1D97ED9620C82A220027C319 /* ConfigTestScene.cpp in Sources */,
 				1D3DF50C2104665C0055B66E /* GameCenterHelper.mm in Sources */,
+				1DC8553721902C9F007E180C /* GiftManager.cpp in Sources */,
 				1D45C49B20A8A9E2007E63AD /* UIHelper.cpp in Sources */,
 				1DA0408A21034661001980BA /* FirebaseManager-ios.mm in Sources */,
 				1DA723EC2109FEAE002B7ADE /* CommonLoadingBar.cpp in Sources */,
@@ -1376,6 +1420,7 @@
 				1D45C47C20A8A7B8007E63AD /* SBUIInfo.cpp in Sources */,
 				1D773ACF20D394D400EB4B99 /* ContinuePopup.cpp in Sources */,
 				1D1F3C9A20AD6D040035A36C /* SBBasePopup.cpp in Sources */,
+				1DEAFE672195C814001CE5B7 /* SBScheduleHelper.cpp in Sources */,
 				1D45C48820A8A7B8007E63AD /* SBHttp.cpp in Sources */,
 				1D981073216DE90C0092F628 /* CharacterManager.cpp in Sources */,
 				1DD38B5420FC92F100811604 /* CommonMenu.cpp in Sources */,
@@ -1416,6 +1461,7 @@
 				1D86438F21523898001841C9 /* SBSecurity-android.cpp in Sources */,
 				1DA0408D210346B4001980BA /* Analytics-ios.mm in Sources */,
 				1DA0408821034661001980BA /* FirebaseManager.cpp in Sources */,
+				1D4831992191613000EA0F2D /* GiftPopup.cpp in Sources */,
 				1D0701E12142607A0086D447 /* ExitAlertPopup.cpp in Sources */,
 				1D864391215238A8001841C9 /* SBSecurity-ios.mm in Sources */,
 				1D9ED20220C421D8006DE988 /* GameConfiguration.cpp in Sources */,
@@ -1453,6 +1499,7 @@
 				1D18E428215CBE430069A888 /* ConsentManager.cpp in Sources */,
 				1DDE8DB52178825D00973918 /* GetCharacterPopup.cpp in Sources */,
 				1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */,
+				1D48319A2191613000EA0F2D /* GiftBox.cpp in Sources */,
 				1D86439C21523AEC001841C9 /* NSData+Base64.m in Sources */,
 				1D8F54B120D2D114009E2201 /* SBSpineHelper.cpp in Sources */,
 				1DF7736D20EEF7F000BB3261 /* FunnyHelper.cpp in Sources */,
@@ -1476,6 +1523,7 @@
 				1DA98BD520B47EEE006BC169 /* BaseTestScene.cpp in Sources */,
 				1D6800B22175BC05000774F8 /* PackageDB.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
+				1DC8554121902FB2007E180C /* GiftListener.cpp in Sources */,
 				1D3DD000215B46EB00DE7409 /* ConsentForm-ios.mm in Sources */,
 				1DFDEB1620C11B53001BC81D /* TestHelper.cpp in Sources */,
 			);

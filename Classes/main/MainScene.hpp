@@ -43,6 +43,7 @@ private:
     void initMenu();
     
     void initIAPListener();
+    void initGiftListener();
     void initPopupListener();
     
 private:

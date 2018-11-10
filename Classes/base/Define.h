@@ -41,12 +41,16 @@ static const std::string FA_EVENT_GET_CHARACTER                 = "get_character
 static const std::string FA_EVENT_SELECT_CHARACTER              = "select_character";      // 캐릭터 선택
 static const std::string FA_EVENT_REVIEW_POPUP                  = "review_popup";          // 리뷰 팝업 진입
 
+static const std::string FA_EVENT_ITEM_BOX_CLICK                = "item_box_click";        // 아이템 상자 클릭
+static const std::string FA_EVENT_ITEM_USE                      = "item_use";              // 아이템 사용
+
 static const std::string FA_EVENT_PARAM_SCORE                   = "score";                 // 스코어
 static const std::string FA_EVENT_PARAM_SCORE_RANGE             = "score_range";           // 스코어 범위
 static const std::string FA_EVENT_PARAM_DRAW                    = "draw";                  // 비긴 총 횟수
 static const std::string FA_EVENT_PARAM_FEVER                   = "fever";                 // 피버 진입 총 횟수
 static const std::string FA_EVENT_PARAM_FIRST_FEVER             = "first_fever";           // 최초 피버 진입 여부 (0 or 1)
 static const std::string FA_EVENT_PARAM_CHAR_ID                 = "char_id";               // 캐릭터 아이디
+static const std::string FA_EVENT_PARAM_ITEM_NAME               = "item_name";             // 아이템 이름
 
 // Leaderboard
 // 현재는 아이디를 사용하지만, 추후 plugin_config.json에 이름과 아이디를 정의하여 사용
@@ -91,6 +95,7 @@ static const std::string ANIM_FEVER_MODE_FIRE       = DIR_ANIM + "fevermode_fire
 static const std::string ANIM_DRAW                  = DIR_ANIM + "character_draw" + ANIM_EXT;
 static const std::string ANIM_DIE                   = DIR_ANIM + "die" + ANIM_EXT;
 static const std::string ANIM_CONTINUE              = DIR_ANIM + "continue" + ANIM_EXT;
+static const std::string ANIM_BOOST                 = DIR_ANIM + "boost_on" + ANIM_EXT;
 
 static const std::string ANIM_NAME_RUN              = "run";
 static const std::string ANIM_NAME_CLEAR            = "clear";
@@ -162,6 +167,8 @@ namespace ZOrder {
     
     static const int COMMON_MENU_TOP           = POPUP_TOP;
     static const int COMMON_MENU_BOTTOM        = POPUP_MIDDLE;
+    
+    static const int GIFT_BOX                  = POPUP_BOTTOM-1;
 }
 
 // 연출 시간

@@ -34,8 +34,9 @@ using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
 
-static const string SCHEDULER_DRAW_DELAY = "SCHEDULER_DRAW_DELAY";
+static const string SCHEDULER_BOOST_HIT_BLOCK    = "SCHEDULER_BOOST_HIT_BLOCK";
 static const string SCHEDULER_TAP_HINT           = "SCHEDULER_TAP_HINT";
+static const string SCHEDULER_DRAW_DELAY         = "SCHEDULER_DRAW_DELAY";
 
 #define LEVEL_LABEL_POS            Vec2MC(0, 290 + 130 - 30)
 
@@ -230,7 +231,89 @@ void GameView::onGameOver() {
 }
 
 /**
- * 타이머 시자
+ * 부스트 시작
+ */
+void GameView::onBoostStart() {
+    
+    // disable the button layer
+    buttonLayer->setButtonTouchEnabled(false);
+    buttonLayer->hideTapHint(false);
+    
+    // 부스트 시작 연출
+    auto boostItem = gameMgr->getBoostItem();
+    auto scoreLabel = getChildByTag<Label*>(Tag::LABEL_SCORE);
+    
+    auto anim = SkeletonAnimation::createWithJsonFile(ANIM_BOOST);
+    anim->setAnchorPoint(Vec2::ZERO);
+    anim->setPosition(Vec2(SB_WIN_SIZE*0.5f));
+    addChild(anim, SBZOrder::MIDDLE);
+    
+    SBSpineHelper::clearAnimation(anim, ANIM_NAME_CLEAR);
+    SBSpineHelper::runAnimation([=]() {
+        
+        // 부스트 종료
+        gameMgr->onBoostEnd();
+        
+    }, anim, ANIM_NAME_RUN, true);
+    
+    // 이벤트 리스너 처리
+    anim->setEventListener([=](spTrackEntry *entry, spEvent *event) {
+        
+        string eventName = event->data->name;
+        
+        // 스코어 증가 시작
+        if( eventName == "score_start" ) {
+            const float NUMBER_ACTION_DURATION = 2.2f;
+            
+            // 스코어 액션 시작
+            auto onNumberChanged = [=](float value) {
+                
+                int i = (int)value;
+              
+                // 스코어 업데이트
+                hitCount = i;
+                this->updateScore();
+            };
+            
+            auto numberAction = ActionFloat::create(NUMBER_ACTION_DURATION,
+                                                    0, boostItem.amount, onNumberChanged);
+            scoreLabel->runAction(numberAction);
+            
+            // 블럭 히트 연출(다다다다!!!!)시작
+            this->schedule([=](float dt) {
+                
+                auto block = blockLayer->getFirstBlock();
+                auto oppHand = block->getType();
+                auto myHand = getWinHand(oppHand);
+                
+                man->showdown(RSPResult::WIN, myHand, oppHand);
+                blockLayer->hitBlock(block, myHand, man->getManPosition());
+                
+            }, 0.1f, SCHEDULER_BOOST_HIT_BLOCK);
+        }
+        // 스코어 증가 종료
+        else if( eventName == "score_end") {
+//            scoreLabel->stopAllActions();
+//            scoreLabel->setString(TO_STRING(boostItem.amount));
+            
+            this->unschedule(SCHEDULER_BOOST_HIT_BLOCK);
+        }
+    });
+}
+
+/**
+ * 부스트 종료
+ */
+void GameView::onBoostEnd() {
+ 
+    buttonLayer->setButtonTouchEnabled(true);
+    
+    showTapHint();
+    showLevelLabel();
+}
+
+/**
+ * 타이머 시작
  */
 void GameView::onStartTimer() {
 }
@@ -279,12 +362,6 @@ void GameView::onGameModeChanged(GameMode mode) {
                 anim->setAnimation(0, ANIM_NAME_RUN, false);
             }
             
-            // 최초 피버 모드시에만 Tap Hint 노출
-            /*
-            if( gameMgr->getFeverModeCount() == 1 ) {
-                buttonLayer->showTapHintFeverMode();
-            }
-            */
             // Tap Hint 노출
             showTapHint();
             
@@ -483,6 +560,10 @@ void GameView::showTapHint() {
  * Level 라벨 노출
  */
 void GameView::showLevelLabel() {
+    
+    if( gameMgr->isBoosting() ) {
+        return;
+    }
     
     auto levelLabel = getChildByTag<Label*>(Tag::LABEL_LEVEL);
     levelLabel->setVisible(true);

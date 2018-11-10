@@ -15,6 +15,7 @@
 #include "Define.h"
 #include "GameConfiguration.hpp"
 
+#include "GiftDefine.h"
 #include "CharacterManager.hpp"
 
 class GameScene;
@@ -38,6 +39,9 @@ public:
     virtual void onGameOver() {}                       // 게임 오버
     virtual void onGameEnd() {}                        // 게임 종료
     
+    virtual void onBoostStart() {}                     // 부스트 시작
+    virtual void onBoostEnd() {}                       // 부스트 종료
+    
     virtual void onStartTimer() {}                     // 타이머 시작
     virtual void onLevelChanged(LevelInfo level) {}    // 레벨 변경
     virtual void onDrawBlock() {}                      // 블럭 비김
@@ -60,31 +64,34 @@ private:
 public:
     void init();
     
-    void onEnterGame(GameView *view);
+    void onEnterGame(GiftRewardItem boostItem);
     void onExitGame();
     
     void setScore(int score);
     void addScore(int score);
     
+    bool hasBoostItem();
     bool isContinuable();
     bool isNewRecord();
     
     static int getPlayCount();
-    
-    static GameView* getView();
     
 private:
     void reset();
     
 private:
     CC_SYNTHESIZE_READONLY(GameConfiguration*, config, Config);
-    GameView *view;   // 게임 View
+    CC_SYNTHESIZE(GameView*, view, View);   // 게임 View
     
     SB_SYNTHESIZE_BOOL(updateLocked, UpdateLocked);               // update 스케줄러 잠금 여부
     SB_SYNTHESIZE_BOOL(gamePaused, GamePaused);                   // 게임 일시정지 여부
     SB_SYNTHESIZE_BOOL(preGameOver, PreGameOver);                 // 게임 오버 직전 상태 여부
     SB_SYNTHESIZE_BOOL(gameOver, GameOver);                       // 게임 오버 여부
     CC_SYNTHESIZE_READONLY(GameMode, gameMode, GameMode);         // 게임 모드
+    
+    // 부스트 아이템
+    CC_SYNTHESIZE_READONLY(GiftRewardItem, boostItem, BoostItem);
+    SB_SYNTHESIZE_READONLY_BOOL(boosting, Boosting);              // 부스트 진행중
     
     CC_SYNTHESIZE_READONLY(int, drawCount, DrawCount);            // 비긴 총 횟수
     CC_SYNTHESIZE_READONLY(int, feverModeCount, FeverModeCount);  // 피버 모드한 횟수
@@ -107,6 +114,9 @@ public:
     void onContinue();
     void onGameOver();
     void onGameEnd();
+    
+    void onBoostStart();
+    void onBoostEnd();
     
     void onStartTimer();
     void onLevelChanged();

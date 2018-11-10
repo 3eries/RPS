@@ -378,6 +378,11 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
             break;
     }
     
+    // 부스트 진행중
+    if( gameMgr->isBoosting() ) {
+        return;
+    }
+    
     // fever point
     auto feverInfo = gameMgr->getConfig()->getFeverInfo();
     auto levelInfo = gameMgr->getLevelInfo();

@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 
 #include "Define.h"
+#include "GiftManager.hpp"
 
 #include "../splash/SplashScene.hpp"
 #include "../main/MainScene.hpp"
@@ -99,6 +100,10 @@ void SceneManager::replace(SceneType type, function<BaseScene*()> createSceneFun
     isRunningReplaceScene = true;
     sceneType = type;
     
+    // 선물 비활성화
+    GiftManager::setEnabled(false);
+    GiftManager::removeAllGiftBox();
+    
     // 배너
     if( type == SceneType::GAME ) {
         superbomb::AdsHelper::showBanner();
@@ -160,6 +165,13 @@ void SceneManager::replace(SceneType type) {
     
     return replace(type, [=]() -> BaseScene* {
         return this->createScene(type);
+    });
+}
+
+void SceneManager::replaceGameScene(const GiftRewardItem &boostItem) {
+    
+    replace(SceneType::GAME, [=]() -> BaseScene* {
+        return GameScene::create(boostItem);
     });
 }
 

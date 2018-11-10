@@ -25,6 +25,7 @@ private:
     TimeBar();
     
     bool init() override;
+    void onEnter() override;
     void onExit() override;
     
     void update(float dt) override;
@@ -41,6 +42,8 @@ private:
     void onPreGameOver() override;
     void onContinue() override;
     void onGameOver() override;
+    
+    void onBoostStart() override;
     void onStartTimer() override;
     
 public:

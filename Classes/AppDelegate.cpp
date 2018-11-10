@@ -7,9 +7,10 @@
 #include "User.hpp"
 #include "SceneManager.h"
 #include "RankingManager.hpp"
-#include "character/CharacterManager.hpp"
-#include "game/GameManager.hpp"
+#include "GiftManager.hpp"
+#include "CharacterManager.hpp"
 
+#include "game/GameManager.hpp"
 #include "game/GameScene.hpp"
 
 USING_NS_CC;
@@ -24,6 +25,7 @@ AppDelegate::AppDelegate()
 
 AppDelegate::~AppDelegate() 
 {
+    GiftManager::destroyInstance();
     CharacterManager::destroyInstance();
     RankingManager::destroyInstance();
     GameManager::destroyInstance();
@@ -94,6 +96,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     PatchManager::getInstance()->init();
     RankingManager::getInstance()->init();
 //    GameConfiguration::getInstance()->init();
+    GiftManager::getInstance()->init();
     
     // 캐릭터 매니저 초기화
     {

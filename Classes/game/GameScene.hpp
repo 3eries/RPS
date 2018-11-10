@@ -23,7 +23,7 @@ class GameView;
 
 class GameScene : public BaseScene, public GameListener {
 public:
-    CREATE_FUNC(GameScene);
+    static GameScene* create(GiftRewardItem boostItem = GiftRewardItem());
     ~GameScene();
     
 private:
@@ -38,7 +38,7 @@ private:
 private:
     GameScene();
     
-    bool init() override;
+    bool init(GiftRewardItem boostItem);
     void onEnter() override;
     void onEnterTransitionDidFinish() override;
     void onExit() override;
@@ -47,6 +47,8 @@ private:
     void initBg();
     void initCommonMenu() override;
     void initBanner();
+    
+    void initGiftListener();
     
     void reset();
     

@@ -14,6 +14,8 @@
 
 #include "BaseScene.hpp"
 
+#include "GiftDefine.h"
+
 class GameView;
 
 enum class SceneType {
@@ -44,6 +46,7 @@ private:
 public:
     void replace(SceneType type, std::function<BaseScene*()> createSceneFunc);
     void replace(SceneType type);
+    void replaceGameScene(const GiftRewardItem &boostItem = GiftRewardItem());
     
     bool onBackKeyReleased();
     

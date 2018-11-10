@@ -1,0 +1,135 @@
+{
+"skeleton": { "hash": "PCo3UF9TjyGWMgL9TyAdO08Vbks", "spine": "3.6.52", "width": 448, "height": 216, "images": "./boost_on/" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "boost_on", "parent": "root", "x": 15, "y": 129 },
+	{ "name": "boost_on_shine", "parent": "boost_on" },
+	{ "name": "lightning", "parent": "boost_on", "x": -40.68, "y": 14.5 },
+	{ "name": "lightning_shine", "parent": "lightning" }
+],
+"slots": [
+	{ "name": "boost_on", "bone": "boost_on", "attachment": "boost_on" },
+	{ "name": "boost_on_shine", "bone": "boost_on_shine", "color": "ffffff00", "attachment": "boost_on", "blend": "additive" },
+	{ "name": "boost_on_lightning", "bone": "lightning", "attachment": "boost_on_lightning" },
+	{
+		"name": "boost_on_lightning2",
+		"bone": "lightning_shine",
+		"color": "ffffff00",
+		"attachment": "boost_on_lightning",
+		"blend": "additive"
+	}
+],
+"skins": {
+	"default": {
+		"boost_on": {
+			"boost_on": { "width": 448, "height": 216 }
+		},
+		"boost_on_lightning": {
+			"boost_on_lightning": { "width": 88, "height": 108 }
+		},
+		"boost_on_lightning2": {
+			"boost_on_lightning": { "width": 88, "height": 108 }
+		},
+		"boost_on_shine": {
+			"boost_on": { "width": 448, "height": 216 }
+		}
+	}
+},
+"events": {
+	"score_end": {},
+	"score_start": {}
+},
+"animations": {
+	"clear": {
+		"slots": {
+			"boost_on": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"boost_on_lightning": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"boost_on_lightning2": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			},
+			"boost_on_shine": {
+				"attachment": [
+					{ "time": 0, "name": null }
+				]
+			}
+		}
+	},
+	"run": {
+		"slots": {
+			"boost_on_lightning2": {
+				"color": [
+					{ "time": 0.1333, "color": "ffffff00" },
+					{ "time": 0.2333, "color": "ffffffff" },
+					{ "time": 0.3333, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 1.3333, "color": "ffffff00" },
+					{ "time": 1.5, "color": "ffffffff" },
+					{ "time": 1.6667, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 2.3333, "color": "ffffff00" },
+					{ "time": 2.5, "color": "ffffffff" },
+					{ "time": 2.6667, "color": "ffffff00" }
+				]
+			},
+			"boost_on_shine": {
+				"color": [
+					{ "time": 0.0667, "color": "ffffff00" },
+					{ "time": 0.1667, "color": "ffffffff" },
+					{ "time": 0.2667, "color": "ffffff00", "curve": "stepped" },
+					{ "time": 0.6667, "color": "ffffff00" },
+					{ "time": 1, "color": "ffffffff" },
+					{ "time": 1.3333, "color": "ffffff00" },
+					{ "time": 1.6667, "color": "ffffffff" },
+					{ "time": 2, "color": "ffffff00" },
+					{ "time": 2.3333, "color": "ffffffff" },
+					{ "time": 2.6667, "color": "ffffff00" }
+				]
+			}
+		},
+		"bones": {
+			"boost_on": {
+				"translate": [
+					{
+						"time": 0,
+						"x": -765,
+						"y": 0,
+						"curve": [ 0.483, 0, 0.552, 1 ]
+					},
+					{
+						"time": 0.1667,
+						"x": 15,
+						"y": 0,
+						"curve": [ 0.483, 0, 0.552, 1 ]
+					},
+					{ "time": 0.2333, "x": 0, "y": 0, "curve": "stepped" },
+					{
+						"time": 2.6667,
+						"x": 0,
+						"y": 0,
+						"curve": [ 0.466, 0, 0.529, 1 ]
+					},
+					{
+						"time": 2.7667,
+						"x": -15,
+						"y": 0,
+						"curve": [ 0.466, 0, 0.529, 1 ]
+					},
+					{ "time": 3, "x": 735, "y": 0 }
+				]
+			}
+		},
+		"events": [
+			{ "time": 0.1667, "name": "score_start" },
+			{ "time": 2.6667, "name": "score_end" }
+		]
+	}
+}
+}

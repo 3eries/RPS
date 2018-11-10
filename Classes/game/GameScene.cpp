@@ -10,6 +10,7 @@
 #include "User.hpp"
 #include "SceneManager.h"
 #include "PopupManager.hpp"
+#include "GiftManager.hpp"
 #include "CharacterManager.hpp"
 #include "UIHelper.hpp"
 
@@ -31,6 +32,19 @@ using namespace std;
 
 static const string SCHEDULER_GAME_OVER_DELAY = "SCHEDULER_GAME_OVER_DELAY";
 
+GameScene* GameScene::create(GiftRewardItem boostItem) {
+    
+    auto scene = new GameScene();
+    
+    if( scene && scene->init(boostItem) ) {
+        scene->autorelease();
+        return scene;
+    }
+    
+    delete scene;
+    return nullptr;
+}
+
 GameScene::GameScene() :
 gameMgr(GameManager::getInstance()),
 gameView(nullptr) {
@@ -38,11 +52,12 @@ gameView(nullptr) {
 
 GameScene::~GameScene() {
     
-    CharacterManager::getInstance()->removeListener(this);
     iap::IAPHelper::getInstance()->removeListener(this);
+    GiftManager::getInstance()->removeListener(this);
+    CharacterManager::getInstance()->removeListener(this);
 }
 
-bool GameScene::init() {
+bool GameScene::init(GiftRewardItem boostItem) {
     
     if( !BaseScene::init() ) {
         return false;
@@ -53,7 +68,9 @@ bool GameScene::init() {
     initBg();
     initCommonMenu();
     initBanner();
+    initGiftListener();
     
+    gameMgr->onEnterGame(boostItem);
     gameMgr->addListener(this);
     
     // IAP 리스너
@@ -87,7 +104,7 @@ void GameScene::onEnter() {
     
     // 게임뷰 초기화
     gameView = SceneManager::getGameView();
-    gameMgr->onEnterGame(gameView);
+    gameMgr->setView(gameView);
     
     // 캐릭터 리스너 초기화
     {
@@ -113,10 +130,11 @@ void GameScene::onEnterTransitionDidFinish() {
 
 void GameScene::onExit() {
     
+    iap::IAPHelper::getInstance()->removeListener(this);
+    GiftManager::getInstance()->removeListener(this);
     CharacterManager::getInstance()->removeListener(this);
     gameMgr->removeListener(this);
     PopupManager::getInstance()->removeListener(this);
-    iap::IAPHelper::getInstance()->removeListener(this);
     AdsHelper::getInstance()->getEventDispatcher()->removeListener(this);
     
     BaseScene::onExit();
@@ -454,6 +472,10 @@ void GameScene::showNewRecordPopup(int ranking, int score) {
  */
 void GameScene::showGameOverPopup(OnPopupEvent onEventListener) {
  
+    // 선물 활성화
+    GiftManager::setEnabled(GiftType::BOOST, true);
+    GiftManager::setCheckEnabled(true);
+    
     // 공통 메뉴
     commonMenu->getTopMenu()->setRightMenu(TopMenu::Tag::SETTING, false);
     commonMenu->openMenu();
@@ -587,18 +609,6 @@ bool GameScene::onClickBottomMenu(BottomMenu::Tag tag) {
             gameMgr->onExitGame();
             SceneManager::getInstance()->replace(SceneType::GAME);
             
-            /*
-            // 팝업 퇴장
-            // 게임 오버 창 제거
-            auto popup = PopupManager::getInstance()->getPopup(PopupType::GAME_OVER);
-            if( popup ) {
-                popup->dismissWithAction();
-            }
-            
-            // 공통 메뉴 퇴장
-            commonMenu->closeMenu();
-             */
-            
         } return true;
             
         default: break;
@@ -664,4 +674,22 @@ void GameScene::initCommonMenu() {
     
     commonMenu->setOnClickTopMenuListener(CC_CALLBACK_1(GameScene::onClickTopMenu, this));
     commonMenu->setOnClickBottomMenuListener(CC_CALLBACK_1(GameScene::onClickBottomMenu, this));
+}
+
+/**
+ * 선물 리스너 초기화
+ */
+void GameScene::initGiftListener() {
+    
+    auto listener = GiftListener::create();
+    listener->setTarget(this);
+    listener->onRewarded = [=](const GiftRewardItem &item) {
+        
+        if( item.type == GiftType::BOOST ) {
+            gameMgr->onExitGame();
+            SceneManager::getInstance()->replaceGameScene(item);
+        }
+    };
+    
+    GiftManager::getInstance()->addListener(listener);
 }

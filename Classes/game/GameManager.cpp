@@ -63,11 +63,14 @@ void GameManager::init() {
 
 void GameManager::reset() {
     
+    view = nullptr;
     updateLocked = false;
     gamePaused = false;
     preGameOver = false;
     gameOver = false;
     gameMode = GameMode::NORMAL;
+    boostItem = GiftRewardItem();
+    boosting = false;
     drawCount = 0;
     feverModeCount = 0;
     continueCount = 0;
@@ -80,13 +83,11 @@ void GameManager::reset() {
 /**
  * 게임 진입
  */
-void GameManager::onEnterGame(GameView *view) {
-    
-    CCASSERT(view != nullptr, "GameManager::onEnterGame error: invalid view.");
-    
-    this->view = view;
+void GameManager::onEnterGame(GiftRewardItem boostItem) {
     
     reset();
+    
+    this->boostItem = boostItem;
 }
 
 /**
@@ -96,7 +97,6 @@ void GameManager::onExitGame() {
     
     onGamePause();
     
-    view = nullptr;
     reset();
     
     listeners.clear();
@@ -135,6 +135,11 @@ void GameManager::addScore(int score) {
     setScore(this->score + score);
 }
 
+bool GameManager::hasBoostItem() {
+    
+    return boostItem.amount > 0;
+}
+
 bool GameManager::isContinuable() {
     
     return getScore() >= config->getContinueCondition() && getContinueCount() == 0;
@@ -148,11 +153,6 @@ bool GameManager::isNewRecord() {
 int GameManager::getPlayCount() {
     
     return UserDefault::getInstance()->getIntegerForKey(UserDefaultKey::PLAY_COUNT, 0);
-}
-
-GameView* GameManager::getView() {
-    
-    return instance->view;
 }
 
 #pragma mark- GameListener
@@ -174,6 +174,11 @@ void GameManager::onGameStart() {
     
     for( auto listener : listeners ) {
         listener->onGameStart();
+    }
+    
+    // 부스트 발동
+    if( hasBoostItem() ) {
+        onBoostStart();
     }
 }
 
@@ -362,6 +367,30 @@ void GameManager::onGameEnd() {
     
     for( auto listener : listeners ) {
         listener->onGameEnd();
+    }
+}
+
+/**
+ * 부스트 시작
+ */
+void GameManager::onBoostStart() {
+    
+    boosting = true;
+    
+    for( auto listener : listeners ) {
+        listener->onBoostStart();
+    }
+}
+
+/**
+ * 부스트 종료
+ */
+void GameManager::onBoostEnd() {
+ 
+    boosting = false;
+    
+    for( auto listener : listeners ) {
+        listener->onBoostEnd();
     }
 }
 

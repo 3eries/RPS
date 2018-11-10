@@ -50,6 +50,15 @@ bool TimeBar::init() {
     return true;
 }
 
+void TimeBar::onEnter() {
+    
+    Sprite::onEnter();
+    
+    if( gameMgr->hasBoostItem() ) {
+        setTimePoint(gameMgr->getConfig()->getTimeInfo().maxPoint);
+    }
+}
+
 void TimeBar::onExit() {
     
     gameMgr->removeListener(this);
@@ -71,6 +80,10 @@ void TimeBar::reset() {
 void TimeBar::onGameStart() {
  
     reset();
+    
+    if( gameMgr->hasBoostItem() ) {
+        setTimePoint(gameMgr->getConfig()->getTimeInfo().maxPoint);
+    }
 }
 
 void TimeBar::onGameRestart() {
@@ -102,6 +115,13 @@ void TimeBar::onContinue() {
 }
 
 void TimeBar::onGameOver() {
+    
+}
+
+/**
+ * 부스트 시작
+ */
+void TimeBar::onBoostStart() {
     
 }
 
