@@ -214,7 +214,7 @@ bool GiftManager::addGiftBox(GiftType type) {
     box->setOnClickListener([=](Node *sender) {
         getInstance()->onClickBox(type);
     });
-    box->move(1.0f);
+    box->move(0.5f);
     SceneManager::getScene()->addChild(box, ZOrder::POPUP_BOTTOM);
     
     gift->box = box;
