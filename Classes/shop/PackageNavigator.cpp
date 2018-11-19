@@ -17,9 +17,10 @@ using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
 
-#define           FIRST_INDEX                   1
-static const Size NAVIGATION_ITEM_SIZE          = Size(560, 152);
-#define           NAVIGATION_ITEM_MARGIN        (-(SB_WIN_SIZE.width - NAVIGATION_ITEM_SIZE.width - 20))
+#define               FIRST_INDEX                   1
+static const Size     NAVIGATION_ITEM_SIZE          = Size(560, 152);
+#define               NAVIGATION_ITEM_MARGIN        (-(SB_WIN_SIZE.width - NAVIGATION_ITEM_SIZE.width - 20))
+static const float    NAVIGATION_TITLE_TEXT_WIDTH   = 430;
 
 PackageNavigator* PackageNavigator::create() {
     
@@ -292,7 +293,6 @@ bool NavigationItem::init() {
     const bool validPack = (pack.packId != "");
     
     // 배경
-    // RSP_popup_bg_shop_pack_title.png Vec2TC(0, -316) , Size(560, 152)
     auto bg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_shop_pack_title.png");
     addChild(bg);
     
@@ -304,7 +304,6 @@ bool NavigationItem::init() {
     bg->setPosition(Vec2MC(getContentSize(), 0, 0));
     
     // 타이틀
-    // Greek Mythology size:56 color:70,70,70 shadow:255,255,255 Vec2TC(1, -311) , Size(360, 100)
     string title = validPack ? pack.name : "COMING SOON";
     
     auto titleLabel = Label::createWithTTF(title, FONT_SABO, 56, Size::ZERO,
@@ -312,8 +311,22 @@ bool NavigationItem::init() {
     titleLabel->setAnchorPoint(ANCHOR_M);
     titleLabel->setPosition(Vec2MC(getContentSize(), 0, 0 + 5));
     titleLabel->setTextColor(Color4B(70,70,70,255));
+    // CCLOG("title: %s width: %f", title.c_str(), titleLabel->getContentSize().width);
+    titleLabel->setScale(NAVIGATION_TITLE_TEXT_WIDTH / titleLabel->getContentSize().width);
     addChild(titleLabel);
     
+    // 타이틀 영역 확인용
+    /*
+    {
+        auto n = LayerColor::create(Color4B(255,0,0,255*0.2f));
+        n->setIgnoreAnchorPointForPosition(false);
+        n->setAnchorPoint(ANCHOR_M);
+        n->setPosition(Vec2MC(getContentSize(), 0, 0 + 5));
+        n->setContentSize(Size(NAVIGATION_TITLE_TEXT_WIDTH, 20));
+        addChild(n);
+    }
+    */
+     
     // 화살표
     auto arrowLeft = Sprite::create(DIR_IMG_GAME + "icon_shop_pack_title_navi.png");
     arrowLeft->setAnchorPoint(ANCHOR_M);
