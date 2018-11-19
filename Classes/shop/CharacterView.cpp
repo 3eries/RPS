@@ -18,8 +18,6 @@ using namespace cocos2d::ui;
 using namespace spine;
 using namespace std;
 
-// 50/70 size:74 color:195,9,0 shadow:68,3,0 Vec2MC(-1, 94) , Size(227, 64)
-// 보라색 : 69,0,202
 static const Color4B TEXT_COLOR_LOCKED              = Color4B(195,9,0,255);
 static const Color4B TEXT_COLOR_UNLOCKED            = Color4B(69,0,202, 255);
 
@@ -101,61 +99,69 @@ void CharacterView::setCharacter(Character character) {
     }
     
     // 캐릭터 업데이트
-    if( validCharacter ) {
-        auto packDB = CharacterManager::getInstance()->getPackageDB(character.packId);
+    if( !validCharacter ) {
+        return;
+    }
+    
+    const auto packDB = CharacterManager::getInstance()->getPackageDB(character.packId);
+    const auto isUnlocked = packDB->isCharacterUnlocked(character.charId);
+    
+    // 잠금 해제 조건 설명
+    getChildByTag<Label*>(Tag::UNLOCK_DESC)->setString(character.unlockDesc);
+    
+    // 잠금 해제 조건 진행도
+    {
+        int value = packDB->getUnlockFieldValue(character);
+        int amount = character.unlockAmount;
         
-        // 잠금 해제 조건 설명
-        getChildByTag<Label*>(Tag::UNLOCK_DESC)->setString(character.unlockDesc);
+        string format = "%" + STR_FORMAT("0%d", SBMath::getDigit(amount)) + "d";
         
-        // 잠금 해제 조건 진행도
-        {
-            int value = packDB->getUnlockFieldValue(character);
-            int amount = character.unlockAmount;
-            
-            string format = "%" + STR_FORMAT("0%d", SBMath::getDigit(amount)) + "d";
-            
-            unlockAmountLabels[0]->setString(TO_STRING(value));
-            // unlockAmountLabels[0]->setString(STR_FORMAT(format.c_str(), value));
-            unlockAmountLabels[2]->setString(TO_STRING(amount));
-            
-            // 색깔 적용 및 좌표 가운데 정렬
-            auto textColor = packDB->isCharacterUnlocked(character.charId) ? TEXT_COLOR_UNLOCKED : TEXT_COLOR_LOCKED;
-            
-            float min = SB_BOUNDING_BOX_IN_WORLD(unlockAmountLabels[0]).getMinX();
-            float max = SB_BOUNDING_BOX_IN_WORLD(unlockAmountLabels[2]).getMaxX();
-            float width = max - min;
-            float fixedX = (SB_WIN_SIZE.width - width) * 0.5f;
-            float diff = fixedX - min;
-            
-            for( auto label : unlockAmountLabels ) {
-                label->setTextColor(textColor);
-                label->setPositionX(label->getPositionX() + diff);
-            }
-        }
+        unlockAmountLabels[0]->setString(TO_STRING(value));
+        // unlockAmountLabels[0]->setString(STR_FORMAT(format.c_str(), value));
         
-        // 캐릭터 이름
-        string nameFile = DIR_ADD(DIR_CHARACTER, character.packId) + character.charId + "_name.png";
-        getChildByTag<Sprite*>(Tag::CHAR_NAME)->setTexture(nameFile);
-        
-        // 캐릭터 이미지
-        auto anim = SBNodeUtils::createAnimation(character.idleAnims, HERO_ANIM_IDLE_DELAY_PER_UNIT);
-//
-//        auto charImage = getChildByTag<SBAnimationSprite*>(Tag::CHAR_IMAGE);
-//        charImage->setAnimation(anim);
-//        charImage->runAnimation();
-        // runCharacterAnimation(true);
-        /////////////////
-        auto animate = Animate::create(anim);
-        
-        auto charImage = getChildByTag<EffectSprite*>(Tag::CHAR_IMAGE);
-        charImage->stopAllActions();
-        charImage->runAction(RepeatForever::create(animate));
-        
-        if( packDB->isCharacterUnlocked(character.charId) ) {
-            charImage->setEffect(nullptr);
+        if( character.unlockAmountHidden && !isUnlocked ) {
+            unlockAmountLabels[2]->setString("??");
         } else {
-            charImage->setEffect(Effect::create("shaders/example_GreyScale.fsh"));
+            unlockAmountLabels[2]->setString(TO_STRING(amount));
         }
+        
+        // 색깔 적용 및 좌표 가운데 정렬
+        const auto textColor = isUnlocked ? TEXT_COLOR_UNLOCKED : TEXT_COLOR_LOCKED;
+        
+        float min = SB_BOUNDING_BOX_IN_WORLD(unlockAmountLabels[0]).getMinX();
+        float max = SB_BOUNDING_BOX_IN_WORLD(unlockAmountLabels[2]).getMaxX();
+        float width = max - min;
+        float fixedX = (SB_WIN_SIZE.width - width) * 0.5f;
+        float diff = fixedX - min;
+        
+        for( auto label : unlockAmountLabels ) {
+            label->setTextColor(textColor);
+            label->setPositionX(label->getPositionX() + diff);
+        }
+    }
+    
+    // 캐릭터 이름
+    string nameFile = DIR_ADD(DIR_CHARACTER, character.packId) + character.charId + "_name.png";
+    getChildByTag<Sprite*>(Tag::CHAR_NAME)->setTexture(nameFile);
+    
+    // 캐릭터 이미지
+    auto anim = SBNodeUtils::createAnimation(character.idleAnims, HERO_ANIM_IDLE_DELAY_PER_UNIT);
+
+//    auto charImage = getChildByTag<SBAnimationSprite*>(Tag::CHAR_IMAGE);
+//    charImage->setAnimation(anim);
+//    charImage->runAnimation();
+//    runCharacterAnimation(true);
+    /////////////////
+    auto animate = Animate::create(anim);
+    
+    auto charImage = getChildByTag<EffectSprite*>(Tag::CHAR_IMAGE);
+    charImage->stopAllActions();
+    charImage->runAction(RepeatForever::create(animate));
+    
+    if( isUnlocked ) {
+        charImage->setEffect(nullptr);
+    } else {
+        charImage->setEffect(Effect::create("shaders/example_GreyScale.fsh"));
     }
 }
 
@@ -222,9 +228,7 @@ void CharacterView::initLabel() {
     unlockDescLabel->enableShadow(Color4B(255,255,255,255), Size(0, -4));
     addChild(unlockDescLabel);
     
-    // 잠금 해제 조건 진행도
-    // 50/70 size:74 color:195,9,0 shadow:68,3,0 Vec2MC(-1, 94) , Size(227, 64)
-    // 보라색 : 69,0,202
+    // 잠금 해제 수량
     const int   FONT_SIZE = 64 - 4;
     const float POS_Y = 94;
     
@@ -237,22 +241,20 @@ void CharacterView::initLabel() {
         unlockAmountLabels.push_back(label);
     };
     
-    auto label1 = Label::createWithTTF("0", FONT_RETRO, FONT_SIZE,
-                                       Size::ZERO,
+    auto label1 = Label::createWithTTF("0", FONT_RETRO, FONT_SIZE, Size::ZERO,
                                        TextHAlignment::RIGHT, TextVAlignment::CENTER);
     label1->setAnchorPoint(ANCHOR_MR);
     label1->setPosition(Vec2MC(-10, POS_Y));
     add(label1);
     
-    auto label2 = Label::createWithTTF("/", FONT_GAME_OVER, FONT_SIZE,
-                                       Size::ZERO, TextHAlignment::CENTER, TextVAlignment::CENTER);
+    auto label2 = Label::createWithTTF("/", FONT_GAME_OVER, FONT_SIZE, Size::ZERO,
+                                       TextHAlignment::CENTER, TextVAlignment::CENTER);
     label2->setAnchorPoint(ANCHOR_M);
     label2->setPosition(Vec2MC(0, POS_Y));
     label2->setScale((label1->getContentSize().height / label2->getContentSize().height) * 1.3f);
     add(label2);
     
-    auto label3 = Label::createWithTTF("0", FONT_RETRO, FONT_SIZE,
-                                       Size::ZERO,
+    auto label3 = Label::createWithTTF("0", FONT_RETRO, FONT_SIZE, Size::ZERO,
                                        TextHAlignment::LEFT, TextVAlignment::CENTER);
     label3->setAnchorPoint(ANCHOR_ML);
     label3->setPosition(Vec2MC(10, POS_Y));

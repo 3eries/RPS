@@ -24,6 +24,8 @@ using namespace std;
 #define KEY_DAILY_LOGIN                 "daily_login"
 #define KEY_FEVER                       "fever"
 #define KEY_VIEW_ADS                    "view_ads"
+#define KEY_DRAW                        "draw"
+#define KEY_CREDIT                      "credit"
 #define KEY_UNLOCK_CHARACTERS           "unlock_characters"
 
 static string getDBKey(Package pack) {
@@ -40,6 +42,8 @@ static const char* getFieldKey(PackageDB::Field field) {
         case PackageDB::Field::DAILY_LOGIN:     return KEY_DAILY_LOGIN;
         case PackageDB::Field::FEVER:           return KEY_FEVER;
         case PackageDB::Field::VIEW_ADS:        return KEY_VIEW_ADS;
+        case PackageDB::Field::DRAW:            return KEY_DRAW;
+        case PackageDB::Field::CREDIT:          return KEY_CREDIT;
         default:
             CCASSERT(false, "getFieldKey error.");
             break;
@@ -58,6 +62,8 @@ static UnlockType getCharacterUnlockType(PackageDB::Field field) {
         case PackageDB::Field::DAILY_LOGIN:     return UnlockType::DAILY_LOGIN;
         case PackageDB::Field::FEVER:           return UnlockType::FEVER;
         case PackageDB::Field::VIEW_ADS:        return UnlockType::VIEW_ADS;
+        case PackageDB::Field::DRAW:            return UnlockType::DRAW;
+        case PackageDB::Field::CREDIT:          return UnlockType::CREDIT;
         default:
             CCASSERT(false, "getCharacterUnlockType error.");
             break;
@@ -76,6 +82,8 @@ pack(pack) {
         Field::GAME_OVER,
         Field::DAILY_LOGIN,
         Field::FEVER,
+        Field::DRAW,
+        Field::CREDIT,
     };
     
     for( auto field : fields ) {
@@ -100,7 +108,13 @@ pack(pack) {
         // field
         for( auto it = fieldValues.begin(); it != fieldValues.end(); ++it ) {
             auto field = it->first;
-            fieldValues[field] = doc[getFieldKey(field)].GetInt();
+            auto key = getFieldKey(field);
+            
+            if( doc.HasMember(key) ) {
+                fieldValues[field] = doc[key].GetInt();
+            } else {
+                fieldValues[field] = 0;
+            }
         }
         
         // view ads field
@@ -328,6 +342,8 @@ int PackageDB::getUnlockFieldValue(Character c) {
         case UnlockType::GAME_OVER:       return getFieldValue(Field::GAME_OVER);
         case UnlockType::DAILY_LOGIN:     return getFieldValue(Field::DAILY_LOGIN);
         case UnlockType::FEVER:           return getFieldValue(Field::FEVER);
+        case UnlockType::DRAW:            return getFieldValue(Field::DRAW);
+        case UnlockType::CREDIT:          return getFieldValue(Field::CREDIT);
         case UnlockType::VIEW_ADS:        return getViewAdsValue(c.charId);
         default:
             CCASSERT(false, "PackageDB::getUnlockFieldValue error.");
@@ -411,7 +427,9 @@ void PackageDB::submit(OnCharacterListListener listener, Field field, int i, con
             case Field::GAME_PLAY:
             case Field::GAME_OVER:
             case Field::DAILY_LOGIN:
-            case Field::FEVER: {
+            case Field::FEVER:
+            case Field::DRAW:
+            case Field::CREDIT: {
                 fieldValue += i;
             } break;
                 

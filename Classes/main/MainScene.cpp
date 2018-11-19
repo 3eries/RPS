@@ -164,6 +164,18 @@ void MainScene::onClick(Node *sender) {
             firebase::Analytics::logEvent(FA_EVENT_CREDIT);
             
             auto popup = CreditPopup::create();
+            popup->setOnDismissListener([=](Node*) {
+               
+                // 패키지 DB 업데이트, CREDIT
+                CharacterListener listener;
+                listener.onCharacterUnlocked = [=](Characters characters) {
+                    PopupManager::showGetCharacterPopup(characters);
+                };
+                
+                auto charMgr = CharacterManager::getInstance();
+                charMgr->submit(listener, PackageDB::Field::CREDIT);
+                charMgr->commitAll();
+            });
             addChild(popup, ZOrder::POPUP_TOP);
         } break;
         

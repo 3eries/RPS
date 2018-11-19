@@ -139,6 +139,8 @@ void CharacterManager::init(const string &json) {
             character.name = charValue["name"].GetString();
             character.unlockType = (UnlockType)charValue["unlock_type"].GetInt();
             character.unlockAmount = charValue["unlock_amount"].GetInt();
+            character.unlockAmountHidden = charValue.HasMember("unlock_amount_hidden") ?
+                                                     charValue["unlock_amount_hidden"].GetBool() : false;
             character.unlockDesc = charValue["unlock_desc"].GetString();
             
             // 테스트를 위한 amount 조절

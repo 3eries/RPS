@@ -30,6 +30,8 @@ public:
         DAILY_LOGIN,    // 게임에 접속한 횟수
         FEVER,          // 피버 진입 횟수
         VIEW_ADS,       // 동영상 광고 시청 횟수
+        DRAW,           // 비긴 횟수
+        CREDIT,         // 크레딧 진입 횟수
     };
     
 public:

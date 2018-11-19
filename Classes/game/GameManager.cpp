@@ -332,12 +332,17 @@ void GameManager::onGameOver() {
         SBCollection::addAll(unlockedCharacters, characters);
     };
     
+    // 패키지 DB 업데이트
+    charMgr->submit(characterListener, PackageDB::Field::GAME_PLAY);
+    charMgr->submit(characterListener, PackageDB::Field::GAME_OVER);
+    charMgr->submit(characterListener, PackageDB::Field::BEST_SCORE, score);
+    charMgr->submit(characterListener, PackageDB::Field::TOTAL_SCORE, score);
+    charMgr->submit(characterListener, PackageDB::Field::FEVER, feverModeCount);
+    charMgr->submit(characterListener, PackageDB::Field::DRAW, drawCount);
+    charMgr->commitAll();
+    
     if( score > 0 ) {
         logEventGameResult(score);
-    
-        // 패키지 DB 업데이트
-        charMgr->submit(characterListener, PackageDB::Field::BEST_SCORE, score);
-        charMgr->submit(characterListener, PackageDB::Field::TOTAL_SCORE, score);
         
         // 순위 선정
         ranking = RankingManager::getNewRanking(score);
@@ -346,12 +351,6 @@ void GameManager::onGameOver() {
         RankingManager::setBestScore(score);
         superbomb::PluginPlay::submitScore(LEADER_BOARD_HIGH_SCORE, score);
     }
-    
-    // 패키지 DB 업데이트
-    charMgr->submit(characterListener, PackageDB::Field::GAME_PLAY);
-    charMgr->submit(characterListener, PackageDB::Field::GAME_OVER);
-    charMgr->submit(characterListener, PackageDB::Field::FEVER, feverModeCount);
-    charMgr->commitAll();
     
     // 리스너 실행
     for( auto listener : listeners ) {

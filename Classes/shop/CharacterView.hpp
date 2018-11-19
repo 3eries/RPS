@@ -50,8 +50,9 @@ public:
     
 private:
     Character character;
-    
-    std::vector<cocos2d::Label*> unlockAmountLabels;    // '진행도' '/' '조건'
+
+    // 잠금 해제 수량, '진행도' '/' '조건'
+    std::vector<cocos2d::Label*> unlockAmountLabels;
 };
 
 #endif /* CharacterView_hpp */

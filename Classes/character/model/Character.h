@@ -20,6 +20,8 @@ enum class UnlockType {
     DAILY_LOGIN,    // 게임에 접속한 횟수
     FEVER,          // 피버 진입 횟수
     VIEW_ADS,       // 동영상 광고 시청 횟수
+    DRAW,           // 비긴 횟수
+    CREDIT,         // 크레딧 진입 횟수
 };
 
 struct Character {
@@ -28,6 +30,7 @@ struct Character {
     std::string              name;
     UnlockType               unlockType;
     int                      unlockAmount;
+    bool                     unlockAmountHidden;
     std::string              unlockDesc;
     std::vector<std::string> idleAnims;
     std::vector<std::string> attackAnims;
@@ -40,8 +43,8 @@ struct Character {
     
     std::string toString() {
         std::string str = "\tCharacter {\n";
-        str += STR_FORMAT("\t\tcharId: %s, name: %s unlockType: %d unlockAmount: %d, unlockDesc: %s",
-                          charId.c_str(), name.c_str(), (int)unlockType, unlockAmount, unlockDesc.c_str());
+        str += STR_FORMAT("\t\tcharId: %s, name: %s unlockType: %d unlockAmount: %d unlockAmountHidden: %d unlockDesc: %s",
+                          charId.c_str(), name.c_str(), (int)unlockType, unlockAmount, unlockAmountHidden, unlockDesc.c_str());
         str += "\n\t\tidleAnims: ";
         
         for( std::string anim : idleAnims ) {
