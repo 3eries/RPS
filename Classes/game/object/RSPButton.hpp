@@ -16,7 +16,7 @@
 
 #include "Define.h"
 
-class RSPButton : public cocos2d::ui::Widget {
+class RSPButton : public cocos2d::Node {
 public:
     static std::string getButtonImageFile(RSPType type);
     
@@ -32,8 +32,12 @@ private:
     void initImage();
     void initTouch();
     
+public:
+    void setTouchEnabled(bool isTouchEnabled);
+    
 private:
     CC_SYNTHESIZE_READONLY(RSPType, type, Type);
+    bool isTouchEnabled;
     CC_SYNTHESIZE(SBCallbackNode, onClickListener, OnClickListener);
     
     CC_SYNTHESIZE_READONLY(cocos2d::Sprite*, img, Image);

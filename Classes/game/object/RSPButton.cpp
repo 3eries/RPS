@@ -51,6 +51,7 @@ RSPButton* RSPButton::create(RSPType type) {
 
 RSPButton::RSPButton(RSPType type) :
 type(type),
+isTouchEnabled(true),
 onClickListener(nullptr) {
     
 }
@@ -61,7 +62,7 @@ RSPButton::~RSPButton() {
 
 bool RSPButton::init() {
     
-    if( !Widget::init() ) {
+    if( !Node::init() ) {
         return false;
     }
     
@@ -84,30 +85,43 @@ void RSPButton::initImage() {
 
 void RSPButton::initTouch() {
     
-    setTouchEnabled(true);
-    
-    addTouchEventListener([=](Ref*, Widget::TouchEventType eventType) {
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    listener->onTouchBegan = [=](Touch *touch, Event*) -> bool {
         
-        switch( eventType ) {
-            case Widget::TouchEventType::BEGAN: {
-                SB_SAFE_PERFORM_LISTENER_N(this, onClickListener);
-                
-                // action
-                img->stopAllActions();
-                
-                auto scale1 = ScaleTo::create(0.07f, 1.07f);
-                auto scale2 = ScaleTo::create(0.05f, 1.0f);
-                img->runAction(Sequence::create(scale1, scale2, nullptr));
-                
-            } break;
-                
-            case Widget::TouchEventType::ENDED:
-            case Widget::TouchEventType::CANCELED: {
-                
-            } break;
-                
-            default: break;
+        if( !isTouchEnabled ) {
+            return false;
         }
-    });
+        
+        if( !SBNodeUtils::hasVisibleParents(this) ) {
+            return false;
+        }
+        
+        if( !SBNodeUtils::isTouchInside(this, touch) ) {
+            return false;
+        }
+        
+        // 멀티 터치 수는 2개로 제한
+        if( touch->getID() > 1 ) {
+            return false;
+        }
+        
+        SB_SAFE_PERFORM_LISTENER_N(this, onClickListener);
+        
+        // action
+        img->stopAllActions();
+        
+        auto scale1 = ScaleTo::create(0.07f, 1.07f);
+        auto scale2 = ScaleTo::create(0.05f, 1.0f);
+        img->runAction(Sequence::create(scale1, scale2, nullptr));
+        
+        return true;
+    };
+    listener->onTouchEnded = [=](Touch *touch, Event*) {};
+    
+    getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
+void RSPButton::setTouchEnabled(bool isTouchEnabled) {
+    this->isTouchEnabled = isTouchEnabled;
+}
