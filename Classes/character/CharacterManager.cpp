@@ -357,6 +357,10 @@ void CharacterManager::commitAll() {
  */
 void CharacterManager::submit(CharacterListener listener, PackageDB::Field field, int i, const string &charId) {
     
+    if( i == 0 ) {
+        return;
+    }
+    
     Characters *unlockCharacters = new Characters();
     Packages *unlockPackages = new Packages();
     

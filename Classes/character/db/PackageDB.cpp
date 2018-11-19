@@ -394,6 +394,10 @@ void PackageDB::unlockCharacter(const string &charId) {
  */
 void PackageDB::submit(OnCharacterListListener listener, Field field, int i, const string &charId) {
     
+    if( i == 0 ) {
+        return;
+    }
+     
     // 잠금 해제된 패키지는 필드 값을 업데이트 하지 않는다
     if( isPackageUnlocked() ) {
         return;
