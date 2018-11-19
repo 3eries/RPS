@@ -193,7 +193,7 @@ void GiftBox::move(float firstDelayTime) {
     auto move = Sequence::create(beziers);
     auto callbackDelay = DelayTime::create(1.0f);
     auto callFunc = CallFunc::create([=]() {
-        CCLOG("MOVE_OUT");
+        // CCLOG("MOVE_OUT");
         this->move();
     });
     

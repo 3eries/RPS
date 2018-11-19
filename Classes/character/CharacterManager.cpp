@@ -153,25 +153,6 @@ void CharacterManager::init(const string &json) {
              */
             /////////////////////////////
             
-            auto getAnims = [=](string key) -> vector<string> {
-                
-                vector<string> anims;
-                int i = 0;
-                
-                while( true ) {
-                    string file = DIR + STR_FORMAT("%s_%s_%02d.png", character.charId.c_str(), key.c_str(), i+1);
-                    
-                    if( !FileUtils::getInstance()->isFileExist(file) ) {
-                        break;
-                    }
-                    
-                    anims.push_back(file);
-                    ++i;
-                }
-                
-                return anims;
-            };
-            
             character.idleAnims = CHC_IDLE_ANIMATION(character);
             character.attackAnims = CHC_ATTACK_ANIMATION(character);
             character.punchSound = CHC_PUNCH_SOUND(character);
