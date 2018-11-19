@@ -1,5 +1,5 @@
 {
-    "package_order": ["pack_001", "pack_002", ""],
+    "package_order": ["pack_001", "pack_002", "pack_003", ""],
     "packages": [{
         "pack_id": "pack_001",
         "name": "Master Lee",
@@ -80,5 +80,39 @@
             "fever_gage_pos_y": 120
         }
         ]
-    }]
+    },
+    {
+        "pack_id": "pack_003",
+        "name": "THE\nTHREE KINGDOMS",
+        "characters": [{
+            "char_id": "char_021",
+            "name": "LiuBei",
+            "unlock_type": 8,
+            "unlock_amount": 400,
+            "unlock_desc": "DRAW",
+            "fever_gage_pos_x": -46,
+            "fever_gage_pos_y": 148
+        },
+        {
+            "char_id": "char_022",
+            "name": "GuanYu",
+            "unlock_type": 6,
+            "unlock_amount": 200,
+            "unlock_desc": "IN FEVER",
+            "fever_gage_pos_x": -46,
+            "fever_gage_pos_y": 126
+        },
+        {
+            "char_id": "char_023",
+            "name": "ZhangFei",
+            "unlock_type": 9,
+            "unlock_amount": 5,
+            "unlock_amount_hidden": true,
+            "unlock_desc": "HIDDEN",
+            "fever_gage_pos_x": -34,
+            "fever_gage_pos_y": 117
+        }
+        ]
+    }
+    ]
 }

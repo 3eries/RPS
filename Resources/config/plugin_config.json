@@ -27,6 +27,12 @@
                     "amount": 0,
                     "price": ""
                 },
+                "pack_003": {
+                    "type": "non_consumable",
+                    "id": "pack_003",
+                    "amount": 0,
+                    "price": ""
+                },
                 "char_011": {
                     "type": "non_consumable",
                     "id": "char_011",
@@ -54,6 +60,24 @@
                 "char_015": {
                     "type": "non_consumable",
                     "id": "char_015",
+                    "amount": 0,
+                    "price": ""
+                },
+                "char_021": {
+                    "type": "non_consumable",
+                    "id": "char_021",
+                    "amount": 0,
+                    "price": ""
+                },
+                "char_022": {
+                    "type": "non_consumable",
+                    "id": "char_022",
+                    "amount": 0,
+                    "price": ""
+                },
+                "char_023": {
+                    "type": "non_consumable",
+                    "id": "char_023",
                     "amount": 0,
                     "price": ""
                 },
@@ -95,6 +119,12 @@
                     "amount": 0,
                     "price": ""
                 },
+                "pack_003": {
+                    "type": "non_consumable",
+                    "id": "pack_003",
+                    "amount": 0,
+                    "price": ""
+                },
                 "char_011": {
                     "type": "non_consumable",
                     "id": "char_011",
@@ -122,6 +152,24 @@
                 "char_015": {
                     "type": "non_consumable",
                     "id": "char_015",
+                    "amount": 0,
+                    "price": ""
+                },
+                "char_021": {
+                    "type": "non_consumable",
+                    "id": "char_021",
+                    "amount": 0,
+                    "price": ""
+                },
+                "char_022": {
+                    "type": "non_consumable",
+                    "id": "char_022",
+                    "amount": 0,
+                    "price": ""
+                },
+                "char_023": {
+                    "type": "non_consumable",
+                    "id": "char_023",
                     "amount": 0,
                     "price": ""
                 },
