@@ -109,6 +109,7 @@
             "unlock_amount": 5,
             "unlock_amount_hidden": true,
             "unlock_desc": "HIDDEN",
+            "unlock_desc_hidden": "CREDIT",
             "fever_gage_pos_x": -34,
             "fever_gage_pos_y": 117
         }

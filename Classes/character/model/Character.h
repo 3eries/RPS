@@ -32,6 +32,7 @@ struct Character {
     int                      unlockAmount;
     bool                     unlockAmountHidden;
     std::string              unlockDesc;
+    std::string              unlockDescHidden;
     std::vector<std::string> idleAnims;
     std::vector<std::string> attackAnims;
     std::string              punchSound;
@@ -43,8 +44,8 @@ struct Character {
     
     std::string toString() {
         std::string str = "\tCharacter {\n";
-        str += STR_FORMAT("\t\tcharId: %s, name: %s unlockType: %d unlockAmount: %d unlockAmountHidden: %d unlockDesc: %s",
-                          charId.c_str(), name.c_str(), (int)unlockType, unlockAmount, unlockAmountHidden, unlockDesc.c_str());
+        str += STR_FORMAT("\t\tcharId: %s, name: %s unlockType: %d unlockAmount: %d unlockAmountHidden: %d unlockDesc: %s unlockDescHidden: %s",
+                          charId.c_str(), name.c_str(), (int)unlockType, unlockAmount, unlockAmountHidden, unlockDesc.c_str(), unlockDescHidden.c_str());
         str += "\n\t\tidleAnims: ";
         
         for( std::string anim : idleAnims ) {

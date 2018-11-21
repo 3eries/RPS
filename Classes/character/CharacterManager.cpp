@@ -142,6 +142,8 @@ void CharacterManager::init(const string &json) {
             character.unlockAmountHidden = charValue.HasMember("unlock_amount_hidden") ?
                                                      charValue["unlock_amount_hidden"].GetBool() : false;
             character.unlockDesc = charValue["unlock_desc"].GetString();
+            character.unlockDescHidden = charValue.HasMember("unlock_desc_hidden") ?
+                                                   charValue["unlock_desc_hidden"].GetString() : character.unlockDesc;
             
             // 테스트를 위한 amount 조절
             /*

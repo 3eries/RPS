@@ -107,7 +107,7 @@ void CharacterView::setCharacter(Character character) {
     const auto isUnlocked = packDB->isCharacterUnlocked(character.charId);
     
     // 잠금 해제 조건 설명
-    getChildByTag<Label*>(Tag::UNLOCK_DESC)->setString(character.unlockDesc);
+    getChildByTag<Label*>(Tag::UNLOCK_DESC)->setString(isUnlocked ? character.unlockDescHidden : character.unlockDesc);
     
     // 잠금 해제 조건 진행도
     {
