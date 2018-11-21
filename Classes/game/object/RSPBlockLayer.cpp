@@ -231,48 +231,30 @@ void RSPBlockLayer::drawBlock(RSPBlock *block) {
  */
 void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosition) {
     
+    // clone block
     auto block = hitBlock->clone();
     block->setPositionY(getBlockPosition(0).y);
     hitBlock->getParent()->addChild(block, -1);
     
+    // action
+    float POS_LEFT  = -BLOCK_WIDTH * 0.5f;
+    float POS_RIGHT = SB_WIN_SIZE.width + (BLOCK_WIDTH * 0.5f);
+    float posX = (manPosition == Man::Position::LEFT) ? POS_RIGHT : POS_LEFT;
+    
     // move
-    {
-        float POS_LEFT  = -BLOCK_WIDTH * 0.5f;
-        float POS_RIGHT = SB_WIN_SIZE.width + (BLOCK_WIDTH * 0.5f);
-        float posX = 0;
+    auto move = MoveTo::create(HIT_BLOCK_MOVE_DURATION, Vec2(posX, block->getPositionY()));
+    auto callback = CallFunc::create([=]() {
         
-        switch( manPosition ) {
-            case Man::Position::LEFT:         posX =  POS_RIGHT;    break;
-            case Man::Position::RIGHT:        posX =  POS_LEFT;     break;
-            default:
-                CCASSERT(false, "RSPBlockLayer::runHitBlockEffect error: invalid man position.");
-                break;
-        }
-        
-        auto moveTo = MoveTo::create(HIT_BLOCK_MOVE_DURATION,
-                                     Vec2(posX, block->getPositionY()));
-        auto callback = CallFunc::create([=]() {
-            
-        });
-        auto remove = RemoveSelf::create();
-        block->runAction(Sequence::create(moveTo, callback, remove, nullptr));
-    }
+    });
+    auto remove = RemoveSelf::create();
+    block->runAction(Sequence::create(move, callback, remove, nullptr));
     
     // rotate
-    //    block->runAction(RepeatForever::create(RotateBy::create(0.1f, 90)));
-    
-    // fade out
     /*
-     {
-     auto delay = DelayTime::create(0.1f);
-     auto fadeOut = FadeOut::create(MOVE_DURATION*1.05f);
-     auto callback = CallFunc::create([=]() {
-     
-     block->stopAllActions();
-     });
-     auto remove = RemoveSelf::create();
-     block->runAction(Sequence::create(delay, fadeOut, callback, remove, nullptr));
-     }
+    float angle = (manPosition == Man::Position::LEFT) ? -120 : 120;
+    
+    auto rotate = RotateBy::create(HIT_BLOCK_MOVE_DURATION, angle);
+    block->runAction(rotate);
      */
 }
 
