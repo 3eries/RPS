@@ -306,14 +306,17 @@ bool NavigationItem::init() {
     // 타이틀
     string title = validPack ? pack.name : "COMING SOON";
     
-    auto titleLabel = Label::createWithTTF(title, FONT_SABO, 56, Size::ZERO,
+    auto titleLabel = Label::createWithTTF(title, FONT_SABO, 52, Size::ZERO,
                                            TextHAlignment::CENTER, TextVAlignment::CENTER);
     titleLabel->setAnchorPoint(ANCHOR_M);
     titleLabel->setPosition(Vec2MC(getContentSize(), 0, 0 + 5));
     titleLabel->setTextColor(Color4B(70,70,70,255));
-    // CCLOG("title: %s width: %f", title.c_str(), titleLabel->getContentSize().width);
-    titleLabel->setScale(NAVIGATION_TITLE_TEXT_WIDTH / titleLabel->getContentSize().width);
     addChild(titleLabel);
+    
+    // 타이틀 크기 조절
+    if( titleLabel->getContentSize().width > NAVIGATION_TITLE_TEXT_WIDTH ) {
+        titleLabel->setScale(NAVIGATION_TITLE_TEXT_WIDTH / titleLabel->getContentSize().width);
+    }
     
     // 타이틀 영역 확인용
     /*
