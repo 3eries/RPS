@@ -338,7 +338,7 @@ void GiftManager::showPopup(GiftType type) {
  */
 void GiftManager::checkGift(GiftType type) {
 
-    CCLOG("GiftManager::checkGift: %s", giftToString(type).c_str());
+    // CCLOG("GiftManager::checkGift: %s", giftToString(type).c_str());
     
     auto gift = getGift(type);
     

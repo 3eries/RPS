@@ -110,7 +110,7 @@ void PackageNavigator::onScrollEvent(ScrollView::EventType type) {
     switch( type ) {
         // 페이지 스크롤 진행중
         case ScrollView::EventType::CONTAINER_MOVED: {
-            CCLOG("CONTAINER_MOVED: %zd", pageView->getCurrentPageIndex());
+            // CCLOG("CONTAINER_MOVED: %zd", pageView->getCurrentPageIndex());
             
             ssize_t i = pageView->getCurrentPageIndex();
             
@@ -179,7 +179,7 @@ void PackageNavigator::onScrollEvent(ScrollView::EventType type) {
         } break;
             
         case ScrollView::EventType::SCROLLING: {
-            CCLOG("SCROLLING: %zd", pageView->getCurrentPageIndex());
+            // CCLOG("SCROLLING: %zd", pageView->getCurrentPageIndex());
             
         } break;
             
