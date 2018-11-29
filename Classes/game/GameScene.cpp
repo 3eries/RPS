@@ -121,10 +121,6 @@ void GameScene::onEnter() {
         
         CharacterManager::getInstance()->addListener(listener);
     }
-    
-    // 플레이 가이드
-//    PopupManager::show(PopupType::PLAY_GUIDE);
-//    PopupManager::getPopup(PopupType::PLAY_GUIDE)->setLocalZOrder(ZOrder::POPUP_TOP);
 }
 
 void GameScene::onEnterTransitionDidFinish() {
@@ -188,8 +184,6 @@ void GameScene::onGameStart() {
     reset();
     
     // 첫 게임인 경우, 플레이 가이드 노출
-    PopupManager::show(PopupType::PLAY_GUIDE);
-    /*
     if( gameMgr->getPlayCount() == 1 ) {
         auto userDefault = UserDefault::getInstance();
         
@@ -202,7 +196,6 @@ void GameScene::onGameStart() {
             PopupManager::show(PopupType::PLAY_GUIDE);
         }
     }
-     */
 }
 
 /**
