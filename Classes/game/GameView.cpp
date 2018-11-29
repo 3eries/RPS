@@ -421,11 +421,6 @@ void GameView::onClickNormalButton(RSPType type) {
     }
 #endif
     
-    // Tap Hint 스케줄러 시작
-    if( result != RSPResult::LOSE ) {
-        scheduleTapHint();
-    }
-    
     man->showdown(result, type, block->getType());
     
     switch( result ) {
@@ -433,6 +428,16 @@ void GameView::onClickNormalButton(RSPType type) {
         case RSPResult::LOSE:   this->misBlock(block);            break;
         case RSPResult::DRAW:   this->drawBlock(block);           break;
         default: break;
+    }
+    
+    // 첫 피버까지 Tap Hint 노출
+    if( gameMgr->getFeverModeCount() == 0 ) {
+        showTapHint();
+    } else {
+        // Tap Hint 스케줄러 시작
+        if( result != RSPResult::LOSE ) {
+            scheduleTapHint();
+        }
     }
     
     // 타임바 실행
