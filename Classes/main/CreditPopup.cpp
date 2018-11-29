@@ -32,8 +32,6 @@ static const vector<Member> MEMBERS = {
     Member("RSP_icon_character_sjb.png", "SJB", "SOUND"),
 };
 
-static const std::string FONT_NORMAL = "fonts/BorisBlackBloxx.ttf";
-
 CreditPopup::CreditPopup() : BasePopup(PopupType::CREDIT) {
 }
 
@@ -99,6 +97,7 @@ void CreditPopup::onEnterActionFinished() {
     addChild(touchNode, SBZOrder::TOP);
     
     touchNode->addClickEventListener([=](Ref*) {
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         this->dismiss();
     });
 }
