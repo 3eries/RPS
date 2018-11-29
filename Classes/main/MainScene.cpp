@@ -231,7 +231,7 @@ void MainScene::initMenu() {
     
     // 메인 화면 전용 메뉴
     SBUIInfo infos[] = {
-        SBUIInfo(Tag::BTN_REMOVE_ADS,   ANCHOR_M,    Vec2MC(0, 25),     "RSP_btn_remove_ads.png"),
+        SBUIInfo(Tag::BTN_REMOVE_ADS,   ANCHOR_M,    Vec2MC(0, 25 + 6), "RSP_btn_remove_ads.png"),
 #if ENABLE_TEST_MENU
         SBUIInfo(Tag::BTN_TEST,         ANCHOR_TL,   Vec2TL(10, -10),   "RSP_btn_test.png"),
 #endif
