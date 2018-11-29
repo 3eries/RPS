@@ -8,22 +8,24 @@
 #include "GameScene.hpp"
 
 #include "User.hpp"
+#include "UserDefaultKey.h"
 #include "SceneManager.h"
 #include "PopupManager.hpp"
+#include "UIHelper.hpp"
 #include "GiftManager.hpp"
 #include "CharacterManager.hpp"
-#include "UIHelper.hpp"
+#include "RankingManager.hpp"
 
 #include "GameDefine.h"
 #include "GameView.hpp"
 
+#include "PlayGuidePopup.hpp"
+#include "NewRecordPopup.hpp"
+#include "CommonLoadingBar.hpp"
+
 #include "ui/PausePopup.hpp"
 #include "ui/ContinuePopup.hpp"
 #include "ui/GameOverPopup.hpp"
-
-#include "RankingManager.hpp"
-#include "NewRecordPopup.hpp"
-#include "CommonLoadingBar.hpp"
 
 USING_NS_CC;
 USING_NS_SB;
@@ -119,6 +121,10 @@ void GameScene::onEnter() {
         
         CharacterManager::getInstance()->addListener(listener);
     }
+    
+    // 플레이 가이드
+//    PopupManager::show(PopupType::PLAY_GUIDE);
+//    PopupManager::getPopup(PopupType::PLAY_GUIDE)->setLocalZOrder(ZOrder::POPUP_TOP);
 }
 
 void GameScene::onEnterTransitionDidFinish() {
@@ -180,6 +186,23 @@ void GameScene::onGameStart() {
     firebase::Analytics::setScreenName(FA_SCREEN_GAME);
     
     reset();
+    
+    // 첫 게임인 경우, 플레이 가이드 노출
+    PopupManager::show(PopupType::PLAY_GUIDE);
+    /*
+    if( gameMgr->getPlayCount() == 1 ) {
+        auto userDefault = UserDefault::getInstance();
+        
+        if( userDefault->getBoolForKey(UserDefaultKey::PLAY_GUIDE, true) ) {
+            // update flag
+            userDefault->setBoolForKey(UserDefaultKey::PLAY_GUIDE, false);
+            userDefault->flush();
+            
+            // show guide
+            PopupManager::show(PopupType::PLAY_GUIDE);
+        }
+    }
+     */
 }
 
 /**
@@ -286,7 +309,6 @@ void GameScene::showPausePopup() {
                 popup->dismissWithAction([=]() {
                     gameMgr->onGameResume();
                 });
-                
             } break;
                 
             // main
@@ -297,7 +319,6 @@ void GameScene::showPausePopup() {
                 });
                 */
                 this->replaceMain();
-                
             } break;
                 
             // remove ads
@@ -317,7 +338,14 @@ void GameScene::showPausePopup() {
                     
                     iap::IAPHelper::purchaseRemoveAds(listener);
                 }
+            } break;
                 
+            // how to play
+            case PausePopup::Tag::HOW_TO_PLAY: {
+                auto pausePopup = popup;
+                
+                PopupManager::show(PopupType::PLAY_GUIDE);
+                PopupManager::getPopup(PopupType::PLAY_GUIDE)->setLocalZOrder(pausePopup->getLocalZOrder());
             } break;
                 
             default: break;

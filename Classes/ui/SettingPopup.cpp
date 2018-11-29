@@ -82,7 +82,6 @@ void SettingPopup::initContentView() {
     
     BasePopup::initContentView();
     
-    // RSP_popup_bg_settings.png Vec2MC(0, 60) , Size(552, 616)
     stoneBg = Sprite::create(DIR_IMG_GAME + "RSP_popup_bg_settings.png");
     stoneBg->setAnchorPoint(ANCHOR_M);
     stoneBg->setPosition(Vec2MC(0, 60));
@@ -91,19 +90,17 @@ void SettingPopup::initContentView() {
     const Size bgSize(stoneBg->getContentSize());
     
     // title
-    // RSP_popup_title_settings.png Vec2MC(0, 236) , Size(344, 56)
     auto title = Sprite::create(DIR_IMG_GAME + "RSP_popup_title_settings.png");
     title->setAnchorPoint(ANCHOR_M);
-    title->setPosition(Vec2MC(bgSize, 0, 236));
+    title->setPosition(Vec2MC(bgSize, 0, 256));
     stoneBg->addChild(title);
     
     // 효과음
-    // RSP_btn_effect.png Vec2MC(-172, 92) , Size(160, 152)
     auto effectBtn = SBToggleButton::create(DIR_IMG_GAME + "RSP_btn_effect_off.png",
                                             DIR_IMG_GAME + "RSP_btn_effect.png");
     effectBtn->setZoomScale(0.07f);
     effectBtn->setAnchorPoint(ANCHOR_M);
-    effectBtn->setPosition(Vec2MC(bgSize, -172, 92));
+    effectBtn->setPosition(Vec2MC(bgSize, -172, 124));
     stoneBg->addChild(effectBtn);
     
     auto audioEngine = SBAudioEngine::getInstance();
@@ -118,12 +115,11 @@ void SettingPopup::initContentView() {
     });
     
     // 배경음
-    // RSP_btn_bgm.png Vec2MC(0, 92) , Size(160, 152)
     auto bgmBtn = SBToggleButton::create(DIR_IMG_GAME + "RSP_btn_bgm_off.png",
                                          DIR_IMG_GAME + "RSP_btn_bgm.png");
     bgmBtn->setZoomScale(0.07f);
     bgmBtn->setAnchorPoint(ANCHOR_M);
-    bgmBtn->setPosition(Vec2MC(bgSize, 0, 92));
+    bgmBtn->setPosition(Vec2MC(bgSize, 0, 124));
     stoneBg->addChild(bgmBtn);
     
     bgmBtn->setSelected(!audioEngine->isBGMMute());
@@ -136,12 +132,11 @@ void SettingPopup::initContentView() {
     });
     
     // 진동
-    // RSP_btn_vibrate.png Vec2MC(172, 96) , Size(160, 152)
     auto vibrateBtn = SBToggleButton::create(DIR_IMG_GAME + "RSP_btn_vibrate_off.png",
                                              DIR_IMG_GAME + "RSP_btn_vibrate.png");
     vibrateBtn->setZoomScale(0.07f);
     vibrateBtn->setAnchorPoint(ANCHOR_M);
-    vibrateBtn->setPosition(Vec2MC(bgSize, 172, 96));
+    vibrateBtn->setPosition(Vec2MC(bgSize, 172, 124));
     stoneBg->addChild(vibrateBtn);
     
     vibrateBtn->setSelected(UserDefault::getInstance()->getBoolForKey(UserDefaultKey::VIBRATE, true));
@@ -157,13 +152,11 @@ void SettingPopup::initContentView() {
     
     // 기타 메뉴
     {
-        // RSP_btn_ranking_world.png Vec2MC(-88, -80) , Size(160, 152)
-        // RSP_btn_restore.png Vec2MC(88, -80) , Size(160, 152)
-        // RSP_btn_remove_ads.png Vec2MC(-2, -216) , Size(316, 80)
         SBUIInfo infos[] = {
-            SBUIInfo(Tag::WORLD_RANKING,     ANCHOR_M,   Vec2MC(bgSize, -88, -80),   "RSP_btn_ranking_world.png"),
-            SBUIInfo(Tag::RESTORE_PURCHASE,  ANCHOR_M,   Vec2MC(bgSize, 88, -80),    "RSP_btn_restore.png"),
-            SBUIInfo(Tag::REMOVE_ADS,        ANCHOR_M,   Vec2MC(bgSize, 0, -216),    "RSP_btn_remove_ads.png"),
+            SBUIInfo(Tag::WORLD_RANKING,     ANCHOR_M,   Vec2MC(bgSize, -88, -42),   "RSP_btn_ranking_world.png"),
+            SBUIInfo(Tag::RESTORE_PURCHASE,  ANCHOR_M,   Vec2MC(bgSize, 88, -42),    "RSP_btn_restore.png"),
+            SBUIInfo(Tag::REMOVE_ADS,        ANCHOR_M,   Vec2MC(bgSize, 0, -171),    "RSP_btn_remove_ads.png"),
+            SBUIInfo(Tag::HOW_TO_PLAY,       ANCHOR_M,   Vec2MC(bgSize, 0, -259),    "RSP_how_to_play.png"),
         };
         
         for( int i = 0; i < sizeof(infos)/sizeof(SBUIInfo); ++i ) {
@@ -255,6 +248,7 @@ void SettingPopup::onEnterActionFinished() {
     addChild(touchNode);
     
     touchNode->addClickEventListener([=](Ref*) {
+        SBAudioEngine::playEffect(SOUND_BUTTON_CLICK);
         this->dismissWithAction();
     });
     

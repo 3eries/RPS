@@ -22,6 +22,7 @@ public:
         WORLD_RANKING       = 100,  // 월드 랭킹
         RESTORE_PURCHASE,           // 구매 아이템 복원
         REMOVE_ADS,                 // 광고 제거 아이템 구매
+        HOW_TO_PLAY,                // 게임 가이드
         
         // private
         VIP_MARK,                   // VIP 마크

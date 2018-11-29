@@ -12,6 +12,7 @@
 #include "Define.h"
 #include "SceneManager.h"
 
+#include "PlayGuidePopup.hpp"
 #include "SettingPopup.hpp"
 #include "RankingPopup.hpp"
 #include "ShopPopup.hpp"
@@ -453,6 +454,7 @@ void PopupManager::cross(BasePopup *popup1, BasePopup *popup2, BasePopup *popup3
 BasePopup* PopupManager::createPopup(PopupType type) {
     
     switch( type ) {
+        case PopupType::PLAY_GUIDE:            return PlayGuidePopup::create();
         case PopupType::SHOP:                  return ShopPopup::create();
         case PopupType::RANKING:               return RankingPopup::create();
         default:

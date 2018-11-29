@@ -200,7 +200,6 @@ void CommonMenu::showSettingPopup() {
                  
                  iap::IAPHelper::restore(listener);
                  */
-                
             } break;
                 
             // remove ads
@@ -220,7 +219,14 @@ void CommonMenu::showSettingPopup() {
                     
                     iap::IAPHelper::purchaseRemoveAds(listener);
                 }
+            } break;
                 
+            // how to play
+            case SettingPopup::Tag::HOW_TO_PLAY: {
+                auto settingPopup = popup;
+                
+                PopupManager::show(PopupType::PLAY_GUIDE);
+                PopupManager::getPopup(PopupType::PLAY_GUIDE)->setLocalZOrder(settingPopup->getLocalZOrder());
             } break;
                 
             default: break;

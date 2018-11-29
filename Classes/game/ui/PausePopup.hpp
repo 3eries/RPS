@@ -21,6 +21,7 @@ public:
         RESUME = 100,
         MAIN,
         REMOVE_ADS,
+        HOW_TO_PLAY,
         
         // private
         VIP_MARK,

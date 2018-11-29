@@ -54,6 +54,7 @@
 		1D45E0F820ED164C0065CB3D /* SBAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D45E0F620ED164C0065CB3D /* SBAction.cpp */; };
 		1D4831992191613000EA0F2D /* GiftPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4831962191612F00EA0F2D /* GiftPopup.cpp */; };
 		1D48319A2191613000EA0F2D /* GiftBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4831982191612F00EA0F2D /* GiftBox.cpp */; };
+		1D49A28021AFB208005C26CB /* PlayGuidePopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D49A27E21AFB208005C26CB /* PlayGuidePopup.cpp */; };
 		1D4C659A20FF94AD005A43D8 /* SettingPopup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */; };
 		1D4C659D21008BB8005A43D8 /* BaseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D4C659B21008BB8005A43D8 /* BaseScene.cpp */; };
 		1D59F3D520FA69D400649A99 /* PopupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D59F3D320FA69D200649A99 /* PopupManager.cpp */; };
@@ -297,6 +298,8 @@
 		1D4831962191612F00EA0F2D /* GiftPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GiftPopup.cpp; sourceTree = "<group>"; };
 		1D4831972191612F00EA0F2D /* GiftPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GiftPopup.hpp; sourceTree = "<group>"; };
 		1D4831982191612F00EA0F2D /* GiftBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GiftBox.cpp; sourceTree = "<group>"; };
+		1D49A27E21AFB208005C26CB /* PlayGuidePopup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PlayGuidePopup.cpp; sourceTree = "<group>"; };
+		1D49A27F21AFB208005C26CB /* PlayGuidePopup.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayGuidePopup.hpp; sourceTree = "<group>"; };
 		1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SettingPopup.cpp; sourceTree = "<group>"; };
 		1D4C659920FF94AB005A43D8 /* SettingPopup.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SettingPopup.hpp; sourceTree = "<group>"; };
 		1D4C659B21008BB8005A43D8 /* BaseScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BaseScene.cpp; sourceTree = "<group>"; };
@@ -771,16 +774,18 @@
 				1DA723EB2109FEAE002B7ADE /* CommonLoadingBar.hpp */,
 				1D0701DF214260790086D447 /* ExitAlertPopup.cpp */,
 				1D0701E02142607A0086D447 /* ExitAlertPopup.hpp */,
+				1DDE8DB32178825D00973918 /* GetCharacterPopup.cpp */,
+				1DDE8DB42178825D00973918 /* GetCharacterPopup.hpp */,
 				1D8F54A220D2A8C4009E2201 /* LogoView.cpp */,
 				1D8F54A320D2A8C4009E2201 /* LogoView.hpp */,
+				1D49A27E21AFB208005C26CB /* PlayGuidePopup.cpp */,
+				1D49A27F21AFB208005C26CB /* PlayGuidePopup.hpp */,
 				1DE6BB682119A0D800D5A17E /* ReviewPopup.cpp */,
 				1DE6BB692119A0D800D5A17E /* ReviewPopup.hpp */,
 				1D4C659820FF94AB005A43D8 /* SettingPopup.cpp */,
 				1D4C659920FF94AB005A43D8 /* SettingPopup.hpp */,
 				1D45C49920A8A9E2007E63AD /* UIHelper.cpp */,
 				1D45C49A20A8A9E2007E63AD /* UIHelper.hpp */,
-				1DDE8DB32178825D00973918 /* GetCharacterPopup.cpp */,
-				1DDE8DB42178825D00973918 /* GetCharacterPopup.hpp */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -1456,6 +1461,7 @@
 				1D45C48C20A8A7B8007E63AD /* SBCollection.cpp in Sources */,
 				1D45C47E20A8A7B8007E63AD /* SBButton.cpp in Sources */,
 				1DBC68E420E490D300CA85F0 /* DarkCloud.cpp in Sources */,
+				1D49A28021AFB208005C26CB /* PlayGuidePopup.cpp in Sources */,
 				1DEA58182109A5B400CF6F98 /* AdsHelper.cpp in Sources */,
 				1D45C47D20A8A7B8007E63AD /* SBAnimationSprite.cpp in Sources */,
 				1D86438F21523898001841C9 /* SBSecurity-android.cpp in Sources */,

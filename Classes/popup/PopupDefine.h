@@ -16,6 +16,7 @@ enum class PopupType {
     EXIT_APP,
     REVIEW,
     CREDIT,
+    PLAY_GUIDE,
     SHOP,
     GET_CHARACTER,
     SETTING,
