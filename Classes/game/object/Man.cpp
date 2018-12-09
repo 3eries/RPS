@@ -320,8 +320,7 @@ void Man::updateFeverGage() {
     
     feverGage.gage->stopAllActions();
     
-    int maxPoint = gameMgr->getConfig()->getFeverInfo().maxPoint;
-    float ratio = (float)feverGage.point / maxPoint;
+    float ratio = getFeverGageRatio();
     bool isIncrease = (ratio > feverGage.gage->getScaleX());
     
     feverGage.gage->setScaleX(ratio);
@@ -335,6 +334,11 @@ void Man::updateFeverGage() {
         auto hide = Hide::create();
         feverGage.whiteGage->runAction(Sequence::create(delay, hide, nullptr));
     }
+}
+
+float Man::getFeverGageRatio() {
+
+    return feverGage.point / gameMgr->getConfig()->getFeverInfo().maxPoint;
 }
 
 /**

@@ -62,6 +62,7 @@ public:
     void addFeverPoint(float point, bool isUpdateGage = true);
     void resetFeverPoint(bool isRunAction = true);
     void updateFeverGage();
+    float   getFeverGageRatio();
     
 // GameListener
 private:
