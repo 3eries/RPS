@@ -423,7 +423,8 @@ Character ShopPopup::getCharacter() {
         CCASSERT(false, "ShopPopup::getCharacter error: invalid package.");
     }
     
-    return pack.characters[characterIndex];
+    // return pack.characters[characterIndex];
+    return charMgr->getCharacter(pack.characterOrder[characterIndex]);
 }
 
 /**

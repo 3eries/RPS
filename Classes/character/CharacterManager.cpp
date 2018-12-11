@@ -127,6 +127,7 @@ void CharacterManager::init(const string &json) {
         pack.packId = v["pack_id"].GetString();
         pack.name = v["name"].GetString();
         
+        // characters
         const string DIR = DIR_ADD(DIR_CHARACTER, pack.packId);
         auto charList = v["characters"].GetArray();
         
@@ -167,6 +168,21 @@ void CharacterManager::init(const string &json) {
             pack.characters.push_back(character);
             characters[character.charId] = character;
         }
+        
+        // character_order
+        if( v.HasMember("character_order") ) {
+            auto order = v["character_order"].GetArray();
+            
+            for( int i = 0; i < order.Size(); ++i ) {
+                pack.characterOrder.push_back(order[i].GetString());
+            }
+        } else {
+            for( auto chr : pack.characters ) {
+                pack.characterOrder.push_back(chr.charId);
+            }
+        }
+        
+        CCASSERT(pack.characters.size() == pack.characterOrder.size(), "CharacterManager parse error: invalid character list size.");
         
         packages.push_back(pack);
         
