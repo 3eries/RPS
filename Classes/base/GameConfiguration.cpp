@@ -145,6 +145,20 @@ void GameConfiguration::parse(const string &json) {
             levelInfos.push_back(info);
         }
     }
+    
+    // 밸런스 테스트
+    // continuation 조정
+    auto balanceContinuation = [](int i) -> int {
+        i *= 1.3;
+        i = MIN(80, i);
+        return i;
+    };
+    
+    continuation = balanceContinuation(continuation);
+    
+    for( auto &levelInfo : levelInfos ) {
+        levelInfo.continuation = balanceContinuation(levelInfo.continuation);
+    }
 }
 
 LevelInfo GameConfiguration::getLevelInfo(int level) {
