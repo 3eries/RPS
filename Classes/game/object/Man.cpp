@@ -394,6 +394,7 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
     addFeverPoint(feverInfo.points[myHand] * levelInfo.feverGageRate);
     
     // 피버 게이지 초기화 스케줄러 실행
+    /*
     unschedule(SCHEDULER_FEVER_GAGE_RESET);
     
     if( gameMgr->getGameMode() == GameMode::NORMAL ) {
@@ -401,6 +402,7 @@ void Man::resultWin(RSPType myHand, RSPType oppHand) {
             this->resetFeverPoint();
         }, levelInfo.gageDuration, SCHEDULER_FEVER_GAGE_RESET);
     }
+     */
 }
 
 /**
@@ -414,8 +416,12 @@ void Man::resultLose(RSPType myHand, RSPType oppHand) {
  */
 void Man::resultDraw(RSPType myHand, RSPType oppHand) {
     
-//if( !gameMgr->isFeverMode() ) {
-    resetFeverPoint();
+    // update fever point
+    // resetFeverPoint();
+    setFeverPoint(feverGage.point * 0.3f, false);
+    
+    auto scale = ScaleTo::create(0.1f, getFeverGageRatio(), 1);
+    feverGage.gage->runAction(scale);
     
     // blink
     /*

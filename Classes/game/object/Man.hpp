@@ -58,10 +58,10 @@ public:
                       SBCallback onCompleted = nullptr);
     void setManPosition(Position pos);
     
-    void setFeverPoint(float point, bool isUpdateGage = true);
-    void addFeverPoint(float point, bool isUpdateGage = true);
-    void resetFeverPoint(bool isRunAction = true);
-    void updateFeverGage();
+    void    setFeverPoint(float point, bool isUpdateGage = true);
+    void    addFeverPoint(float point, bool isUpdateGage = true);
+    void    resetFeverPoint(bool isRunAction = true);
+    void    updateFeverGage();
     float   getFeverGageRatio();
     
 // GameListener
