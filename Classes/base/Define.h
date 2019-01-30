@@ -121,6 +121,8 @@ static std::map<RSPType, std::string> ANIM_NAME_DRAW_RIGHT({
 static const std::string ANIM_EVENT_DIE             = "die";
 static const std::string ANIM_EVENT_MAN_MOVE        = "move";
 
+typedef std::function<void(int)> DrawAnimEventListener;
+
 // 폰트 경로
 static const std::string DIR_FONT                   = "fonts/";
 

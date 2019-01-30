@@ -89,7 +89,8 @@ private:
     
 private:
     void updateScore();
-    void updateButtonMode();
+    
+    void onFirstBlockChanged(RSPBlock *block);
     
     void onClickNormalButton(RSPType type);
     void onClickFeverButton(int i);

@@ -42,7 +42,8 @@ static const string SCHEDULER_DRAW_DELAY         = "SCHEDULER_DRAW_DELAY";
 
 GameView::GameView() :
 gameMgr(GameManager::getInstance()),
-hitCount(0) {
+hitCount(0),
+buttonLayer(nullptr) {
 }
 
 GameView::~GameView() {
@@ -169,7 +170,6 @@ void GameView::onGameStart() {
     getChildByTag<Label*>(Tag::LABEL_LEVEL)->setString("");
     getChildByTag<Label*>(Tag::LABEL_SCORE)->setString("0");
     
-    // showLevelLabel();
     reset();
 }
 
@@ -216,9 +216,7 @@ void GameView::onContinue() {
     
     updateScore();
     
-    blockLayer->updateBlocks();
-    updateButtonMode();
-    
+    blockLayer->resetBlocks();
     reset();
 }
 
@@ -287,7 +285,7 @@ void GameView::onBoostStart() {
                 auto myHand = getWinHand(oppHand);
                 
                 man->showdown(RSPResult::WIN, myHand, oppHand);
-                blockLayer->hitBlock(block, myHand, man->getManPosition());
+                blockLayer->hitBlock(block, myHand, man->isPositionLeft());
                 
             }, 0.1f, SCHEDULER_BOOST_HIT_BLOCK);
         }
@@ -394,11 +392,13 @@ void GameView::updateScore() {
 }
 
 /**
- * 첫번째 블럭 타입에 따라 하단 버튼 모드를 변경
+ * 첫번째 블럭 변경됨
  */
-void GameView::updateButtonMode() {
+void GameView::onFirstBlockChanged(RSPBlock *block) {
     
-    auto block = blockLayer->getFirstBlock();
+    if( !buttonLayer ) {
+        return;
+    }
     
     if( block->getType() == RSPType::ROCK_N_ROLL ) {
         buttonLayer->switchButton(GameMode::FEVER);
@@ -466,7 +466,7 @@ void GameView::onClickFeverButton(int i) {
 void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     
     auto hitBlockType = hitBlock->getType();
-    blockLayer->hitBlock(hitBlock, btnType, man->getManPosition());
+    blockLayer->hitBlock(hitBlock, btnType, man->isPositionLeft());
     
     // hit 카운트 증가
     ++hitCount;
@@ -482,9 +482,6 @@ void GameView::hitBlock(RSPBlock *hitBlock, RSPType btnType) {
     }
     
     timeBar->increaseTimePoint(increasePoint);
-    
-    // 버튼 업데이트
-    updateButtonMode();
 }
 
 /**
@@ -510,20 +507,12 @@ void GameView::drawBlock(RSPBlock *block) {
     }
     
     // 블럭 연출
-    blockLayer->drawBlock(block);
-    
     const Vec2 originManPos = man->getPosition();
-    block->runDrawAnimation(man->isPositionLeft(), [=](int i) {
+    
+    blockLayer->drawBlock(block, man->isPositionLeft(), [=](int i) {
         
         // 캐릭터 이동
-        // 할아범은 총 3번 진동하는데, draw애니메이션이 시작된후
-        // 0.033초후에 20px뒤로 밀려나고
-        // 0.66초 후에 제자리로 돌아오고
-        // 0.1초후에 다시 20px뒤로 밀려나고
-        // 0.133초후에 제자리로 돌아오고
-        // 0.166초후에 20px밀려났다가
-        // 0.2초에 다시 제자리로 돌아옵니당
-        
+        // 할아범은 총 3번 진동 (뒤로 밀림 -> 제자리)
         // move_1 ~ move_6
         float moveX[] = {
             -20, 0, -20, 0, -20, 0
@@ -531,8 +520,6 @@ void GameView::drawBlock(RSPBlock *block) {
         
         float x = originManPos.x;
         x += man->isPositionLeft() ? moveX[i-1] : -moveX[i-1];
-        
-//        man->setPositionX(x);
         
         man->stopActionByTag(Man::ACTION_TAG_DRAW_MOVE);
         
@@ -655,6 +642,7 @@ void GameView::initBg() {
 void GameView::initBlock() {
     
     blockLayer = RSPBlockLayer::create();
+    blockLayer->setOnFirstBlockChangedListener(CC_CALLBACK_1(GameView::onFirstBlockChanged, this));
     addChild(blockLayer, (int)ZOrder::BLOCK);
 }
 

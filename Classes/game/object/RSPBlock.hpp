@@ -17,8 +17,7 @@
 
 class RSPBlock : public cocos2d::Sprite {
 public:
-    static std::string getBlockImageFile(RSPType type, bool flippedX = false);
-    static RSPType getRandomType();
+    static const int INVALID_INDEX = -1;
     
 public:
     static RSPBlock* create(RSPType type);
@@ -32,19 +31,29 @@ private:
     
 public:
     void setBlock(RSPType type);
+    void setIndex(int i);
+    
     void changeRandomBlock();
+    void refreshPosition();
     
-    void runDrawAnimation(bool isLeft, std::function<void(int)> eventListener);
+    void downWithAction();
     
-    bool isEqualBlock(RSPType type);
+    void runHitAction(bool isManOnLeft);
+    void runDrawAction(bool isManOnLeft, DrawAnimEventListener eventListener);
     
+    static cocos2d::Vec2 getBlockPosition(RSPType type, int i);
+    static float         getBlockPositionX(RSPType type);
+    static float         getBlockPositionY(int i);
+    
+    static std::string   getBlockImageFile(RSPType type, bool flippedX = false);
+    static RSPType       getRandomType();
+
     RSPBlock* clone();
-    
     std::string toString();
     
 private:
     CC_SYNTHESIZE(RSPType, type, Type);
-    CC_SYNTHESIZE(int, idx, Index);
+    CC_SYNTHESIZE_READONLY(int, idx, Index);
 };
 
 #endif /* RSPBlock_hpp */

@@ -23,12 +23,11 @@ static const size_t         BLOCK_DISPLAY_COUNT              = 8;
 static const float          BLOCK_WIDTH                      = 180;
 static const float          BLOCK_HEIGHT                     = 132;
 
-static const float          BLOCK_RANDOM_X                   = 5;
 static const float          BLOCK_ORIGIN_POS_Y               = 285;
 static const float          BLOCK_PADDING_Y                  = -4;
 
-// 화면에 보이는 블럭 높이
-static const float          BLOCK_DISPLAY_HEIGHT             = 950; // (BLOCK_HEIGHT*BLOCK_DISPLAY_COUNT)-20;
+#define                     BLOCK_LAYER_SIZE                 cocos2d::Size(SB_WIN_SIZE.width, BLOCK_DISPLAY_HEIGHT)
+static const float          BLOCK_DISPLAY_HEIGHT             = 950; // 화면에 보이는 블럭 높이
 
 // 블럭 내려오는 시간
 static const float          BLOCK_MOVE_DURATION              = 0.1f;

@@ -70,6 +70,8 @@ void RSPButtonLayer::onPreGameOver() {
  * 이어하기
  */
 void RSPButtonLayer::onContinue() {
+    
+    switchButton(GameMode::NORMAL);
 }
 
 /**

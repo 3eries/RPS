@@ -16,11 +16,10 @@
 USING_NS_CC;
 using namespace std;
 
-static const float HIT_BLOCK_MOVE_DURATION = 0.13f;
-
 RSPBlockLayer::RSPBlockLayer() :
 gameMgr(GameManager::getInstance()),
-blockIndex(0) {
+blockIndex(0),
+onFirstBlockChangedListener(nullptr) {
     
 }
 
@@ -37,7 +36,7 @@ bool RSPBlockLayer::init() {
     
     setAnchorPoint(ANCHOR_MB);
     setPosition(Vec2BC(0, BLOCK_ORIGIN_POS_Y));
-    setContentSize(Size(SB_WIN_SIZE.width, BLOCK_DISPLAY_HEIGHT));
+    setContentSize(BLOCK_LAYER_SIZE);
     
     initBlocks();
     
@@ -88,7 +87,7 @@ void RSPBlockLayer::onGameModeChanged(GameMode mode) {
         } break;
             
         case GameMode::FEVER: {
-            // 블럭 변환
+            // 블럭 전환
             for( auto block : blocks ) {
                 block->setBlock(RSPType::ROCK_N_ROLL);
             }
@@ -98,26 +97,21 @@ void RSPBlockLayer::onGameModeChanged(GameMode mode) {
 }
 
 /**
- * 블럭 업데이트
+ * 블럭 리셋
  */
-void RSPBlockLayer::updateBlocks() {
+void RSPBlockLayer::resetBlocks() {
     
-    switch( gameMgr->getGameMode() ) {
-        case GameMode::NORMAL: {
-            for( int i = 0; i < blocks.size(); i++ ) {
-                auto block = blocks[i];
-                block->setBlock(getBlockType(i));
-            }
-            
-        } break;
-            
-        case GameMode::FEVER: {
-            // 모든 블럭 락앤롤로 변환
-            for( auto block : blocks ) {
-                block->setBlock(RSPType::ROCK_N_ROLL);
-            }
-            
-        } break;
+    for( auto block : blocks ) {
+        block->removeFromParent();
+    }
+    
+    blocks.clear();
+    blockIndex = 0;
+    
+    initBlocks();
+    
+    if( onFirstBlockChangedListener ) {
+        onFirstBlockChangedListener(getFirstBlock());
     }
 }
 
@@ -154,13 +148,12 @@ std::vector<RSPBlock*> RSPBlockLayer::getSortedBlocks() {
 /**
  *  블럭 히트다 히트~!
  */
-void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType,
-                             Man::Position manPosition) {
+void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType, bool isManOnLeft) {
     
     const RSPType hitBlockType = hitBlock->getType();
     
     // 히트 블럭 연출
-    runHitBlockEffect(hitBlock, manPosition);
+    hitBlock->runHitAction(isManOnLeft);
     
     // 히트 블럭 타입 변경하여 재활용
     hitBlock->setBlock(getBlockType(blockIndex));
@@ -177,39 +170,25 @@ void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType,
         gameMgr->onLastFeverBlockHit();
     }
     
-    // 정렬된 블럭 리스트 생성
-    vector<RSPBlock*> sortBlocks;
-    
-    for( int i = blockIndex; i < blocks.size(); ++i ) {
-        auto block = blocks.at(i);
-        sortBlocks.push_back(block);
-    }
-    
-    for( size_t i = 0; i < blockIndex; ++i ) {
-        auto block = blocks.at(i);
-        sortBlocks.push_back(block);
-    }
-    
     // 블럭 한 칸씩 내려오기
+    auto sortBlocks = getSortedBlocks();
+    
     for( int i = 0; i < BLOCK_DISPLAY_COUNT; ++i ) {
         auto block = sortBlocks[i];
-        block->stopAllActions();
         block->setVisible(true);
-        block->setLocalZOrder(i);
-        block->setPositionY(getBlockPosition(i+1).y);
-
-        auto move = MoveTo::create(BLOCK_MOVE_DURATION,
-                                   Vec2(block->getPositionX(), getBlockPosition(i).y));
-        block->runAction(move);
+        block->downWithAction();
     }
     
     // 화면 밖 블럭 hide
     for( int i = BLOCK_DISPLAY_COUNT; i < sortBlocks.size(); ++i ) {
         auto block = sortBlocks[i];
+        block->setIndex(i);
         block->setVisible(false);
     }
     
-//    CCLOG("RSPBlockLayer::hitBlock: %s", toString().c_str());
+    onFirstBlockChangedListener(getFirstBlock());
+    
+    CCLOG("RSPBlockLayer::hitBlock: %s", toString().c_str());
 }
 
 /**
@@ -221,41 +200,17 @@ void RSPBlockLayer::misBlock(RSPBlock *block) {
 /**
  * 비겼당
  */
-void RSPBlockLayer::drawBlock(RSPBlock *block) {
+void RSPBlockLayer::drawBlock(RSPBlock *block, bool isManOnLeft, DrawAnimEventListener eventListener) {
     
-    alignBlocks();
-}
+    auto sortBlocks = getSortedBlocks();
 
-/**
- * 히트된 블럭 연출
- */
-void RSPBlockLayer::runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosition) {
+    for( int i = 0; i < BLOCK_DISPLAY_COUNT; ++i ) {
+        auto block = sortBlocks[i];
+        block->stopAllActions();
+        block->refreshPosition();
+    }
     
-    // clone block
-    auto block = hitBlock->clone();
-    block->setPositionY(getBlockPosition(0).y);
-    hitBlock->getParent()->addChild(block, -1);
-    
-    // action
-    float POS_LEFT  = -BLOCK_WIDTH * 0.5f;
-    float POS_RIGHT = SB_WIN_SIZE.width + (BLOCK_WIDTH * 0.5f);
-    float posX = (manPosition == Man::Position::LEFT) ? POS_RIGHT : POS_LEFT;
-    
-    // move
-    auto move = MoveTo::create(HIT_BLOCK_MOVE_DURATION, Vec2(posX, block->getPositionY()));
-    auto callback = CallFunc::create([=]() {
-        
-    });
-    auto remove = RemoveSelf::create();
-    block->runAction(Sequence::create(move, callback, remove, nullptr));
-    
-    // rotate
-    /*
-    float angle = (manPosition == Man::Position::LEFT) ? -120 : 120;
-    
-    auto rotate = RotateBy::create(HIT_BLOCK_MOVE_DURATION, angle);
-    block->runAction(rotate);
-     */
+    block->runDrawAction(isManOnLeft, eventListener);
 }
 
 /**
@@ -285,121 +240,9 @@ RSPType RSPBlockLayer::getBlockType(int i) {
         // 이전과 같은 타입
         return prevType;
     }
-    
-    // 발키리 방식
-    /*
-    auto isContinue = [](int ran, int chance) -> bool {
-        return ran <= chance;
-    };
-    
-    // 10% 미만
-    if( continuation < 10 ) {
-        int ran = random<int>(1, (int)(100/continuation));
-        
-        if( isContinue(ran, 1) ) {
-            return prevType;
-        }
-    }
-    // 10% 이상
-    else {
-        int ran = random<int>(1, 10);
-        
-        if( isContinue(ran, continuation/10) ) {
-            return prevType;
-        }
-        
-        // 1의 자리 체크
-        int mod = continuation%10;
-        
-        if( mod > 0 ) {
-            int r = (arc4random() % 9) + 1;
-            
-            if( isContinue(r, mod) ) {
-                return prevType;
-            }
-        }
-    }
-    
-    // 원본
-    {
-//        if( battleChance < 10 ) {
-//            // 10% 미만
-//            uniform_int_distribution<int> dist(1,100 / battleChance);
-//            int roll = dist(monsterDropDiceRandomEngine);
-//            
-//            CCLOG("MonsterDrop(0%%~9%%) roll:%d, battleChance:%d", roll, battleChance);
-//            
-//            if( !isDrop(roll, 1) ) {
-//                return false;
-//            }
-//            
-//        } else {
-//            // 10% 이상
-//            uniform_int_distribution<int> dist(1,10);
-//            int roll = dist(monsterDropDiceRandomEngine);
-//            
-//            CCLOG("MonsterDrop(10%%~100%%) roll:%d, battleChance:%d", roll, battleChance);
-//            
-//            if( !isDrop(roll, battleChance / 10) ) {
-//                int mod = battleChance % 10;
-//                if( mod == 0 ) {
-//                    return false;
-//                }
-//                
-//                int r = (arc4random() % 9) + 1;
-//                if( !isDrop(r, mod) ) {
-//                    return false;
-//                }
-//            }
-//        }
-    }
-    */
      
     // 랜덤 타입
     return RSPBlock::getRandomType();
-}
-
-/**
- * 블럭 좌표 정렬
- */
-void RSPBlockLayer::alignBlocks() {
-    
-    auto sortBlocks = getSortedBlocks();
-    
-    for( int i = 0; i < BLOCK_DISPLAY_COUNT; ++i ) {
-        auto block = sortBlocks[i];
-        block->stopAllActions();
-        block->setLocalZOrder(i);
-        block->setPositionY(getBlockPosition(i).y);
-    }
-}
-
-/**
- * 해당 인덱스의 블럭 좌표 정렬
- */
-void RSPBlockLayer::alignBlock(int i, RSPBlock *block) {
-    
-    block->setPosition(getBlockPosition(i));
-}
-
-/**
- * 해당 인덱스의 블럭 좌표 반환
- */
-Vec2 RSPBlockLayer::getBlockPosition(int i) {
-    
-    // x, 랜덤
-    float x = 0;
-    
-    int ran = arc4random() % 3;
-    if( ran != 0 ) {
-        x = BLOCK_RANDOM_X * (ran == 1 ? 1 : -1);
-    }
-    
-    // y, 블럭 높이 기준
-    float y = (BLOCK_HEIGHT*i) + (BLOCK_HEIGHT*0.5f);
-    y += (BLOCK_PADDING_Y*i); // padding
-    
-    return Vec2BC(getContentSize(), x, y);
 }
 
 /**
@@ -414,15 +257,12 @@ void RSPBlockLayer::initBlocks() {
     
     // 블랙 생성
     for( int i = 0; i < BLOCK_COUNT; i++ ) {
-//        auto block = RSPBlock::createRandomBlock();
         auto block = RSPBlock::create(RSPType::NONE);
         block->setIndex(i);
         block->setAnchorPoint(ANCHOR_M);
         addChild(block);
         
         blocks.push_back(block);
-        
-        alignBlock(i, block);
     }
     
     // 블럭 타입 설정
@@ -436,18 +276,6 @@ void RSPBlockLayer::initBlocks() {
     CCLOG("RSPBlockLayer::initBlocks: %s", toString().c_str());
 }
 
-void RSPBlockLayer::resetBlocks() {
-    
-    for( auto block : blocks ) {
-        block->removeFromParent();
-    }
-    
-    blocks.clear();
-    blockIndex = 0;
-    
-    initBlocks();
-}
-
 string RSPBlockLayer::toString() {
     
     string str = "RSPBlockLayer [\n";
@@ -456,9 +284,7 @@ string RSPBlockLayer::toString() {
     
     for( int i = (int)sortBlocks.size()-1; i >= 0; --i ) {
         auto block = sortBlocks[i];
-        str += STR_FORMAT("%2d (%2d): %s\n", i,
-                          (int)SBCollection::getIndex(blocks, block),
-                          block->toString().c_str());
+        str += STR_FORMAT("\t%s, index of blocks: %d\n", block->toString().c_str(), (int)SBCollection::getIndex(blocks, block));
     }
     
     str += "]";

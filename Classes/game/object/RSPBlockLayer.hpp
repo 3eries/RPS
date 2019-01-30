@@ -35,7 +35,8 @@ private:
     void onExit() override;
     
     void initBlocks();
-    void resetBlocks();
+    
+    RSPType getBlockType(int i);
     
 // GameListener
 private:
@@ -45,33 +46,26 @@ private:
     void onGameModeChanged(GameMode mode) override;
     
 public:
-    void updateBlocks();
+    void resetBlocks();
     
-    RSPBlock* getFirstBlock();
+    RSPBlock*              getFirstBlock();
     std::vector<RSPBlock*> getSortedBlocks();
     
-    void hitBlock(RSPBlock *block, RSPType btnType,
-                  Man::Position manPosition);
+    void hitBlock(RSPBlock *block, RSPType btnType, bool isManOnLeft);
     void misBlock(RSPBlock *block);
-    void drawBlock(RSPBlock *block);
-    
-    void runHitBlockEffect(RSPBlock *hitBlock, Man::Position manPosition);
+    void drawBlock(RSPBlock *block, bool isManOnLeft,
+                   DrawAnimEventListener eventListener);
     
     std::string toString();
-    
-private:
-    RSPType getBlockType(int i);
-    
-    void alignBlocks();
-    void alignBlock(int i, RSPBlock *block);
-    
-    cocos2d::Vec2 getBlockPosition(int i);
     
 private:
     GameManager *gameMgr;
     
     std::vector<RSPBlock*> blocks;
     int blockIndex;
+    
+    CC_SYNTHESIZE(std::function<void(RSPBlock*)>, onFirstBlockChangedListener,
+                  OnFirstBlockChangedListener);
 };
 
 #endif /* RSPBlockLayer_hpp */
