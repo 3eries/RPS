@@ -122,7 +122,7 @@ public class AdsManager implements PluginListener {
                               final String interstitialUnitId,
                               final String rewardedVideoUnitId) {
 
-        Log.i(TAG, "initAd appId: " + appId);
+        // Log.i(TAG, "initAd appId: " + appId);
 
         runOnUiThread(new Runnable() {
             @Override
@@ -166,7 +166,7 @@ public class AdsManager implements PluginListener {
      */
     private void initBanner(String unitId) {
 
-        Log.i(TAG, "initBanner unitId: " + unitId);
+        // Log.i(TAG, "initBanner unitId: " + unitId);
 
         if( TextUtils.isEmpty(unitId) ) {
             return;
@@ -253,7 +253,7 @@ public class AdsManager implements PluginListener {
      */
     private void initInterstitial(String unitId) {
 
-        Log.i(TAG, "initInterstitial unitId: " + unitId);
+        // Log.i(TAG, "initInterstitial unitId: " + unitId);
 
         if( TextUtils.isEmpty(unitId) ) {
             return;
@@ -325,7 +325,7 @@ public class AdsManager implements PluginListener {
      */
     private void initRewardedVideo(String unitId) {
 
-        Log.i(TAG, "initRewardedVideo unitId: " + unitId);
+        // Log.i(TAG, "initRewardedVideo unitId: " + unitId);
 
         if( TextUtils.isEmpty(unitId) ) {
             return;
