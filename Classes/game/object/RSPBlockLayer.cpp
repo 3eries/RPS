@@ -188,7 +188,7 @@ void RSPBlockLayer::hitBlock(RSPBlock *hitBlock, RSPType btnType, bool isManOnLe
     
     onFirstBlockChangedListener(getFirstBlock());
     
-    CCLOG("RSPBlockLayer::hitBlock: %s", toString().c_str());
+    // CCLOG("RSPBlockLayer::hitBlock: %s", toString().c_str());
 }
 
 /**
@@ -206,8 +206,7 @@ void RSPBlockLayer::drawBlock(RSPBlock *block, bool isManOnLeft, DrawAnimEventLi
 
     for( int i = 0; i < BLOCK_DISPLAY_COUNT; ++i ) {
         auto block = sortBlocks[i];
-        block->stopAllActions();
-        block->refreshPosition();
+        block->stopMoveAction();
     }
     
     block->runDrawAction(isManOnLeft, eventListener);
@@ -224,8 +223,7 @@ RSPType RSPBlockLayer::getBlockType(int i) {
     }
     
     // 노멀 모드
-    size_t prev = (i == 0) ? blocks.size()-1 : i-1;
-    auto   prevType = blocks[prev]->getType();
+    auto prevType = blocks[i]->getPreviousBlock()->getType();
     
     if( prevType == RSPType::ROCK_N_ROLL ) {
         // 이전 타입이 락앤롤
@@ -263,10 +261,15 @@ void RSPBlockLayer::initBlocks() {
         addChild(block);
         
         blocks.push_back(block);
+        
+        if( i > 0 ) {
+            block->setPreviousBlock(blocks[i-1]);
+        }
     }
     
     // 블럭 타입 설정
     blocks[0]->changeRandomBlock();
+    blocks[0]->setPreviousBlock(blocks[blocks.size()-1]);
     
     for( int i = 1; i < BLOCK_COUNT; i++ ) {
         auto block = blocks[i];

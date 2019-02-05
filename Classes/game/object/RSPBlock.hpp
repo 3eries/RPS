@@ -18,6 +18,7 @@
 class RSPBlock : public cocos2d::Sprite {
 public:
     static const int INVALID_INDEX = -1;
+    static const int ACTION_TAG_MOVE = 100;
     
 public:
     static RSPBlock* create(RSPType type);
@@ -34,15 +35,18 @@ public:
     void setIndex(int i);
     
     void changeRandomBlock();
-    void refreshPosition();
     
     void downWithAction();
     
     void runHitAction(bool isManOnLeft);
     void runDrawAction(bool isManOnLeft, DrawAnimEventListener eventListener);
     
-    static cocos2d::Vec2 getBlockPosition(RSPType type, int i);
-    static float         getBlockPositionX(RSPType type);
+    void runMoveAction(float duration, const cocos2d::Vec2 &pos);
+    void stopMoveAction();
+    
+    static cocos2d::Vec2 getBlockPosition(RSPType type, int i,
+                                          RSPBlock *prevBlock);
+    static float         getBlockPositionX(RSPType type, RSPBlock *prevBlock);
     static float         getBlockPositionY(int i);
     
     static std::string   getBlockImageFile(RSPType type, bool flippedX = false);
@@ -54,6 +58,9 @@ public:
 private:
     CC_SYNTHESIZE(RSPType, type, Type);
     CC_SYNTHESIZE_READONLY(int, idx, Index);
+    CC_SYNTHESIZE(RSPBlock*, prevBlock, PreviousBlock);
+    
+    cocos2d::Vec2 moveTargetPosition;
 };
 
 #endif /* RSPBlock_hpp */

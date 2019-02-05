@@ -38,7 +38,8 @@ RSPBlock* RSPBlock::createRandomBlock() {
 
 RSPBlock::RSPBlock() :
 type(RSPType::NONE),
-idx(INVALID_INDEX) {
+idx(INVALID_INDEX),
+prevBlock(nullptr) {
 }
 
 RSPBlock::~RSPBlock() {
@@ -71,14 +72,13 @@ void RSPBlock::setBlock(RSPType type) {
     
     // 락앤롤만 flip
     if( type == RSPType::ROCK_N_ROLL ) {
-        int ran = arc4random() % 2;
-        bool flippedX = (ran == 0);
+        bool flippedX = (arc4random() % 2 == 0);
         setTexture(getBlockImageFile(type, flippedX));
-        
     } else {
         setTexture(getBlockImageFile(type));
-        setPositionX(getBlockPositionX(type));
     }
+    
+    setPositionX(getBlockPositionX(type, prevBlock));
 }
 
 /**
@@ -103,17 +103,6 @@ void RSPBlock::changeRandomBlock() {
 }
 
 /**
- * 좌표 새로고침
- */
-void RSPBlock::refreshPosition() {
-    
-    if( type != RSPType::NONE && type != RSPType::ROCK_N_ROLL &&
-        idx != RSPBlock::INVALID_INDEX ) {
-        setPosition(getBlockPosition(type, idx));
-    }
-}
-
-/**
  * 아래로 1칸 이동
  */
 void RSPBlock::downWithAction() {
@@ -127,10 +116,7 @@ void RSPBlock::downWithAction() {
     setIndex(newIdx);
     
     setPositionY(getBlockPositionY(oldIdx));
-    
-    auto move = MoveTo::create(BLOCK_MOVE_DURATION,
-                               Vec2(getPositionX(), getBlockPositionY(newIdx)));
-    runAction(move);
+    runMoveAction(BLOCK_MOVE_DURATION, Vec2(getPositionX(), getBlockPositionY(newIdx)));
 }
 
 /**
@@ -187,37 +173,49 @@ void RSPBlock::runDrawAction(bool isManOnLeft, DrawAnimEventListener eventListen
     });
 }
 
+void RSPBlock::runMoveAction(float duration, const Vec2 &pos) {
+    
+    moveTargetPosition = pos;
+    
+    auto move = MoveTo::create(duration, pos);
+    move->setTag(ACTION_TAG_MOVE);
+    runAction(move);
+}
+
+void RSPBlock::stopMoveAction() {
+    
+    if( getActionByTag(ACTION_TAG_MOVE) ) {
+        stopActionByTag(ACTION_TAG_MOVE);
+        setPosition(moveTargetPosition);
+    }
+}
+
 /**
  * 블럭 좌표 반환
  */
-Vec2 RSPBlock::getBlockPosition(RSPType type, int i) {
+Vec2 RSPBlock::getBlockPosition(RSPType type, int i, RSPBlock *prevBlock) {
     
-    return Vec2(getBlockPositionX(type), getBlockPositionY(i));
+    return Vec2(getBlockPositionX(type, prevBlock), getBlockPositionY(i));
 }
 
-float RSPBlock::getBlockPositionX(RSPType type) {
+float RSPBlock::getBlockPositionX(RSPType type, RSPBlock *prevBlock) {
     
-    float x = 0;
-    
-    switch( type ) {
-        case RSPType::ROCK:          x = 0;     break;
-        case RSPType::PAPER:         x = 10;    break;
-        case RSPType::SCISSORS:      x = -10;   break;
-        /*
-        case RSPType::ROCK_N_ROLL: {
-            int ran = arc4random() % 3;
-            if( ran != 0 ) {
-                x = BLOCK_RANDOM_X * (ran == 1 ? 1 : -1);
-            }
-        } break;
-        */
-         
-        default: {
-            return 0;
-        }
+    if( type == RSPType::ROCK_N_ROLL ) {
+        return BLOCK_POS_CENTER;
     }
     
-    return Vec2BC(BLOCK_LAYER_SIZE, x, 0).x;
+    // 이전 블럭이 없거나 락앤롤 타입이면 랜덤 좌표
+    if( !prevBlock || prevBlock->getType() == RSPType::ROCK_N_ROLL ) {
+        return (arc4random() % 2 == 0) ? BLOCK_POS_LEFT : BLOCK_POS_RIGHT;
+    }
+    
+    // 이전 블럭과 같은 타입
+    if( type == prevBlock->getType() ) {
+        return prevBlock->getPositionX();
+    }
+    
+    // 이전 블럭과 다른 타입
+    return prevBlock->getPositionX() == BLOCK_POS_LEFT ? BLOCK_POS_RIGHT : BLOCK_POS_LEFT;
 }
 
 float RSPBlock::getBlockPositionY(int i) {
