@@ -3,11 +3,11 @@ This application makes use of the following third party libraries:
 
 ## Firebase
 
-Copyright 2018 Google
+Copyright 2019 Google
 
 ## FirebaseAnalytics
 
-Copyright 2018 Google
+Copyright 2019 Google
 
 ## FirebaseCore
 
@@ -217,17 +217,21 @@ Copyright 2018 Google
 
 ## FirebaseInstanceID
 
-Copyright 2018 Google
+Copyright 2019 Google
 
 ## Google-Mobile-Ads-SDK
 
-Copyright 2018 Google
+Copyright 2019 Google
+
+## GoogleAppMeasurement
+
+Copyright 2019 Google
 
 ## GoogleMobileAdsMediationUnity
 
 Copyright 2016 Google Inc.
 
-## GoogleToolboxForMac
+## GoogleUtilities
 
 
                                  Apache License

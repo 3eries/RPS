@@ -1,0 +1,1 @@
+../../../../UnityAds/UnityAds.framework/Headers/UMONNativePromoAdapter.h
