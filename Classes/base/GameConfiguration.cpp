@@ -46,6 +46,9 @@ void GameConfiguration::init() {
 
 void GameConfiguration::parse(const string &json) {
     
+    CCLOG("========== PARSE START (game_config.json)  ==========");
+    CCLOG("%s", json.c_str());
+    
     rapidjson::Document doc;
     doc.Parse(json.c_str());
     
@@ -159,6 +162,8 @@ void GameConfiguration::parse(const string &json) {
     for( auto &levelInfo : levelInfos ) {
         levelInfo.continuation = balanceContinuation(levelInfo.continuation);
     }
+    
+    CCLOG("========== PARSE END (game_config.json)  ==========");
 }
 
 LevelInfo GameConfiguration::getLevelInfo(int level) {
