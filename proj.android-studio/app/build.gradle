@@ -10,8 +10,8 @@ android {
         applicationId "com.superbomb.series.rps"
         minSdkVersion PROP_MIN_SDK_VERSION
         targetSdkVersion PROP_TARGET_SDK_VERSION
-        versionCode 14
-        versionName "1.2.7"
+        versionCode 15
+        versionName "1.2.7.1"
 
         externalNativeBuild {
             ndkBuild {
